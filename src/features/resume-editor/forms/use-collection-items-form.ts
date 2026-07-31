@@ -8,7 +8,7 @@ import { collectionSectionFormSchemaMap } from "@/features/resume-editor/forms/c
 import { createFormSchemaResolver } from "@/features/resume-editor/forms/schemas/create-form-schema-resolver";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
-export type CollectionItemsFormValues = {
+type CollectionItemsFormValues = {
   items: ResumeDraft["sections"][CollectionSectionKey]["items"];
 };
 
@@ -38,6 +38,11 @@ export function getCollectionItemSummary(
     if (value) return value as string;
   }
   return `${itemTitle} ${index + 1}`;
+}
+
+/** A form row is a real item only if it carries an id — see `toSectionValue`. */
+function isRealItem(item: unknown): boolean {
+  return Boolean((item as { id?: string } | undefined)?.id);
 }
 
 /**
@@ -107,9 +112,17 @@ export function useCollectionItemsForm(
   function toSectionValue(values: CollectionItemsFormValues) {
     return {
       ...sectionValue,
-      items: values.items.map((item) =>
-        normalizeCollectionItem(item, config.createItem()),
-      ),
+      // Keep only real items. Removing a row leaves a ghost behind: the row
+      // stays mounted through its exit animation, and its Controller-driven
+      // fields write themselves back into the index `remove()` just spliced
+      // out — leaving a partial like `{ startDate, endDate }`. Normalizing that
+      // against the template would fill it out into a blank item, resurrecting
+      // the row the user just deleted. Every genuine item carries an `id`
+      // (`createItem` always sets one); a ghost rebuilt from rendered fields
+      // never does, since `id` is not a field.
+      items: values.items
+        .filter(isRealItem)
+        .map((item) => normalizeCollectionItem(item, config.createItem())),
     } as ResumeDraft["sections"][CollectionSectionKey];
   }
 
