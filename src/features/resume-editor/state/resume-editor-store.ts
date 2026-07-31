@@ -114,7 +114,12 @@ export function createResumeEditorStore(config?: {
   return createStore<ResumeEditorStoreState>()((set, get) => {
     // Shared save path: persist the next draft, snapshot the previous one into
     // history, and clear the redo stack.
-    const commit = (updater: (draft: ResumeDraft) => Partial<ResumeDraft>) => {
+    // `bumpRevision` marks the commit as an external replacement, so an open
+    // section form re-seeds from it instead of keeping its own stale values.
+    const commit = (
+      updater: (draft: ResumeDraft) => Partial<ResumeDraft>,
+      bumpRevision = false,
+    ) => {
       const state = get();
       const nextDraft = storage.save(
         createNextDraft(state.draft, updater(state.draft)),
@@ -123,6 +128,7 @@ export function createResumeEditorStore(config?: {
         draft: nextDraft,
         undoStack: pushUndoStack(state.undoStack, state.draft),
         redoStack: [],
+        revision: bumpRevision ? state.revision + 1 : state.revision,
       });
     };
 
@@ -155,9 +161,10 @@ export function createResumeEditorStore(config?: {
             visible,
           ),
         })),
-      // Runs on the store rather than the item form because it fires from the
-      // section list, where no form is mounted. Bonus: it lands on the undo
-      // stack, which the old form-local version never did.
+      // Runs on the store rather than the item form, so it lands on the undo
+      // stack (the old form-local version never did). It fires from the section
+      // form header, though — so it commits with a revision bump, or the open
+      // form would keep showing the pre-sort order while the preview re-sorts.
       autoSortSection: (sectionKey) =>
         commit((draft) => {
           const dateRange = collectionSectionConfigs[sectionKey].dateRange;
@@ -176,7 +183,7 @@ export function createResumeEditorStore(config?: {
               [sectionKey]: { ...sectionValue, items: sorted },
             } as ResumeDraft["sections"],
           };
-        }),
+        }, true),
       requestSectionChange: (sectionKey) => {
         set({
           activeSection: sectionKey,

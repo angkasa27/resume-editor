@@ -27,6 +27,38 @@ describe("useAutoSave", () => {
     );
   });
 
+  it("keeps saving nested edits after the first save (the aliasing regression)", async () => {
+    // `getValues()` hands back nested objects by reference and RHF mutates them
+    // in place. Snapshotting the object itself made every edit after the first
+    // save compare equal to the snapshot — collection item forms stopped
+    // persisting entirely while profile/summary (flat values) kept working.
+    const onSave = vi.fn();
+    const seed = { items: [{ description: "a" }] };
+    const { result } = renderHook(() => {
+      const form = useForm<typeof seed>({ defaultValues: seed });
+      useAutoSave(form, seed, onSave, 10);
+      return form;
+    });
+
+    act(() => {
+      result.current.setValue("items.0.description", "b", {
+        shouldDirty: true,
+      });
+    });
+    await act(() => new Promise((resolve) => setTimeout(resolve, 50)));
+    expect(onSave).toHaveBeenCalledTimes(1);
+
+    act(() => {
+      result.current.setValue("items.0.description", "c", {
+        shouldDirty: true,
+      });
+    });
+    await act(() => new Promise((resolve) => setTimeout(resolve, 50)));
+
+    expect(onSave).toHaveBeenCalledTimes(2);
+    expect(onSave.mock.calls.at(-1)?.[0].items[0].description).toBe("c");
+  });
+
   it("does not save when the form was never touched", () => {
     const onSave = vi.fn();
     const { unmount } = renderHook(() => {

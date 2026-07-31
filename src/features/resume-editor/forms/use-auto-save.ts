@@ -3,10 +3,6 @@ import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { useEditorRevision } from "@/features/resume-editor/state/editor-revision";
 
-function isSame(a: unknown, b: unknown): boolean {
-  return JSON.stringify(a) === JSON.stringify(b);
-}
-
 /**
  * Owns a section form's persistence in both directions:
  *
@@ -36,33 +32,37 @@ export function useAutoSave<T extends FieldValues>(
   const revision = useEditorRevision();
   const prevRevision = useRef(revision);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  // The values as of the last persist (or seed/re-seed). A flush saves only when
-  // the live form differs from this, so an open-then-back with no edit is a
-  // no-op (and doesn't add an undo entry).
-  const lastSavedRef = useRef<T>(values);
+  // The values as of the last persist (or seed/re-seed), *serialized*. A flush
+  // saves only when the live form differs from this, so an open-then-back with
+  // no edit is a no-op (and doesn't add an undo entry). Stored as a string, not
+  // the object: `getValues()` hands back nested objects (collection items) by
+  // reference and RHF mutates them in place, so keeping the object would make
+  // the snapshot alias the live values — every later edit would compare equal
+  // and never save.
+  const lastSavedRef = useRef<string>(JSON.stringify(values));
 
   useEffect(() => {
     if (revision === prevRevision.current) return;
     prevRevision.current = revision;
     clearTimeout(timerRef.current);
-    lastSavedRef.current = values;
+    lastSavedRef.current = JSON.stringify(values);
     form.reset(values);
   }, [revision, values, form]);
 
   useEffect(() => {
     const save = () => {
       const next = form.getValues();
-      lastSavedRef.current = next;
+      lastSavedRef.current = JSON.stringify(next);
       onSaveRef.current(next);
     };
     const flush = () => {
-      if (!isSame(form.getValues(), lastSavedRef.current)) save();
+      if (JSON.stringify(form.getValues()) !== lastSavedRef.current) save();
     };
 
     const unsubscribe = form.subscribe({
       formState: { values: true },
       callback: () => {
-        if (isSame(form.getValues(), lastSavedRef.current)) return;
+        if (JSON.stringify(form.getValues()) === lastSavedRef.current) return;
         clearTimeout(timerRef.current);
         timerRef.current = setTimeout(save, delay);
       },

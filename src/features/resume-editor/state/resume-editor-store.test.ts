@@ -146,6 +146,51 @@ describe("resume editor store", () => {
     });
   });
 
+  describe("autoSortSection", () => {
+    function storeWithTwoRoles() {
+      const draft = createDefaultResumeDraft();
+      const [item] = draft.sections.workExperience.items;
+      draft.sections.workExperience.items = [
+        { ...item, id: "old", startDate: "Jan 2018", endDate: "Dec 2019" },
+        { ...item, id: "new", startDate: "Jan 2020", endDate: "Dec 2021" },
+      ];
+      return createResumeEditorStore({ initialDraft: draft });
+    }
+
+    it("sorts items newest-first", () => {
+      const store = storeWithTwoRoles();
+
+      store.getState().autoSortSection("workExperience");
+
+      expect(
+        store.getState().draft.sections.workExperience.items.map((i) => i.id),
+      ).toEqual(["new", "old"]);
+    });
+
+    // The bump is what makes an open section form re-seed; without it the sort
+    // shows in the preview only and the form keeps the old order.
+    it("bumps the revision so an open form re-seeds", () => {
+      const store = storeWithTwoRoles();
+      const before = store.getState().revision;
+
+      store.getState().autoSortSection("workExperience");
+
+      expect(store.getState().revision).toBe(before + 1);
+    });
+
+    it("leaves the revision alone for an ordinary section save", () => {
+      const store = storeWithTwoRoles();
+      const before = store.getState().revision;
+
+      store.getState().saveSection("summary", {
+        ...store.getState().draft.sections.summary,
+        content: "<p>edited</p>",
+      });
+
+      expect(store.getState().revision).toBe(before);
+    });
+  });
+
   describe("undo / redo", () => {
     it("restores the previous draft on undo", () => {
       const store = createResumeEditorStore({
