@@ -3,7 +3,10 @@ import { useForm } from "react-hook-form";
 import { describe, expect, it, vi } from "vitest";
 
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
-import { useAutoSave } from "@/features/resume-editor/forms/use-auto-save";
+import {
+  flushOpenForms,
+  useAutoSave,
+} from "@/features/resume-editor/forms/use-auto-save";
 
 describe("useAutoSave", () => {
   it("persists the latest edit on unmount (the quick-back regression)", () => {
@@ -57,6 +60,33 @@ describe("useAutoSave", () => {
 
     expect(onSave).toHaveBeenCalledTimes(2);
     expect(onSave.mock.calls.at(-1)?.[0].items[0].description).toBe("c");
+  });
+
+  it("flushOpenForms persists the pending edit now, and only once", async () => {
+    // Auto-sort reads the *stored* items and then bumps the revision, so an
+    // edit still sitting in the debounce would be both ignored by the sort and
+    // discarded by the re-seed. The flush has to land it first — and must not
+    // leave the debounce armed to commit the same values again afterwards.
+    const onSave = vi.fn();
+    const { result } = renderHook(() => {
+      const form = useForm<{ name: string }>({ defaultValues: { name: "" } });
+      useAutoSave(form, { name: "" }, onSave);
+      return form;
+    });
+
+    act(() => {
+      result.current.setValue("name", "Typed", { shouldDirty: true });
+    });
+
+    act(() => {
+      flushOpenForms();
+    });
+    expect(onSave).toHaveBeenCalledWith(
+      expect.objectContaining({ name: "Typed" }),
+    );
+
+    await act(() => new Promise((resolve) => setTimeout(resolve, 700)));
+    expect(onSave).toHaveBeenCalledTimes(1);
   });
 
   it("does not save when the form was never touched", () => {
@@ -128,6 +158,19 @@ describe("useAutoSave", () => {
     expect((screen.getByLabelText("name") as HTMLInputElement).value).toBe("b");
 
     // Let the superseding window and any debounce elapse — the reset must not save.
+    await new Promise((resolve) => setTimeout(resolve, 700));
+    expect(onSave).not.toHaveBeenCalled();
+
+    // Every later replace must re-seed too, and stay silent. A re-seed applies
+    // its values field by field, and those half-applied states arm the debounce
+    // — if that fires it commits values identical to the ones just seeded,
+    // which clears the redo stack (undo, then redo, and redo was dead).
+    rerender(<App revision={2} values={{ name: "c" }} />);
+    expect((screen.getByLabelText("name") as HTMLInputElement).value).toBe("c");
+
+    rerender(<App revision={3} values={{ name: "d" }} />);
+    expect((screen.getByLabelText("name") as HTMLInputElement).value).toBe("d");
+
     await new Promise((resolve) => setTimeout(resolve, 700));
     expect(onSave).not.toHaveBeenCalled();
   });

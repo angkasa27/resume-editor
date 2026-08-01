@@ -17,6 +17,7 @@ import type {
 } from "@/features/resume-editor/domain/draft/draft-storage";
 import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
+import { flushOpenForms } from "@/features/resume-editor/forms/use-auto-save";
 import {
   createResumeEditorStore,
   type ResumeEditorPanelKey,
@@ -321,8 +322,13 @@ export function useResumeEditorController({
     [store],
   );
   const autoSortSection = useCallback(
-    (sectionKey: CollectionSectionKey) =>
-      store.getState().autoSortSection(sectionKey),
+    (sectionKey: CollectionSectionKey) => {
+      // The sort button sits in the open section's header, so land whatever is
+      // still in the debounce first: the sort reads the stored items, and its
+      // revision bump re-seeds the form on top of the pending edit.
+      flushOpenForms();
+      store.getState().autoSortSection(sectionKey);
+    },
     [store],
   );
   const savePdfPresentation = useCallback(

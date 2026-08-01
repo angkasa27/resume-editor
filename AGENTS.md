@@ -10,6 +10,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 Read `DESIGN.md` before touching any form, control surface, or spacing/typography in `src/features` or `src/components/ui`. It defines the spacing scale (4/8/16/24), the type ramp, the label recipes, the button table, and the Field API — and two ESLint rules enforce parts of it. Landing page is exempt.
 
+# Save flow
+
+Read `SAVE-FLOW.md` before touching `forms/use-auto-save.ts`, the store's commit path, or anything that renders a registered input. Editing has no save button — persistence is a side effect of typing, so a broken save looks like a working app until reload. The doc lists the six invariants that keep the form, the store, and the preview in agreement, including why `reactCompiler` means a re-seed has to write the DOM itself.
+
 <!-- rtk-instructions v2 -->
 
 # RTK (Rust Token Killer) - Token-Optimized Commands
