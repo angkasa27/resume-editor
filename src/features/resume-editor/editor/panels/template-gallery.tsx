@@ -41,9 +41,7 @@ type TemplateGalleryProps = {
 };
 
 /**
- * Curated template picker: a flat grid of presets, each card a live scaled
- * preview of the user's own resume with the preset's layout + style applied.
- * Applying is one presentation commit (a single undo step) — unless the user
+ * Applying a preset is one presentation commit (a single undo step) — unless the user
  * has hand-tweaked their style, in which case a dialog offers to keep it.
  */
 export function TemplateGallery({

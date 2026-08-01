@@ -182,7 +182,6 @@ export function ResumeEditorMobileContent({
         </AnimatePresence>
       </div>
 
-      {/* Floating pill bottom navigation */}
       <MobileBottomNav value={tab} onChange={changeTab} />
     </div>
   );

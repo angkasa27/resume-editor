@@ -29,10 +29,8 @@ export function RowDragHandle({
       onKeyDown={(event) => {
         // dnd-kit's KeyboardSensor lifts and drops on Space, from this element.
         onKeyDown?.(event);
-        // Space on a focused <button> natively fires a click on keyup, which
-        // lands mid-drag and cancels it. Suppress that default — but never
-        // stopPropagation: dnd-kit tracks the arrows and the drop on document,
-        // so a blocked event silently breaks the drop instead of the click.
+        // preventDefault (not stopPropagation): a native click-on-keyup would cancel the
+        // drag, but dnd-kit still needs the event to reach its document listeners.
         if (event.key === " ") event.preventDefault();
       }}
       className={cn(

@@ -7,11 +7,8 @@ import { formatContactLink } from "./format-contact-link";
 import type { PreviewContactItem, PreviewRenderContext } from "../types";
 
 /**
- * How a layout wears its contacts. `inline` flows them on one wrapping line
- * with separators; `stacked` gives each its own line, which is the only thing
- * that reads in a narrow rail. Icons are opt-in per layout: they fight the
- * typographic layouts (minimal, academic) whose whole identity is unadorned
- * text, and academic renders contacts in small-caps where a glyph looks alien.
+ * `stacked` is the only variant that reads in a narrow rail. Icons are opt-in: they clash with
+ * typographic layouts (minimal, academic) whose identity is unadorned text.
  */
 export type ContactVariant = "inline" | "stacked";
 
@@ -25,11 +22,8 @@ const DEFAULT_CONTACT_PRESENTATION: ContactPresentation = {
   icons: true,
 };
 
-/**
- * Every link gets the same glyph. lucide dropped brand icons, and mapping
- * LinkedIn/GitHub onto arbitrary generic ones would say less than the shortened
- * text already does — `linkedin.com/in/x` names the brand by itself.
- */
+// Every link gets the same glyph: lucide dropped brand icons, and the shortened text
+// (e.g. `linkedin.com/in/x`) already names the brand better than a generic icon would.
 const ICON_BY_KIND = {
   location: MapPin,
   phone: Phone,

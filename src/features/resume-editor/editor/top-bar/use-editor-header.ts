@@ -17,13 +17,9 @@ type EditorHeaderControls = {
 };
 
 /**
- * Publishes an editor page's header controls to the shared store so the
- * persistent top bar (rendered once in `app/editor/layout.tsx`) can drive
- * undo/redo, the save indicator, and the Download PDF button.
- *
- * Keeping the bar in the layout — instead of inside each page — is what lets
- * the Canvas/Classic tab pill animate across navigation: the bar instance
- * survives the route change.
+ * Publishes an editor page's header controls to the shared store so the persistent top bar
+ * (in `app/editor/layout.tsx`) can drive undo/redo, save indicator, and Download PDF. Keeping
+ * the bar in the layout lets the Canvas/Classic tab pill animate across navigation.
  */
 export function useEditorHeader(controls: EditorHeaderControls) {
   const setControls = useEditorHeaderStore((s) => s.setControls);

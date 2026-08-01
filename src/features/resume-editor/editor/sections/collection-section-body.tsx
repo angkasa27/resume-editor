@@ -55,11 +55,8 @@ export function CollectionSectionBody({
     onSave(toSectionValue(values));
   });
 
-  // Reorder stays in react-hook-form (`items.move`), not the store: the form
-  // owns its state while open, so a store-side reorder wouldn't show here, and
-  // forcing it to (via remount) would regenerate every fieldKey — losing
-  // collapse state and churning the dnd-kit ids mid-drop. `items.move` changes
-  // the form, so autosave commits the new order and undo still covers it.
+  // Reorder stays in RHF (items.move), not the store — a store-side reorder would need a
+  // remount, losing collapse state and dnd-kit ids mid-drop. Autosave still commits it.
   const { sensors, onDragEnd } = useDndReorder<string>((activeId, overId) => {
     const from = items.fields.findIndex((f) => f.id === activeId);
     const to = items.fields.findIndex((f) => f.id === overId);
@@ -80,9 +77,7 @@ export function CollectionSectionBody({
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
-          // Collapse the item being dragged: an expanded card is ~600px tall,
-          // which makes it unwieldy to drop and leaves keyboard reordering
-          // unable to step past its neighbour at all.
+          // Collapse the dragged item — expanded cards (~600px) are unwieldy to drop.
           onDragStart={(event) => collapseItem(String(event.active.id))}
           onDragEnd={onDragEnd}
         >

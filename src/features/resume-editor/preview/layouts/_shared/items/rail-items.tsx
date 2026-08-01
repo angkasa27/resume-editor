@@ -1,14 +1,9 @@
 import { commaJoin } from "@/features/resume-editor/preview/helpers/string";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 
-/**
- * Skills/Languages item renderers for the side-rail layouts (sidebar, split).
- * These deliberately differ from the canonical `_shared/items` versions: the
- * skills line has NO `.meta` wrapper and languages drop `.item-row` + guard an
- * empty proficiency, because the rail stacks item headers vertically. Shared
- * between sidebar and split only — do not swap in the canonical versions
- * (different DOM/CSS).
- */
+// Rail-only variants (sidebar, split): skills drop the `.meta` wrapper and languages drop
+// `.item-row` + guard empty proficiency, since the rail stacks item headers vertically.
+// Different DOM/CSS from the canonical `_shared/items` versions — do not swap those in.
 export function RailSkillsItem({ item }: { item: SectionItem<"skills"> }) {
   return (
     <div className="item">

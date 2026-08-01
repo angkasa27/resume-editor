@@ -4,12 +4,8 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
 export type PreviewMode = "preview" | "pdf";
 
-/**
- * Each contact carries its own kind rather than being identified by position.
- * Empty fields are dropped before render, so an index-based guess mislabels
- * every item after the gap — and the icon for a kind has to come from the item
- * itself, not from where it happens to land.
- */
+// Carries its own kind rather than being identified by position: empty fields are dropped before
+// render, so an index-based guess would mislabel every item after the gap.
 export type PreviewContactItem =
   | { kind: "location"; value: string }
   | { kind: "phone"; value: string }

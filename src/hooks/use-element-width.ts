@@ -3,10 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * Tracks an element's content-box width via ResizeObserver. Used for
- * container-driven layout that must respond to the element's own width rather
- * than the viewport (e.g. a resizable pane's toolbar). Returns `0` until the
- * first measurement so callers can treat "unmeasured" as their default state.
+ * For container-driven layout that reacts to the element's own width, not the
+ * viewport (e.g. a resizable pane's toolbar). Returns `0` until first
+ * measurement so callers can treat "unmeasured" as the default state.
  */
 export function useElementWidth<T extends HTMLElement>() {
   const ref = useRef<T>(null);

@@ -17,17 +17,9 @@ type SingleColumnConfig = {
   Header: (props: LayoutHeaderProps) => ReactNode;
   itemViews: LayoutSectionItemMap;
   hideSummaryHeading?: boolean;
-  /**
-   * Content inset strategy. `"page"` (default) applies the shared `page-inset`
-   * padding so content sits inside the page margin; `"none"` lets a layout
-   * with full-bleed surfaces (e.g. banner) manage its own per-side insets.
-   */
+  /** `"page"` (default) applies shared `page-inset` padding; `"none"` lets full-bleed layouts (e.g. banner) manage their own insets. */
   inset?: "page" | "none";
-  /**
-   * Per-section override — the extension point for structural uniqueness.
-   * Defaults to the plain `<div>{node}</div>` wrapper every single-column
-   * layout used before this factory existed.
-   */
+  /** Extension point for structural uniqueness; defaults to the plain `<div>{node}</div>` wrapper. */
   renderSection?: (entry: LayoutSlots["sections"][number]) => ReactNode;
 };
 
@@ -35,16 +27,8 @@ const defaultRenderSection = (
   entry: LayoutSlots["sections"][number],
 ): ReactNode => <div key={entry.key}>{entry.node}</div>;
 
-/**
- * Opt-in factory for the single-column layouts whose Component body is
- * otherwise byte-identical (header, then a `.layout-body` stack of summary +
- * sections). Each layout keeps its OWN `styles` module, so the hashed
- * `.layout` class stays per-layout; emitted markup is unchanged.
- *
- * A layout that needs a genuinely different layout does NOT use this — it
- * writes its own `Component` (as sidebar/split do). Layouts that only need a
- * single section rendered differently pass `renderSection`.
- */
+// Factory for single-column layouts whose Component body is otherwise byte-identical. A layout
+// needing a genuinely different structure writes its own Component instead (as sidebar/split do).
 export function createSingleColumnLayout(
   config: SingleColumnConfig,
 ): PreviewLayoutDefinition {

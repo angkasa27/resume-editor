@@ -25,11 +25,7 @@ export const pdfLayoutIds = [
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
-/**
- * Retired layout ids, mapped to their closest surviving relative. Without this
- * a saved draft would fall through to the `classic` default and silently lose
- * the user's choice; `tinted`'s tinted surface lives on in `sidebar`'s rail.
- */
+/** Retired layout ids mapped to their closest relative, so a saved draft doesn't silently fall back to `classic`. */
 const retiredLayoutIds: Record<string, PdfLayoutId> = {
   tinted: "sidebar",
 };
@@ -59,10 +55,7 @@ export type PdfPresentation = {
   /** Optional second theme color; falls back to `accent` when unset. */
   secondary?: string;
   paperSize: PdfPaperSize;
-  /**
-   * Optional profile-photo shape override. When unset, each layout keeps its
-   * own native photo aspect/radius; when set, it overrides every layout.
-   */
+  /** Optional photo-shape override; unset keeps each layout's native aspect/radius. */
   photoShape?: PdfPhotoShapeId;
 };
 
@@ -136,12 +129,7 @@ const indentPx: Record<PdfSpacingId, number> = {
   airy: 18,
 };
 
-/**
- * Page margin is a property of the layout, not a user knob. A rail layout needs
- * a tight margin or its rail turns into a fat colored band; a typographic
- * layout needs a wide one because the whitespace IS the design. Exposing one
- * slider across both could only ever be wrong for one of them.
- */
+/** Page margin is per-layout, not a user knob: a rail layout needs it tight, a typographic one needs it wide. */
 const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   split: 9, // 0.36fr solid full-height rail — tightest; the rail needs the width
   sidebar: 10, // 0.42fr rail bleeding left+bottom
@@ -307,11 +295,7 @@ export function resolvePdfPresentation(
     "--resume-page-margin": `${margin}mm`,
   };
 
-  // Photo-shape override. Only emit when the user has picked a shape so each
-  // layout keeps its native look by default (via CSS var fallbacks). Both
-  // aspect and radius are forced for the chosen shape: `circle` is fully round,
-  // while `square`/`rectangle` use a small radius so they read as sharp-cornered
-  // even on layouts whose native photo is a circle.
+  // Only emit when set, so unset falls back to each layout's native CSS-var look.
   if (p.photoShape) {
     vars["--resume-photo-aspect"] =
       p.photoShape === "rectangle" ? "3 / 4" : "1 / 1";

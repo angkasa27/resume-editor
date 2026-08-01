@@ -17,16 +17,8 @@ export type LayoutSectionItemMap = {
 };
 
 /**
- * One section handed to a layout's Component. Distributed over
- * `CollectionSectionKey` so `entry.key === "skills"` narrows `entry.section`
- * to `PreviewRenderableSection<"skills">` — a layout that restructures a
- * section's content reads `entry.section.items` type-safely, with no cast.
- * `node` is the section pre-rendered by the shared `LayoutSection` (the
- * default placement); `section` is the structured data behind it.
- *
- * `section` is optional because the canvas edit surface renders a slot for
- * every section, including empty ones that have no renderable data — a
- * restructuring layout must guard `entry.section` before reading it.
+ * Distributed over CollectionSectionKey so `entry.key === "skills"` narrows `entry.section` type-safely, no cast needed.
+ * `section` is optional: canvas renders a slot for every section including empty ones, so guard before reading it.
  */
 export type LayoutSectionEntry = {
   [K in CollectionSectionKey]: {
@@ -56,17 +48,10 @@ export type PreviewLayoutDefinition = {
   label: string;
   description: string;
   /**
-   * True when the layout renders its own Summary heading, so the shared
-   * SummaryView must suppress its <h2>. Single source of truth for
-   * `shouldHideSummaryHeading` — no separate hardcoded id list.
-   *
-   * The rule: hide the heading only where the summary sits flush under the
-   * header and reads as a lede paragraph (classic, banner, timeline). Show it
-   * everywhere the headings themselves carry the structure — a uniformly
-   * labelled layout (minimal), an academic CV where labelled sections are the
-   * convention, or one whose gutter/rail labels would leave a bare paragraph
-   * orphaned. A shown heading is also the safer default for ATS parsers, which
-   * key on section headings.
+   * True when the layout renders its own Summary heading, so the shared SummaryView suppresses its <h2>.
+   * Single source of truth for `shouldHideSummaryHeading` — no separate hardcoded id list.
+   * Hide only where the summary reads as a lede paragraph under the header (classic, banner, timeline);
+   * keep it shown elsewhere, since a visible heading is also the safer default for ATS parsers.
    */
   hideSummaryHeading?: boolean;
   Component: (props: LayoutComponentProps) => ReactNode;

@@ -3,14 +3,8 @@ import type { ReactNode } from "react";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 
-/**
- * Reusable primitives for authoring a layout's Component or a custom
- * `renderSection`. They emit the SAME class / `data-*` / `data-testid` contract
- * as the shared `LayoutSection` scaffold, so a layout that composes its own
- * layout out of these stays consistent with the CSS every layout's stylesheet
- * targets. Nothing existing imports these yet — they exist to make genuinely
- * distinct layouts cheap to build.
- */
+// Primitives for a custom layout Component/renderSection. Must emit the same class/data-*/data-testid
+// contract as the shared LayoutSection scaffold, so layouts built from these stay CSS-consistent.
 
 /** `<section>` wrapper with the standard heading; caller supplies the body. */
 export function SectionShell({

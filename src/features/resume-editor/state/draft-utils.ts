@@ -50,13 +50,8 @@ export function reorderSections(
 
 /**
  * Move `targetKey` to the ordered slot currently occupied by `anchorKey`.
- *
- * `order` is a single global index space spanning summary plus every collection
- * section, visible or hidden. Callers express intent by *which sibling to land
- * next to* — never a raw index — so the result is correct no matter which
- * sections are hidden, and there is no second index space to keep in sync. Both
- * the drag-and-drop sidebar (anchor = the section dropped onto) and the canvas
- * up/down buttons (anchor = the adjacent visible sibling) reduce to this.
+ * Callers express intent by which sibling to land next to, never a raw index, so this stays
+ * correct regardless of which sections are hidden — both drag-and-drop and up/down buttons reduce to it.
  */
 export function moveSectionToAnchor(
   sections: ResumeDraft["sections"],

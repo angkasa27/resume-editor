@@ -516,11 +516,7 @@ function scoreCompleteness(draft: ResumeDraft): ScorerResult {
   return { score: clamp(score), suggestions };
 }
 
-/**
- * Rough page estimate to flag "way too short" or "way too long" resumes.
- * Item-count based, weighted by section type and font scale, normalised against
- * the printable page area. Returns 100 in the sweet spot.
- */
+/** Rough page estimate (item-count weighted by font/spacing, normalised to page area) to flag too-short/too-long resumes. */
 function scoreLength(draft: ResumeDraft): ScorerResult {
   const suggestions: Suggestion[] = [];
   const push = (s: Suggestion) => suggestions.push(s);

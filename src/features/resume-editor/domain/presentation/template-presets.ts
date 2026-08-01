@@ -7,11 +7,7 @@ import type {
   PdfSpacingId,
 } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
-/**
- * The style half of a template: everything a preset curates on top of its
- * layout. `secondary` is deliberately explicit — a preset either sets it or
- * clears it back to the accent-derived fallback.
- */
+/** The style half of a template. `secondary` is explicit — a preset either sets it or clears it back to the accent fallback. */
 export type ResumeTemplateStyle = {
   accent: string;
   secondary?: string;
@@ -21,11 +17,7 @@ export type ResumeTemplateStyle = {
   lineHeight: PdfLineHeightId;
 };
 
-/**
- * A template is a layout plus a curated style tuned for it. Applying one is a
- * single presentation commit (one undo step); it never touches paperSize, and
- * it resets photoShape so the layout's native photo look applies.
- */
+/** A layout plus a curated style. Applying one is a single undo step; paperSize is untouched, photoShape resets. */
 export type ResumeTemplatePreset = {
   id: string;
   label: string;
@@ -34,24 +26,12 @@ export type ResumeTemplatePreset = {
 };
 
 export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
-  // Curation rules, derived from what each layout's CSS actually reads:
-  //
-  // 1. `secondary` is set ONLY for the three layouts that render it —
-  //    modern-centered (the rule under the name), sidebar (the rail tint) and
-  //    split (the rail fill). Everywhere else it is invisible, so setting it
-  //    would be dead data that getActiveTemplatePresetId still has to match on.
-  // 2. `accent` is spent differently per layout. On banner/sidebar it is a
-  //    full bleed band and needs enough depth for white text; on bold-type it is
-  //    the heading highlighter and the dates, so it must be vivid rather than
-  //    near-black; elsewhere it is heading text.
-  // 3. Density follows the layout's structure, not taste: rails and label
-  //    gutters spend width, so they run tighter; whitespace-led layouts run airy.
-  // 4. Fonts are chosen for the layout's character, and every preset names one —
-  //    no layout hardcodes a font behind the user's back.
+  // Curation rules: `secondary` only set for the 3 layouts that render it (modern-centered,
+  // sidebar, split) — elsewhere it'd be dead data getActiveTemplatePresetId still has to match.
+  // `accent` usage varies per layout (band fill vs. highlighter vs. heading text). Density
+  // follows layout structure (rails run tight, whitespace-led run airy), not taste.
 
-  // classic — traditional single column, rule under each heading. The ATS-safest
-  // layout, so one preset is a deliberately plain, maximum-compatibility pick.
-  // Matches the stock default, so a fresh draft opens on a named template.
+  // classic — traditional single column. Plain, ATS-safest pick; matches the stock default.
   {
     id: "classic-modern",
     label: "Modern",
@@ -390,11 +370,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
   },
 ];
 
-/**
- * Applies a template in one shot: layout + curated style. Preserves the
- * user's paperSize and clears photoShape so the layout's native photo look
- * applies. Page margin follows the layout, so a preset never sets it.
- */
+/** Applies layout + curated style in one shot; preserves paperSize, clears photoShape. */
 export function applyTemplatePreset(
   preset: ResumeTemplatePreset,
   current: PdfPresentation,
@@ -420,11 +396,7 @@ export function applyTemplatePresetLayoutOnly(
   return { ...current, layoutId: preset.layoutId };
 }
 
-/**
- * Derives the active template from the current presentation instead of
- * persisting a selection: the moment the user hand-tweaks any curated field,
- * the highlight naturally drops off.
- */
+/** Derives the active template from the current presentation (not a stored selection), so a hand-tweak drops the highlight naturally. */
 export function getActiveTemplatePresetId(
   presentation: PdfPresentation,
 ): string | null {

@@ -8,11 +8,8 @@ import {
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
 
-/**
- * Renders a date range so each full "Month Year" stays intact and the line
- * only breaks at the " - " separator (the date column is narrow), e.g.
- * `Jan 2024 -` / `Oct 2024` instead of `Jan 2024 - Oct` / `2024`.
- */
+// Splits on " - " so the line only breaks at the separator: `Jan 2024 -` / `Oct 2024`,
+// never `Jan 2024 - Oct` / `2024`, since the date column is narrow.
 function TimelineDate({ date }: { date: string }) {
   const separator = " - ";
   const splitAt = date.indexOf(separator);

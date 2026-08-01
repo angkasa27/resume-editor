@@ -7,17 +7,11 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
 /**
- * Form spacing lives here, not at call sites.
- *
- * The scale is 4 / 8 / 12 / 16 (the compact editor standard — see DESIGN.md):
- *   4px  — inside a field: control → error/description (`Field`, `FieldContent`)
- *   8px  — attached meta: a legend and the fields it heads (`FieldSet`)
- *   12px — between fields (`FieldGroup`)
- *   16px — between groups (owned by the surface, e.g. `flex flex-col gap-4`)
- *
- * 12px between fields is the floor. The old 16px floor guarded a floated label
- * (16.5px tall, hanging over the control's top border); that label is gone, so
- * the control box no longer overhangs and 12px clears at the row heights in use.
+ * Form spacing lives here, not at call sites. Scale is 4/8/12/16 (DESIGN.md):
+ * 4px inside a field (control→error), 8px legend→fields (FieldSet), 12px
+ * between fields (FieldGroup), 16px between groups (surface's own gap).
+ * 12px is the floor — safe now that the old floated label, which needed a
+ * 16px floor to clear its 16.5px overhang, is gone.
  */
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -33,13 +27,9 @@ function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
 }
 
 /**
- * Heads a group of related controls.
- *
- * Defaults to `legend` (16px semibold) — one step above a `FieldLabel` (14px
- * medium) in both size and weight. Weight alone was tried and isn't enough: at
- * the same size, a 600 heading sitting 8px above a 500 label reads as two
- * labels, not a hierarchy. `label` (14px semibold) exists for a nested subgroup;
- * nothing needs it yet.
+ * Defaults to `legend` (16px semibold), one step above FieldLabel (14px medium)
+ * in size AND weight — weight alone (tried) reads as two labels, not hierarchy.
+ * `label` variant (14px semibold) is for a nested subgroup; unused so far.
  */
 function FieldLegend({
   className,

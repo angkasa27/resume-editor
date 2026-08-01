@@ -8,18 +8,12 @@ import { pdfLayoutIds } from "@/features/resume-editor/domain/presentation/pdf-p
 const layoutCss = (layoutId: string) =>
   readFileSync(join(__dirname, "layouts", layoutId, "styles.module.css"), "utf8");
 
-/**
- * These read the layout stylesheets as text. That is blunt, but the thing worth
- * protecting is a cross-cutting contract — "the colour a user picks must land
- * somewhere on every layout" — and there is no cheaper place to assert it.
- */
+// Reads stylesheets as text — blunt, but the cheapest place to assert the cross-cutting contract
+// that the user's accent colour must land somewhere on every layout.
 describe("layout theming contract", () => {
   it("spends the accent somewhere on every layout", () => {
-    // The accent picker must never be a no-op. A layout either paints with
-    // --resume-accent itself, or leaves the shared heading rule alone so the
-    // heading takes it. Overriding BOTH the name and the heading to text and
-    // never touching accent (as academic once did) renders the control dead and
-    // makes every accent in that layout's presets invisible data.
+    // A layout must paint with --resume-accent itself, or leave the shared heading rule alone so
+    // the heading takes it. Overriding both (as academic once did) makes accent a dead control.
     for (const layoutId of pdfLayoutIds) {
       const css = layoutCss(layoutId);
       const paintsAccent = css.includes("--resume-accent");

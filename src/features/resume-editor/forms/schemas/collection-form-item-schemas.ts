@@ -6,11 +6,8 @@ import {
 import { urlField } from "@/features/resume-editor/domain/schema/shared";
 
 /**
- * Form-only item schemas: the persisted schemas (domain/schema) store URLs as
- * plain strings so nothing is ever blocked, but the editor still guides the
- * user with a "must be a valid URL" error. These re-apply the strict URL check
- * on the free-typed link fields, for the resolver's `errors` only — persistence
- * does not consult them.
+ * Persisted schemas (domain/schema) store URLs as plain strings so nothing is ever blocked; these
+ * re-apply strict URL checks for the resolver's `errors` only — persistence never consults them.
  */
 export const projectFormItemSchema = projectItemSchema.extend({
   projectLink: urlField("Project link"),

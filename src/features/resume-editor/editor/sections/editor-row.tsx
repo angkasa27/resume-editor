@@ -26,14 +26,8 @@ type EditorRowProps = {
 };
 
 /**
- * One row, both levels of the editor: sections in the list and items inside a
- * section. Navigate-vs-expand is entirely a matter of what the caller passes to
- * `onActivate` / `leading` / `indicator` — padding, radius, hover, active state,
- * focus ring and grip geometry are shared by construction, so the two levels
- * cannot drift apart visually.
- *
- * A `div role="button"` rather than a `<button>` because rows nest interactive
- * controls (grip, menu); those stop propagation.
+ * One row, both levels of the editor: sections in the list and items inside a section.
+ * `div role="button"` rather than `<button>` because rows nest interactive controls (grip, menu).
  */
 export function EditorRow({
   handle,
@@ -47,11 +41,8 @@ export function EditorRow({
   className,
 }: EditorRowProps) {
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    // Only keys aimed at the row itself. The nested grip and "⋯" trigger have
-    // their own Space/Enter meaning — dnd-kit lifts and drops on Space — and
-    // those events bubble through here on their way to dnd-kit's document
-    // listeners. Blocking them at the grip would break the drop; ignoring them
-    // here is what keeps a lift from also toggling the row.
+    // Ignore keys bubbling from the nested grip/menu — dnd-kit lifts on Space there,
+    // and handling it here too would also toggle the row.
     if (event.target !== event.currentTarget) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();

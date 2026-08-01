@@ -28,12 +28,7 @@ type ResumeEditorStoreState = {
   activeSection: ResumeEditorPanelKey;
   undoStack: ResumeDraft[];
   redoStack: ResumeDraft[];
-  /**
-   * Bumps only on an external draft replacement (import via `replaceDraft`,
-   * `undo`, `redo`) — never on a section's own `saveSection`/`saveProfile`. An
-   * open form watches this to tell a genuine replace (must hard-reset) from the
-   * echo of its own autosave (must not clobber in-flight keystrokes).
-   */
+  /** Bumps only on external draft replacement (replaceDraft/undo/redo), never on saveSection/saveProfile — lets an open form tell a genuine replace from its own autosave echo. */
   revision: number;
   saveProfile: (profile: Profile) => void;
   savePdfPresentation: (pdfPresentation: PdfPresentation) => void;

@@ -20,13 +20,9 @@ const KEY_STEP = 16;
 const KEY_STEP_LARGE = 64;
 
 /**
- * Drag handle on the sidebar's right edge.
- *
- * React stays out of the drag loop: pointermove writes `style.width` straight
- * to the aside and only pointerup commits state. Re-rendering per move would
- * re-render every mounted form and TipTap instance in the sidebar. The field
- * grid still reflows live because it's driven by container queries, not by a
- * width prop.
+ * pointermove writes `style.width` straight to the aside; only pointerup commits state —
+ * re-rendering per move would re-render every mounted form and TipTap instance in the sidebar.
+ * Field grid still reflows live because it's driven by container queries, not a width prop.
  */
 export function SidebarResizeHandle({
   targetRef,

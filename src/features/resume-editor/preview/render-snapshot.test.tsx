@@ -6,13 +6,9 @@ import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
 
-// Characterization / byte-identity guard. The layout-factory refactor
-// (Phases B–C) must not change a single layout's emitted markup — this test
-// substitutes for the declined screenshot byte-diff. If a layout legitimately
-// changes, update the snapshot deliberately and review the diff.
-//
-// A fixed draft with EVERY section visible (default hides publications/awards)
-// so every itemView is exercised for every layout.
+// Characterization / byte-identity guard substituting for a screenshot byte-diff. If a layout
+// legitimately changes, update the snapshot deliberately and review the diff.
+// Every section is forced visible (default hides publications/awards) so every itemView is exercised.
 function buildFixtureDraft(layoutId: ResumeDraft["pdfPresentation"]["layoutId"]): ResumeDraft {
   const draft = createDefaultResumeDraft();
   draft.updatedAt = "2026-01-01T00:00:00.000Z"; // deterministic, not rendered
@@ -22,12 +18,8 @@ function buildFixtureDraft(layoutId: ResumeDraft["pdfPresentation"]["layoutId"])
   return draft;
 }
 
-/**
- * Icon path data is noise for this guard: it cares that the right icon lands in
- * the right slot, which the retained `class="lucide lucide-*"` already says.
- * Collapsing the body keeps the snapshot legible and stops a lucide version
- * bump from rewriting ten snapshots for no behavioural change.
- */
+// Icon path data is noise: the retained `class="lucide lucide-*"` already proves the right icon
+// landed. Collapsing it stops a lucide version bump from rewriting every snapshot.
 function collapseIconPaths(html: string): string {
   return html.replace(/(<svg\b[^>]*>).*?<\/svg>/g, "$1</svg>");
 }

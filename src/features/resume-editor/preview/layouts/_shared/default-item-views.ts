@@ -12,12 +12,8 @@ import {
   WorkExperienceItem,
 } from "@/features/resume-editor/preview/layouts/_shared/items";
 
-/**
- * The canonical item-view map used by every layout that renders items the
- * default way (classic/minimal/banner/bold-type/modern-centered). Layouts
- * with bespoke item DOM (academic/timeline/inset/tinted/sidebar/split) build
- * their own map instead.
- */
+// Used by layouts that render items the default way; layouts with bespoke item DOM
+// (academic/timeline/inset/tinted/sidebar/split) build their own map instead.
 export const defaultItemViews: LayoutSectionItemMap = {
   workExperience: WorkExperienceItem,
   skills: SkillsItem,

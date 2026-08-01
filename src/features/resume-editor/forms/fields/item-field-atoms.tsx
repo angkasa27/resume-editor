@@ -33,19 +33,12 @@ import { FIELD_CONTROL_CLASS } from "@/features/resume-editor/forms/fields/field
 import { MonthYearPicker } from "@/features/resume-editor/forms/fields/month-year-picker";
 import { parseMonthYear } from "@/features/resume-editor/domain/month-year";
 
-/**
- * Reusable field atoms for a collection item form — one per control type,
- * lifted verbatim from the old kind-dispatched renderer. Each takes the item
- * form plus its RHF field name(s); `className` is the only layout knob (merged
- * onto the atom's root `Field`), so a section composing these decides span
- * per field instead of deriving it from a "kind".
- */
+// `className` is the only layout knob (merged onto the atom's root `Field`), so a section composing
+// these atoms decides span per field instead of deriving it from a "kind".
 
-// `UseFormReturn`'s own generic is invariant enough that a bare reference
-// rejects every concrete `CollectionSectionFormValues` shape a section form
-// actually has (RHF's `watch`/`setValue` are typed contravariantly). `any`
-// here is the deliberate type-erasure seam so one set of atoms — and one
-// dispatch map — can serve all ten differently-shaped item forms.
+// `UseFormReturn`'s generic is invariant enough that a bare reference rejects every concrete
+// `CollectionSectionFormValues` shape a section form has. `any` is the deliberate type-erasure seam
+// so one set of atoms serves all ten differently-shaped item forms.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ItemForm = UseFormReturn<any>;
 

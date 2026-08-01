@@ -41,12 +41,7 @@ function canAutoSort(key: ResumeEditorPanelKey) {
   );
 }
 
-/**
- * A header action that sheds its label when the header gets tight — same idea as
- * the top bar's GitHub button, but driven by the *container* rather than the
- * viewport: the sidebar is resizable, so the viewport says nothing about how
- * much room this header actually has.
- */
+/** Sheds its label when tight — driven by container width, not viewport, since the sidebar is resizable. */
 function HeaderAction({
   label,
   icon,
@@ -92,10 +87,8 @@ type SectionFormHeaderProps = {
 };
 
 /**
- * Contextual header for a drill-in section form: back arrow, section title, and
- * the section-level actions. Which actions apply is derived here so the desktop
- * sidebar and the mobile Edit tab can't disagree — Profile/Summary are pinned
- * (no remove), and only dated sections can sort.
+ * Contextual header for a drill-in section form. Which actions apply is derived here so desktop and
+ * mobile can't disagree — Profile/Summary are pinned (no remove), only dated sections can sort.
  */
 export function SectionFormHeader({
   sectionKey,

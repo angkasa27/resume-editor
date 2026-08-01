@@ -112,14 +112,9 @@ export function useCollectionItemsForm(
   function toSectionValue(values: CollectionItemsFormValues) {
     return {
       ...sectionValue,
-      // Keep only real items. Removing a row leaves a ghost behind: the row
-      // stays mounted through its exit animation, and its Controller-driven
-      // fields write themselves back into the index `remove()` just spliced
-      // out — leaving a partial like `{ startDate, endDate }`. Normalizing that
-      // against the template would fill it out into a blank item, resurrecting
-      // the row the user just deleted. Every genuine item carries an `id`
-      // (`createItem` always sets one); a ghost rebuilt from rendered fields
-      // never does, since `id` is not a field.
+      // Keep only real items: a removed row stays mounted through its exit animation and its
+      // Controller fields write a partial back into the spliced-out index — normalizing that
+      // would resurrect it. Genuine items always carry an `id`; a ghost never does.
       items: values.items
         .filter(isRealItem)
         .map((item) => normalizeCollectionItem(item, config.createItem())),
