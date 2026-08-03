@@ -29,13 +29,14 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 ## Features
 
 **Resume Building**
-- **Two ways to edit**: Drag and drop on the Canvas or fill in structured forms in the Classic editor. Same resume, your choice.
-- **Instant live preview**: Every change renders immediately in a pixel-accurate preview, so what you see is exactly what you export.
+- **Sidebar editor + live canvas preview**: Form fields on the left, an instant zoomable preview of the actual paper on the right, always in sync — no save button, autosave is a side effect of typing.
+- **Drag-to-reorder sections and entries**: Reorder sections and repeatable entries (jobs, projects, education) directly in the sidebar.
+- **Undo/redo**: Full history for every edit, not just the last one.
 - **Rich text editor**: Edit with formatting support powered by TipTap.
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **11 professional templates**: Switch between eleven polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Minimal, Inset, Banner, Split, Tinted, Bold Type) without retyping a thing.
+- **10 professional templates**: Switch between ten polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Minimal, Inset, Banner, Split, Bold Type) without retyping a thing.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 
@@ -53,49 +54,49 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 <table>
   <tr>
     <td align="center">
-      <img src="public/templates/classic.webp" alt="Classic" width="180" />
+      <img src="public/templates/classic-modern.webp" alt="Classic" width="180" />
       <br /><sub><b>Classic</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/sidebar.webp" alt="Sidebar" width="180" />
+      <img src="public/templates/sidebar-slate.webp" alt="Sidebar" width="180" />
       <br /><sub><b>Sidebar</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/modern-centered.webp" alt="Modern Centered" width="180" />
+      <img src="public/templates/centered-ocean.webp" alt="Modern Centered" width="180" />
       <br /><sub><b>Modern Centered</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="public/templates/timeline.webp" alt="Timeline" width="180" />
+      <img src="public/templates/timeline-indigo.webp" alt="Timeline" width="180" />
       <br /><sub><b>Timeline</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/academic.webp" alt="Academic" width="180" />
+      <img src="public/templates/academic-oxford.webp" alt="Academic" width="180" />
       <br /><sub><b>Academic</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/minimal.webp" alt="Minimal" width="180" />
+      <img src="public/templates/minimal-air.webp" alt="Minimal" width="180" />
       <br /><sub><b>Minimal</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="public/templates/inset.webp" alt="Inset" width="180" />
+      <img src="public/templates/inset-steel.webp" alt="Inset" width="180" />
       <br /><sub><b>Inset</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/banner.webp" alt="Banner" width="180" />
+      <img src="public/templates/banner-royal.webp" alt="Banner" width="180" />
       <br /><sub><b>Banner</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/split.webp" alt="Split" width="180" />
+      <img src="public/templates/split-midnight.webp" alt="Split" width="180" />
       <br /><sub><b>Split</b></sub>
     </td>
   </tr>
   <tr>
     <td align="center">
-      <img src="public/templates/bold-type.webp" alt="Bold Type" width="180" />
+      <img src="public/templates/bold-citrus.webp" alt="Bold Type" width="180" />
       <br /><sub><b>Bold Type</b></sub>
     </td>
     <td align="center">
@@ -103,6 +104,8 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
     </td>
   </tr>
 </table>
+
+Each layout ships with 2-3 color/font presets, so the ten layouts above expand into <a href="src/features/resume-editor/domain/presentation/template-presets.ts">25 selectable presets</a>.
 
 ## Quick Start
 
@@ -151,6 +154,7 @@ pnpm lint         # Run ESLint
 pnpm test         # Run Vitest (single pass)
 pnpm test:watch   # Run Vitest in watch mode
 pnpm typecheck    # Type-check with tsc
+pnpm screenshots  # Regenerate template preview images in public/templates
 ```
 
 ## Environment Variables
@@ -199,39 +203,45 @@ PDF_EXPORT_TRUSTED_ORIGINS=https://example.com
 
 ```text
 src/
-  app/                         # Next.js route entrypoints and API handlers
+  app/
+    (landing routes)           # Marketing homepage ("/")
+    editor/                    # The actual editor ("/editor")
+    resume-pdf/                # Headless page Puppeteer captures to produce the PDF
+    api/                       # export-pdf, import-pdf, improve-content, insights/match-keywords
   components/ui/               # Shared UI primitives (Button, Dialog, Select…)
+  components/landing/          # Landing page sections
   hooks/                       # App-level React hooks
-  lib/                         # Utilities (cn, etc.)
+  lib/                         # Utilities (cn, editor host, etc.)
   test/                        # Vitest setup
   features/resume-editor/
-    canvas/                    # Control panel (Style tab, Insights tab, canvas forms)
-      controls/                # Color picker, font picker, extract-CV dialog, ATS insights
-      forms/                   # Canvas-mode section editors (dialog-based)
     domain/
+      draft/                   # Draft storage interface, local-storage impl, default draft
       insights/                # ATS scoring, keyword matching, text extraction
-      presentation/            # Resolvers, fonts, margins
-      rich-text/               # Sanitizers
-      schema/                  # Zod schemas for resume draft
+      presentation/            # Layout ids, color/font presets, margins
+      rich-text/                # Sanitizers
+      schema/                  # Zod schemas for the resume draft (versioned)
       sections/                # Section config & metadata
-    editor/                    # Sidebar form editor
-      rich-text/               # TipTap + AI Dialog
-      sections/                # Section form fields
-    forms/                     # Shared form helpers
-    preview/                   # Live PDF preview and CSS templates
-      templates/               # classic | sidebar | modern-centered | compact | academic
+    editor/
+      desktop/                 # Split-panel layout: sidebar + zoomable canvas preview
+      mobile/                  # Full-screen guided-forms layout
+      panels/                  # Style tab, Insights tab, extract-CV dialog
+      sections/                # Section list, drag-to-reorder, per-section forms
+      shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
+    forms/                     # react-hook-form field bindings, rich-text, schemas
+    preview/
+      layouts/                 # classic | sidebar | modern-centered | timeline | academic | minimal | inset | banner | split | bold-type
+      components/, descriptors/, kit/, helpers/
     server/                    # Server-side PDF export & Gemini helpers
     state/                     # Zustand store
 ```
 
 ## How It Works
 
-- **Editor** (`/`) — Split-panel layout: form editor left, live canvas preview center, Style/Insights panel right.
-- **PDF render target** (`/resume-pdf`) — A plain page that Puppeteer opens to capture the PDF. Receives draft + presentation settings via base64-encoded query params.
-- **PDF export** — `POST /api/export-pdf` → Puppeteer/Cloudflare Browser Run → streamed PDF response.
-- **AI PDF import** — `POST /api/import-pdf` → extracts text → Gemini → structured draft JSON.
-- **AI writing** — `POST /api/improve-content` → current field HTML + instructions → Gemini → sanitized HTML.
-- **ATS job match** — `POST /api/insights/match-keywords` → job description → Gemini keyword list → client matches against current draft.
+The homepage at / is just marketing; the editor itself lives at /editor. On desktop it's a split layout: sidebar form editor on the left, a live zoomable preview of the actual paper on the right, plus a Style/Insights panel. On mobile it's full-screen guided forms. There's no save button, since every keystroke autosaves.
+
+Downloading a PDF opens /resume-pdf, a plain page that Puppeteer (or Cloudflare Browser Run in production) loads and captures — the draft and presentation settings are passed in as base64-encoded query params, and the export API streams the resulting PDF back.
+
+The AI features are thin wrappers around Gemini: importing a PDF extracts its text and asks Gemini to map it into a structured draft, "Improve with AI" sends the current field's HTML plus instructions and gets sanitized HTML back, and the ATS job match endpoint asks Gemini for keywords from a job description and matches them against the current draft on the client.
 
 ## Star History
 
