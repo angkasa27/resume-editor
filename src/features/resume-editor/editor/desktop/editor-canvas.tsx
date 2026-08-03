@@ -10,6 +10,9 @@ const dotGridStyle: CSSProperties = {
   backgroundImage:
     "radial-gradient(circle, color-mix(in oklab, var(--foreground) 14%, transparent) 1px, transparent 1px)",
   backgroundSize: "20px 20px",
+  // Viewport-anchored, else the origin rides the canvas's left edge and the
+  // dots slide as the sidebar opens.
+  backgroundAttachment: "fixed",
 };
 
 type EditorCanvasProps = {

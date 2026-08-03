@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import { motion, useReducedMotion } from "motion/react";
 
 import type { EditorControlProps } from "@/features/resume-editor/editor/panels/control-props";
 import { SidebarResizeHandle } from "@/features/resume-editor/editor/desktop/sidebar-resize-handle";
@@ -8,8 +9,11 @@ import { useSidebarWidth } from "@/features/resume-editor/editor/desktop/use-sid
 import { DesignPanel } from "@/features/resume-editor/editor/panels/design-panel";
 import { InsightsTab } from "@/features/resume-editor/editor/panels/insights/insights-tab";
 import type { RailKey } from "@/features/resume-editor/editor/desktop/editor-rail";
+import {
+  reducedTransition,
+  slideTransition,
+} from "@/features/resume-editor/editor/sections/drill-in-motion";
 import { SectionEditPanel } from "@/features/resume-editor/editor/sections/section-edit-panel";
-import { SectionFormHeader } from "@/features/resume-editor/editor/sections/section-form-header";
 import type {
   CollectionSectionKey,
   EditorPanelKey,
@@ -46,8 +50,9 @@ type EditorSidebarProps = {
 };
 
 /**
- * The second sidebar: whichever panel the rail selects. Fixed width — the paper
- * keeps the rest.
+ * The second sidebar: whichever panel the rail selects. The paper keeps the rest.
+ * Enter/exit animates width so the canvas reflows in step; the inner layer keeps a
+ * fixed width and slides, since width alone would squash content and read as a wipe.
  */
 export function EditorSidebar({
   rail,
@@ -65,24 +70,29 @@ export function EditorSidebar({
 }: EditorSidebarProps) {
   const asideRef = useRef<HTMLElement | null>(null);
   const { width, commitWidth, resetWidth } = useSidebarWidth();
+  const reduceMotion = useReducedMotion();
+  const transition = reduceMotion ? reducedTransition : slideTransition;
 
   return (
-    <aside
+    <motion.aside
       ref={asideRef}
-      style={{ width }}
-      className="relative flex shrink-0 flex-col overflow-hidden border-r bg-background print:hidden"
+      initial={{ width: 0 }}
+      animate={{ width }}
+      exit={{ width: 0 }}
+      transition={transition}
+      // Sizes the content layer, since the aside's own width animates.
+      style={{ "--sidebar-content-w": `${width}px` } as React.CSSProperties}
+      className="relative shrink-0 overflow-hidden border-r bg-background print:hidden"
     >
-      {rail === "edit" ? (
-        <>
-          {/* Contextual header — only inside a section form. */}
-          {openSection ? (
-            <SectionFormHeader
-              sectionKey={openSection}
-              onBack={onBack}
-              onAutoSortSection={onAutoSortSection}
-              onSetSectionVisibility={onSetSectionVisibility}
-            />
-          ) : null}
+      <motion.div
+        style={{ width: "var(--sidebar-content-w)" }}
+        initial={{ x: "-100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "-100%" }}
+        transition={transition}
+        className="flex h-full flex-col"
+      >
+        {rail === "edit" ? (
           <div className="min-h-0 flex-1">
             <SectionEditPanel
               draft={draft}
@@ -93,7 +103,9 @@ export function EditorSidebar({
               onSaveSection={onSaveSection}
               onReorderSection={onReorderSection}
               onSetSectionVisibility={onSetSectionVisibility}
+              onAutoSortSection={onAutoSortSection}
               onOpen={onOpenSection}
+              onBack={onBack}
               onExtractCv={controls.onExtractCv}
               onImportJson={controls.onImportJson}
               onExportJson={controls.onExportJson}
@@ -101,22 +113,22 @@ export function EditorSidebar({
               idPrefix="desktop"
             />
           </div>
-        </>
-      ) : null}
+        ) : null}
 
-      {rail === "design" ? (
-        <DesignPanel
-          presentation={controls.presentation}
-          draft={draft}
-          onPresentationChange={controls.onPresentationChange}
-        />
-      ) : null}
+        {rail === "design" ? (
+          <DesignPanel
+            presentation={controls.presentation}
+            draft={draft}
+            onPresentationChange={controls.onPresentationChange}
+          />
+        ) : null}
 
-      {rail === "insights" ? (
-        <div className="min-h-0 flex-1 overflow-y-auto p-3">
-          <InsightsTab draft={draft} onOpenSection={onOpenSection} />
-        </div>
-      ) : null}
+        {rail === "insights" ? (
+          <div className="min-h-0 flex-1 overflow-y-auto p-3">
+            <InsightsTab draft={draft} onOpenSection={onOpenSection} />
+          </div>
+        ) : null}
+      </motion.div>
 
       <SidebarResizeHandle
         targetRef={asideRef}
@@ -124,6 +136,6 @@ export function EditorSidebar({
         onCommit={commitWidth}
         onReset={resetWidth}
       />
-    </aside>
+    </motion.aside>
   );
 }

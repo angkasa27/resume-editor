@@ -62,7 +62,7 @@ export function EditorRail({ value, collapsed, onSelect }: EditorRailProps) {
                   aria-pressed={isActive}
                   onClick={() => onSelect(key)}
                   className={cn(
-                    "flex size-10 cursor-pointer flex-col items-center justify-center rounded-md outline-none transition-colors",
+                    "flex size-10 cursor-pointer flex-col items-center justify-center rounded-md outline-none transition-colors duration-150",
                     FOCUS_RING_CLASS,
                     "text-muted-foreground aria-[pressed=false]:hover:bg-muted aria-[pressed=false]:hover:text-foreground",
                     "aria-pressed:bg-primary/10 aria-pressed:text-primary",

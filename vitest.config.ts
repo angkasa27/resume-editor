@@ -9,6 +9,8 @@ export default defineConfig({
     globals: true,
     setupFiles: ["./src/test/setup.ts"],
     css: true,
+    // Agent worktrees live in-repo; else their stale copies get collected too.
+    exclude: ["**/node_modules/**", "**/dist/**", "**/.claude/**"],
   },
   resolve: {
     alias: {

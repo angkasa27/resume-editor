@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { AnimatePresence } from "motion/react";
 
 import { toast } from "sonner";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
@@ -176,22 +177,25 @@ export function ResumeEditorDesktop({
         onSelect={selectRail}
       />
 
-      {!isSidebarCollapsed ? (
-        <EditorSidebar
-          rail={rail}
-          draft={draft}
-          controls={controls}
-          openSection={openSection}
-          direction={nav.direction}
-          onSaveProfile={saveProfile}
-          onSaveSection={saveSection}
-          onReorderSection={reorderSection}
-          onSetSectionVisibility={setSectionVisibility}
-          onAutoSortSection={autoSortSection}
-          onOpenSection={focusSection}
-          onBack={backToList}
-        />
-      ) : null}
+      {/* Collapsing still unmounts — forms and TipTap tear down, just after the exit. */}
+      <AnimatePresence initial={false}>
+        {!isSidebarCollapsed ? (
+          <EditorSidebar
+            rail={rail}
+            draft={draft}
+            controls={controls}
+            openSection={openSection}
+            direction={nav.direction}
+            onSaveProfile={saveProfile}
+            onSaveSection={saveSection}
+            onReorderSection={reorderSection}
+            onSetSectionVisibility={setSectionVisibility}
+            onAutoSortSection={autoSortSection}
+            onOpenSection={focusSection}
+            onBack={backToList}
+          />
+        ) : null}
+      </AnimatePresence>
 
       <EditorCanvas zoom={zoom} onZoomChange={setZoom}>
         <ResumeDocument

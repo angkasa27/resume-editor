@@ -18,7 +18,6 @@ import {
   slideVariants,
 } from "@/features/resume-editor/editor/sections/drill-in-motion";
 import { SectionEditPanel } from "@/features/resume-editor/editor/sections/section-edit-panel";
-import { SectionFormHeader } from "@/features/resume-editor/editor/sections/section-form-header";
 import { useDirection } from "@/features/resume-editor/editor/sections/use-direction";
 import type {
   CollectionSectionKey,
@@ -110,21 +109,8 @@ export function ResumeEditorMobileContent({
     setOpenSection(panel);
   }
 
-  const editingForm = tab === "edit" && openSection !== null;
-
   return (
     <div className="relative flex h-full flex-col lg:hidden">
-      {/* Contextual top bar — only inside a sub-form. Tab roots rely on the
-          global top bar + bottom nav, so no redundant title here. */}
-      {editingForm && openSection ? (
-        <SectionFormHeader
-          sectionKey={openSection}
-          onBack={backToList}
-          onAutoSortSection={sectionProps.onAutoSortSection}
-          onSetSectionVisibility={onSetSectionVisibility}
-        />
-      ) : null}
-
       {/* Tab content — slides horizontally between tabs (direction by order). */}
       <div className="relative min-h-0 flex-1 overflow-hidden">
         <AnimatePresence initial={false} custom={tabs.direction}>
@@ -148,7 +134,9 @@ export function ResumeEditorMobileContent({
                 onSaveSection={onSaveSection}
                 onReorderSection={sectionProps.onReorderSection}
                 onSetSectionVisibility={onSetSectionVisibility}
+                onAutoSortSection={sectionProps.onAutoSortSection}
                 onOpen={openForm}
+                onBack={backToList}
                 onExtractCv={controlPanelProps.onExtractCv}
                 onImportJson={controlPanelProps.onImportJson}
                 onExportJson={controlPanelProps.onExportJson}

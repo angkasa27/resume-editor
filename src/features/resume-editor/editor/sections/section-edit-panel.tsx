@@ -9,8 +9,12 @@ import {
   slideVariants,
 } from "@/features/resume-editor/editor/sections/drill-in-motion";
 import { SectionBody } from "@/features/resume-editor/editor/sections/section-body";
+import { SectionFormHeader } from "@/features/resume-editor/editor/sections/section-form-header";
 import { SectionList } from "@/features/resume-editor/editor/sections/section-list";
-import type { ResumeSectionPanelKey } from "@/features/resume-editor/domain/sections/section-metadata";
+import type {
+  CollectionSectionKey,
+  ResumeSectionPanelKey,
+} from "@/features/resume-editor/domain/sections/section-metadata";
 import type {
   ResumeEditorPanelKey,
   ResumeSectionKey,
@@ -39,7 +43,9 @@ type SectionEditPanelProps = {
     sectionKey: ResumeSectionPanelKey,
     visible: boolean,
   ) => void;
+  onAutoSortSection: (sectionKey: CollectionSectionKey) => void;
   onOpen: (key: ResumeEditorPanelKey) => void;
+  onBack: () => void;
   /** Document-level actions shown above the section list. */
   onExtractCv: () => void;
   onImportJson: () => void;
@@ -65,7 +71,9 @@ export function SectionEditPanel({
   onSaveSection,
   onReorderSection,
   onSetSectionVisibility,
+  onAutoSortSection,
   onOpen,
+  onBack,
   onExtractCv,
   onImportJson,
   onExportJson,
@@ -82,10 +90,7 @@ export function SectionEditPanel({
         {openSection ? (
           <motion.div
             key={openSection}
-            className={cn(
-              "absolute inset-0 transform-gpu overflow-y-auto bg-background p-3 @container/form",
-              scrollPaddingClassName,
-            )}
+            className="absolute inset-0 flex transform-gpu flex-col bg-background"
             custom={direction}
             variants={variants}
             initial="enter"
@@ -93,13 +98,28 @@ export function SectionEditPanel({
             exit="exit"
             transition={reduceMotion ? reducedTransition : slideTransition}
           >
-            <SectionBody
-              draft={draft}
-              activeSection={openSection}
-              onSaveProfile={onSaveProfile}
-              onSaveSection={onSaveSection}
-              idPrefix={idPrefix}
+            {/* Inside the filmstrip, not above it — as a sibling, its mount would
+                resize the animated box mid-slide and jolt the content. */}
+            <SectionFormHeader
+              sectionKey={openSection}
+              onBack={onBack}
+              onAutoSortSection={onAutoSortSection}
+              onSetSectionVisibility={onSetSectionVisibility}
             />
+            <div
+              className={cn(
+                "min-h-0 flex-1 overflow-y-auto p-3 @container/form",
+                scrollPaddingClassName,
+              )}
+            >
+              <SectionBody
+                draft={draft}
+                activeSection={openSection}
+                onSaveProfile={onSaveProfile}
+                onSaveSection={onSaveSection}
+                idPrefix={idPrefix}
+              />
+            </div>
           </motion.div>
         ) : (
           <motion.div

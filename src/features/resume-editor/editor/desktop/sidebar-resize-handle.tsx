@@ -50,6 +50,8 @@ export function SidebarResizeHandle({
       drag.startWidth + (event.clientX - drag.startX),
     );
     targetRef.current.style.width = `${next}px`;
+    // The content layer sizes off this var, not the aside's width — see EditorSidebar.
+    targetRef.current.style.setProperty("--sidebar-content-w", `${next}px`);
   }
 
   function endDrag(event: ReactPointerEvent<HTMLDivElement>) {

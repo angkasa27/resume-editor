@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { motion, useReducedMotion } from "motion/react";
 
 import { cn } from "@/lib/utils";
-import { motionTokens, springs } from "@/lib/motion-tokens";
+import { springs } from "@/lib/motion-tokens";
 
 const DEFAULT_PILL = "bg-background shadow-sm dark:bg-input/30";
 
@@ -151,30 +151,15 @@ function TabsContent({
   children,
   ...props
 }: TabsPrimitive.Panel.Props) {
-  const reduceMotion = useReducedMotion();
+  // No enter animation — base-ui unmounts the inactive panel, so it would
+  // re-fire on every tab change. The pill carries the transition.
   return (
     <TabsPrimitive.Panel
       data-slot="tabs-content"
       className={cn("flex-1 text-sm outline-none", className)}
       {...props}
     >
-      {/* Enter animation on each tab change — base-ui unmounts the inactive
-          panel, so the active one mounts fresh and this fades/slides it in.
-          Reduced motion drops the transform to an opacity-only fade. */}
-      <motion.div
-        initial={{ opacity: 0, y: reduceMotion ? 0 : motionTokens.distance.sm }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={
-          reduceMotion
-            ? { duration: motionTokens.duration.fast }
-            : {
-                duration: motionTokens.duration.normal,
-                ease: motionTokens.easing.smooth,
-              }
-        }
-      >
-        {children}
-      </motion.div>
+      {children}
     </TabsPrimitive.Panel>
   );
 }
