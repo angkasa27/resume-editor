@@ -7,6 +7,10 @@ export function renderDateRange(
   endDate?: string,
   fallback = "",
 ) {
+  if (startDate && endDate && startDate === endDate) {
+    return startDate;
+  }
+
   if (startDate || endDate) {
     const start = startDate || "";
     const end = renderCurrentDateLabel(endDate || "");

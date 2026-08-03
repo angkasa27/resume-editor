@@ -1,4 +1,4 @@
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
@@ -30,11 +30,9 @@ describe("CollectionSectionBody autosave", () => {
   });
 
   it("does not resurrect a deleted item from its leftover form slot", async () => {
-    // Removing a row leaves a ghost behind: the card stays mounted through its
-    // exit animation and its Controller-driven date fields write back into the
-    // index `remove()` spliced out. Normalizing that partial against the item
-    // template used to rebuild it as a blank item — the deleted row "came back"
-    // on the next save.
+    // A removed card stays mounted through its exit animation and its date fields
+    // write back into the spliced-out index; normalizing that partial used to
+    // rebuild it as a blank item.
     const user = userEvent.setup();
     const onSave = vi.fn();
     const draft = createDefaultResumeDraft();
@@ -57,5 +55,36 @@ describe("CollectionSectionBody autosave", () => {
     await act(() => new Promise((r) => setTimeout(r, 700)));
 
     expect(onSave.mock.calls.at(-1)?.[0].items).toHaveLength(1);
+  });
+
+  it("collapses every item once a drag starts, not just the dragged one", async () => {
+    // Mixed row heights make the swap preview unreadable. Safe only because the dragged
+    // row moves to a DragOverlay — in the list its layout origin would shift as the
+    // rows above it collapse.
+    const user = userEvent.setup();
+    const onSave = vi.fn();
+    const draft = createDefaultResumeDraft();
+
+    render(
+      <CollectionSectionBody
+        draft={draft}
+        sectionKey="workExperience"
+        onSave={onSave}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /add experience/i }));
+    expect(screen.getAllByLabelText(/company name/i)).toHaveLength(2);
+
+    // KeyboardSensor lifts on Space from the handle.
+    screen.getAllByRole("button", { name: /^drag /i })[1].focus();
+    await user.keyboard(" ");
+
+    // Bodies unmount after the close animation, not synchronously.
+    await waitFor(() =>
+      expect(screen.queryAllByLabelText(/company name/i)).toHaveLength(0),
+    );
+
+    await user.keyboard(" ");
   });
 });

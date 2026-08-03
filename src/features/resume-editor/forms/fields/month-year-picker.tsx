@@ -32,7 +32,7 @@ type MonthYearPickerProps = {
   placeholder?: string;
   disabled?: boolean;
   ariaInvalid?: boolean;
-  minValueExclusive?: string;
+  minValue?: string;
 };
 
 function isMonthSelected(monthDate: Date, selectedDate: Date | undefined) {
@@ -43,10 +43,8 @@ function isMonthSelected(monthDate: Date, selectedDate: Date | undefined) {
   );
 }
 
-function isMonthDisabled(monthDate: Date, minExclusiveDate: Date | undefined) {
-  return (
-    !!minExclusiveDate && monthDate.getTime() <= minExclusiveDate.getTime()
-  );
+export function isMonthDisabled(monthDate: Date, minDate: Date | undefined) {
+  return !!minDate && monthDate.getTime() < minDate.getTime();
 }
 
 const monthLabels = [
@@ -71,13 +69,10 @@ export function MonthYearPicker({
   placeholder = "Select month and year",
   disabled = false,
   ariaInvalid = false,
-  minValueExclusive,
+  minValue,
 }: MonthYearPickerProps) {
   const selectedDate = useMemo(() => parseMonthYear(value), [value]);
-  const minExclusiveDate = useMemo(
-    () => parseMonthYear(minValueExclusive),
-    [minValueExclusive],
-  );
+  const minDate = useMemo(() => parseMonthYear(minValue), [minValue]);
   const [open, setOpen] = useState(false);
   const [displayMonth, setDisplayMonth] = useState<Date>(
     selectedDate ?? startOfMonth(new Date()),
@@ -85,12 +80,12 @@ export function MonthYearPicker({
   const displayYearStart = startOfYear(displayMonth);
   const previousYear = getYear(displayMonth) - 1;
   const isPreviousYearDisabled =
-    !!minExclusiveDate && previousYear < getYear(minExclusiveDate);
+    !!minDate && previousYear < getYear(minDate);
 
   function handleSelectMonth(monthIndex: number) {
     const nextDate = setMonth(displayYearStart, monthIndex);
 
-    if (minExclusiveDate && nextDate.getTime() <= minExclusiveDate.getTime()) {
+    if (minDate && nextDate.getTime() < minDate.getTime()) {
       return;
     }
 
@@ -179,7 +174,7 @@ export function MonthYearPicker({
                     : "outline"
                 }
                 className="justify-center"
-                disabled={isMonthDisabled(monthDate, minExclusiveDate)}
+                disabled={isMonthDisabled(monthDate, minDate)}
                 onClick={() => handleSelectMonth(monthIndex)}
               >
                 {format(monthDate, "MMM")}

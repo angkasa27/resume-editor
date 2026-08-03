@@ -13,7 +13,7 @@ import { motionTokens } from "@/lib/motion-tokens";
  * animating `y` would clobber the drag's positioning and stop the keyboard
  * sensor from resolving a drop target.
  */
-export function useSortableRow(id: string) {
+export function useSortableRow(id: string, hasDragOverlay = false) {
   const { attributes, isDragging, listeners, setNodeRef, transform, transition } =
     useSortable({ id });
   // The row itself carries the drag role via RowDragHandle; a duplicate
@@ -23,7 +23,14 @@ export function useSortableRow(id: string) {
   void _tabIndex;
 
   const motionProps: HTMLMotionProps<"div"> = {
-    style: { transform: CSS.Transform.toString(transform), transition },
+    style: {
+      transform: CSS.Transform.toString(transform),
+      transition,
+      // With an overlay the source must vanish, else the row is on screen twice.
+      // `visibility`, not an opacity keyframe: animating back to 1 on drop is a
+      // fade the overlay is no longer around to cover, and it reads as a flash.
+      visibility: hasDragOverlay && isDragging ? "hidden" : undefined,
+    },
     initial: { opacity: 0 },
     animate: { opacity: isDragging ? 0.8 : 1 },
     exit: { opacity: 0 },

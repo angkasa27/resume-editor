@@ -1,12 +1,19 @@
 "use client";
 
-import { closestCenter, DndContext } from "@dnd-kit/core";
+import { useState } from "react";
+import {
+  closestCenter,
+  DndContext,
+  DragOverlay,
+  getClientRect,
+  MeasuringStrategy,
+} from "@dnd-kit/core";
 import {
   SortableContext,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { AnimatePresence } from "motion/react";
-import { PlusIcon } from "lucide-react";
+import { ChevronRightIcon, PlusIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
@@ -18,6 +25,9 @@ import {
   useCollectionItemsForm,
 } from "@/features/resume-editor/forms/use-collection-items-form";
 import { CollectionItemRow } from "@/features/resume-editor/editor/sections/collection-item-row";
+import { EditorRow } from "@/features/resume-editor/editor/sections/editor-row";
+import { RowDragHandle } from "@/features/resume-editor/editor/sections/row-drag-handle";
+import { RowDeleteButton } from "@/features/resume-editor/editor/sections/row-delete-button";
 import { useDndReorder } from "@/features/resume-editor/editor/sections/use-dnd-reorder";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
@@ -45,7 +55,7 @@ export function CollectionSectionBody({
     items,
     collapsedIds,
     toggleCollapsed,
-    collapseItem,
+    collapseAll,
     pendingDeleteIndex,
     setPendingDeleteIndex,
     toSectionValue,
@@ -64,7 +74,15 @@ export function CollectionSectionBody({
     items.move(from, to);
   });
 
+  const [activeId, setActiveId] = useState<string | null>(null);
+
   const Fields = collectionItemFieldsByKey[sectionKey];
+  const itemSummary = (index: number) =>
+    getCollectionItemSummary(
+      currentItems?.[index] as Record<string, unknown>,
+      config.itemTitle,
+      index,
+    );
 
   return (
     <div className="flex flex-col gap-2">
@@ -77,9 +95,29 @@ export function CollectionSectionBody({
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
-          // Collapse the dragged item — expanded cards (~600px) are unwieldy to drop.
-          onDragStart={(event) => collapseItem(String(event.active.id))}
-          onDragEnd={onDragEnd}
+          // Rows animate collapsed on drag start, so the rects cached at lift are stale
+          // for the whole drop. `ignoreTransform` is what makes remeasuring safe: without
+          // it a displaced row measures at its displaced position and feeds its own
+          // transform back in.
+          measuring={{
+            droppable: {
+              strategy: MeasuringStrategy.Always,
+              measure: (element) =>
+                getClientRect(element, { ignoreTransform: true }),
+            },
+          }}
+          // Collapse everything, not just the dragged row: mixed heights make the swap
+          // preview unreadable — a short row has to travel a tall card's full height
+          // before the two trade places.
+          onDragStart={(event) => {
+            setActiveId(String(event.active.id));
+            collapseAll();
+          }}
+          onDragEnd={(event) => {
+            setActiveId(null);
+            onDragEnd(event);
+          }}
+          onDragCancel={() => setActiveId(null)}
         >
           <SortableContext
             items={items.fields.map((field) => field.id)}
@@ -92,11 +130,7 @@ export function CollectionSectionBody({
                   <CollectionItemRow
                     key={field.id}
                     itemId={field.id}
-                    summary={getCollectionItemSummary(
-                      currentItems?.[index] as Record<string, unknown>,
-                      config.itemTitle,
-                      index,
-                    )}
+                    summary={itemSummary(index)}
                     itemTitle={config.itemTitle}
                     open={!collapsedIds.has(field.id)}
                     onToggle={() => toggleCollapsed(field.id)}
@@ -109,6 +143,37 @@ export function CollectionSectionBody({
               </AnimatePresence>
             </div>
           </SortableContext>
+          {/* The dragged row lives here instead of in the list, so collapsing the list
+              under it can't drag its layout origin out from under the cursor. */}
+          {/* dropAnimation null: the list has already reordered by then, so the
+              overlay would fly to the row's pre-drop rect. */}
+          <DragOverlay dropAnimation={null}>
+            {activeId ? (
+              // inert: a decorative copy of a row that's still in the list — it must not
+              // duplicate the real row's button role or take focus.
+              <div inert>
+                <EditorRow
+                  title={itemSummary(
+                    items.fields.findIndex((f) => f.id === activeId),
+                  )}
+                  handle={<RowDragHandle label="" />}
+                  indicator={
+                    <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground/60" />
+                  }
+                  // Every slot the real row fills, or the overlay is shorter than
+                  // the gap it left behind.
+                  menu={
+                    <RowDeleteButton
+                      label={config.itemTitle.toLowerCase()}
+                      onDelete={() => {}}
+                    />
+                  }
+                  onActivate={() => {}}
+                  className="cursor-grabbing shadow-lg"
+                />
+              </div>
+            ) : null}
+          </DragOverlay>
         </DndContext>
       )}
 

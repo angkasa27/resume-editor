@@ -347,7 +347,7 @@ export function MonthYearRangeField({
                     endValue !== "current" &&
                     nextStartDate &&
                     currentEndDate &&
-                    currentEndDate.getTime() <= nextStartDate.getTime()
+                    currentEndDate.getTime() < nextStartDate.getTime()
                   ) {
                     setValue(endName as never, "" as never, {
                       shouldDirty: true,
@@ -377,7 +377,7 @@ export function MonthYearRangeField({
                 placeholder={isCurrent ? "Current" : "End date"}
                 disabled={isCurrent}
                 ariaInvalid={endFieldState.invalid}
-                minValueExclusive={startValue}
+                minValue={startValue}
                 onChange={(value) =>
                   setValue(endName as never, value as never, {
                     shouldDirty: true,

@@ -104,8 +104,8 @@ export function useCollectionItemsForm(
     });
   }
 
-  function collapseItem(id: string) {
-    setCollapsedIds((prev) => (prev.has(id) ? prev : new Set(prev).add(id)));
+  function collapseAll() {
+    setCollapsedIds(new Set(items.fields.map((f) => f.id)));
   }
 
   /** Normalizes edited form items back into a persistable section value. */
@@ -129,7 +129,7 @@ export function useCollectionItemsForm(
     items,
     collapsedIds,
     toggleCollapsed,
-    collapseItem,
+    collapseAll,
     pendingDeleteIndex,
     setPendingDeleteIndex,
     toSectionValue,

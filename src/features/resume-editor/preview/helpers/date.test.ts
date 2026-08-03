@@ -37,4 +37,8 @@ describe("renderDateRange", () => {
     expect(renderDateRange()).toBe("");
     expect(renderDateRange(undefined, undefined, "N/A")).toBe("N/A");
   });
+
+  it("collapses to a single month when start and end are the same", () => {
+    expect(renderDateRange("Jan 2024", "Jan 2024")).toBe("Jan 2024");
+  });
 });

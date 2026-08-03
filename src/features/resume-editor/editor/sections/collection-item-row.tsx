@@ -42,7 +42,7 @@ export function CollectionItemRow({
   children,
 }: CollectionItemRowProps) {
   const { setNodeRef, isDragging, dragAttributes, listeners, motionProps } =
-    useSortableRow(itemId);
+    useSortableRow(itemId, true);
 
   return (
     <motion.div
@@ -83,8 +83,7 @@ export function CollectionItemRow({
       />
       <Collapse open={open}>
         {/* bg-background, not muted: the floating field labels punch a chip out
-            of the control's border, and that chip has to match this surface.
-            The side/bottom borders continue the row's own box. */}
+            of the control's border, and that chip has to match this surface. */}
         <div className="@container/fields rounded-b-md border border-t bg-background p-3">
           {children}
         </div>
