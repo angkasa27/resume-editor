@@ -145,6 +145,10 @@ function shapeAsA4Page() {
   const paper = cs.getPropertyValue("--resume-paper-width").trim();
   el.style.boxSizing = "border-box";
   el.style.alignSelf = "flex-start";
+  // The page-break pass (preview/paginate-document.ts) pins an inline
+  // min-height of N whole pages, which would beat the crop height below and
+  // give a multi-page persona an N-page thumbnail.
+  el.style.minHeight = "0";
   if (paper) el.style.width = paper;
   // Exactly one A4 page tall (210:297). Overflowing content is cropped so
   // every screenshot is the same height.
