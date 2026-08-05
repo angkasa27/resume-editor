@@ -1,3 +1,6 @@
+// @vitest-environment node
+// jsdom's File global is not undici's, so undici's multipart parser rejects
+// every uploaded part — the route would 400 before any of this ran.
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
