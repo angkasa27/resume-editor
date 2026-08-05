@@ -1,6 +1,53 @@
 import { describe, expect, it } from "vitest";
 
-import { computeBlockShift, exceedsUsableHeight } from "./paginate-document";
+import {
+  computeBlockShift,
+  exceedsUsableHeight,
+  paginateResumeDocument,
+} from "./paginate-document";
+
+const PX_PER_MM = 96 / 25.4;
+const mm = (value: number) => value * PX_PER_MM;
+
+/**
+ * jsdom has no layout, so give each element a rect that flows: its base top
+ * plus every page spacer inserted above it. That is the one thing the real
+ * engine does that this pass depends on — shift a block and everything under it
+ * follows.
+ */
+function place(
+  article: HTMLElement,
+  element: HTMLElement,
+  baseTop: number,
+  height: number,
+) {
+  element.getBoundingClientRect = () => {
+    let pushed = 0;
+    for (const spacer of article.querySelectorAll<HTMLElement>(
+      "[data-page-spacer]",
+    )) {
+      const isAbove =
+        spacer.compareDocumentPosition(element) &
+        Node.DOCUMENT_POSITION_FOLLOWING;
+      if (isAbove) pushed += Number.parseFloat(spacer.style.height) || 0;
+    }
+    const top = baseTop + pushed;
+    return { top, bottom: top + height, height, width: mm(210) } as DOMRect;
+  };
+}
+
+/** The article grows by every spacer inside it; width matches the paper, so the pass reads a zoom of 1. */
+function placeArticle(article: HTMLElement, contentHeight: number) {
+  article.getBoundingClientRect = () => {
+    let height = contentHeight;
+    for (const spacer of article.querySelectorAll<HTMLElement>(
+      "[data-page-spacer]",
+    )) {
+      height += Number.parseFloat(spacer.style.height) || 0;
+    }
+    return { top: 0, bottom: height, height, width: mm(210) } as DOMRect;
+  };
+}
 
 // A page is 1000 tall with a 100 margin, so content lives in 100..900 on page
 // one, 1100..1900 on page two, and so on.
@@ -59,5 +106,77 @@ describe("computeBlockShift", () => {
     // caller passes the item's bottom so the pair travels together.
     expect(computeBlockShift({ top: 700, unitBottom: 750, ...page })).toBe(0);
     expect(computeBlockShift({ top: 700, unitBottom: 920, ...page })).toBe(400);
+  });
+});
+
+describe("paginateResumeDocument", () => {
+  const pageHeight = mm(297);
+  const margin = mm(14);
+
+  function buildArticle({ withVars = true } = {}) {
+    document.body.innerHTML = "";
+    const article = document.createElement("article");
+    if (withVars) {
+      article.style.setProperty("--resume-paper-height", "297mm");
+      article.style.setProperty("--resume-paper-width", "210mm");
+      article.style.setProperty("--resume-page-margin", "14mm");
+    }
+    article.innerHTML = `
+      <div class="section" id="intro"></div>
+      <div class="section" id="work"><div class="item" id="job"></div></div>
+    `;
+    document.body.append(article);
+
+    const intro = article.querySelector<HTMLElement>("#intro")!;
+    const work = article.querySelector<HTMLElement>("#work")!;
+    const job = article.querySelector<HTMLElement>("#job")!;
+
+    place(article, intro, 0, 200);
+    place(article, work, 1010, 300);
+    place(article, job, 1030, 90);
+    placeArticle(article, 1120);
+
+    return { article, work, job };
+  }
+
+  it("drops a section that straddles the page edge onto the next margin line", () => {
+    const { article, work } = buildArticle();
+
+    const pageCount = paginateResumeDocument(article);
+
+    const spacer = work.previousElementSibling as HTMLElement;
+    expect(spacer?.dataset.pageSpacer).toBe("");
+    // The point of the whole pass: the section now starts exactly on page two's
+    // margin line, not in the band above it.
+    expect(work.getBoundingClientRect().top).toBeCloseTo(pageHeight + margin, 5);
+    expect(pageCount).toBe(2);
+    // Rounded out to whole pages so a full-bleed rail reaches the last edge.
+    expect(article.style.minHeight).toBe(`${2 * pageHeight}px`);
+  });
+
+  it("moves nothing when every block already clears both edges", () => {
+    const { article, work, job } = buildArticle();
+    place(article, work, 300, 300);
+    place(article, job, 320, 90);
+    placeArticle(article, 600);
+
+    expect(paginateResumeDocument(article)).toBe(1);
+    expect(article.querySelectorAll("[data-page-spacer]")).toHaveLength(0);
+  });
+
+  it("leaves the previous pass standing when the paper vars can't be read", () => {
+    // The guard has to bail *before* the reset. Stripping spacers and then
+    // reporting one page loses the page markers and the full-bleed rail, with
+    // no retry until the draft changes again.
+    const { article } = buildArticle({ withVars: false });
+    const stale = document.createElement("div");
+    stale.dataset.pageSpacer = "";
+    stale.style.height = "120px";
+    article.prepend(stale);
+    article.style.minHeight = "999px";
+
+    expect(paginateResumeDocument(article)).toBe(1);
+    expect(article.querySelectorAll("[data-page-spacer]")).toHaveLength(1);
+    expect(article.style.minHeight).toBe("999px");
   });
 });

@@ -150,13 +150,15 @@ export function resetPagination(article: HTMLElement): void {
 
 /** Lays the document out in pages and returns how many it takes. */
 export function paginateResumeDocument(article: HTMLElement): number {
-  resetPagination(article);
-
   const pageHeight = readMmVar(article, "--resume-paper-height");
   const margin = readMmVar(article, "--resume-page-margin");
   // Zero has to fail here too, not just NaN: a zero page height divides through
   // to an Infinity page count and a silently dropped `min-height: Infinitypx`.
+  // Bail before the reset — a pass that can't measure must leave the previous
+  // pass's layout standing, not strip it and report one page.
   if (!(pageHeight > 0) || !(margin >= 0)) return 1;
+
+  resetPagination(article);
 
   const articleRect = article.getBoundingClientRect();
   const articleTop = articleRect.top;
