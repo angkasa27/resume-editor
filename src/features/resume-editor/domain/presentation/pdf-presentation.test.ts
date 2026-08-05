@@ -161,7 +161,7 @@ describe("resolvePdfPresentation", () => {
     expect(result.vars["--resume-paper-width"]).toBe("210mm");
     expect(result.vars["--resume-paper-height"]).toBe("297mm");
     expect(result.vars["--resume-page-margin"]).toBe("14mm");
-    expect(result.vars["--resume-gutter"]).toBe("26px");
+    expect(result.vars["--resume-gutter"]).toBe("7mm");
   });
 
   it("derives the page margin from the layout, not a user setting", () => {
@@ -172,13 +172,14 @@ describe("resolvePdfPresentation", () => {
     expect(minimal.vars["--resume-page-margin"]).toBe("18mm");
   });
 
-  it("keeps the gutter independent of the page margin", () => {
-    // Two layouts with different margins must still share a gutter at the same
-    // density — conflating the two is what skewed the rail padding.
+  it("ties the gutter to half the page margin so inner air tracks the edge", () => {
+    // A tight-margin rail layout with a wide gutter reads as unbalanced; the
+    // gutter is deliberately derived from the margin, not set per layout.
     const base = createDefaultPdfPresentation();
     const split = resolvePdfPresentation({ ...base, layoutId: "split" });
     const minimal = resolvePdfPresentation({ ...base, layoutId: "minimal" });
-    expect(split.vars["--resume-gutter"]).toBe(minimal.vars["--resume-gutter"]);
+    expect(split.vars["--resume-gutter"]).toBe("4.5mm");
+    expect(minimal.vars["--resume-gutter"]).toBe("9mm");
   });
 
   it("emits paper dimensions for the selected paper size", () => {

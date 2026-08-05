@@ -56,21 +56,22 @@ describe("preview layout registry", () => {
     }
   });
 
-  it("marks only classic, timeline, and banner as hiding the summary heading", () => {
+  it("marks only classic and bold-type as hiding the summary heading", () => {
     // The layouts that render their own Summary heading; the shared
-    // SummaryView must suppress its <h2> for exactly these.
+    // SummaryView must suppress its <h2> for exactly these, or the section
+    // gets two headings.
     const hiding = previewLayoutDefinitions
       .filter((layout) => layout.hideSummaryHeading === true)
       .map((layout) => layout.id);
-    expect(hiding.sort()).toEqual(["banner", "classic", "timeline"]);
+    expect(hiding.sort()).toEqual(["bold-type", "classic"]);
   });
 
   it("shouldHideSummaryHeading derives from the layout definition", () => {
     expect(shouldHideSummaryHeading("classic")).toBe(true);
-    expect(shouldHideSummaryHeading("timeline")).toBe(true);
-    expect(shouldHideSummaryHeading("banner")).toBe(true);
+    expect(shouldHideSummaryHeading("bold-type")).toBe(true);
+    expect(shouldHideSummaryHeading("timeline")).toBe(false);
+    expect(shouldHideSummaryHeading("banner")).toBe(false);
     expect(shouldHideSummaryHeading("sidebar")).toBe(false);
-    expect(shouldHideSummaryHeading("minimal")).toBe(false);
   });
 
   it("single-column layouts have no column partitioning", () => {
