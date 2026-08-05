@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { Loader2Icon, SparklesIcon } from "lucide-react";
+import { SparklesIcon } from "lucide-react";
 import { toast } from "@/components/ui/toast";
 
 import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import {
   DialogHeaderRow,
   DialogHeaderSection,
@@ -266,7 +267,7 @@ function LoadingPhase() {
     <div className="flex flex-1 flex-col items-center justify-center gap-4 py-8 text-center">
       <div className="relative grid size-12 place-items-center rounded-full bg-violet-500/10 text-violet-500">
         <SparklesIcon className="size-5" />
-        <Loader2Icon className="absolute inset-0 size-12 animate-spin text-violet-400/50" />
+        <Spinner aria-hidden className="absolute inset-0 size-12 text-violet-400/50" />
       </div>
       <div className="flex flex-col gap-1">
         <p className="text-sm font-medium text-foreground">{message}</p>

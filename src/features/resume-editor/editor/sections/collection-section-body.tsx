@@ -16,6 +16,7 @@ import { AnimatePresence } from "motion/react";
 import { ChevronRightIcon, PlusIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Empty, EmptyDescription } from "@/components/ui/empty";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import { useAutoSave } from "@/features/resume-editor/forms/use-auto-save";
 import { collectionItemFieldsByKey } from "@/features/resume-editor/forms/fields/sections";
@@ -87,10 +88,12 @@ export function CollectionSectionBody({
   return (
     <div className="flex flex-col gap-2">
       {items.fields.length === 0 ? (
-        <div className="rounded-md border border-dashed px-4 py-6 text-center text-sm text-muted-foreground">
-          No items added yet. Add the first entry to bring this section into the
-          preview.
-        </div>
+        <Empty className="rounded-md border px-4 py-6">
+          <EmptyDescription>
+            No items added yet. Add the first entry to bring this section into
+            the preview.
+          </EmptyDescription>
+        </Empty>
       ) : (
         <DndContext
           sensors={sensors}

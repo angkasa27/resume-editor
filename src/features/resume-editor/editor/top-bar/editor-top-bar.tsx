@@ -4,7 +4,6 @@ import Link from "next/link";
 import {
   CheckIcon,
   DownloadIcon,
-  Loader,
   Redo2Icon,
   TriangleAlert,
   Undo2Icon,
@@ -12,6 +11,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { ButtonGroup } from "@/components/ui/button-group";
+import { Spinner } from "@/components/ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
 import type { SaveStatus } from "@/features/resume-editor/domain/draft/draft-storage";
@@ -83,7 +83,7 @@ export function EditorTopBar({
         size="sm"
       >
         {isExportingPdf ? (
-          <Loader className="size-4 animate-spin" />
+          <Spinner aria-hidden className="size-4" />
         ) : (
           <DownloadIcon className="size-4" />
         )}
@@ -99,7 +99,7 @@ function SaveStatusIndicator({ status }: { status: SaveStatus }) {
 
   const config = {
     saving: {
-      icon: <Loader className="size-3.5 animate-spin" />,
+      icon: <Spinner aria-hidden className="size-3.5" />,
       label: "Saving…",
       className: "text-muted-foreground",
     },

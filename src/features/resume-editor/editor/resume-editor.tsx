@@ -1,6 +1,6 @@
 "use client";
 
-import { Loader } from "lucide-react";
+import { Spinner } from "@/components/ui/spinner";
 
 import { ResumeEditorDesktop } from "./desktop/resume-editor-desktop";
 import { ResumeEditorMobile } from "./mobile/resume-editor-mobile";
@@ -28,7 +28,7 @@ export function ResumeEditor(props: ResumeEditorProps) {
     return (
       <div className="flex h-dvh items-center justify-center bg-background">
         <div className="flex flex-col items-center gap-3 text-center">
-          <Loader className="size-8 animate-spin" />
+          <Spinner aria-hidden className="size-8" />
           <p className="text-sm font-semibold tracking-tight">
             Loading editor
           </p>
