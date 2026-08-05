@@ -1,8 +1,8 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef } from "react";
 
-import { paginateResumeDocument } from "@/features/resume-editor/preview/paginate-document";
+import { useDocumentPagination } from "@/features/resume-editor/preview/use-document-pagination";
 import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
 import { RESUME_PDF_SESSION_STORAGE_KEY } from "@/features/resume-editor/server/resume-pdf-session";
 import { useClientReady } from "@/hooks/use-client-ready";
@@ -47,47 +47,17 @@ export function ResumePdfPage() {
   const hostRef = useRef<HTMLElement | null>(null);
   const { draft } = pdfState;
 
-  // Runs the page-edge pass once the fonts and photo have settled, then reports
-  // ready. Measuring before they load would size every block against fallback
-  // metrics, so the printer would wait on a `data-pdf-ready` that describes a
-  // document it is no longer about to print.
-  useEffect(() => {
-    const host = hostRef.current;
-    if (!draft || !host) return;
-    let isCurrent = true;
-
-    // Forces layout before the wait. The résumé fonts are `preload: false`, so
-    // Chrome only requests one once text is laid out in it — await `fonts.ready`
-    // straight out of commit and it resolves immediately, with nothing pending,
-    // and the pass measures fallback metrics.
-    void host.offsetHeight;
-
-    void Promise.all([
-      document.fonts.ready,
-      // A failed image still resolves: a missing photo must not stall the export.
-      ...Array.from(host.querySelectorAll("img"), (image) =>
-        image.decode().catch(() => undefined),
-      ),
-    ])
-      .then(() => {
-        if (!isCurrent) return;
-        const article = host.querySelector<HTMLElement>(".resume-document");
-        if (article) paginateResumeDocument(article);
-      })
-      // Bad page breaks beat no PDF: export the unpaginated document rather
-      // than leave the printer waiting on a ready flag that never flips.
-      .catch((error: unknown) => console.error("Resume pagination failed", error))
-      .then(() => {
-        // Flipped on the node rather than through state: the ready flag is what
-        // the printer polls, and re-rendering here would throw away the layout
-        // the pass just measured.
-        if (isCurrent) host.dataset.pdfReady = "true";
-      });
-
-    return () => {
-      isCurrent = false;
-    };
-  }, [draft]);
+  // Flipped on the node rather than through state: the ready flag is what the
+  // printer polls, and re-rendering here would throw away the layout the pass
+  // just measured. The page count the pass returns is the preview's business.
+  useDocumentPagination(
+    hostRef,
+    draft,
+    useCallback(() => {
+      const host = hostRef.current;
+      if (host) host.dataset.pdfReady = "true";
+    }, []),
+  );
 
   if (pdfState.error) {
     return (

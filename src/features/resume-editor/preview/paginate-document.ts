@@ -13,6 +13,9 @@
  * margin big enough to move a block to the next page evaporates at the break
  * and drops the block flush against the top edge — the exact bug being fixed.
  * A block box fragments across the break instead.
+ *
+ * The editor preview runs the same pass, so what it shows is the export by
+ * construction rather than by a second implementation kept in sync by hand.
  */
 
 const PX_PER_MM = 96 / 25.4;
@@ -88,6 +91,7 @@ function insertSpacerBefore(
   shift: number,
   top: number,
   articleTop: number,
+  scale: number,
 ): void {
   const spacer = document.createElement("div");
   // Read by scripts/check-pagebreak.ts to assert no gap approaches a full page.
@@ -95,7 +99,7 @@ function insertSpacerBefore(
   spacer.style.height = `${shift}px`;
   block.before(spacer);
 
-  const landed = block.getBoundingClientRect().top - articleTop;
+  const landed = (block.getBoundingClientRect().top - articleTop) / scale;
   const overshoot = landed - (top + shift);
   if (Math.abs(overshoot) > 0.5) {
     // Floors at zero: a shift smaller than the container's own gap can't be
@@ -125,22 +129,54 @@ function measureUnitBottom(block: HTMLElement, rect: DOMRect): number {
   return Math.min(rect.bottom, heading.bottom + heading.height * 2);
 }
 
-export function paginateResumeDocument(article: HTMLElement): void {
+/**
+ * Undoes a previous pass so the next one measures the bare document. The
+ * min-height matters as much as the spacers: it is a floor, so leaving it in
+ * place means the page count can only ever grow as the user edits.
+ */
+export function resetPagination(article: HTMLElement): void {
+  for (const spacer of Array.from(
+    article.querySelectorAll("[data-page-spacer]"),
+  )) {
+    spacer.remove();
+  }
+  for (const block of Array.from(
+    article.querySelectorAll<HTMLElement>(BLOCK_SELECTOR),
+  )) {
+    block.style.removeProperty("break-inside");
+  }
+  article.style.removeProperty("min-height");
+}
+
+/** Lays the document out in pages and returns how many it takes. */
+export function paginateResumeDocument(article: HTMLElement): number {
+  resetPagination(article);
+
   const pageHeight = readMmVar(article, "--resume-paper-height");
   const margin = readMmVar(article, "--resume-page-margin");
   // Zero has to fail here too, not just NaN: a zero page height divides through
   // to an Infinity page count and a silently dropped `min-height: Infinitypx`.
-  if (!(pageHeight > 0) || !(margin >= 0)) return;
+  if (!(pageHeight > 0) || !(margin >= 0)) return 1;
 
-  const articleTop = article.getBoundingClientRect().top;
+  const articleRect = article.getBoundingClientRect();
+  const articleTop = articleRect.top;
+
+  // The editor canvas renders the paper under CSS `zoom`, which scales every
+  // rect this pass reads while the paper vars stay in unscaled CSS px. Derive
+  // the factor from the one length that is both — the paper's own width — so
+  // the pass calibrates itself instead of trusting a caller to pass the zoom.
+  const paperWidth = readMmVar(article, "--resume-paper-width");
+  const measured = paperWidth > 0 ? articleRect.width / paperWidth : 1;
+  const scale = measured > 0 ? measured : 1;
+  const cssPx = (value: number) => value / scale;
 
   for (const block of Array.from(
     article.querySelectorAll<HTMLElement>(BLOCK_SELECTOR),
   )) {
     const rect = block.getBoundingClientRect();
-    const top = rect.top - articleTop;
+    const top = cssPx(rect.top - articleTop);
 
-    const unitBottom = measureUnitBottom(block, rect) - articleTop;
+    const unitBottom = cssPx(measureUnitBottom(block, rect) - articleTop);
     const geometry = { top, unitBottom, pageHeight, margin };
 
     // A block that can't fit between the margins keeps whatever top-margin
@@ -151,14 +187,17 @@ export function paginateResumeDocument(article: HTMLElement): void {
 
     const shift = computeBlockShift(geometry);
     // Sub-pixel shifts are rounding noise, and inserting one costs a reflow.
-    if (shift > 0.5) insertSpacerBefore(block, shift, top, articleTop);
+    if (shift > 0.5) insertSpacerBefore(block, shift, top, articleTop, scale);
   }
 
   // Round the paper out to whole pages so a full-bleed rail still reaches the
   // bottom edge of the final page instead of stopping where the text ended.
   const pageCount = Math.max(
     1,
-    Math.ceil(article.getBoundingClientRect().height / pageHeight - 0.001),
+    Math.ceil(
+      cssPx(article.getBoundingClientRect().height) / pageHeight - 0.001,
+    ),
   );
   article.style.minHeight = `${pageCount * pageHeight}px`;
+  return pageCount;
 }

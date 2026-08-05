@@ -15,6 +15,8 @@
  *
  * Override the target with BASE_URL (default http://localhost:3000).
  */
+import { pathToFileURL } from "node:url";
+
 import puppeteer from "puppeteer";
 
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
@@ -28,7 +30,7 @@ import {
 
 const ORIGIN = process.env.BASE_URL ?? "http://localhost:3000";
 
-function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft {
+export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft {
   const draft = createDefaultResumeDraft();
   const s = draft.sections;
 
@@ -217,4 +219,11 @@ async function main() {
   process.exit(failures ? 1 : 0);
 }
 
-void main();
+// Guarded so check-preview-pagination.ts can import `longDraft` without
+// launching this whole sweep as a side effect.
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  void main();
+}

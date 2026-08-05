@@ -1,9 +1,11 @@
 "use client";
 
-import { useRef } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 
 import { usePreviewScale } from "@/features/resume-editor/preview/components/use-preview-scale";
 import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
+import { useDocumentPagination } from "@/features/resume-editor/preview/use-document-pagination";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
 type PreviewSheetProps = {
@@ -19,6 +21,24 @@ export function PreviewSheet({ draft, presentation }: PreviewSheetProps) {
     viewportRef: previewViewportRef,
     watchValues: [draft, presentation],
   });
+
+  // Memoised because it is the pagination hook's re-run key: a fresh object
+  // every render would re-run the pass on the render the pass itself caused.
+  const sheetDraft = useMemo(
+    () => ({ ...draft, pdfPresentation: presentation }),
+    [draft, presentation],
+  );
+
+  // The sheet is scaled with `transform`, which leaves layout alone but does
+  // scale the rects the pass reads — the same calibration that covers the
+  // desktop canvas's `zoom` covers it. The shell resizes to the taller paper
+  // on its own: `usePreviewScale` watches the sheet with a ResizeObserver.
+  const [pageCount, setPageCount] = useState(1);
+  useDocumentPagination(
+    previewSheetRef,
+    sheetDraft,
+    useCallback((next: number) => setPageCount(next), []),
+  );
 
   return (
     <div className="h-full min-h-0 w-full overflow-y-auto overflow-x-hidden">
@@ -38,18 +58,19 @@ export function PreviewSheet({ draft, presentation }: PreviewSheetProps) {
             <div
               ref={previewSheetRef}
               className="absolute left-0 top-0"
-              style={{
-                transform:
-                  previewScale < 1 ? `scale(${previewScale})` : undefined,
-                transformOrigin: "top left",
-              }}
+              style={
+                {
+                  transform:
+                    previewScale < 1 ? `scale(${previewScale})` : undefined,
+                  transformOrigin: "top left",
+                  // Keeps the page-break chrome at its designed size while the
+                  // paper shrinks to fit the phone.
+                  "--preview-marker-scale":
+                    previewScale < 1 ? 1 / previewScale : 1,
+                } as CSSProperties
+              }
             >
-              <ResumeDocument
-                draft={{
-                  ...draft,
-                  pdfPresentation: presentation,
-                }}
-              />
+              <ResumeDocument draft={sheetDraft} pageCount={pageCount} />
             </div>
           </div>
         </div>

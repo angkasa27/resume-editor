@@ -18,7 +18,7 @@ import {
 import { EditorSidebar } from "@/features/resume-editor/editor/desktop/editor-sidebar";
 import { ZOOM_DEFAULT } from "@/features/resume-editor/editor/desktop/zoom";
 import { useDirection } from "@/features/resume-editor/editor/sections/use-direction";
-import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
+import { PaginatedPreview } from "@/features/resume-editor/preview/components/paginated-preview";
 import { normalizePdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import {
   needsSectionReveal,
@@ -198,7 +198,7 @@ export function ResumeEditorDesktop({
       </AnimatePresence>
 
       <EditorCanvas zoom={zoom} onZoomChange={setZoom}>
-        <ResumeDocument
+        <PaginatedPreview
           draft={draft}
           onSelectSection={focusSection}
           activeSection={openSection}

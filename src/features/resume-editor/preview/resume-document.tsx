@@ -26,6 +26,8 @@ type ResumeDocumentProps = PreviewRendererProps & {
   onSelectSection?: (panel: EditorPanelKey) => void;
   /** The section currently open in the editor, marked on the paper. */
   activeSection?: EditorPanelKey | null;
+  /** Measured by the pagination pass; draws page boundaries on the paper. */
+  pageCount?: number;
 };
 
 export function ResumeDocument({
@@ -34,6 +36,7 @@ export function ResumeDocument({
   mode = "preview",
   onSelectSection,
   activeSection,
+  pageCount,
 }: ResumeDocumentProps) {
   const context = createPreviewRenderContext(draft, mode);
   const layout = getLayout(context.presentation.layoutId);
@@ -87,7 +90,11 @@ export function ResumeDocument({
   };
 
   return (
-    <PreviewDocumentRoot context={context} className={className}>
+    <PreviewDocumentRoot
+      context={context}
+      className={className}
+      pageCount={pageCount}
+    >
       <layout.Component context={context} slots={slots} />
     </PreviewDocumentRoot>
   );
