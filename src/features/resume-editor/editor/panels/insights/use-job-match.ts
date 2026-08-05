@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 
 import {
   KEYWORD_CATEGORIES,
@@ -154,13 +154,13 @@ export function useJobMatch(draft: ResumeDraft) {
       const keywords = await requestKeywordMatch(trimmed);
       writeToStorage({ jobDescription: trimmed, keywords });
       setSubmitState({ status: "idle" });
-      toast.success("Job description analyzed.");
+      toast.add({ title: "Job description analyzed.", type: "success" });
     } catch (error) {
       const message =
         error instanceof Error
           ? error.message
           : "Could not analyze the job description.";
-      toast.error(message);
+      toast.add({ title: message, type: "error" });
       setSubmitState({ status: "error", message });
     }
   }, []);

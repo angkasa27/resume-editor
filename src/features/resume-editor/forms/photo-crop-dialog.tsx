@@ -2,7 +2,7 @@
 
 import { useCallback, useState } from "react";
 import Cropper, { type Area, type Point } from "react-easy-crop";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -104,11 +104,13 @@ function CropEditor({
     try {
       onApply(cropImageToDataUrl(image, areaPixels as CropArea));
     } catch (error) {
-      toast.error(
-        error instanceof ProfilePhotoError
-          ? error.message
-          : "Could not process the image. Try a different file.",
-      );
+      toast.add({
+        title:
+          error instanceof ProfilePhotoError
+            ? error.message
+            : "Could not process the image. Try a different file.",
+        type: "error",
+      });
     }
   }
 

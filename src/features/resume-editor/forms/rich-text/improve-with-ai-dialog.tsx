@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Loader2Icon, SparklesIcon } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -172,7 +172,7 @@ function ImproveWithAiBody({
         error instanceof Error
           ? error.message
           : "Could not improve the content. Please try again.";
-      toast.error(message);
+      toast.add({ title: message, type: "error" });
       setPhase({ kind: "idle" });
     }
   }

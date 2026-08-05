@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { AnimatePresence } from "motion/react";
 
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 
 import { useResumeEditorController } from "@/features/resume-editor/state/use-resume-editor-controller";
@@ -88,7 +88,7 @@ export function ResumeEditorDesktop({
     "mod+z": undo,
     "mod+shift+z": redo,
     "mod+s": {
-      handler: () => toast.success("Auto-saved"),
+      handler: () => toast.add({ title: "Auto-saved", type: "success" }),
       ignoreInputFocus: false,
     },
     escape: { handler: closeCurrentSurface, ignoreInputFocus: true },

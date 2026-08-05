@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 
 import { createLocalId } from "@/features/resume-editor/domain/create-local-id";
 import { createFormSchemaResolver } from "@/features/resume-editor/forms/schemas/create-form-schema-resolver";
@@ -58,11 +58,13 @@ export function useProfileForm(draft: ResumeDraft) {
       const { objectUrl, image } = await loadImageFile(file);
       setCrop({ open: true, imageUrl: objectUrl, image });
     } catch (error) {
-      toast.error(
-        error instanceof ProfilePhotoError
-          ? error.message
-          : "Could not read that image.",
-      );
+      toast.add({
+        title:
+          error instanceof ProfilePhotoError
+            ? error.message
+            : "Could not read that image.",
+        type: "error",
+      });
     }
   }
 

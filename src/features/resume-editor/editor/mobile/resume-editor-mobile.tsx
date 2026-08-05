@@ -15,7 +15,7 @@ import {
 } from "@/features/resume-editor/domain/sections/section-metadata";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
@@ -72,7 +72,7 @@ export function ResumeEditorMobile({
     "mod+z": undo,
     "mod+shift+z": redo,
     "mod+s": {
-      handler: () => toast.success("Auto-saved"),
+      handler: () => toast.add({ title: "Auto-saved", type: "success" }),
       ignoreInputFocus: true,
     },
   });

@@ -2,7 +2,7 @@
 
 import { useCallback, useRef, useState, useSyncExternalStore } from "react";
 import type { ChangeEvent, RefObject } from "react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 import { useStore } from "zustand";
 
 import type {
@@ -94,11 +94,15 @@ function useJsonImport(store: ResumeEditorStore) {
       const importedDraft = JSON.parse(fileContents);
 
       store.getState().replaceDraft(importedDraft);
-      toast.success("Draft imported.");
+      toast.add({ title: "Draft imported.", type: "success" });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Unable to import that draft.",
-      );
+      toast.add({
+        title:
+          error instanceof Error
+            ? error.message
+            : "Unable to import that draft.",
+        type: "error",
+      });
     } finally {
       event.target.value = "";
     }
@@ -151,15 +155,19 @@ function usePdfImport(store: ResumeEditorStore) {
     try {
       const { draft, warningCount } = await importPdfDraft(file);
       store.getState().replaceDraft(draft);
-      toast.success(
-        warningCount > 0
-          ? `PDF imported with ${warningCount} warning${warningCount === 1 ? "" : "s"}.`
-          : "PDF imported.",
-      );
+      toast.add({
+        title:
+          warningCount > 0
+            ? `PDF imported with ${warningCount} warning${warningCount === 1 ? "" : "s"}.`
+            : "PDF imported.",
+        type: "success",
+      });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Unable to import that PDF.",
-      );
+      toast.add({
+        title:
+          error instanceof Error ? error.message : "Unable to import that PDF.",
+        type: "error",
+      });
     } finally {
       isImportingPdfRef.current = false;
       setIsImportingPdf(false);
@@ -198,7 +206,7 @@ function useDraftExport(draft: ResumeDraft) {
     a.download = "resume-draft.json";
     a.click();
     URL.revokeObjectURL(url);
-    toast.success("Draft exported.");
+    toast.add({ title: "Draft exported.", type: "success" });
   }
 
   async function handlePrint() {
@@ -208,7 +216,10 @@ function useDraftExport(draft: ResumeDraft) {
 
     isExportingPdfRef.current = true;
     setIsExportingPdf(true);
-    const loadingId = toast.loading("Generating PDF...");
+    const loadingId = toast.add({
+      title: "Generating PDF...",
+      type: "loading",
+    });
 
     try {
       const response = await fetch("/api/export-pdf", {
@@ -234,12 +245,15 @@ function useDraftExport(draft: ResumeDraft) {
       a.download = getDownloadFilename(contentDisposition, draft);
       a.click();
       URL.revokeObjectURL(url);
-      toast.success("PDF exported.", { id: loadingId });
+      toast.update(loadingId, { title: "PDF exported.", type: "success" });
     } catch (error) {
-      toast.error(
-        error instanceof Error ? error.message : "Unable to generate the PDF.",
-        { id: loadingId },
-      );
+      toast.update(loadingId, {
+        title:
+          error instanceof Error
+            ? error.message
+            : "Unable to generate the PDF.",
+        type: "error",
+      });
     } finally {
       isExportingPdfRef.current = false;
       setIsExportingPdf(false);
@@ -257,13 +271,13 @@ function useUndoRedo(store: ResumeEditorStore) {
     const state = store.getState();
     if (state.undoStack.length === 0) return;
     state.undo();
-    toast.success("Undone");
+    toast.add({ title: "Undone", type: "success" });
   }, [store]);
   const redo = useCallback(() => {
     const state = store.getState();
     if (state.redoStack.length === 0) return;
     state.redo();
-    toast.success("Redone");
+    toast.add({ title: "Redone", type: "success" });
   }, [store]);
 
   return { canUndo, canRedo, undo, redo };

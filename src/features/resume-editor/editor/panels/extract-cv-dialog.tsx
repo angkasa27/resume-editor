@@ -8,7 +8,7 @@ import {
   UploadCloudIcon,
   XIcon,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "@/components/ui/toast";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
@@ -95,7 +95,7 @@ function ExtractCvBody({ onSubmit, onClose }: ExtractCvBodyProps) {
       candidate.type !== "application/pdf" &&
       !candidate.name.toLowerCase().endsWith(".pdf")
     ) {
-      toast.error("Please select a PDF file.");
+      toast.add({ title: "Please select a PDF file.", type: "error" });
       return;
     }
     setFile(candidate);
