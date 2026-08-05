@@ -7,7 +7,7 @@ import { summaryContentSchema } from "@/features/resume-editor/domain/schema";
 import { createFormSchemaResolver } from "@/features/resume-editor/forms/schemas/create-form-schema-resolver";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
-export type SummaryFormValues = {
+type SummaryFormValues = {
   content: ResumeDraft["sections"]["summary"]["content"];
 };
 

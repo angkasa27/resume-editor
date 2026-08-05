@@ -8,7 +8,7 @@ import type {
 } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
 /** The style half of a template. `secondary` is explicit — a preset either sets it or clears it back to the accent fallback. */
-export type ResumeTemplateStyle = {
+type ResumeTemplateStyle = {
   accent: string;
   secondary?: string;
   fontFamilyId: ResumeFontId;

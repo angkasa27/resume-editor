@@ -12,7 +12,7 @@ type PdfRenderOptions = {
   format: PdfPaperSize;
 };
 
-export type PdfExportProvider =
+type PdfExportProvider =
   | "auto"
   | "local-puppeteer"
   | "cloudflare-browser-run";

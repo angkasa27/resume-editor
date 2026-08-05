@@ -25,9 +25,7 @@ type SortableSectionRowProps = {
   count?: number;
   active: boolean;
   onClick: () => void;
-  /** Nav chevron. */
   trailing?: ReactNode;
-  /** The row's "⋯" menu. */
   menu?: ReactNode;
 };
 

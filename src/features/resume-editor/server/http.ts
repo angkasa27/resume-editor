@@ -1,6 +1,6 @@
 import { ResumeImportError } from "@/features/resume-editor/server/resume-import-error";
 
-export type ParsedBody<T> =
+type ParsedBody<T> =
   | { ok: true; data: T }
   | { ok: false; response: Response };
 

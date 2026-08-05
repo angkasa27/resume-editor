@@ -219,4 +219,3 @@ export const collectionSectionConfigs: Record<
   },
 };
 
-export type CollectionSectionConfigMap = typeof collectionSectionConfigs;

@@ -1,6 +1,6 @@
 import { ResumeEditor } from "@/features/resume-editor/editor/resume-editor";
 
-export type EditorHostProps = {
+type EditorHostProps = {
   searchParams: Record<string, string | string[] | undefined>;
 };
 

@@ -27,7 +27,7 @@ export const ATS_CATEGORY_LABELS: Record<AtsCategory, string> = {
   jobMatch: "Job match",
 };
 
-export type Severity = "ok" | "warn" | "fail";
+type Severity = "ok" | "warn" | "fail";
 
 export type Suggestion = {
   id: string;
@@ -44,7 +44,7 @@ export type CategoryScore = {
   weight: number;
 };
 
-export type AtsScore = {
+type AtsScore = {
   /** 0..100 weighted total. */
   score: number;
   breakdown: Record<AtsCategory, CategoryScore | null>;

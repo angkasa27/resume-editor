@@ -10,7 +10,7 @@ import type { PreviewContactItem, PreviewRenderContext } from "../types";
  * `stacked` is the only variant that reads in a narrow rail. Icons are opt-in: they clash with
  * typographic layouts (minimal, academic) whose identity is unadorned text.
  */
-export type ContactVariant = "inline" | "stacked";
+type ContactVariant = "inline" | "stacked";
 
 export type ContactPresentation = {
   variant: ContactVariant;

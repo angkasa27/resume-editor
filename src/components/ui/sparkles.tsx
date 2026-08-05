@@ -7,7 +7,7 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface SparklesIconHandle {
+interface SparklesIconHandle {
   startAnimation: () => void;
   stopAnimation: () => void;
 }

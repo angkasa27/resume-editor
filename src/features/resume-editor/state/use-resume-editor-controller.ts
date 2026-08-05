@@ -36,7 +36,7 @@ type UseResumeEditorControllerOptions = {
   storage?: DraftStorage;
 };
 
-export type ResumeEditorController = {
+type ResumeEditorController = {
   jsonFileInputRef: RefObject<HTMLInputElement | null>;
   pdfFileInputRef: RefObject<HTMLInputElement | null>;
   draft: ResumeDraft;

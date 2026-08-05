@@ -1,4 +1,4 @@
-export type CarouselScreenshot = {
+type CarouselScreenshot = {
   /** Matches presetId; also the filename stem: public/templates/<id>.webp */
   id: string;
   /** "Classic Modern", "Sidebar Slate" — shown on hover */

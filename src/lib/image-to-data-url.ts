@@ -2,7 +2,7 @@ const PROFILE_PHOTO_MAX_DIMENSION = 512;
 const PROFILE_PHOTO_QUALITY = 0.85;
 const PROFILE_PHOTO_MAX_BYTES = 8 * 1024 * 1024;
 
-export type ReadProfilePhotoError =
+type ReadProfilePhotoError =
   | "unsupported-type"
   | "too-large"
   | "decode-failed"

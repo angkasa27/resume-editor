@@ -9,7 +9,7 @@ export const KEYWORD_CATEGORIES = [
   "qualification",
   "tool",
 ] as const;
-export type KeywordCategory = (typeof KEYWORD_CATEGORIES)[number];
+type KeywordCategory = (typeof KEYWORD_CATEGORIES)[number];
 
 export type ExtractedKeyword = {
   term: string;

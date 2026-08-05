@@ -7,7 +7,7 @@ import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
 
 import { cn } from "@/lib/utils";
 
-export interface MonitorCheckIconHandle {
+interface MonitorCheckIconHandle {
   startAnimation: () => void;
   stopAnimation: () => void;
 }

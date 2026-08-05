@@ -26,7 +26,6 @@ type SectionEditPanelProps = {
   draft: ResumeDraft;
   /** The section whose form is open; `null` shows the list. */
   openSection: ResumeEditorPanelKey | null;
-  /** The highlighted row, or `null` when nothing is open. */
   activeSection: ResumeEditorPanelKey | null;
   /** +1 = drilling into a form, -1 = returning to the list. */
   direction: number;
@@ -46,14 +45,12 @@ type SectionEditPanelProps = {
   onAutoSortSection: (sectionKey: CollectionSectionKey) => void;
   onOpen: (key: ResumeEditorPanelKey) => void;
   onBack: () => void;
-  /** Document-level actions shown above the section list. */
   onExtractCv: () => void;
   onImportJson: () => void;
   onExportJson: () => void;
   isImportingPdf?: boolean;
   /** Disambiguates input ids between the two surfaces. */
   idPrefix: string;
-  /** Extra scroll padding — mobile clears its floating bottom nav. */
   scrollPaddingClassName?: string;
 };
 

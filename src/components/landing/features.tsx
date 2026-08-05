@@ -15,9 +15,12 @@ import { MonitorCheckIcon } from "@/components/ui/monitor-check";
 import { PenToolIcon } from "@/components/ui/pen-tool";
 import { SparklesIcon } from "@/components/ui/sparkles";
 
-import type { AnimatedIconHandle } from "@/components/ui/animated-icon";
-
 import { Reveal, RevealItem, RevealStagger } from "./reveal";
+
+type AnimatedIconHandle = {
+  startAnimation: () => void;
+  stopAnimation: () => void;
+};
 
 type AnimatedIcon = ForwardRefExoticComponent<
   HTMLAttributes<HTMLDivElement> & {

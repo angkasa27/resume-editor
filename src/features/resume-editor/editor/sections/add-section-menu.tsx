@@ -19,7 +19,6 @@ import {
 type AddSectionMenuProps = {
   hiddenKeys: CollectionSectionKey[];
   onAdd: (sectionKey: CollectionSectionKey) => void;
-  /** Trigger button style. */
   triggerVariant?: ComponentProps<typeof Button>["variant"];
 };
 

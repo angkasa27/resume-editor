@@ -13,7 +13,7 @@ import {
 } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
-export type DocumentPreviewCardProps = {
+type DocumentPreviewCardProps = {
   draft: ResumeDraft;
   /** The full presentation this card previews (layout + style already applied). */
   presentation: PdfPresentation;

@@ -2,7 +2,7 @@ import { ResumeImportError } from "@/features/resume-editor/server/resume-import
 
 const DEFAULT_GEMINI_MODEL = "gemini-2.0-flash";
 
-export type GeminiResponse = {
+type GeminiResponse = {
   candidates?: Array<{
     content?: {
       parts?: Array<{
