@@ -11,6 +11,8 @@ type EditorHeaderState = {
   /** The top bar's primary output action. */
   onExportPdf: () => void;
   isExportingPdf: boolean;
+  /** Behind the Download PDF split menu. */
+  onExportJson: () => void;
 };
 
 type EditorHeaderStore = EditorHeaderState & {
@@ -27,5 +29,6 @@ export const useEditorHeaderStore = create<EditorHeaderStore>((set) => ({
   onRedo: noop,
   onExportPdf: noop,
   isExportingPdf: false,
+  onExportJson: noop,
   setControls: (patch) => set(patch),
 }));

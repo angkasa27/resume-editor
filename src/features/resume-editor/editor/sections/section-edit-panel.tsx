@@ -47,7 +47,6 @@ type SectionEditPanelProps = {
   onBack: () => void;
   onExtractCv: () => void;
   onImportJson: () => void;
-  onExportJson: () => void;
   isImportingPdf?: boolean;
   /** Disambiguates input ids between the two surfaces. */
   idPrefix: string;
@@ -73,7 +72,6 @@ export function SectionEditPanel({
   onBack,
   onExtractCv,
   onImportJson,
-  onExportJson,
   isImportingPdf,
   idPrefix,
   scrollPaddingClassName,
@@ -137,7 +135,6 @@ export function SectionEditPanel({
               onOpen={onOpen}
               onExtractCv={onExtractCv}
               onImportJson={onImportJson}
-              onExportJson={onExportJson}
               isImportingPdf={isImportingPdf}
               className={scrollPaddingClassName}
             />

@@ -72,6 +72,7 @@ export function ResumeEditorDesktop({
     onRedo: redo,
     onExportPdf: handlePrint,
     isExportingPdf,
+    onExportJson: handleExport,
   });
 
   const [rail, setRail] = useState<RailKey>("edit");
@@ -145,9 +146,6 @@ export function ResumeEditorDesktop({
     onPresentationChange: savePdfPresentation,
     onImportJson: openJsonImportPicker,
     onExtractCv: () => setIsExtractCvOpen(true),
-    onExportJson: handleExport,
-    onExportPdf: handlePrint,
-    isExportingPdf,
     isImportingPdf,
   };
 

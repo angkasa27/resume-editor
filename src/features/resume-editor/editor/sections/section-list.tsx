@@ -45,7 +45,6 @@ type SectionListProps = {
   /** Document-level actions shown above the list. */
   onExtractCv: () => void;
   onImportJson: () => void;
-  onExportJson: () => void;
   isImportingPdf?: boolean;
   /** Scroll padding. Mobile clears its floating bottom nav; desktop doesn't. */
   className?: string;
@@ -64,7 +63,6 @@ export function SectionList({
   onOpen,
   onExtractCv,
   onImportJson,
-  onExportJson,
   isImportingPdf,
   className,
 }: SectionListProps) {
@@ -85,7 +83,6 @@ export function SectionList({
         <DocumentActions
           onExtractCv={onExtractCv}
           onImportJson={onImportJson}
-          onExportJson={onExportJson}
           isImportingPdf={isImportingPdf}
         />
 

@@ -3,14 +3,22 @@
 import Link from "next/link";
 import {
   CheckIcon,
+  ChevronDownIcon,
   DownloadIcon,
+  FileDownIcon,
   Redo2Icon,
   TriangleAlert,
   Undo2Icon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ButtonGroup } from "@/components/ui/button-group";
+import { ButtonGroup, ButtonGroupSeparator } from "@/components/ui/button-group";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
@@ -25,6 +33,7 @@ type EditorTopBarProps = {
   /** The primary output action — renders the Download PDF button. */
   onExportPdf: () => void;
   isExportingPdf: boolean;
+  onExportJson: () => void;
 };
 
 export function EditorTopBar({
@@ -35,6 +44,7 @@ export function EditorTopBar({
   onRedo,
   onExportPdf,
   isExportingPdf,
+  onExportJson,
 }: EditorTopBarProps) {
   const isMobile = useIsMobile();
 
@@ -75,20 +85,42 @@ export function EditorTopBar({
         </Button>
       </ButtonGroup>
 
-      <Button
-        type="button"
-        onClick={onExportPdf}
-        disabled={isExportingPdf}
-        aria-label="Download PDF"
-        size="sm"
-      >
-        {isExportingPdf ? (
-          <Spinner aria-hidden className="size-4" />
-        ) : (
-          <DownloadIcon className="size-4" />
-        )}
-        <span>{isExportingPdf ? "Generating PDF…" : "Download PDF"}</span>
-      </Button>
+      <ButtonGroup>
+        <Button
+          type="button"
+          onClick={onExportPdf}
+          disabled={isExportingPdf}
+          aria-busy={isExportingPdf}
+          size="sm"
+        >
+          {isExportingPdf ? (
+            <Spinner aria-hidden className="size-4" />
+          ) : (
+            <DownloadIcon className="size-4" />
+          )}
+          {/* Label yields under 360px, where it'd push the menu off-screen.
+              `sr-only`, not `hidden`, so the button keeps its name there. */}
+          <span className="sr-only min-[360px]:not-sr-only">
+            {isExportingPdf ? "Generating PDF…" : "Download PDF"}
+          </span>
+        </Button>
+        <ButtonGroupSeparator className="bg-primary-foreground/25" />
+        <DropdownMenu>
+          <DropdownMenuTrigger
+            render={
+              <Button type="button" size="icon-sm" aria-label="More file actions">
+                <ChevronDownIcon className="size-4" />
+              </Button>
+            }
+          />
+          <DropdownMenuContent align="end" className="w-44">
+            <DropdownMenuItem onClick={onExportJson}>
+              <FileDownIcon className="size-4" />
+              Export JSON
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </ButtonGroup>
     </header>
   );
 }

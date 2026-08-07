@@ -5,7 +5,8 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 /**
  * The presentation + document-action contract every editor control surface is
  * handed. Both editor branches build this once and pass it down, so the design
- * panel, section list, and insights tab share one shape.
+ * panel, section list, and insights tab share one shape. Exports are absent by
+ * design — they go to the top bar via `useEditorHeader`, not to a panel.
  */
 export type EditorControlProps = {
   presentation: PdfPresentation;
@@ -13,9 +14,6 @@ export type EditorControlProps = {
   onPresentationChange: (next: PdfPresentation) => void;
   onImportJson: () => void;
   onExtractCv: () => void;
-  onExportJson: () => void;
-  onExportPdf: () => void;
   onOpenSection?: (panel: EditorPanelKey) => void;
-  isExportingPdf?: boolean;
   isImportingPdf?: boolean;
 };

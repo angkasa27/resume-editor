@@ -139,7 +139,6 @@ export function ResumeEditorMobileContent({
                 onBack={backToList}
                 onExtractCv={controlPanelProps.onExtractCv}
                 onImportJson={controlPanelProps.onImportJson}
-                onExportJson={controlPanelProps.onExportJson}
                 isImportingPdf={controlPanelProps.isImportingPdf}
                 idPrefix="mobile"
                 scrollPaddingClassName={NAV_CLEARANCE}

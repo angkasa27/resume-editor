@@ -66,6 +66,7 @@ export function ResumeEditorMobile({
     onRedo: redo,
     onExportPdf: handlePrint,
     isExportingPdf,
+    onExportJson: handleExport,
   });
 
   useKeyboardShortcuts({
@@ -108,10 +109,7 @@ export function ResumeEditorMobile({
     onPresentationChange: savePdfPresentation,
     onImportJson: openJsonImportPicker,
     onExtractCv: () => setIsExtractCvOpen(true),
-    onExportJson: handleExport,
-    onExportPdf: handlePrint,
     onOpenSection: openSection,
-    isExportingPdf,
     isImportingPdf,
   };
 

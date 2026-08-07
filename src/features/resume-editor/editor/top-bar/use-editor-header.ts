@@ -5,6 +5,8 @@ import { useEffect, useLayoutEffect, useRef } from "react";
 import type { SaveStatus } from "@/features/resume-editor/domain/draft/draft-storage";
 import { useEditorHeaderStore } from "@/features/resume-editor/editor/top-bar/editor-header-store";
 
+const noop = () => {};
+
 type EditorHeaderControls = {
   saveStatus: SaveStatus;
   canUndo: boolean;
@@ -14,6 +16,8 @@ type EditorHeaderControls = {
   /** The top bar's Download PDF action. */
   onExportPdf: () => void;
   isExportingPdf: boolean;
+  /** Behind the Download PDF split menu. */
+  onExportJson: () => void;
 };
 
 /**
@@ -29,10 +33,12 @@ export function useEditorHeader(controls: EditorHeaderControls) {
   const onUndoRef = useRef(controls.onUndo);
   const onRedoRef = useRef(controls.onRedo);
   const onExportPdfRef = useRef(controls.onExportPdf);
+  const onExportJsonRef = useRef(controls.onExportJson);
   useLayoutEffect(() => {
     onUndoRef.current = controls.onUndo;
     onRedoRef.current = controls.onRedo;
     onExportPdfRef.current = controls.onExportPdf;
+    onExportJsonRef.current = controls.onExportJson;
   });
 
   // Handlers are read through refs, so only the export *flag* belongs in the
@@ -46,13 +52,20 @@ export function useEditorHeader(controls: EditorHeaderControls) {
       onRedo: () => onRedoRef.current(),
       onExportPdf: () => onExportPdfRef.current(),
       isExportingPdf,
+      onExportJson: () => onExportJsonRef.current(),
     });
+    // Handlers too, not just flags — a bar outliving this page would otherwise
+    // keep firing its refs.
     return () =>
       setControls({
         saveStatus: "idle",
         canUndo: false,
         canRedo: false,
         isExportingPdf: false,
+        onUndo: noop,
+        onRedo: noop,
+        onExportPdf: noop,
+        onExportJson: noop,
       });
   }, [setControls, isExportingPdf]);
 

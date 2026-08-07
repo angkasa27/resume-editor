@@ -65,7 +65,8 @@ This replaces the old three-role float/stacked/none recipe (`FloatingField` + `f
 | Primary add (Add item, Add section, Add link)          | `default`                          | `default` + `w-full` |
 | Primary output (Download PDF, top bar)                 | `default`                          | `sm`                 |
 | Document action — AI (Extract from PDF)                | `ai`                               | `default` + `w-full` |
-| Document action — plain (Import/Export JSON)           | `outline`                          | `default`            |
+| Document action — plain (Import JSON)                  | `outline`                          | `default` + `w-full` |
+| Split-button menu trigger (top bar export menu)        | `default` + `ButtonGroup`          | `icon-sm`            |
 | Dialog confirm — AI                                    | `ai`                               | `sm`                 |
 | Dialog confirm — plain                                 | `default`                          | `sm`                 |
 | Secondary / cancel                                     | `outline`                          | `sm`                 |
@@ -91,7 +92,9 @@ This replaces the old three-role float/stacked/none recipe (`FloatingField` + `f
 
 **Add is primary; it's a filled `default` button.** Add item, Add section, and Add link all read as the same full-width primary CTA — the résumé's own rows are bordered, so an `outline` add blended into them. One filled treatment, consistent across every add.
 
-**Document actions live at the top of the Edit list, not the top bar.** Extract from PDF (`ai`) and Import/Export JSON (`outline`) sit above the section list (`editor/sections/document-actions.tsx`). The top bar stays lean — wordmark + save status on the left; Undo/Redo + the primary **Download PDF** (`default`) on the right. No File dropdown, no GitHub button.
+**File actions split by direction, not by format.** What _replaces_ the document goes at the top of the Edit list (`editor/sections/document-actions.tsx`): Extract from PDF (`ai`), Import JSON (`outline`). What gets the résumé _out_ goes in the top bar's split button: **Download PDF** (`default`) + a chevron menu holding Export JSON. Import stays out of that menu — it wipes the draft with no confirm and must not sit one row from a harmless export. Bar otherwise stays lean: wordmark + save status left, Undo/Redo right. No general File dropdown, no GitHub button.
+
+**Under 360px the Download PDF label yields, the button doesn't.** `sr-only min-[360px]:not-sr-only` — the icon carries the smallest phones, where the words push the split menu off-screen. Don't answer a tight bar by demoting the primary output into the menu.
 
 **Raw `<button>` is legitimate only when `Button`'s box would fight the content**: the template preview card (an aspect-ratio card wrapping a scaled document), the 28px colour swatches, the 80px photo avatar, the tag ✕, the editor rail's nav icons. Everything else uses `Button`. Raw or not, they all take the one focus ring.
 
