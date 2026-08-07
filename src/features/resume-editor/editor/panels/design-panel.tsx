@@ -33,7 +33,7 @@ export function DesignPanel({
   );
 
   return (
-    <Tabs defaultValue="template" className="flex h-full flex-col">
+    <Tabs defaultValue="template" className="flex h-full flex-col gap-0!">
       <div className="shrink-0 px-3 pt-3">
         <TabsList className="w-full">
           <TabsTrigger value="template">
