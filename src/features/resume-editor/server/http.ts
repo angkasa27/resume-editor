@@ -33,5 +33,8 @@ export function handleResumeImportError(
   if (error instanceof ResumeImportError) {
     return Response.json({ message: error.message }, { status: error.status });
   }
+  // Anything that isn't a ResumeImportError is unexpected, and the client only
+  // ever sees the generic fallback — without this the cause leaves no trace.
+  console.error(fallbackMessage, error);
   return Response.json({ message: fallbackMessage }, { status: 500 });
 }

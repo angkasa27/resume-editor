@@ -58,6 +58,7 @@ export function useProfileForm(draft: ResumeDraft) {
       const { objectUrl, image } = await loadImageFile(file);
       setCrop({ open: true, imageUrl: objectUrl, image });
     } catch (error) {
+      console.error("Reading the profile photo failed", error);
       toast.add({
         title:
           error instanceof ProfilePhotoError

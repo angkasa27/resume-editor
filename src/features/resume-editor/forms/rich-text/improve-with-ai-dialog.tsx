@@ -169,6 +169,7 @@ function ImproveWithAiBody({
       });
       setPhase({ kind: "result", improved });
     } catch (error) {
+      console.error("Improving the content with AI failed", error);
       const message =
         error instanceof Error
           ? error.message

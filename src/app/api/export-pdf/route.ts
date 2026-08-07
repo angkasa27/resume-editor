@@ -60,6 +60,7 @@ export async function POST(request: Request) {
       );
     }
 
+    console.error("PDF export failed", error);
     return Response.json(
       {
         message:

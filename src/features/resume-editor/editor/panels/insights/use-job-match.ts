@@ -156,6 +156,7 @@ export function useJobMatch(draft: ResumeDraft) {
       setSubmitState({ status: "idle" });
       toast.add({ title: "Job description analyzed.", type: "success" });
     } catch (error) {
+      console.error("Analyzing the job description failed", error);
       const message =
         error instanceof Error
           ? error.message

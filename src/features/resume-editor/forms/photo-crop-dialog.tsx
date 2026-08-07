@@ -104,6 +104,7 @@ function CropEditor({
     try {
       onApply(cropImageToDataUrl(image, areaPixels as CropArea));
     } catch (error) {
+      console.error("Cropping the profile photo failed", error);
       toast.add({
         title:
           error instanceof ProfilePhotoError
