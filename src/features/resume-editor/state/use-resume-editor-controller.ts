@@ -16,6 +16,7 @@ import type {
   SaveStatus,
 } from "@/features/resume-editor/domain/draft/draft-storage";
 import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
+import { importResumeDraft } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import { flushOpenForms } from "@/features/resume-editor/forms/use-auto-save";
 import {
@@ -91,16 +92,14 @@ function useJsonImport(store: ResumeEditorStore) {
 
     try {
       const fileContents = await selectedFile.text();
-      const importedDraft = JSON.parse(fileContents);
 
-      store.getState().replaceDraft(importedDraft);
+      store.getState().replaceDraft(importResumeDraft(fileContents));
       toast.add({ title: "Draft imported.", type: "success" });
     } catch (error) {
+      // A ZodError's message is a multi-KB issue dump — useless in a toast.
+      console.error("Importing the JSON draft failed", error);
       toast.add({
-        title:
-          error instanceof Error
-            ? error.message
-            : "Unable to import that draft.",
+        title: "That file isn't a valid resume draft.",
         type: "error",
       });
     } finally {
@@ -163,6 +162,7 @@ function usePdfImport(store: ResumeEditorStore) {
         type: "success",
       });
     } catch (error) {
+      console.error("Importing the PDF failed", error);
       toast.add({
         title:
           error instanceof Error ? error.message : "Unable to import that PDF.",
@@ -247,6 +247,7 @@ function useDraftExport(draft: ResumeDraft) {
       URL.revokeObjectURL(url);
       toast.update(loadingId, { title: "PDF exported.", type: "success" });
     } catch (error) {
+      console.error("Exporting the PDF failed", error);
       toast.update(loadingId, {
         title:
           error instanceof Error

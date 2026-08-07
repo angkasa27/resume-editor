@@ -11,5 +11,11 @@ export function exportResumeDraft(draft: ResumeDraft): string {
 
 export function importResumeDraft(serializedDraft: string): ResumeDraft {
   const parsedJson = JSON.parse(serializedDraft) as unknown;
-  return parseResumeDraft(parsedJson);
+  // Some producers (the PDF-import response, cloud saves) wrap the draft in a
+  // `{ draft }` envelope; accept either shape.
+  const unwrapped =
+    parsedJson && typeof parsedJson === "object" && "draft" in parsedJson
+      ? (parsedJson as { draft: unknown }).draft
+      : parsedJson;
+  return parseResumeDraft(unwrapped);
 }
