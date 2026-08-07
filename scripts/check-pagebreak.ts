@@ -110,11 +110,7 @@ export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft
   return { ...draft, pdfPresentation: { ...draft.pdfPresentation, layoutId } };
 }
 
-/**
- * Sheets in a Skia-produced PDF. Chrome writes the page tree uncompressed, so
- * the page objects are greppable — `[^s]` is what keeps `/Type /Pages` (the
- * tree node) out of the count.
- */
+/** Chrome writes the page tree uncompressed; `[^s]` excludes `/Type /Pages`. */
 function countPdfPages(pdf: Buffer): number {
   return (pdf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
 }
@@ -197,11 +193,9 @@ async function main() {
         };
       });
 
-      // The DOM `pages` above is what the pass *thinks* it laid out. Chrome
-      // prints `format: "a4"` at a page height a fraction of a pixel shorter
-      // than 297mm, so a document forced to an exact whole number of CSS pages
-      // can spill onto one more printed page — a blank trailing sheet the DOM
-      // measurement can't see. Count the sheets in the real PDF.
+      // `report.pages` is what the pass *thinks* it laid out. A sub-pixel spill
+      // past the last page edge prints as a blank sheet while the DOM still
+      // measures a whole number of pages, so only the real PDF can see it.
       let pdfPages: number | null = null;
       if (process.env.PDF) {
         const buffer = await page.pdf({

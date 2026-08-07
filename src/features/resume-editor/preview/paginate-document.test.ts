@@ -157,18 +157,16 @@ describe("paginateResumeDocument", () => {
 
   it("pins the paper to a definite, clipped height", () => {
     // A `min-height` leaves the box free to grow, and the stretched first child
-    // (`.root > :first-child { flex: 1 0 auto }`) then spills a sub-pixel
-    // fragment past the last page edge — one blank sheet in the PDF, from two
-    // pages on. Only a definite height plus the clip closes that off, so the
-    // page count this returns is what actually prints.
+    // then spills a sub-pixel fragment past the last page edge — a blank sheet
+    // in the PDF. Only a definite height plus the clip makes the count printable.
     for (const [contentHeight, expectedPages] of [
       [600, 1],
       [1500, 2],
       [2500, 3],
     ] as const) {
       const { article, work, job } = buildArticle();
-      // Out of every band, so nothing shifts and the height under test is the
-      // height the pass forces rather than one the spacers moved.
+      // Clear of every band, so nothing shifts and the height under test is the
+      // one the pass forces rather than one the spacers moved.
       place(article, work, 300, 200);
       place(article, job, 320, 90);
       placeArticle(article, contentHeight);
@@ -181,10 +179,8 @@ describe("paginateResumeDocument", () => {
   });
 
   it("absorbs a hairline of overflow instead of buying a whole page for it", () => {
-    // Sub-pixel spill is measurement noise, and the clip is what makes eating
-    // it safe: PAGE_SLACK_PX lands in the bottom margin band the pass keeps
-    // empty by construction, never in content. Past the slack it is real
-    // content, and that does earn another page.
+    // Within the slack it is measurement noise, clipped from the empty bottom
+    // band. Past it, real content — which does earn another page.
     const build = (contentHeight: number) => {
       const { article, work, job } = buildArticle();
       place(article, work, 300, 200);

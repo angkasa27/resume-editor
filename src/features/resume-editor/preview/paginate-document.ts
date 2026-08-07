@@ -21,11 +21,9 @@
 const PX_PER_MM = 96 / 25.4;
 
 /**
- * Overflow absorbed at the last page's bottom edge, in px. It is the noise
- * floor for the page count and the amount `overflow: clip` is allowed to cut,
- * and those being one number is the point: the count can't disagree with what
- * prints. A pixel lands inside the bottom margin band the pass keeps empty by
- * construction (34–68px depending on layout), so it can never eat content.
+ * Overflow absorbed at the last page's bottom edge, in px — both the noise floor
+ * for the page count and what the clip may cut, so the two can't disagree. It
+ * falls inside the bottom margin band, which the pass keeps empty of content.
  */
 export const PAGE_SLACK_PX = 1;
 
@@ -140,9 +138,8 @@ function measureUnitBottom(block: HTMLElement, rect: DOMRect): number {
 
 /**
  * Undoes a previous pass so the next one measures the bare document. The forced
- * height matters as much as the spacers: leaving it in place means the next
- * pass measures the last pass's page count instead of the content, and with the
- * clip on, content the user just added would be cut rather than counted.
+ * height matters as much as the spacers: left in place, the next pass measures
+ * the last count instead of the content, and the clip cuts what the user added.
  */
 export function resetPagination(article: HTMLElement): void {
   for (const spacer of Array.from(
@@ -206,15 +203,8 @@ export function paginateResumeDocument(article: HTMLElement): number {
 
   // Round the paper out to whole pages so a full-bleed rail still reaches the
   // bottom edge of the final page instead of stopping where the text ended.
-  //
-  // `height`, not `min-height`, and clipped — both load-bearing. `.root >
-  // :first-child` is stretched to fill the paper, and a stretched flex item
-  // exactly N pages tall spills a sub-pixel fragment past the last page edge:
-  // one blank sheet in the PDF, from two pages on, reproducible in Chrome 128
-  // and invisible in the DOM (the article still measures N pages). A definite
-  // height gives that spill nowhere to go, and clipping keeps it from
-  // generating a fragment. Shaving the height instead does not help — the
-  // stretched child follows it down.
+  // Definite and clipped, not a `min-height`: the stretched first child spills a
+  // sub-pixel fragment past the last page edge, which prints as a blank sheet.
   const measuredHeight = cssPx(article.getBoundingClientRect().height);
   const pageCount = Math.max(
     1,
