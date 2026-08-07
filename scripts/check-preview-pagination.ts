@@ -66,8 +66,8 @@ function readReport() {
     violations,
     scale: Number(scale.toFixed(3)),
     // The pass writes this in CSS px, so it is comparable across zoom levels.
-    minHeight: Math.round(Number.parseFloat(article.style.minHeight)),
-    pages: Math.round(Number.parseFloat(article.style.minHeight) / pageHeight),
+    forcedHeight: Math.round(Number.parseFloat(article.style.height)),
+    pages: Math.round(Number.parseFloat(article.style.height) / pageHeight),
     markers: article.querySelectorAll("[data-page-marker]").length,
     spacers: article.querySelectorAll("[data-page-spacer]").length,
   };
@@ -95,11 +95,11 @@ async function main() {
     await page.goto(new URL("/editor", ORIGIN).toString(), {
       waitUntil: "networkidle0",
     });
-    // The pass writes min-height last, so a non-empty one means it has run.
+    // The pass writes the forced height last, so a non-empty one means it ran.
     await page.waitForFunction(
       () =>
         !!document.querySelector<HTMLElement>(".resume-document")?.style
-          .minHeight,
+          .height,
       { timeout: 20000 },
     );
 

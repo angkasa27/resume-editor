@@ -110,6 +110,15 @@ export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft
   return { ...draft, pdfPresentation: { ...draft.pdfPresentation, layoutId } };
 }
 
+/**
+ * Sheets in a Skia-produced PDF. Chrome writes the page tree uncompressed, so
+ * the page objects are greppable — `[^s]` is what keeps `/Type /Pages` (the
+ * tree node) out of the count.
+ */
+function countPdfPages(pdf: Buffer): number {
+  return (pdf.toString("latin1").match(/\/Type\s*\/Page[^s]/g) ?? []).length;
+}
+
 async function main() {
   const browser = await puppeteer.launch({ headless: true });
   let failures = 0;
@@ -188,13 +197,20 @@ async function main() {
         };
       });
 
-      if (process.env.PDF && (workCount === 7 || workCount === 0 || workCount === -1)) {
-        await page.pdf({
+      // The DOM `pages` above is what the pass *thinks* it laid out. Chrome
+      // prints `format: "a4"` at a page height a fraction of a pixel shorter
+      // than 297mm, so a document forced to an exact whole number of CSS pages
+      // can spill onto one more printed page — a blank trailing sheet the DOM
+      // measurement can't see. Count the sheets in the real PDF.
+      let pdfPages: number | null = null;
+      if (process.env.PDF) {
+        const buffer = await page.pdf({
           path: `/tmp/pagebreak/${layoutId}-x${workCount}.pdf`,
           format: "a4",
           printBackground: true,
           margin: { top: "0", right: "0", bottom: "0", left: "0" },
         });
+        pdfPages = countPdfPages(Buffer.from(buffer));
       }
 
       await page.close();
@@ -203,13 +219,18 @@ async function main() {
         failures++;
         continue;
       }
-      if (report.violations.length) failures++;
+      const violations = [...report.violations];
+      if (pdfPages !== null && pdfPages !== report.pages) {
+        violations.push(
+          `printed ${pdfPages} sheets for ${report.pages} laid-out pages`,
+        );
+      }
+      if (violations.length) failures++;
       console.log(
-        `${report.violations.length ? "FAIL" : "ok  "} ${layoutId} x${workCount} ` +
-          `pages=${report.pages} fragmented=${report.fragmented} maxGap=${report.maxGap} margin=${report.margin}` +
-          (report.violations.length
-            ? `\n     ${report.violations.join("\n     ")}`
-            : ""),
+        `${violations.length ? "FAIL" : "ok  "} ${layoutId} x${workCount} ` +
+          `pages=${report.pages}${pdfPages === null ? "" : ` pdf=${pdfPages}`} ` +
+          `fragmented=${report.fragmented} maxGap=${report.maxGap} margin=${report.margin}` +
+          (violations.length ? `\n     ${violations.join("\n     ")}` : ""),
       );
     }
   }

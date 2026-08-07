@@ -21,6 +21,15 @@
 const PX_PER_MM = 96 / 25.4;
 
 /**
+ * Overflow absorbed at the last page's bottom edge, in px. It is the noise
+ * floor for the page count and the amount `overflow: clip` is allowed to cut,
+ * and those being one number is the point: the count can't disagree with what
+ * prints. A pixel lands inside the bottom margin band the pass keeps empty by
+ * construction (34–68px depending on layout), so it can never eat content.
+ */
+export const PAGE_SLACK_PX = 1;
+
+/**
  * Units that must not be cut by a page edge, in document order. The whole
  * section moves, not just its heading, because the label-column layouts put the
  * two in one grid row and shifting the heading alone would slide it out of line.
@@ -130,9 +139,10 @@ function measureUnitBottom(block: HTMLElement, rect: DOMRect): number {
 }
 
 /**
- * Undoes a previous pass so the next one measures the bare document. The
- * min-height matters as much as the spacers: it is a floor, so leaving it in
- * place means the page count can only ever grow as the user edits.
+ * Undoes a previous pass so the next one measures the bare document. The forced
+ * height matters as much as the spacers: leaving it in place means the next
+ * pass measures the last pass's page count instead of the content, and with the
+ * clip on, content the user just added would be cut rather than counted.
  */
 export function resetPagination(article: HTMLElement): void {
   for (const spacer of Array.from(
@@ -146,6 +156,8 @@ export function resetPagination(article: HTMLElement): void {
     block.style.removeProperty("break-inside");
   }
   article.style.removeProperty("min-height");
+  article.style.removeProperty("height");
+  article.style.removeProperty("overflow");
 }
 
 /** Lays the document out in pages and returns how many it takes. */
@@ -168,8 +180,8 @@ export function paginateResumeDocument(article: HTMLElement): number {
   // the factor from the one length that is both — the paper's own width — so
   // the pass calibrates itself instead of trusting a caller to pass the zoom.
   const paperWidth = readMmVar(article, "--resume-paper-width");
-  const measured = paperWidth > 0 ? articleRect.width / paperWidth : 1;
-  const scale = measured > 0 ? measured : 1;
+  const measuredScale = paperWidth > 0 ? articleRect.width / paperWidth : 1;
+  const scale = measuredScale > 0 ? measuredScale : 1;
   const cssPx = (value: number) => value / scale;
 
   for (const block of Array.from(
@@ -194,12 +206,21 @@ export function paginateResumeDocument(article: HTMLElement): number {
 
   // Round the paper out to whole pages so a full-bleed rail still reaches the
   // bottom edge of the final page instead of stopping where the text ended.
+  //
+  // `height`, not `min-height`, and clipped — both load-bearing. `.root >
+  // :first-child` is stretched to fill the paper, and a stretched flex item
+  // exactly N pages tall spills a sub-pixel fragment past the last page edge:
+  // one blank sheet in the PDF, from two pages on, reproducible in Chrome 128
+  // and invisible in the DOM (the article still measures N pages). A definite
+  // height gives that spill nowhere to go, and clipping keeps it from
+  // generating a fragment. Shaving the height instead does not help — the
+  // stretched child follows it down.
+  const measuredHeight = cssPx(article.getBoundingClientRect().height);
   const pageCount = Math.max(
     1,
-    Math.ceil(
-      cssPx(article.getBoundingClientRect().height) / pageHeight - 0.001,
-    ),
+    Math.ceil((measuredHeight - PAGE_SLACK_PX) / pageHeight),
   );
-  article.style.minHeight = `${pageCount * pageHeight}px`;
+  article.style.height = `${pageCount * pageHeight}px`;
+  article.style.overflow = "clip";
   return pageCount;
 }
