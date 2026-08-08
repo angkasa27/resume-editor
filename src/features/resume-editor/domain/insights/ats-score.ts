@@ -253,22 +253,22 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   "modern-centered": {
     status: "warn",
     message:
-      "Centered headers parse acceptably, but classic or minimal is the safer choice for strict ATS pipelines.",
+      "Centered headers usually parse fine. Classic or minimal is safer if you expect a strict parser.",
   },
   academic: {
     status: "warn",
     message:
-      "Academic layouts parse acceptably, but classic or minimal is the safer choice for strict ATS pipelines.",
+      "Academic layouts usually parse fine. Classic or minimal is safer if you expect a strict parser.",
   },
   sidebar: {
     status: "fail",
     message:
-      "Two-column layouts get read straight across, interleaving the sidebar into your experience. Switch to a single-column layout.",
+      "Parsers read two columns straight across, so your sidebar ends up mixed into your experience. Switch to a single-column layout.",
   },
   split: {
     status: "fail",
     message:
-      "Two-column layouts get read straight across, interleaving both columns into one garbled block. Switch to a single-column layout.",
+      "Parsers read two columns straight across, so both sides end up jumbled into one block. Switch to a single-column layout.",
   },
 };
 
@@ -281,17 +281,17 @@ const PARSE_CHECKS: AtsCheck[] = [
     id: "parse/layout",
     category: "parse",
     weight: 3,
-    pass: "Single-column layout — parsers read it top to bottom in the right order.",
-    message: "This layout is a parsing risk.",
+    pass: "Single column, so parsers read it top to bottom in the right order.",
+    message: "This layout is risky to parse.",
     run: (ctx) => LAYOUT_VERDICTS[ctx.presentation.layoutId],
   },
   {
     id: "parse/photo",
     category: "parse",
     weight: 1,
-    pass: "No photo — nothing for the parser to trip on.",
+    pass: "No photo, so there is no image block to trip the parser.",
     message:
-      "A photo adds an image block many parsers mis-handle, and US/UK/Canadian employers routinely discard resumes carrying one. Remove it unless the market expects it.",
+      "Many parsers mishandle photos, and employers in the US, UK and Canada often discard resumes that carry one. Remove it unless your market expects it.",
     fix: { panel: "profile" },
     run: (ctx) =>
       hasText(ctx.draft.profile.photo) ? { status: "warn" } : { status: "pass" },
@@ -302,7 +302,7 @@ const PARSE_CHECKS: AtsCheck[] = [
     weight: 2,
     pass: "No tables in your content.",
     message:
-      "Tables are read cell-by-cell in an unpredictable order. Rewrite these as plain paragraphs or bullets.",
+      "Parsers read tables cell by cell, in an order you cannot predict. Rewrite these as plain paragraphs or bullets.",
     run: (ctx) => {
       if (ctx.richTextHtml.length === 0) return { status: "na" };
       return ctx.richTextHtml.some((html) => /<table\b/i.test(html))
@@ -316,7 +316,7 @@ const PARSE_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "No nested lists.",
     message:
-      "Nested bullets often collapse or vanish on extraction. Flatten them to a single level.",
+      "Nested bullets often collapse or disappear when the text is pulled out. Flatten them to one level.",
     run: (ctx) => {
       if (ctx.richTextHtml.length === 0) return { status: "na" };
       return ctx.richTextHtml.some((html) =>
@@ -332,7 +332,7 @@ const PARSE_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "No decorative symbols in your text.",
     message:
-      "Decorative symbols and emoji get dropped or replaced with garbage on extraction. Use plain text.",
+      "Symbols and emoji are usually dropped or turned into junk characters. Use plain text.",
     run: (ctx) => {
       if (ctx.richTextHtml.length === 0) return { status: "na" };
       const offenders = ctx.richTextHtml
@@ -357,7 +357,7 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
     weight: 3,
     pass: "Experience, Education and Skills are all present.",
     message:
-      "Parsers map your resume by looking for standard section headings. Missing ones leave whole categories of your background unindexed.",
+      "Parsers find your history by looking for standard section headings. Anything missing leaves that part of your background unread.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       const { sections } = ctx.draft;
@@ -410,7 +410,7 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
     weight: 3,
     pass: "Every role has a title, an employer and a start date.",
     message:
-      "An entry missing any of title, employer or start date can't be indexed as a job — it won't count toward your years of experience.",
+      "A role needs a title, an employer and a start date to be indexed as a job. Without all three it will not count toward your years of experience.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       // Every collection section holds at least one row (schema `min(1)`), so a
@@ -444,7 +444,7 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "Experience is ordered above Education.",
     message:
-      "Experience is conventionally listed above Education once you have work history — recruiters scan for it first.",
+      "Once you have work history, Experience usually goes above Education. Recruiters look for it first.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       const { workExperience, education } = ctx.draft.sections;
@@ -464,7 +464,7 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "You have a summary at the top.",
     message:
-      "A 2–3 sentence summary is the first thing a recruiter reads, and it's prime real estate for the job's core keywords.",
+      "Two or three sentences at the top are the first thing a recruiter reads, and a good place for the job's core terms.",
     fix: { panel: "summary" },
     run: (ctx) => {
       const { summary } = ctx.draft.sections;
@@ -489,7 +489,7 @@ const CONTACT_CHECKS: AtsCheck[] = [
     weight: 4,
     pass: "Your name is on the resume.",
     message:
-      "Add your full name. It's the field every parser keys the candidate record on — without it the application is unusable.",
+      "Add your full name. Every parser builds the candidate record around it, and without one your application is unusable.",
     fix: { panel: "profile" },
     run: (ctx) =>
       hasText(ctx.draft.profile.fullName)
@@ -500,9 +500,9 @@ const CONTACT_CHECKS: AtsCheck[] = [
     id: "contact/email",
     category: "contact",
     weight: 3,
-    pass: "Your email address is well-formed.",
+    pass: "Your email address looks valid.",
     message:
-      "The email field doesn't look like a valid address. If extraction fails here, nothing else on the resume matters.",
+      "This does not look like a valid email address. If it cannot be read, nothing else on the resume matters.",
     fix: { panel: "profile" },
     run: (ctx) => {
       const email = ctx.draft.profile.email.trim();
@@ -516,8 +516,8 @@ const CONTACT_CHECKS: AtsCheck[] = [
     id: "contact/phone",
     category: "contact",
     weight: 1,
-    pass: "Your phone number has enough digits to be dialled.",
-    message: "Add a phone number — it's the fastest channel for a recruiter.",
+    pass: "Your phone number looks complete.",
+    message: "Add a phone number. It is the fastest way for a recruiter to reach you.",
     fix: { panel: "profile" },
     run: (ctx) => {
       const digits = ctx.draft.profile.phone.replace(/\D/g, "");
@@ -526,7 +526,7 @@ const CONTACT_CHECKS: AtsCheck[] = [
         ? { status: "pass" }
         : {
             status: "warn",
-            message: "That phone number looks too short to be complete.",
+            message: "This phone number looks too short.",
             evidence: [ctx.draft.profile.phone],
           };
     },
@@ -537,7 +537,7 @@ const CONTACT_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "Your location is set.",
     message:
-      "Add a location — ATS search filters and recruiter queries are frequently geography-first.",
+      "Add a location. Recruiters and ATS filters often search by place first.",
     fix: { panel: "profile" },
     run: (ctx) =>
       hasText(ctx.draft.profile.location)
@@ -548,9 +548,9 @@ const CONTACT_CHECKS: AtsCheck[] = [
     id: "contact/links",
     category: "contact",
     weight: 1,
-    pass: "Your links include the https:// prefix.",
+    pass: "Your links start with https://.",
     message:
-      "Write links in full, with https://. A bare domain often isn't recognised as a URL and gets dropped.",
+      "Write links in full, starting with https://. A bare domain often is not recognised as a link and gets dropped.",
     fix: { panel: "profile" },
     run: (ctx) => {
       const links = ctx.draft.profile.extraLinks
@@ -573,9 +573,9 @@ const CONTACT_CHECKS: AtsCheck[] = [
     id: "contact/dates-readable",
     category: "contact",
     weight: 4,
-    pass: "Every date is in a machine-readable format.",
+    pass: "Every date is in a format a parser can read.",
     message:
-      'Dates must be written as "MMM YYYY" (e.g. "Mar 2021"). Anything else fails extraction, which silently zeroes out your years of experience.',
+      'Write dates as "MMM YYYY", like "Mar 2021". Anything else fails to parse, which quietly wipes out your years of experience.',
     fix: { panel: "workExperience" },
     run: (ctx) => {
       if (ctx.datedEntries.length === 0) return { status: "na" };
@@ -595,7 +595,7 @@ const CONTACT_CHECKS: AtsCheck[] = [
     weight: 2,
     pass: "Roles are listed newest first.",
     message:
-      "List roles in reverse-chronological order. Both parsers and recruiters assume the top entry is your current one.",
+      "List your roles newest first. Parsers and recruiters both assume the top entry is your current job.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       const items = ctx.draft.sections.workExperience.items;
@@ -621,7 +621,7 @@ const CONTACT_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "No unexplained gaps longer than six months.",
     message:
-      "Long gaps get flagged in screening. Account for them with a project, a course, or a contract entry.",
+      "Long gaps get flagged in screening. Cover them with a project, a course, or contract work.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       const spans = ctx.draft.sections.workExperience.items
@@ -719,6 +719,13 @@ function firstWord(text: string): string {
   return (text.match(/[a-zA-Z][a-zA-Z'-]*/)?.[0] ?? "").toLowerCase();
 }
 
+// The ideal band, and the point past which a bullet is actually flagged. They
+// differ on purpose — 25-28 words is long but not wrong, so it is not worth a
+// warning — but every string below quotes the number it is really using.
+const IDEAL_MIN_WORDS = 8;
+const IDEAL_MAX_WORDS = 24;
+const TOO_LONG_WORDS = 28;
+
 function wordCount(text: string): number {
   return text.split(/\s+/).filter(Boolean).length;
 }
@@ -730,7 +737,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
     weight: 2,
     pass: "Your roles are described in bullet points.",
     message:
-      "Add bullet points under your roles. A block of prose is harder to skim and harder to keyword-match.",
+      "Add bullet points under your roles. A solid block of prose is harder to skim and harder to match on keywords.",
     fix: { panel: "workExperience" },
     run: (ctx) =>
       ctx.bullets.length > 0 ? { status: "pass" } : { status: "fail" },
@@ -741,7 +748,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
     weight: 3,
     pass: "Most bullets open with a strong action verb.",
     message:
-      "Open bullets with a strong action verb (Led, Built, Shipped, Drove). Both recruiters and keyword pipelines weight the first word heavily.",
+      "Start bullets with a strong verb like Led, Built, Shipped or Drove. Recruiters and keyword tools both weight the first word heavily.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       if (ctx.bullets.length === 0) return { status: "na" };
@@ -762,9 +769,9 @@ const CONTENT_CHECKS: AtsCheck[] = [
     id: "content/quantified",
     category: "content",
     weight: 3,
-    pass: "A healthy share of your bullets carry a number.",
+    pass: "Plenty of your bullets carry a number.",
     message:
-      'Quantify impact in at least a third of your bullets — "cut p95 latency 40%" outranks "improved performance".',
+      'Put a number in at least a third of your bullets. "Cut p95 latency 40%" beats "improved performance".',
     fix: { panel: "workExperience" },
     run: (ctx) => {
       if (ctx.bullets.length === 0) return { status: "na" };
@@ -789,12 +796,16 @@ const CONTENT_CHECKS: AtsCheck[] = [
     category: "content",
     weight: 2,
     pass: "Bullets are a readable length.",
-    message: "Aim for 8–24 words per bullet: action, scope, then outcome.",
+    message: `Aim for ${IDEAL_MIN_WORDS} to ${IDEAL_MAX_WORDS} words per bullet: action, scope, then outcome.`,
     fix: { panel: "workExperience" },
     run: (ctx) => {
       if (ctx.bullets.length === 0) return { status: "na" };
-      const short = ctx.bullets.filter((bullet) => wordCount(bullet) < 8);
-      const long = ctx.bullets.filter((bullet) => wordCount(bullet) > 28);
+      const short = ctx.bullets.filter(
+        (bullet) => wordCount(bullet) < IDEAL_MIN_WORDS,
+      );
+      const long = ctx.bullets.filter(
+        (bullet) => wordCount(bullet) > TOO_LONG_WORDS,
+      );
       const offenders = [...short, ...long];
       if (offenders.length === 0) return { status: "pass" };
       const ratio = 1 - offenders.length / ctx.bullets.length;
@@ -804,8 +815,8 @@ const CONTENT_CHECKS: AtsCheck[] = [
         status: ratio >= 0.4 ? "warn" : "fail",
         message:
           short.length >= long.length
-            ? "Some bullets are too thin to carry an accomplishment. Aim for 8–24 words: action, scope, outcome."
-            : "Some bullets run long. Trim to 8–24 words so they stay skimmable.",
+            ? `These bullets are under ${IDEAL_MIN_WORDS} words, too thin to carry an accomplishment. Aim for ${IDEAL_MIN_WORDS} to ${IDEAL_MAX_WORDS}: action, scope, outcome.`
+            : `These bullets run past ${TOO_LONG_WORDS} words. Trim toward ${IDEAL_MIN_WORDS} to ${IDEAL_MAX_WORDS} so they stay easy to skim.`,
         evidence: trim(offenders.map((bullet) => excerpt(bullet))),
       };
     },
@@ -816,7 +827,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
     weight: 1,
     pass: "No first-person pronouns.",
     message:
-      'Drop "I" and "my" from bullets — resumes are written in implied first person.',
+      'Drop "I" and "my" from your bullets. Resumes leave the subject implied.',
     fix: { panel: "workExperience" },
     run: (ctx) => {
       if (ctx.bullets.length === 0) return { status: "na" };
@@ -844,7 +855,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
       const offenders = ctx.bullets.flatMap((bullet) => {
         const lower = bullet.toLowerCase();
         const hit = CLICHES.find((cliche) => lower.includes(cliche));
-        return hit ? [`"${hit}" — ${excerpt(bullet, 50)}`] : [];
+        return hit ? [`"${hit}" in: ${excerpt(bullet, 50)}`] : [];
       });
       return offenders.length === 0
         ? { status: "pass" }
@@ -855,9 +866,9 @@ const CONTENT_CHECKS: AtsCheck[] = [
     id: "content/standard-titles",
     category: "content",
     weight: 1,
-    pass: "Your job titles are standard ones.",
+    pass: "Your job titles are standard.",
     message:
-      "Novelty job titles don't exist in any ATS title dictionary, so you won't surface in title searches. Use the standard title and keep the fun one in the bullet.",
+      "Novelty titles are not in any ATS title dictionary, so you will not show up in title searches. Use the standard title and keep the fun one in a bullet.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
       const titles = ctx.draft.sections.workExperience.items
@@ -910,7 +921,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
         return {
           status: "warn",
           message:
-            "This is light on content — it won't fill half a page. Add scope and outcomes to your existing roles.",
+            "There is not enough here to fill half a page. Add scope and outcomes to the roles you already have.",
         };
       }
       if (pages > 2.2) {
@@ -955,7 +966,7 @@ const JOB_MATCH_CHECKS: AtsCheck[] = [
     weight: 2,
     pass: "Your terms are spelled the way the job description spells them.",
     message:
-      "Keyword screens compare literal strings — an acronym doesn't match its expansion. Write both forms once, e.g. \"Kubernetes (K8s)\".",
+      "Keyword screens compare exact text, so an acronym will not match its full form. Write both once, like \"Kubernetes (K8s)\".",
     run: (ctx) => {
       if (!ctx.jobMatch || ctx.jobMatch.keywords.length === 0)
         return { status: "na" };

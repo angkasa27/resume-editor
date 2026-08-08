@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PencilIcon, TelescopeIcon, XIcon } from "lucide-react";
+import { PencilIcon, PlusIcon, TelescopeIcon, XIcon } from "lucide-react";
 
 import {
   AlertDialog,
@@ -21,12 +21,15 @@ type JobDescriptionPanelProps = {
   jobMatch: JobMatchResult | null;
   onAnalyzeClick: () => void;
   onReset: () => void;
+  /** Opens the tailor dialog for a missing term. */
+  onTailor: (term: string) => void;
 };
 
 export function JobDescriptionPanel({
   jobMatch,
   onAnalyzeClick,
   onReset,
+  onTailor,
 }: JobDescriptionPanelProps) {
   const [isResetConfirmOpen, setIsResetConfirmOpen] = useState(false);
 
@@ -76,7 +79,7 @@ export function JobDescriptionPanel({
       {jobMatch.missing.length > 0 ? (
         <div className="flex flex-col gap-2">
           <span className="text-xs font-semibold text-muted-foreground">
-            Missing from your resume
+            Missing from your resume. Tap one to add it.
           </span>
           <ul className="flex flex-wrap gap-1">
             {jobMatch.missing
@@ -84,7 +87,18 @@ export function JobDescriptionPanel({
               .sort((a, b) => b.weight - a.weight)
               .map((kw) => (
                 <li key={`${kw.term}-${kw.category}`}>
-                  <Badge variant="outline" className="text-xs">
+                  <Badge
+                    render={
+                      <button
+                        type="button"
+                        onClick={() => onTailor(kw.term)}
+                        aria-label={`Add ${kw.term} to your resume`}
+                      />
+                    }
+                    variant="outline"
+                    className="cursor-pointer text-xs hover:bg-muted"
+                  >
+                    <PlusIcon data-icon="inline-start" />
                     {kw.term}
                   </Badge>
                 </li>
@@ -96,7 +110,7 @@ export function JobDescriptionPanel({
       {jobMatch.partial.length > 0 ? (
         <div className="flex flex-col gap-2">
           <span className="text-xs font-semibold text-muted-foreground">
-            Spelled differently — write both forms
+            Spelled differently. Write both forms.
           </span>
           <ul className="flex flex-wrap gap-1">
             {jobMatch.partial.map((kw) => (
@@ -116,7 +130,7 @@ export function JobDescriptionPanel({
 
       {jobMatch.missing.length === 0 && jobMatch.partial.length === 0 ? (
         <p className="text-xs text-emerald-600 dark:text-emerald-400">
-          Every JD keyword is present — nicely done.
+          Every keyword from the job is on your resume.
         </p>
       ) : null}
 

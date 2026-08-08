@@ -8,6 +8,9 @@ export type ImproveContentInput = {
   html: string;
   chips: string[];
   customInstruction: string;
+  /** Job-description terms to weave in. Only the terms cross the wire — the
+   *  instruction wrapping them is built here, never sent by the client. */
+  keywords?: string[];
 };
 
 // Server-controlled mapping from chip label → instruction text.
@@ -23,18 +26,30 @@ const CHIP_INSTRUCTIONS: Record<string, string> = {
   "Sound more senior":
     "Elevate the language to convey ownership, leadership, and strategic impact.",
   "Fix grammar":
-    "Correct grammar and punctuation only — keep the original meaning and language intact.",
+    "Correct grammar and punctuation only. Keep the original meaning and language intact.",
 };
 
-function collectInstructions(
-  chips: string[],
-  customInstruction: string,
-): string[] {
-  const instructions = chips
+/**
+ * Wraps job-description terms in a fixed instruction. The anti-fabrication
+ * clause is the load-bearing part: asked to work a term in, a model will
+ * happily invent the experience that justifies it, and a resume that lies is
+ * worse than one that scores badly.
+ */
+export function buildKeywordInstruction(keywords: string[]): string {
+  return `Work these terms from the target job description into the content, but only where the existing content already supports them: ${keywords.join(", ")}. Only use a term if what is already written genuinely demonstrates it. Reword to surface skills that are already implied. If a term is not supported, leave it out entirely. Omitting a term is always correct. Inventing experience to justify one is never acceptable. Use each term at most once. Write it in lower case unless it is a proper noun such as a product, company, or technology name: write "leadership", not "Leadership", and "mentorship", not "Mentorship". Capitalising an ordinary word mid-sentence is the clearest sign of keyword stuffing and gets a resume discarded. The result must read as ordinary prose, not as a keyword list.`;
+}
+
+function collectInstructions(input: ImproveContentInput): string[] {
+  const instructions = input.chips
     .map((chip) => CHIP_INSTRUCTIONS[chip])
     .filter((instruction): instruction is string => Boolean(instruction));
 
-  const trimmedCustom = customInstruction.trim();
+  const keywords = (input.keywords ?? []).filter((term) => term.trim());
+  if (keywords.length > 0) {
+    instructions.push(buildKeywordInstruction(keywords));
+  }
+
+  const trimmedCustom = input.customInstruction.trim();
   if (trimmedCustom) {
     instructions.push(trimmedCustom);
   }
@@ -43,10 +58,7 @@ function collectInstructions(
 }
 
 function buildPrompt(input: ImproveContentInput): string {
-  const instructions = collectInstructions(
-    input.chips,
-    input.customInstruction,
-  );
+  const instructions = collectInstructions(input);
 
   const instructionList =
     instructions.length > 0
@@ -55,13 +67,14 @@ function buildPrompt(input: ImproveContentInput): string {
 
   return `You improve resume bullet points and descriptions for a resume editor.
 
-CRITICAL — Language preservation: Detect the language of the content provided below. Write your entire response in the SAME language as the input. For example, if the content is written in Bahasa Indonesia, respond in Bahasa Indonesia. If the user's additional instruction explicitly requests a specific target language, use that language instead.
+CRITICAL, language preservation: Detect the language of the content provided below. Write your entire response in the SAME language as the input. For example, if the content is written in Bahasa Indonesia, respond in Bahasa Indonesia. If the user's additional instruction explicitly requests a specific target language, use that language instead.
 
 Rules:
 - Keep the same HTML structure. Use ONLY these tags: <p> <ul> <ol> <li> <strong> <em> <u> <a> <br>
 - Apply every improvement listed below.
-- Return ONLY the improved HTML — no commentary, no markdown fences, no explanation.
+- Return ONLY the improved HTML. No commentary, no markdown fences, no explanation.
 - Do not invent facts, companies, job titles, metrics, or details not implied by the original content.
+- Never use em dashes or en dashes. Use a comma, a colon, or a full stop instead. Write plainly and avoid marketing language.
 
 Content to improve:
 """

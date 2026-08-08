@@ -109,24 +109,3 @@ export function extractResumeText(draft: ResumeDraft): string {
 
   return parts.filter(Boolean).join(" ");
 }
-
-/** Gather every bullet across narrative sections for content-quality scoring. */
-export function extractAllBullets(draft: ResumeDraft): string[] {
-  const bullets: string[] = [];
-  for (const item of draft.sections.workExperience.items) {
-    bullets.push(...extractBullets(item.description));
-  }
-  for (const item of draft.sections.projects.items) {
-    bullets.push(...extractBullets(item.description));
-  }
-  for (const item of draft.sections.education.items) {
-    bullets.push(...extractBullets(item.description));
-  }
-  for (const item of draft.sections.organizationVolunteering.items) {
-    bullets.push(...extractBullets(item.description));
-  }
-  for (const item of draft.sections.awards.items) {
-    bullets.push(...extractBullets(item.description));
-  }
-  return bullets;
-}

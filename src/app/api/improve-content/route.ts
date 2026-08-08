@@ -11,6 +11,8 @@ import {
 export const runtime = "nodejs";
 
 const HTML_CHAR_LIMIT = 8_000;
+const KEYWORD_LIMIT = 12;
+const KEYWORD_CHAR_LIMIT = 60;
 
 type ValidatedBody =
   | { ok: true; input: ImproveContentInput }
@@ -27,7 +29,10 @@ function validateImproveContentBody(body: unknown): ValidatedBody {
     };
   }
 
-  const { html, chips, customInstruction } = body as Record<string, unknown>;
+  const { html, chips, customInstruction, keywords } = body as Record<
+    string,
+    unknown
+  >;
 
   if (typeof html !== "string" || !html.trim()) {
     return {
@@ -58,12 +63,21 @@ function validateImproveContentBody(body: unknown): ValidatedBody {
   const customInstructionText =
     typeof customInstruction === "string" ? customInstruction.trim() : "";
 
+  // Terms only — the instruction around them is built server-side. Capped so a
+  // crafted request can't stuff the prompt through this field.
+  const keywordList = (Array.isArray(keywords) ? keywords : [])
+    .filter((term): term is string => typeof term === "string")
+    .map((term) => term.trim())
+    .filter((term) => term.length > 0 && term.length <= KEYWORD_CHAR_LIMIT)
+    .slice(0, KEYWORD_LIMIT);
+
   return {
     ok: true,
     input: {
       html: html.trim(),
       chips: chipsArray,
       customInstruction: customInstructionText,
+      keywords: keywordList,
     },
   };
 }

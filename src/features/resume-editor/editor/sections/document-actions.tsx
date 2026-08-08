@@ -11,10 +11,7 @@ type DocumentActionsProps = {
   isImportingPdf?: boolean;
 };
 
-/**
- * The two ways to seed the résumé from a file you already have. Both replace
- * the draft; the top bar carries the ways to get one back out. See DESIGN.md.
- */
+/** Both replace the draft. Exports live in the top bar — see DESIGN.md. */
 export function DocumentActions({
   onExtractCv,
   onImportJson,

@@ -2,7 +2,6 @@ import { describe, expect, it } from "vitest";
 
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
 import {
-  extractAllBullets,
   extractBullets,
   extractResumeText,
   stripRichText,
@@ -81,17 +80,5 @@ describe("extractResumeText", () => {
 
     expect(text).toContain("Lead Frontend Engineer");
     expect(text).toContain("Nusantara Commerce");
-  });
-});
-
-describe("extractAllBullets", () => {
-  it("gathers bullets from work experience, projects, education, and volunteering", () => {
-    const draft = createDefaultResumeDraft();
-
-    const bullets = extractAllBullets(draft);
-
-    expect(bullets.length).toBeGreaterThan(0);
-    expect(bullets.some((b) => b.includes("migration"))).toBe(true);
-    expect(bullets.some((b) => b.includes("analytics"))).toBe(true);
   });
 });

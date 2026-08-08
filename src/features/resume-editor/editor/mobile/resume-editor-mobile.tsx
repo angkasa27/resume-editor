@@ -19,6 +19,8 @@ import { toast } from "@/components/ui/toast";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
+import { JobKeywordsContext } from "@/features/resume-editor/state/job-keywords";
+import { selectAlignmentKeywords } from "@/features/resume-editor/domain/insights/alignment-keywords";
 
 type ResumeEditorMobileProps = {
   initialDraft?: ResumeDraft;
@@ -104,6 +106,13 @@ export function ResumeEditorMobile({
     onAutoSortSection: autoSortSection,
   };
 
+  // Every rich-text field reads this to offer "Align to the job". Only the
+  // gaps, heaviest first — see selectAlignmentKeywords for why order matters.
+  const jobKeywords = useMemo(
+    () => selectAlignmentKeywords(draft),
+    [draft],
+  );
+
   const controlPanelProps: EditorControlProps = {
     presentation,
     draft,
@@ -117,6 +126,7 @@ export function ResumeEditorMobile({
 
   return (
     <EditorRevisionContext.Provider value={revision}>
+    <JobKeywordsContext.Provider value={jobKeywords}>
     <div
       className="flex h-full flex-col overflow-hidden"
       style={{ "--header-height": "3rem" } as React.CSSProperties}
@@ -149,6 +159,7 @@ export function ResumeEditorMobile({
         />
       </div>
     </div>
+    </JobKeywordsContext.Provider>
     </EditorRevisionContext.Provider>
   );
 }

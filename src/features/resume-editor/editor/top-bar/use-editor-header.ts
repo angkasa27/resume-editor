@@ -54,8 +54,7 @@ export function useEditorHeader(controls: EditorHeaderControls) {
       isExportingPdf,
       onExportJson: () => onExportJsonRef.current(),
     });
-    // Handlers too, not just flags — a bar outliving this page would otherwise
-    // keep firing its refs.
+    // Handlers too: a bar outliving this page would keep firing its refs.
     return () =>
       setControls({
         saveStatus: "idle",

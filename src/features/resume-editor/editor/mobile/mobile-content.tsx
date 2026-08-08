@@ -165,6 +165,7 @@ export function ResumeEditorMobileContent({
                 <InsightsTab
                   draft={draft}
                   onSaveInsights={controlPanelProps.onSaveInsights}
+                  onSaveSection={onSaveSection}
                   onOpenSection={handleInsightsOpen}
                 />
               </div>

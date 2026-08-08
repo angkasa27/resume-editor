@@ -1,11 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { SparklesIcon } from "lucide-react";
+import { SparklesIcon, TargetIcon } from "lucide-react";
 import { toast } from "@/components/ui/toast";
 
 import { Button } from "@/components/ui/button";
-import { Spinner } from "@/components/ui/spinner";
 import {
   DialogHeaderRow,
   DialogHeaderSection,
@@ -24,7 +23,12 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Textarea } from "@/components/ui/textarea";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { useRotatingMessage } from "@/features/resume-editor/editor/shared/use-rotating-message";
+import {
+  LoadingPhase,
+  ResultPhase,
+  requestContentImprovement,
+} from "@/features/resume-editor/forms/rich-text/improve-phases";
+import { useJobKeywords } from "@/features/resume-editor/state/job-keywords";
 
 const QUICK_ACTIONS = [
   { label: "Add a metric" },
@@ -34,14 +38,9 @@ const QUICK_ACTIONS = [
   { label: "Fix grammar" },
 ] as const;
 
-type QuickActionLabel = (typeof QUICK_ACTIONS)[number]["label"];
-
-const PROGRESS_MESSAGES = [
-  "Reading your content…",
-  "Applying improvements…",
-  "Polishing the language…",
-  "Almost done…",
-] as const;
+/** Only offered once a job description has been analyzed. Unlike the other
+ *  chips it carries data (the JD's terms) rather than a fixed instruction. */
+const ALIGN_TO_JOB = "Align to the job";
 
 type Phase =
   | { kind: "idle" }
@@ -115,31 +114,6 @@ function ImproveWithAiDialog({
   );
 }
 
-async function requestContentImprovement(input: {
-  html: string;
-  chips: string[];
-  customInstruction: string;
-}): Promise<string> {
-  const response = await fetch("/api/improve-content", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(input),
-  });
-
-  const payload = (await response.json()) as {
-    improved?: string;
-    message?: string;
-  };
-
-  if (!response.ok || !payload.improved) {
-    throw new Error(
-      payload.message ?? "Could not improve the content. Please try again.",
-    );
-  }
-
-  return payload.improved;
-}
-
 type ImproveWithAiBodyProps = {
   currentHtml: string;
   onAccept: (improved: string) => void;
@@ -151,12 +125,12 @@ function ImproveWithAiBody({
   onAccept,
   onCancel,
 }: ImproveWithAiBodyProps) {
-  const [selectedChips, setSelectedChips] = useState<Set<QuickActionLabel>>(
-    new Set(),
-  );
+  const jobKeywords = useJobKeywords();
+  const [selectedChips, setSelectedChips] = useState<Set<string>>(new Set());
   const [customInstruction, setCustomInstruction] = useState("");
   const [phase, setPhase] = useState<Phase>({ kind: "idle" });
 
+  const alignToJob = selectedChips.has(ALIGN_TO_JOB);
 
   async function handleImprove() {
     setPhase({ kind: "loading" });
@@ -164,8 +138,11 @@ function ImproveWithAiBody({
     try {
       const improved = await requestContentImprovement({
         html: currentHtml,
-        chips: [...selectedChips],
+        // The job chip is not a fixed instruction, so it never reaches the
+        // server's chip table — it travels as the term list instead.
+        chips: [...selectedChips].filter((chip) => chip !== ALIGN_TO_JOB),
         customInstruction,
+        keywords: alignToJob ? jobKeywords : undefined,
       });
       setPhase({ kind: "result", improved });
     } catch (error) {
@@ -173,7 +150,7 @@ function ImproveWithAiBody({
       const message =
         error instanceof Error
           ? error.message
-          : "Could not improve the content. Please try again.";
+          : "Could not rewrite the content. Try again.";
       toast.add({ title: message, type: "error" });
       setPhase({ kind: "idle" });
     }
@@ -208,11 +185,15 @@ function ImproveWithAiBody({
           multiple
           aria-label="Quick actions"
           value={[...selectedChips]}
-          onValueChange={(next) =>
-            setSelectedChips(new Set(next as QuickActionLabel[]))
-          }
+          onValueChange={(next) => setSelectedChips(new Set(next as string[]))}
           className="flex flex-wrap gap-2"
         >
+          {jobKeywords.length > 0 ? (
+            <ToggleGroupItem value={ALIGN_TO_JOB} variant="ai" size="sm">
+              <TargetIcon data-icon="inline-start" />
+              {ALIGN_TO_JOB}
+            </ToggleGroupItem>
+          ) : null}
           {QUICK_ACTIONS.map(({ label }) => (
             <ToggleGroupItem
               key={label}
@@ -255,74 +236,6 @@ function ImproveWithAiBody({
         >
           <SparklesIcon data-icon="inline-start" />
           Improve
-        </Button>
-      </div>
-    </div>
-  );
-}
-
-function LoadingPhase() {
-  const message = useRotatingMessage(PROGRESS_MESSAGES, 2500);
-
-  return (
-    <div className="flex flex-1 flex-col items-center justify-center gap-4 py-8 text-center">
-      <div className="relative grid size-12 place-items-center rounded-full bg-violet-500/10 text-violet-500">
-        <SparklesIcon className="size-5" />
-        <Spinner aria-hidden className="absolute inset-0 size-12 text-violet-400/50" />
-      </div>
-      <div className="flex flex-col gap-1">
-        <p className="text-sm font-medium text-foreground">{message}</p>
-        <p className="text-xs text-muted-foreground">
-          This takes a few seconds.
-        </p>
-      </div>
-    </div>
-  );
-}
-
-type ResultPhaseProps = {
-  beforeHtml: string;
-  afterHtml: string;
-  onAccept: () => void;
-  onTryAgain: () => void;
-  onCancel: () => void;
-};
-
-function ResultPhase({
-  beforeHtml,
-  afterHtml,
-  onAccept,
-  onTryAgain,
-  onCancel,
-}: ResultPhaseProps) {
-  return (
-    <div className="flex min-h-0 flex-1 flex-col gap-4">
-      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-semibold text-muted-foreground">Before</p>
-          <div
-            className="prose prose-sm max-w-none rounded-md border bg-muted/40 px-3 py-2 text-sm text-muted-foreground line-through decoration-muted-foreground/40 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
-            dangerouslySetInnerHTML={{ __html: beforeHtml }}
-          />
-        </div>
-        <div className="flex flex-col gap-1">
-          <p className="text-xs font-semibold text-violet-500">After</p>
-          <div
-            className="prose prose-sm max-w-none rounded-md border border-violet-500/20 bg-violet-500/5 px-3 py-2 text-sm [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:list-decimal [&_ol]:pl-5"
-            dangerouslySetInnerHTML={{ __html: afterHtml }}
-          />
-        </div>
-      </div>
-
-      <div className="flex justify-end gap-2 shrink-0 pt-1">
-        <Button type="button" variant="outline" size="sm" onClick={onCancel}>
-          Cancel
-        </Button>
-        <Button type="button" variant="outline" size="sm" onClick={onTryAgain}>
-          Try again
-        </Button>
-        <Button type="button" variant="ai" size="sm" onClick={onAccept}>
-          Use this
         </Button>
       </div>
     </div>

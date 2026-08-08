@@ -29,6 +29,8 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { useEditorHeader } from "@/features/resume-editor/editor/top-bar/use-editor-header";
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
+import { JobKeywordsContext } from "@/features/resume-editor/state/job-keywords";
+import { selectAlignmentKeywords } from "@/features/resume-editor/domain/insights/alignment-keywords";
 
 type ResumeEditorDesktopProps = {
   initialDraft?: ResumeDraft;
@@ -101,6 +103,13 @@ export function ResumeEditorDesktop({
     [draft.pdfPresentation],
   );
 
+  // Every rich-text field reads this to offer "Align to the job". Only the
+  // gaps, heaviest first — see selectAlignmentKeywords for why order matters.
+  const jobKeywords = useMemo(
+    () => selectAlignmentKeywords(draft),
+    [draft],
+  );
+
   function selectRail(key: RailKey) {
     // Re-picking the open panel toggles the sidebar shut, so the rail doubles
     // as the collapse control.
@@ -153,6 +162,7 @@ export function ResumeEditorDesktop({
 
   return (
     <EditorRevisionContext.Provider value={revision}>
+    <JobKeywordsContext.Provider value={jobKeywords}>
     <div className="flex h-[calc(100dvh-3rem)]">
       <input
         ref={jsonFileInputRef}
@@ -205,6 +215,7 @@ export function ResumeEditorDesktop({
         />
       </EditorCanvas>
     </div>
+    </JobKeywordsContext.Provider>
     </EditorRevisionContext.Provider>
   );
 }

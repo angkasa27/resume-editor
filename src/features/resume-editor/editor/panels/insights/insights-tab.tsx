@@ -5,6 +5,7 @@ import { useState } from "react";
 import type { EditorPanelKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
+import type { ResumeSectionKey } from "@/features/resume-editor/state/resume-editor-store";
 
 import { CategoryBreakdown } from "./category-breakdown";
 import { JdAnalyzeDialog } from "./jd-analyze-dialog";
@@ -12,18 +13,24 @@ import { JdAnalyzeProgress } from "./jd-analyze-progress";
 import { JobDescriptionPanel } from "./job-description-panel";
 import { ScoreRing } from "./score-ring";
 import { SuggestionList } from "./suggestion-list";
+import { TailorToJobDialog } from "./tailor-to-job-dialog";
 import { useAtsScore } from "./use-ats-score";
 import { useJobMatch } from "./use-job-match";
 
 type InsightsTabProps = {
   draft: ResumeDraft;
   onSaveInsights: (insights: Insights | undefined) => void;
+  onSaveSection: <K extends ResumeSectionKey>(
+    sectionKey: K,
+    sectionValue: ResumeDraft["sections"][K],
+  ) => void;
   onOpenSection?: (panel: EditorPanelKey) => void;
 };
 
 export function InsightsTab({
   draft,
   onSaveInsights,
+  onSaveSection,
   onOpenSection,
 }: InsightsTabProps) {
   const { jobMatch, jobDescription, submitState, analyze, reset } = useJobMatch(
@@ -32,6 +39,7 @@ export function InsightsTab({
   );
   const score = useAtsScore(draft, jobMatch ?? undefined);
   const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(false);
+  const [tailorTerm, setTailorTerm] = useState<string | null>(null);
 
   const isAnalyzing = submitState.status === "loading";
 
@@ -50,6 +58,7 @@ export function InsightsTab({
         jobMatch={jobMatch}
         onAnalyzeClick={() => setIsAnalyzeOpen(true)}
         onReset={reset}
+        onTailor={setTailorTerm}
       />
 
       <JdAnalyzeDialog
@@ -59,6 +68,19 @@ export function InsightsTab({
         onSubmit={analyze}
       />
       <JdAnalyzeProgress open={isAnalyzing} />
+
+      {tailorTerm !== null && jobMatch ? (
+        <TailorToJobDialog
+          open
+          onOpenChange={(open) => {
+            if (!open) setTailorTerm(null);
+          }}
+          draft={draft}
+          missing={jobMatch.missing}
+          initialTerm={tailorTerm}
+          onSaveSection={onSaveSection}
+        />
+      ) : null}
     </div>
   );
 }

@@ -127,6 +127,7 @@ export function EditorSidebar({
             <InsightsTab
               draft={draft}
               onSaveInsights={controls.onSaveInsights}
+              onSaveSection={onSaveSection}
               onOpenSection={onOpenSection}
             />
           </div>
