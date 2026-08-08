@@ -29,7 +29,12 @@ function mergeTags(
 type TagInputProps = {
   id?: string;
   value: string[];
-  onChange: (next: string[]) => void;
+  /**
+   * Takes an updater, not a finished array: two writes from one gesture (blur
+   * commit + ✕ click, or two rapid ✕ clicks) both derive from the render-time
+   * `value` otherwise, and the second silently undoes the first.
+   */
+  onChange: (update: (current: string[]) => string[]) => void;
   placeholder?: string;
   ariaInvalid?: boolean;
   ariaLabel?: string;
@@ -58,17 +63,19 @@ export function TagInput({
 
   function commitDraft() {
     const trimmed = draft.trim().replace(/,+$/, "");
-    const isDuplicate = unique && isDuplicateTag(trimmed, value);
-    const isAtCapacity = maxTags !== undefined && value.length >= maxTags;
-
-    if (trimmed && !isDuplicate && !isAtCapacity) {
-      onChange([...value, trimmed]);
+    if (trimmed) {
+      onChange((current) =>
+        mergeTags(current, [trimmed], { unique, maxTags }),
+      );
     }
     setDraft("");
   }
 
-  function removeTagAt(index: number) {
-    onChange(value.filter((_, i) => i !== index));
+  function removeTag(tag: string) {
+    onChange((current) => {
+      const at = current.indexOf(tag);
+      return at === -1 ? current : current.filter((_, i) => i !== at);
+    });
   }
 
   function handleKeyDown(event: KeyboardEvent<HTMLInputElement>) {
@@ -79,7 +86,7 @@ export function TagInput({
     }
     if (event.key === "Backspace" && draft === "" && value.length > 0) {
       event.preventDefault();
-      removeTagAt(value.length - 1);
+      onChange((current) => current.slice(0, -1));
     }
   }
 
@@ -94,7 +101,7 @@ export function TagInput({
       .filter(Boolean);
     if (parts.length === 0) return;
 
-    onChange(mergeTags(value, parts, { unique, maxTags }));
+    onChange((current) => mergeTags(current, parts, { unique, maxTags }));
     setDraft("");
   }
 
@@ -131,7 +138,7 @@ export function TagInput({
             className="grid size-3.5 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted-foreground/15 hover:text-foreground outline-none focus-visible:ring-3 focus-visible:ring-ring/40"
             onClick={(event) => {
               event.stopPropagation();
-              removeTagAt(index);
+              removeTag(tag);
             }}
           >
             <XIcon className="size-2.5" />

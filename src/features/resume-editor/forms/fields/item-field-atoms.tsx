@@ -216,7 +216,7 @@ export function TagInputField({
   placeholder,
   className,
 }: FieldAtomProps) {
-  const { control, formState, getFieldState } = form;
+  const { control, formState, getFieldState, getValues } = form;
   const fieldState = getFieldState(name as never, formState);
 
   return (
@@ -231,7 +231,12 @@ export function TagInputField({
               value={
                 Array.isArray(field.value) ? (field.value as string[]) : []
               }
-              onChange={(next) => field.onChange(next)}
+              // Applied to RHF's live values, not the captured `field.value`:
+              // back-to-back writes must each see the previous one.
+              onChange={(update) => {
+                const current = getValues(name as never);
+                field.onChange(update(Array.isArray(current) ? current : []));
+              }}
               placeholder={placeholder ?? label}
               ariaInvalid={fieldState.invalid}
               ariaLabel={label}
