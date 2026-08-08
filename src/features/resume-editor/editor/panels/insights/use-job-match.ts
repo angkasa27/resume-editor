@@ -1,107 +1,26 @@
 "use client";
 
-import { useCallback, useMemo, useState, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "@/components/ui/toast";
 
 import {
-  KEYWORD_CATEGORIES,
   matchKeywords,
   type ExtractedKeyword,
   type JobMatchResult,
 } from "@/features/resume-editor/domain/insights/match-keywords";
+import {
+  extractedKeywordSchema,
+  type Insights,
+} from "@/features/resume-editor/domain/schema/insights-schemas";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
-const STORAGE_KEY = "resume-editor:insights:job-match";
-const STORAGE_EVENT = "resume-editor:insights:job-match-changed";
-
-type PersistedJob = {
-  jobDescription: string;
-  keywords: ExtractedKeyword[];
-};
+/** Where the job target used to live: one key shared by every resume. */
+const LEGACY_STORAGE_KEY = "resume-editor:insights:job-match";
 
 type SubmitState =
   | { status: "idle" }
   | { status: "loading" }
   | { status: "error"; message: string };
-
-function isValidKeyword(kw: ExtractedKeyword): boolean {
-  return (
-    !!kw &&
-    typeof kw.term === "string" &&
-    typeof kw.weight === "number" &&
-    KEYWORD_CATEGORIES.includes(
-      kw.category as (typeof KEYWORD_CATEGORIES)[number],
-    )
-  );
-}
-
-function isPersistedJobShape(parsed: unknown): parsed is PersistedJob {
-  return (
-    !!parsed &&
-    typeof parsed === "object" &&
-    typeof (parsed as PersistedJob).jobDescription === "string" &&
-    Array.isArray((parsed as PersistedJob).keywords)
-  );
-}
-
-function readFromStorage(): PersistedJob | null {
-  if (typeof window === "undefined") return null;
-  try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    if (!raw) return null;
-    const parsed = JSON.parse(raw) as unknown;
-    if (!isPersistedJobShape(parsed)) return null;
-
-    return {
-      jobDescription: parsed.jobDescription,
-      keywords: parsed.keywords.filter(isValidKeyword),
-    };
-  } catch {
-    return null;
-  }
-}
-
-// Memoise the parsed snapshot so useSyncExternalStore can compare with `===`.
-let cachedRaw: string | null = null;
-let cachedSnapshot: PersistedJob | null = null;
-
-function getSnapshot(): PersistedJob | null {
-  if (typeof window === "undefined") return null;
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-  if (raw === cachedRaw) return cachedSnapshot;
-  cachedRaw = raw;
-  cachedSnapshot = readFromStorage();
-  return cachedSnapshot;
-}
-
-function getServerSnapshot(): PersistedJob | null {
-  return null;
-}
-
-function subscribe(callback: () => void) {
-  if (typeof window === "undefined") return () => {};
-  const onChange = () => callback();
-  window.addEventListener("storage", onChange);
-  window.addEventListener(STORAGE_EVENT, onChange);
-  return () => {
-    window.removeEventListener("storage", onChange);
-    window.removeEventListener(STORAGE_EVENT, onChange);
-  };
-}
-
-function writeToStorage(value: PersistedJob | null) {
-  if (typeof window === "undefined") return;
-  try {
-    if (value === null) {
-      window.localStorage.removeItem(STORAGE_KEY);
-    } else {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(value));
-    }
-    window.dispatchEvent(new Event(STORAGE_EVENT));
-  } catch {
-    // Ignore storage failures (private mode, quota, etc.).
-  }
-}
 
 async function requestKeywordMatch(
   jobDescription: string,
@@ -125,55 +44,108 @@ async function requestKeywordMatch(
   return payload.keywords;
 }
 
-export function useJobMatch(draft: ResumeDraft) {
-  const persistedJob = useSyncExternalStore(
-    subscribe,
-    getSnapshot,
-    getServerSnapshot,
-  );
+/**
+ * Reads the pre-per-resume job target. Deliberately does NOT delete the key —
+ * the caller removes it only once the value is safely on the draft, so a parse
+ * failure can never destroy a saved job description.
+ *
+ * Individual bad keywords are dropped rather than rejecting the whole blob:
+ * losing one out-of-enum term should not cost the user their job description.
+ */
+function readLegacyInsights(): Insights | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const raw = window.localStorage.getItem(LEGACY_STORAGE_KEY);
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw) as {
+      jobDescription?: unknown;
+      keywords?: unknown;
+    };
+    if (typeof parsed.jobDescription !== "string" || !parsed.jobDescription) {
+      return null;
+    }
+
+    const keywords = (
+      Array.isArray(parsed.keywords) ? parsed.keywords : []
+    ).flatMap((keyword) => {
+      const result = extractedKeywordSchema.safeParse(keyword);
+      return result.success ? [result.data] : [];
+    });
+
+    return {
+      jobDescription: parsed.jobDescription,
+      keywords,
+      analyzedAt: new Date().toISOString(),
+    };
+  } catch {
+    return null;
+  }
+}
+
+export function useJobMatch(
+  draft: ResumeDraft,
+  onSaveInsights: (insights: Insights | undefined) => void,
+) {
   const [submitState, setSubmitState] = useState<SubmitState>({
     status: "idle",
   });
+  const insights = draft.insights;
+  const hasMigrated = useRef(false);
 
-  // Re-derive matched/missing/coverage whenever the draft or the persisted JD changes.
+  useEffect(() => {
+    if (hasMigrated.current) return;
+    hasMigrated.current = true;
+    if (insights) return;
+    const legacy = readLegacyInsights();
+    if (!legacy) return;
+    onSaveInsights(legacy);
+    // Only now is it safe to drop the old key — the value is on the draft.
+    window.localStorage.removeItem(LEGACY_STORAGE_KEY);
+  }, [insights, onSaveInsights]);
+
+  // Re-derive matched/partial/missing whenever the draft or the job target changes.
   const jobMatch: JobMatchResult | null = useMemo(() => {
-    if (!persistedJob) return null;
-    return matchKeywords(
-      draft,
-      persistedJob.jobDescription,
-      persistedJob.keywords,
-    );
-  }, [draft, persistedJob]);
+    if (!insights) return null;
+    return matchKeywords(draft, insights.jobDescription, insights.keywords);
+  }, [draft, insights]);
 
-  const analyze = useCallback(async (jobDescription: string) => {
-    const trimmed = jobDescription.trim();
-    if (!trimmed) return;
+  const analyze = useCallback(
+    async (jobDescription: string) => {
+      const trimmed = jobDescription.trim();
+      if (!trimmed) return;
 
-    setSubmitState({ status: "loading" });
-    try {
-      const keywords = await requestKeywordMatch(trimmed);
-      writeToStorage({ jobDescription: trimmed, keywords });
-      setSubmitState({ status: "idle" });
-      toast.add({ title: "Job description analyzed.", type: "success" });
-    } catch (error) {
-      console.error("Analyzing the job description failed", error);
-      const message =
-        error instanceof Error
-          ? error.message
-          : "Could not analyze the job description.";
-      toast.add({ title: message, type: "error" });
-      setSubmitState({ status: "error", message });
-    }
-  }, []);
+      setSubmitState({ status: "loading" });
+      try {
+        const keywords = await requestKeywordMatch(trimmed);
+        onSaveInsights({
+          jobDescription: trimmed,
+          keywords,
+          analyzedAt: new Date().toISOString(),
+        });
+        setSubmitState({ status: "idle" });
+        toast.add({ title: "Job description analyzed.", type: "success" });
+      } catch (error) {
+        console.error("Analyzing the job description failed", error);
+        const message =
+          error instanceof Error
+            ? error.message
+            : "Could not analyze the job description.";
+        toast.add({ title: message, type: "error" });
+        setSubmitState({ status: "error", message });
+      }
+    },
+    [onSaveInsights],
+  );
 
   const reset = useCallback(() => {
-    writeToStorage(null);
+    onSaveInsights(undefined);
     setSubmitState({ status: "idle" });
-  }, []);
+  }, [onSaveInsights]);
 
   return {
     jobMatch,
-    jobDescription: persistedJob?.jobDescription ?? "",
+    jobDescription: insights?.jobDescription ?? "",
     submitState,
     analyze,
     reset,

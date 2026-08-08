@@ -14,6 +14,7 @@ import {
 import { normalizeCollectionItem } from "@/features/resume-editor/domain/sections/normalize-collection-item";
 import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
+import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
 import type {
   PdfPresentation,
   Profile,
@@ -32,6 +33,8 @@ type ResumeEditorStoreState = {
   revision: number;
   saveProfile: (profile: Profile) => void;
   savePdfPresentation: (pdfPresentation: PdfPresentation) => void;
+  /** Saves (or clears, with `undefined`) the analyzed job target. */
+  saveInsights: (insights: Insights | undefined) => void;
   saveSection: <K extends ResumeSectionKey>(
     sectionKey: K,
     sectionValue: ResumeDraft["sections"][K],
@@ -85,6 +88,20 @@ function normalizeSectionValue<K extends ResumeSectionKey>(
   } as ResumeDraft["sections"][K];
 }
 
+/**
+ * The job target isn't part of the edit history — `saveInsights` deliberately
+ * doesn't snapshot it — so a history entry predating the analysis still carries
+ * the old (usually absent) value. Undoing onto it would silently drop the saved
+ * job description, so the live one is carried across instead.
+ */
+function carryInsights(
+  currentDraft: ResumeDraft,
+  restoredDraft: ResumeDraft,
+): ResumeDraft {
+  if (restoredDraft.insights === currentDraft.insights) return restoredDraft;
+  return { ...restoredDraft, insights: currentDraft.insights };
+}
+
 const MAX_HISTORY = 50;
 
 // History keeps the previous draft by reference (no clone): drafts are never
@@ -136,6 +153,15 @@ export function createResumeEditorStore(config?: {
       saveProfile: (profile) => commit(() => ({ profile })),
       savePdfPresentation: (pdfPresentation) =>
         commit(() => ({ pdfPresentation })),
+      // Deliberately not `commit`: analyzing a job description isn't a document
+      // edit, so it must not consume an undo slot — and `commit` clears the redo
+      // stack, which would silently kill a pending redo.
+      saveInsights: (insights) => {
+        const state = get();
+        set({
+          draft: storage.save(createNextDraft(state.draft, { insights })),
+        });
+      },
       saveSection: (sectionKey, sectionValue) =>
         commit((draft) => ({
           sections: reorderSections(
@@ -198,7 +224,7 @@ export function createResumeEditorStore(config?: {
         const state = get();
         const previousDraft = state.undoStack.at(-1);
         if (!previousDraft) return;
-        const nextDraft = storage.save(previousDraft);
+        const nextDraft = storage.save(carryInsights(state.draft, previousDraft));
         set({
           draft: nextDraft,
           undoStack: state.undoStack.slice(0, -1),
@@ -210,7 +236,9 @@ export function createResumeEditorStore(config?: {
         const state = get();
         const nextDraft = state.redoStack.at(-1);
         if (!nextDraft) return;
-        const persistedDraft = storage.save(nextDraft);
+        const persistedDraft = storage.save(
+          carryInsights(state.draft, nextDraft),
+        );
         set({
           draft: persistedDraft,
           redoStack: state.redoStack.slice(0, -1),

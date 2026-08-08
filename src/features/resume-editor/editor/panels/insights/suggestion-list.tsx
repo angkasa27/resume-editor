@@ -3,13 +3,16 @@
 import { useState } from "react";
 import {
   AlertTriangleIcon,
+  ArrowUpRightIcon,
   CheckCircle2Icon,
-  ChevronDownIcon,
+  ChevronRightIcon,
   CircleAlertIcon,
 } from "lucide-react";
 
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Collapse } from "@/features/resume-editor/editor/shared/collapse";
+import { EditorRow } from "@/features/resume-editor/editor/sections/editor-row";
 import {
   ATS_CATEGORIES,
   ATS_CATEGORY_LABELS,
@@ -69,42 +72,44 @@ function SuggestionGroup({
   items: Suggestion[];
   onFix?: (panel: EditorPanelKey) => void;
 }) {
-  const [open, setOpen] = useState(true);
   const failCount = items.filter((i) => i.severity === "fail").length;
   const warnCount = items.filter((i) => i.severity === "warn").length;
+  const [open, setOpen] = useState(false);
 
   return (
-    <section className="rounded-md border bg-background">
-      <Button
-        type="button"
-        variant="ghost"
-        onClick={() => setOpen((value) => !value)}
-        className="h-auto w-full justify-between gap-2 px-3 py-2 text-left font-medium"
-      >
-        <span className="flex items-center gap-2">
-          {ATS_CATEGORY_LABELS[category]}
-          <span className="flex items-center gap-1 text-xs font-medium text-muted-foreground">
+    <section className="overflow-hidden rounded-md">
+      <EditorRow
+        title={ATS_CATEGORY_LABELS[category]}
+        badge={
+          <>
             {failCount > 0 ? (
-              <span className="text-red-600 dark:text-red-400">
+              <Badge variant="destructive">
+                <CircleAlertIcon data-icon="inline-start" />
                 {failCount} fail
-              </span>
+              </Badge>
             ) : null}
             {warnCount > 0 ? (
-              <span className="text-amber-600 dark:text-amber-400">
+              <Badge variant="warning">
+                <AlertTriangleIcon data-icon="inline-start" />
                 {warnCount} warn
-              </span>
+              </Badge>
             ) : null}
-          </span>
-        </span>
-        <ChevronDownIcon
-          className={cn(
-            "text-muted-foreground transition-transform",
-            !open && "-rotate-90",
-          )}
-        />
-      </Button>
+          </>
+        }
+        indicator={
+          <ChevronRightIcon
+            className={cn(
+              "size-4 shrink-0 text-muted-foreground/60 transition-transform duration-200",
+              open && "rotate-90",
+            )}
+          />
+        }
+        active={open}
+        onActivate={() => setOpen((value) => !value)}
+        className="h-12.5 pl-3 aria-pressed:rounded-b-none aria-pressed:border-b-0"
+      />
       <Collapse open={open}>
-        <ul className="flex flex-col gap-1 border-t bg-muted/20 p-2">
+        <ul className="flex flex-col gap-1 rounded-b-md border border-t bg-muted/20 p-2">
           {items.map((item) => {
             const Icon = SEVERITY_ICONS[item.severity];
             return (
@@ -120,6 +125,17 @@ function SuggestionGroup({
                 />
                 <div className="flex min-w-0 flex-1 flex-col gap-1">
                   <span className="text-foreground">{item.message}</span>
+                  {item.evidence?.length ? (
+                    <ul className="flex flex-col gap-0.5 rounded-md bg-muted px-2 py-1.5 font-mono text-xs text-muted-foreground">
+                      {/* Index keys: the same bullet text legitimately repeats
+                          across roles, so the line isn't unique. */}
+                      {item.evidence.map((line, index) => (
+                        <li key={index} className="truncate" title={line}>
+                          {line}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                   {item.fix && onFix ? (
                     <Button
                       type="button"
@@ -128,6 +144,7 @@ function SuggestionGroup({
                       onClick={() => onFix(item.fix!.panel)}
                     >
                       Fix
+                      <ArrowUpRightIcon data-icon="inline-end" />
                     </Button>
                   ) : null}
                 </div>

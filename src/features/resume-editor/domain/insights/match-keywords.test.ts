@@ -40,12 +40,32 @@ describe("matchKeywords", () => {
     expect(result.coverage).toBe(0.25);
   });
 
-  it("matches via the alias map (JS ↔ JavaScript)", () => {
-    const draft = draftWithSkills("JavaScript");
+  // Real ATS keyword screens compare literal strings, so an acronym is a partial
+  // match at best — the resume should carry both forms.
+  it("counts an alias-only hit as partial, not matched", () => {
+    const draft = draftWithSkills("K8s");
     const result = matchKeywords(draft, "...", [
-      { term: "JS", category: "hard-skill", weight: 1 },
+      { term: "Kubernetes", category: "tool", weight: 1 },
     ]);
+
+    expect(result.matched).toHaveLength(0);
+    expect(result.missing).toHaveLength(0);
+    expect(result.partial).toEqual([
+      { term: "Kubernetes", category: "tool", weight: 1, foundAs: "k8s" },
+    ]);
+    // Half credit — better than missing, worse than spelling it out.
+    expect(result.coverage).toBe(0.5);
+  });
+
+  it("counts a literal hit as fully matched even when an alias exists", () => {
+    const draft = draftWithSkills("Kubernetes");
+    const result = matchKeywords(draft, "...", [
+      { term: "Kubernetes", category: "tool", weight: 1 },
+    ]);
+
     expect(result.matched).toHaveLength(1);
+    expect(result.partial).toHaveLength(0);
+    expect(result.coverage).toBe(1);
   });
 
   it("uses word boundaries (does not match substrings)", () => {

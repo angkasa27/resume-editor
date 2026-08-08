@@ -124,7 +124,11 @@ export function EditorSidebar({
 
         {rail === "insights" ? (
           <div className="min-h-0 flex-1 overflow-y-auto p-3">
-            <InsightsTab draft={draft} onOpenSection={onOpenSection} />
+            <InsightsTab
+              draft={draft}
+              onSaveInsights={controls.onSaveInsights}
+              onOpenSection={onOpenSection}
+            />
           </div>
         ) : null}
       </motion.div>

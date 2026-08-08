@@ -63,10 +63,12 @@ export function JobDescriptionPanel({
     <section className="flex flex-col gap-2 rounded-md border bg-background p-3">
       <header className="flex items-baseline justify-between gap-2">
         <h3 className="text-sm font-semibold">Job match</h3>
+        {/* Exact hits only. Coverage is separate because partial matches earn
+            half credit — showing both against one fraction read as "0/1 (50%)". */}
         <span className="text-xs tabular-nums text-muted-foreground">
-          {jobMatch.matched.length}/{jobMatch.keywords.length} keywords
+          {jobMatch.matched.length}/{jobMatch.keywords.length} exact
           <span className="ml-1 font-semibold text-foreground">
-            ({coveragePct}%)
+            · {coveragePct}% coverage
           </span>
         </span>
       </header>
@@ -89,11 +91,34 @@ export function JobDescriptionPanel({
               ))}
           </ul>
         </div>
-      ) : (
+      ) : null}
+
+      {jobMatch.partial.length > 0 ? (
+        <div className="flex flex-col gap-2">
+          <span className="text-xs font-semibold text-muted-foreground">
+            Spelled differently — write both forms
+          </span>
+          <ul className="flex flex-wrap gap-1">
+            {jobMatch.partial.map((kw) => (
+              <li key={`${kw.term}-${kw.category}`}>
+                <Badge
+                  variant="outline"
+                  className="border-amber-500/40 text-xs text-amber-700 dark:text-amber-400"
+                  title={`You wrote "${kw.foundAs}"`}
+                >
+                  {kw.term}
+                </Badge>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : null}
+
+      {jobMatch.missing.length === 0 && jobMatch.partial.length === 0 ? (
         <p className="text-xs text-emerald-600 dark:text-emerald-400">
           Every JD keyword is present — nicely done.
         </p>
-      )}
+      ) : null}
 
       <div className="flex gap-2">
         <Button

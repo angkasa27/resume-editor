@@ -2,32 +2,38 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
 import { extractResumeText } from "./extract-text";
 
-export const KEYWORD_CATEGORIES = [
-  "hard-skill",
-  "soft-skill",
-  "title",
-  "qualification",
-  "tool",
-] as const;
-type KeywordCategory = (typeof KEYWORD_CATEGORIES)[number];
+// The keyword shape is defined with the persisted schema (it's saved on the
+// draft), and re-exported here so the matcher stays the one import site.
+export {
+  KEYWORD_CATEGORIES,
+  type ExtractedKeyword,
+} from "@/features/resume-editor/domain/schema/insights-schemas";
 
-export type ExtractedKeyword = {
-  term: string;
-  category: KeywordCategory;
-  /** 0..1 weight; higher = more important to match. */
-  weight: number;
+import type { ExtractedKeyword } from "@/features/resume-editor/domain/schema/insights-schemas";
+
+/** A keyword the resume only covers via an acronym/expansion of the JD's wording. */
+export type PartialKeyword = ExtractedKeyword & {
+  /** The variant actually found on the resume, e.g. "k8s" for a JD asking "Kubernetes". */
+  foundAs: string;
 };
 
 export type JobMatchResult = {
   jobDescription: string;
   keywords: ExtractedKeyword[];
   matched: ExtractedKeyword[];
+  /** Found only as an acronym/expansion — a literal ATS match would miss these. */
+  partial: PartialKeyword[];
   missing: ExtractedKeyword[];
-  /** 0..1 — weighted coverage. */
+  /** 0..1 — weighted coverage. Partial matches count half. */
   coverage: number;
 };
 
-/** Common acronym ↔ expansion pairs so "JS" matches "JavaScript" etc. */
+/** Weight a partial (acronym-only) match carries relative to a literal one. */
+const PARTIAL_CREDIT = 0.5;
+
+/** Common acronym ↔ expansion pairs. A hit on the *other* form is a partial
+ *  match, not a full one: real ATS keyword screens compare literal strings, so
+ *  writing only "K8s" loses you a JD that asks for "Kubernetes". */
 const ALIASES: ReadonlyArray<[string, string]> = [
   ["javascript", "js"],
   ["typescript", "ts"],
@@ -48,25 +54,20 @@ function normalize(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9+#.\s-]/g, " ").replace(/\s+/g, " ").trim();
 }
 
-function expandTerm(term: string): string[] {
-  const normalized = normalize(term);
-  if (!normalized) return [];
-  const variants = new Set<string>([normalized]);
+/** The other form of a term, when it has one. */
+function aliasOf(normalized: string): string | undefined {
   for (const [long, short] of ALIASES) {
-    if (normalized === long) variants.add(short);
-    if (normalized === short) variants.add(long);
+    if (normalized === long) return short;
+    if (normalized === short) return long;
   }
-  return [...variants];
+  return undefined;
 }
 
-function termMatches(haystack: string, term: string): boolean {
-  for (const variant of expandTerm(term)) {
-    // Word-boundary match on the variant (escape regex specials).
-    const escaped = variant.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const pattern = new RegExp(`(?:^|\\W)${escaped}(?:\\W|$)`, "i");
-    if (pattern.test(haystack)) return true;
-  }
-  return false;
+function containsTerm(haystack: string, variant: string): boolean {
+  if (!variant) return false;
+  // Word-boundary match on the variant (escape regex specials).
+  const escaped = variant.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  return new RegExp(`(?:^|\\W)${escaped}(?:\\W|$)`, "i").test(haystack);
 }
 
 export function matchKeywords(
@@ -76,19 +77,30 @@ export function matchKeywords(
 ): JobMatchResult {
   const haystack = ` ${normalize(extractResumeText(draft))} `;
   const matched: ExtractedKeyword[] = [];
+  const partial: PartialKeyword[] = [];
   const missing: ExtractedKeyword[] = [];
 
   for (const keyword of keywords) {
-    if (termMatches(haystack, keyword.term)) {
+    const normalized = normalize(keyword.term);
+    if (containsTerm(haystack, normalized)) {
       matched.push(keyword);
-    } else {
-      missing.push(keyword);
+      continue;
     }
+
+    const alias = aliasOf(normalized);
+    if (alias && containsTerm(haystack, alias)) {
+      partial.push({ ...keyword, foundAs: alias });
+      continue;
+    }
+
+    missing.push(keyword);
   }
 
   const totalWeight = keywords.reduce((sum, kw) => sum + kw.weight, 0);
-  const matchedWeight = matched.reduce((sum, kw) => sum + kw.weight, 0);
-  const coverage = totalWeight === 0 ? 0 : matchedWeight / totalWeight;
+  const earnedWeight =
+    matched.reduce((sum, kw) => sum + kw.weight, 0) +
+    partial.reduce((sum, kw) => sum + kw.weight * PARTIAL_CREDIT, 0);
+  const coverage = totalWeight === 0 ? 0 : earnedWeight / totalWeight;
 
-  return { jobDescription, keywords, matched, missing, coverage };
+  return { jobDescription, keywords, matched, partial, missing, coverage };
 }

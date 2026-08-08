@@ -379,4 +379,97 @@ describe("resume editor store", () => {
       expect(store.getState().revision).toBe(3);
     });
   });
+
+  describe("saveInsights", () => {
+    const insights = {
+      jobDescription: "Senior engineer, React and Kubernetes",
+      keywords: [
+        { term: "React", category: "hard-skill" as const, weight: 1 },
+      ],
+      analyzedAt: "2026-08-07T00:00:00.000Z",
+    };
+
+    it("saves the job target onto the draft and persists it", () => {
+      const storage = createMockStorage();
+      const store = createResumeEditorStore({ storage });
+
+      store.getState().saveInsights(insights);
+
+      expect(store.getState().draft.insights).toEqual(insights);
+      expect(storage.save).toHaveBeenCalledTimes(1);
+    });
+
+    it("clears the job target when passed undefined", () => {
+      const store = createResumeEditorStore({ storage: createMockStorage() });
+
+      store.getState().saveInsights(insights);
+      store.getState().saveInsights(undefined);
+
+      expect(store.getState().draft.insights).toBeUndefined();
+    });
+
+    // Analyzing a job description is not a document edit. If it went through
+    // `commit` it would eat an undo slot and — worse — clear the redo stack.
+    it("does not touch undo/redo history", () => {
+      const store = createResumeEditorStore({ storage: createMockStorage() });
+
+      store.getState().saveProfile({
+        ...store.getState().draft.profile,
+        fullName: "Dimas",
+      });
+      store.getState().undo();
+      expect(store.getState().redoStack).toHaveLength(1);
+
+      store.getState().saveInsights(insights);
+
+      expect(store.getState().undoStack).toHaveLength(0);
+      expect(store.getState().redoStack).toHaveLength(1);
+    });
+
+    // History entries predate the analysis, so restoring one naively would drop
+    // the saved job description — recoverable only until the next edit cleared
+    // the redo stack, at which point it was gone for good.
+    it("survives undo onto a draft saved before it existed", () => {
+      const store = createResumeEditorStore({ storage: createMockStorage() });
+
+      store.getState().saveProfile({
+        ...store.getState().draft.profile,
+        fullName: "Dimas",
+      });
+      store.getState().saveInsights(insights);
+      store.getState().undo();
+
+      expect(store.getState().draft.insights).toEqual(insights);
+      expect(store.getState().draft.profile.fullName).not.toBe("Dimas");
+    });
+
+    it("survives redo as well", () => {
+      const store = createResumeEditorStore({ storage: createMockStorage() });
+
+      store.getState().saveProfile({
+        ...store.getState().draft.profile,
+        fullName: "Dimas",
+      });
+      store.getState().undo();
+      store.getState().saveInsights(insights);
+      store.getState().redo();
+
+      expect(store.getState().draft.insights).toEqual(insights);
+      expect(store.getState().draft.profile.fullName).toBe("Dimas");
+    });
+
+    it("still lets a later clear win over a stale history entry", () => {
+      const store = createResumeEditorStore({ storage: createMockStorage() });
+
+      store.getState().saveInsights(insights);
+      store.getState().saveProfile({
+        ...store.getState().draft.profile,
+        fullName: "Dimas",
+      });
+      store.getState().saveInsights(undefined);
+      store.getState().undo();
+
+      expect(store.getState().draft.insights).toBeUndefined();
+    });
+  });
 });

@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { createDefaultPdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import { insightsSchema } from "@/features/resume-editor/domain/schema/insights-schemas";
 import { pdfPresentationSchema } from "@/features/resume-editor/domain/schema/presentation-schemas";
 import { profileSchema } from "@/features/resume-editor/domain/schema/profile-schemas";
 import { sectionsSchema } from "@/features/resume-editor/domain/schema/section-schemas";
@@ -13,6 +14,10 @@ const resumeDraftSchema = z.object({
     .default(createDefaultPdfPresentation()),
   profile: profileSchema,
   sections: sectionsSchema,
+  // Optional, so existing drafts parse unchanged and schemaVersion stays at 3.
+  // `.catch` degrades a malformed blob to "no job target" rather than failing
+  // the whole draft — losing the resume would be far worse than losing the JD.
+  insights: insightsSchema.optional().catch(undefined),
 });
 
 export type ResumeDraft = z.infer<typeof resumeDraftSchema>;

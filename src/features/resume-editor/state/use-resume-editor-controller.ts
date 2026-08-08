@@ -18,6 +18,7 @@ import type {
 import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
 import { importResumeDraft } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
+import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
 import { flushOpenForms } from "@/features/resume-editor/forms/use-auto-save";
 import {
   createResumeEditorStore,
@@ -63,6 +64,7 @@ type ResumeEditorController = {
   autoSortSection: (sectionKey: CollectionSectionKey) => void;
   savePdfPresentation: (pdfPresentation: PdfPresentation) => void;
   saveProfile: (profile: Profile) => void;
+  saveInsights: (insights: Insights | undefined) => void;
   saveSection: <K extends ResumeSectionKey>(
     sectionKey: K,
     sectionValue: ResumeDraft["sections"][K],
@@ -355,6 +357,10 @@ export function useResumeEditorController({
     (profile: Profile) => store.getState().saveProfile(profile),
     [store],
   );
+  const saveInsights = useCallback(
+    (insights: Insights | undefined) => store.getState().saveInsights(insights),
+    [store],
+  );
   const saveSection = useCallback(
     <K extends ResumeSectionKey>(
       sectionKey: K,
@@ -383,6 +389,7 @@ export function useResumeEditorController({
     autoSortSection,
     savePdfPresentation,
     saveProfile,
+    saveInsights,
     saveSection,
     undo: undoRedo.undo,
     redo: undoRedo.redo,

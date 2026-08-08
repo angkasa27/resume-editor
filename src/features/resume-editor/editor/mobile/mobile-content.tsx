@@ -162,7 +162,11 @@ export function ResumeEditorMobileContent({
 
             {tab === "insights" ? (
               <div className={`h-full overflow-y-auto p-3 ${NAV_CLEARANCE}`}>
-                <InsightsTab draft={draft} onOpenSection={handleInsightsOpen} />
+                <InsightsTab
+                  draft={draft}
+                  onSaveInsights={controlPanelProps.onSaveInsights}
+                  onOpenSection={handleInsightsOpen}
+                />
               </div>
             ) : null}
           </motion.div>

@@ -3,6 +3,7 @@
 import { useState } from "react";
 
 import type { EditorPanelKey } from "@/features/resume-editor/domain/sections/section-metadata";
+import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
 import { CategoryBreakdown } from "./category-breakdown";
@@ -16,12 +17,19 @@ import { useJobMatch } from "./use-job-match";
 
 type InsightsTabProps = {
   draft: ResumeDraft;
+  onSaveInsights: (insights: Insights | undefined) => void;
   onOpenSection?: (panel: EditorPanelKey) => void;
 };
 
-export function InsightsTab({ draft, onOpenSection }: InsightsTabProps) {
-  const { jobMatch, jobDescription, submitState, analyze, reset } =
-    useJobMatch(draft);
+export function InsightsTab({
+  draft,
+  onSaveInsights,
+  onOpenSection,
+}: InsightsTabProps) {
+  const { jobMatch, jobDescription, submitState, analyze, reset } = useJobMatch(
+    draft,
+    onSaveInsights,
+  );
   const score = useAtsScore(draft, jobMatch ?? undefined);
   const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(false);
 
