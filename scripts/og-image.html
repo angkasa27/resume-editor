@@ -1,0 +1,61 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    width:1200px; height:630px; overflow:hidden;
+    font-family: -apple-system, "Inter", "Helvetica Neue", Arial, sans-serif;
+    background:#fafafa;
+    position:relative;
+  }
+
+  .left {
+    position:relative; z-index:1;
+    height:100%; max-width:440px;
+    display:flex; flex-direction:column; justify-content:center;
+    padding-left:64px;
+  }
+
+  /* Matches the real navbar wordmark: italic gradient text, no icon. */
+  .logo {
+    font-size:26px; font-weight:700; font-style:italic;
+    background: linear-gradient(to right, #8b5cf6, #4f46e5);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    margin-bottom:34px; padding-right:4px;
+  }
+
+  h1 {
+    font-size:34px; line-height:1.25; font-weight:800; color:#1e1b2e;
+    letter-spacing:-0.02em; margin-bottom:18px; white-space:nowrap;
+  }
+  h1 .accent { color:#6d28d9; }
+  p.tag {
+    font-size:18px; line-height:1.55; color:#57596b; font-weight:450; max-width:380px;
+  }
+
+  /* Full editor screenshot, bottom-right, bleeding past the right/bottom edges.
+     Only the top-left corner is rounded — the rest is clipped by the canvas. */
+  .shot {
+    position:absolute; right:-164px; bottom:-30px;
+    width:912px; height:570px;
+    border-radius:16px 0 0 0;
+    box-shadow: -20px -20px 60px -20px rgba(30,20,60,0.25);
+    background-image: url("../public/builder.webp");
+    background-size: 912px auto;
+    background-position: top left;
+    background-repeat: no-repeat;
+  }
+</style>
+</head>
+<body>
+  <div class="left">
+    <div class="logo">Resummme</div>
+    <h1>The resume editor<br>that <span class="accent">just works.</span></h1>
+    <p class="tag">Write once, preview instantly, export to PDF - no account required.</p>
+  </div>
+
+  <div class="shot"></div>
+</body>
+</html>
