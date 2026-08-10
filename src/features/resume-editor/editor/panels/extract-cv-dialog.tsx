@@ -125,7 +125,7 @@ function ExtractCvBody({ onSubmit, onClose }: ExtractCvBodyProps) {
         onDrop={onDrop}
         className={cn(
           "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-border bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground transition-colors",
-          "hover:border-foreground/30 hover:bg-muted/50",
+          "hover:border-ring",
           "data-[dragging]:border-primary data-[dragging]:bg-primary/5 data-[dragging]:text-foreground",
         )}
       >

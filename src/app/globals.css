@@ -176,6 +176,43 @@
   pointer-events: none;
 }
 
+/* react-colorful ships its own CSS — retint it to the tokens. */
+.react-colorful {
+  gap: 0.5rem;
+}
+
+.react-colorful__saturation,
+.react-colorful__hue {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+}
+
+.react-colorful__hue {
+  height: 12px;
+}
+
+.react-colorful__saturation {
+  border-bottom: 1px solid var(--border);
+}
+
+.react-colorful__pointer {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+  border-color: var(--background);
+  box-shadow: 0 0 0 1px var(--border);
+}
+
+.react-colorful__interactive:focus-visible .react-colorful__pointer {
+  box-shadow:
+    0 0 0 1px var(--ring),
+    0 0 0 4px color-mix(in oklch, var(--ring) 40%, transparent);
+}
+
+.react-colorful__interactive:focus-visible {
+  outline: none;
+}
+
 .resume-document a {
   color: inherit;
 }

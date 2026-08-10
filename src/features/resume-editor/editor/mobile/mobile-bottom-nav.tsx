@@ -55,8 +55,8 @@ export function MobileBottomNav({ value, onChange }: MobileBottomNavProps) {
               className={cn(
                 // eslint-disable-next-line no-restricted-syntax
                 "h-auto flex-none flex-col rounded-full px-4 pt-0.5 pb-1.5 text-[10px] leading-none gap-0",
-                "text-muted-foreground hover:text-foreground",
-                "data-active:text-primary! dark:data-active:text-text-primary!",
+                "text-muted-foreground not-data-active:hover:bg-muted/60 not-data-active:hover:text-foreground active:translate-y-px",
+                "data-active:text-primary! dark:data-active:text-primary!",
               )}
             >
               <Icon className="size-5 m-1" />

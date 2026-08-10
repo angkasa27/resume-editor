@@ -133,7 +133,9 @@ export function RichTextEditor({
     <div
       aria-invalid={invalid || undefined}
       className={cn(
-        "overflow-hidden rounded-md border border-input bg-background",
+        "overflow-hidden rounded-md border border-input bg-background transition-[color,box-shadow]",
+        // ProseMirror is `outline: none`, so the wrapper carries the focus state.
+        "hover:border-ring focus-within:border-ring focus-within:ring-3 focus-within:ring-ring/40",
         "aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20",
         className,
       )}

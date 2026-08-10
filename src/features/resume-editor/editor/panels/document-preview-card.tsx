@@ -3,7 +3,10 @@
 import { memo, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
-import { FOCUS_RING_CLASS } from "@/features/resume-editor/forms/fields/field-control";
+import {
+  FOCUS_RING_CLASS,
+  SELECTION_RING_CLASS,
+} from "@/features/resume-editor/forms/fields/field-control";
 import { useElementWidth } from "@/hooks/use-element-width";
 import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
 import {
@@ -58,7 +61,8 @@ export const DocumentPreviewCard = memo(function DocumentPreviewCard({
         "hover:border-ring",
         FOCUS_RING_CLASS,
         "group border border-border",
-        "aria-pressed:ring-2 aria-pressed:ring-offset-2 aria-pressed:ring-offset-background aria-pressed:ring-primary",
+        SELECTION_RING_CLASS,
+        "aria-pressed:ring-primary",
       )}
       style={{ aspectRatio: `${paper.widthMm} / ${paper.heightMm}` }}
     >

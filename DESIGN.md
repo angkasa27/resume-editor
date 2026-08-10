@@ -102,21 +102,51 @@ This replaces the old three-role float/stacked/none recipe (`FloatingField` + `f
 
 ## Interaction states — one recipe each
 
-**Focus — a light-primary ring.**
+**Ring or fill? Ask whether the surface can be tinted.** If it can, tint it and use no ring. If it renders its own content — a document thumbnail, a colour swatch, a photo — a fill is impossible or invisible, so it gets a ring instead. That one question decides every case below; it's the rule whose absence let call sites improvise into three focus-ring spellings and five hover opacities.
 
-```
-outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40
-```
+**Ring geometry — the offset is the tell.**
 
-`border-ring`/`ring-ring` resolve to `--ring`, which is a **light primary** (`--color-ring: var(--ring)`, retinted in `globals.css`) — a soft blue border + halo, not the vivid `--primary`. `ring-[3px]` ≡ `ring-3` — don't reintroduce the arbitrary spelling; the halo is `/40` (not `/10`, not `/50`). The full string lives in `FOCUS_RING_CLASS` (`field-control.ts`) — feature code spreads it; `ui/*` inline the identical string by shadcn convention (color is token-driven, so a re-tint is one edit). Semantic overrides keep their own color: destructive `ring-destructive/20`, ai `ring-violet-400/40`, and every `aria-invalid:ring-destructive/*`.
+| | Ring | Offset | Colour |
+|---|---|---|---|
+| **Focus** | `ring-3` | **none** | `focus-visible:border-ring` + `focus-visible:ring-ring/40` |
+| **Selection** | `ring-2` | `ring-offset-2 ring-offset-background` | opaque `ring-primary`, or `ring-foreground/60` over arbitrary swatch fills |
 
-**Selection is not focus.** Focus is transient and soft (light `--ring`); selection is persistent and **vivid** (`--primary`). Recipe: `ring-2 ring-offset-2 ring-offset-background ring-<color>` — `ring-primary` for neutral cards (selected template/paper), `ring-foreground/60` for colored swatches (contrast against arbitrary fills). Applied via the element's `aria-pressed:` selector, never a JS branch.
+Focus is transient and soft: `--ring` is a **light primary** (`--color-ring: var(--ring)`, retinted per theme in `globals.css`), a blue halo bleeding off the border rather than a second outline. It is never offset — in a dense form an offset ring collides with the neighbouring control. `ring-[3px]` ≡ `ring-3`; don't reintroduce the arbitrary spelling, and the halo is `/40` (not `/10`, not `/50`). The string lives in `FOCUS_RING_CLASS` (`field-control.ts`); feature code spreads it, `ui/*` inline the identical string by shadcn convention (colour is token-driven, so a re-tint is one edit). Semantic states recolour but keep the geometry: destructive `ring-destructive/20`, ai `ring-violet-400/40`, every `aria-invalid:ring-destructive/*`.
 
-**Hover — one surface.** Hoverable surfaces go to `bg-muted` (+ `hover:text-foreground` where the label should emphasize). `--accent` ≡ `--muted` today, so prefer `bg-muted`. Cards use `hover:border-ring`; the 28px colour swatches use `hover:scale-110`. shadcn menus keep their `focus:bg-accent` highlight idiom.
+Selection is persistent and **vivid** (`--primary`), and the offset gap is what stops it reading as a fat focus ring. `SELECTION_RING_CLASS` (`field-control.ts`) carries the geometry; the colour stays at the call site. **`ring-offset-*` appears nowhere else** — if you see it, it is a selection. Both are lint-enforced.
+
+**Fills — two steps, so hover never collides with selected.**
+
+| Surface | Hover | Selected |
+|---|---|---|
+| Not selectable — ghost/outline button, toolbar toggle, menu item, tag ✕ | `hover:bg-muted` | — |
+| Selectable — rows, accordions (`aria-pressed`) | `aria-[pressed=false]:hover:bg-muted/60` | `aria-pressed:bg-muted` |
+| Nav item — rail, mobile bottom nav, tabs | one step below, suppressed when active | `bg-primary/10` + `text-primary` |
+| Bordered control — input, textarea, select, tag input, input group, rich text, slider thumb | `hover:border-ring` (**previews focus**), no fill |
+| Content surface — template card, dropzone | `hover:border-ring`, **no fill** | selection ring (card) · `data-[dragging]:border-primary data-[dragging]:bg-primary/5` (dropzone) |
+| Colour swatch | `hover:scale-110` | selection ring |
+
+Where a surface can be selected, hover sits one step *below* selected and is guarded (`aria-[pressed=false]:` / `not-data-active:`) so hovering the selected item can't wash it out — `editor-row.tsx` is the reference. `--accent` ≡ `--muted` today, so shadcn menus keep their `focus:bg-accent` idiom and it matches. **No dark-mode neutral-fill overrides**: `--muted` already retints per theme, so `dark:hover:bg-muted/50` and `dark:hover:bg-input/50` are shadcn compensations for a palette this project replaced (lint-enforced). Semantic tokens may still step in dark — destructive's dark base genuinely differs.
+
+**Hover on a bordered control previews focus**: the border moves to `--ring`, and focus adds the halo on top. Same move as cards and dropzones, so every bordered thing in the editor answers the pointer the same way. The fill never changes — `FIELD_CONTROL_CLASS` pins the background across `hover:`/`aria-expanded:`/`dark:` on purpose, because ten fields all lighting up under the pointer is noise. Filled controls with no border (switch) step their own token instead.
+
+**Filled variants darken their own token, never switch to another.** Solid fill → `hover:bg-<token>/80` (primary, secondary). Soft/tinted fill → `10` → `hover:20` (destructive). Gradient (ai) → `hover:opacity-90`, since a gradient can't be stepped.
+
+**Press — `active:translate-y-px`**, on button-sized controls (buttons, icon buttons, toolbar toggles, nav items). Popup triggers are excluded via `active:not-aria-[haspopup]:translate-y-px` — the menu opening is already the feedback, so the trigger must not also dip. Colour swatches settle instead of dipping (`hover:scale-110 active:scale-105`), since they're already on the scale axis.
+
+**Large surfaces get no press state, deliberately.** A 1px translate on a full-width row or a template card reads as layout jitter, and the state flip on click is immediate feedback on its own. Don't add one back.
 
 **Disabled — one recipe.** `disabled:pointer-events-none disabled:opacity-50` (Base-UI controls: `data-disabled:pointer-events-none data-disabled:opacity-50`). **No `cursor-not-allowed`** — `pointer-events-none` makes it moot.
 
-**Interaction state is attribute-driven.** State that has a semantic attribute (`aria-pressed`, `aria-invalid`, `aria-checked`, `data-state`, …) is styled off that attribute via a CSS selector — never a `cn(cond && "…")` branch. State with no semantic attribute (drag) exposes a `data-*` (`data-dragging`) and is styled off it. A control that shows a visual state **must** expose the matching attribute, so a11y and styling come from one source. (`role="button"` toggles carry `aria-pressed`; the drag dropzones carry `data-dragging`.)
+**Transitions — one duration.** `transition-[color,box-shadow]` for colour/ring states, `transition-transform` for scale/translate, Tailwind's default 150ms. No ad-hoc `duration-*` on a state; the 300ms template-card scrim is a reveal, not a state.
+
+**Interaction state is attribute-driven.** State that has a semantic attribute (`aria-pressed`, `aria-invalid`, `aria-checked`, `data-active`, …) is styled off that attribute via a CSS selector — never a `cn(cond && "…")` branch. State with no semantic attribute (drag) exposes a `data-*` (`data-dragging`) and is styled off it. A control that shows a visual state **must** expose the matching attribute, so a11y and styling come from one source.
+
+**Three blessed exceptions**, each commented at its site — don't "fix" them:
+
+- `sidebar-resize-handle.tsx` takes no focus ring. A 3px halo around a 1px full-height column reads as a rendering artifact, so the bar itself lights up primary instead.
+- `tabs.tsx`'s active pill stays a JS branch. It's a `motion.span` with a shared `layoutId`, and the branch is what drives the slide animation.
+- react-colorful is styled in `globals.css`, not Tailwind — it's a third-party widget that ships its own CSS, so its pointer and tracks are retinted to the tokens there.
 
 ---
 
@@ -186,12 +216,16 @@ The dark pin is deliberate too: `Input`/`Textarea`/`SelectTrigger`/`Button outli
 
 ## Enforced by lint
 
-Two `no-restricted-syntax` rules in `eslint.config.mjs`, scoped to `src/features/**`, `src/components/ui/**`, `src/app/**`:
+`no-restricted-syntax` rules in `eslint.config.mjs`, scoped to `src/features/**`, `src/components/ui/**`, `src/app/**`:
 
 1. **No `gap-*` in a `className` on `Field`/`FieldGroup`/`FieldSet`/`FieldContent`.** Fix the primitive or use `layout` — don't override at the call site.
 2. **No `text-[Npx]`.** Use the scale.
+3. **No `ring-[Npx]`.** The focus ring is `ring-3`.
+4. **No `focus-visible:ring-ring/<n>` other than `/40`.** Semantic states recolour; neutral focus doesn't.
+5. **No `ring-offset-background`** outside `SELECTION_RING_CLASS`. Offset means selection.
+6. **No `dark:hover:bg-{muted,input,accent}`.** Neutral fills already retint per theme.
 
-Both codify a regression that already happened. If a rule blocks you, the answer is almost never to disable it.
+Each codifies a regression that already happened — spacing drifted to ten gap values, the type scale grew a tail of one-off pixels, and interaction states forked into three ring spellings and five hover opacities. If a rule blocks you, the answer is almost never to disable it.
 
 ---
 
@@ -202,7 +236,10 @@ Both codify a regression that already happened. If a rule blocks you, the answer
 - [ ] Don't pass `gap-*`. Don't pass `text-[Npx]`.
 - [ ] Item-form controls get `FIELD_CONTROL_CLASS`.
 - [ ] Pick the button variant/size from the table, not by eye.
-- [ ] One focus ring.
+- [ ] One focus ring — `FOCUS_RING_CLASS`, never offset.
+- [ ] Can the surface be tinted? Fill it. Can't? `SELECTION_RING_CLASS`. Not both.
+- [ ] Selectable surface? Hover is `/60`, selected is full, and hover is suppressed when selected.
+- [ ] Button-sized? `active:translate-y-px`. Row- or card-sized? No press state.
 - [ ] Verify at sidebar **360 and 640** (resizable) and at **375px** mobile.
 
 ## Verifying a change

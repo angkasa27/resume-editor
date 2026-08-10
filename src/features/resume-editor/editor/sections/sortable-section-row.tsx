@@ -49,7 +49,8 @@ export function SortableSectionRow({
     // rows don't fade on load — only sections added/removed do.
     <motion.div
       ref={setNodeRef}
-      className={isDragging ? "relative z-50" : undefined}
+      data-dragging={isDragging || undefined}
+      className="data-[dragging]:relative data-[dragging]:z-50"
       {...motionProps}
     >
       <SectionRow

@@ -101,6 +101,7 @@ export function SidebarResizeHandle({
         "absolute inset-y-0 -right-1 z-20 w-2 cursor-col-resize",
         "after:absolute after:inset-y-0 after:left-1/2 after:w-px after:-translate-x-1/2",
         "after:bg-transparent after:transition-colors hover:after:bg-primary",
+        // Exception to the one focus ring: a halo on a 1px column reads as an artifact.
         "focus-visible:after:bg-primary focus-visible:outline-none",
         "print:hidden",
       )}

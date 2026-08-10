@@ -39,6 +39,27 @@ const eslintConfig = defineConfig([
           message:
             "Use the type scale: text-2xl (display) | text-base (dialog title) | text-sm (default) | text-xs (meta).",
         },
+        // Interaction states — see DESIGN.md.
+        {
+          selector: "Literal[value=/ring-\\[\\d+px\\]/]",
+          message:
+            "The focus ring is `ring-3`, never an arbitrary pixel spelling. See DESIGN.md.",
+        },
+        {
+          selector: "Literal[value=/focus-visible:ring-ring\\/(?!40\\b)/]",
+          message:
+            "The focus halo is `ring-ring/40`. Semantic states recolor (ring-destructive/20, ring-violet-400/40) but neutral focus does not. See DESIGN.md.",
+        },
+        {
+          selector: "Literal[value=/ring-offset-background/]",
+          message:
+            "`ring-offset-*` marks selection, not focus. Use SELECTION_RING_CLASS from forms/fields/field-control.ts.",
+        },
+        {
+          selector: "Literal[value=/\\bdark:hover:bg-(muted|input|accent)/]",
+          message:
+            "Neutral fills retint per theme — no dark-mode hover override. (Semantic tokens like destructive may still step in dark.)",
+        },
       ],
     },
   },

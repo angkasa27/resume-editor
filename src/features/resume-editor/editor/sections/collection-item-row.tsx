@@ -9,7 +9,6 @@ import { EditorRow } from "@/features/resume-editor/editor/sections/editor-row";
 import { RowDragHandle } from "@/features/resume-editor/editor/sections/row-drag-handle";
 import { RowDeleteButton } from "@/features/resume-editor/editor/sections/row-delete-button";
 import { useSortableRow } from "@/features/resume-editor/editor/sections/use-sortable-row";
-import { cn } from "@/lib/utils";
 
 type CollectionItemRowProps = {
   /** The item's own stable id — also the dnd-kit sortable id. */
@@ -49,25 +48,18 @@ export function CollectionItemRow({
       ref={setNodeRef}
       data-testid="collection-item-card"
       data-open={open || undefined}
+      data-dragging={isDragging || undefined}
       {...motionProps}
       // No border here: the row now carries its own, and an expanded card
       // continues it down the body — a wrapper border would double the line.
-      className={cn(
-        "overflow-hidden rounded-md",
-        isDragging && "relative z-50",
-      )}
+      className="overflow-hidden rounded-md data-[dragging]:relative data-[dragging]:z-50"
     >
       <EditorRow
         handle={
           <RowDragHandle label={summary} {...dragAttributes} {...listeners} />
         }
         indicator={
-          <ChevronRightIcon
-            className={cn(
-              "transition-transform duration-200 size-4 shrink-0 text-muted-foreground/60",
-              open && "rotate-90",
-            )}
-          />
+          <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground/60 transition-transform group-aria-pressed/row:rotate-90" />
         }
         title={summary}
         active={open}

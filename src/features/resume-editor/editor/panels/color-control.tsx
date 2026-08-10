@@ -20,7 +20,10 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "@/components/ui/input-group";
-import { FOCUS_RING_CLASS } from "@/features/resume-editor/forms/fields/field-control";
+import {
+  FOCUS_RING_CLASS,
+  SELECTION_RING_CLASS,
+} from "@/features/resume-editor/forms/fields/field-control";
 
 const ACCENT_SWATCHES: ReadonlyArray<{ name: string; hex: string }> = [
   { name: "Slate", hex: "#1f2937" },
@@ -74,9 +77,10 @@ function ColorSwatchButton({
       aria-pressed={isActive}
       onClick={onSelect}
       className={cn(
-        "size-7 rounded-md border border-black/10 transition-transform hover:scale-110",
+        "size-7 rounded-md border border-black/10 transition-transform hover:scale-110 active:scale-105",
         FOCUS_RING_CLASS,
-        "aria-pressed:ring-2 aria-pressed:ring-offset-2 aria-pressed:ring-offset-background aria-pressed:ring-foreground/60",
+        SELECTION_RING_CLASS,
+        "aria-pressed:ring-foreground/60",
       )}
       style={{ backgroundColor: swatch.hex }}
     />
@@ -121,9 +125,10 @@ export function ColorControl({
             aria-pressed={allowAuto.active}
             onClick={allowAuto.onSelect}
             className={cn(
-              "size-7 rounded-md border border-black/10 bg-muted text-xs font-semibold text-muted-foreground transition-transform hover:scale-110",
+              "size-7 rounded-md border border-black/10 bg-muted text-xs font-semibold text-muted-foreground transition-transform hover:scale-110 active:scale-105",
               FOCUS_RING_CLASS,
-              "aria-pressed:ring-2 aria-pressed:ring-offset-2 aria-pressed:ring-offset-background aria-pressed:ring-foreground/60",
+              SELECTION_RING_CLASS,
+              "aria-pressed:ring-foreground/60",
             )}
           >
             A
@@ -152,9 +157,10 @@ export function ColorControl({
                 aria-label="Custom color"
                 aria-pressed={isCustomColorActive}
                 className={cn(
-                  "relative size-7 rounded-md transition-transform hover:scale-110",
+                  "relative size-7 rounded-md transition-transform hover:scale-110 active:scale-105",
                   FOCUS_RING_CLASS,
-                  "aria-pressed:ring-2 aria-pressed:ring-offset-2 aria-pressed:ring-offset-background aria-pressed:ring-foreground/60",
+                  SELECTION_RING_CLASS,
+                  "aria-pressed:ring-foreground/60",
                 )}
                 style={{
                   background: matchedSwatch

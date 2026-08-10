@@ -96,7 +96,7 @@ export function JobDescriptionPanel({
                       />
                     }
                     variant="outline"
-                    className="cursor-pointer text-xs hover:bg-muted"
+                    className="cursor-pointer text-xs transition-[color,box-shadow,transform] hover:bg-muted active:translate-y-px"
                   >
                     <PlusIcon data-icon="inline-start" />
                     {kw.term}

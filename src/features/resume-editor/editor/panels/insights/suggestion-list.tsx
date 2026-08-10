@@ -97,12 +97,7 @@ function SuggestionGroup({
           </>
         }
         indicator={
-          <ChevronRightIcon
-            className={cn(
-              "size-4 shrink-0 text-muted-foreground/60 transition-transform duration-200",
-              open && "rotate-90",
-            )}
-          />
+          <ChevronRightIcon className="size-4 shrink-0 text-muted-foreground/60 transition-transform group-aria-pressed/row:rotate-90" />
         }
         active={open}
         onActivate={() => setOpen((value) => !value)}

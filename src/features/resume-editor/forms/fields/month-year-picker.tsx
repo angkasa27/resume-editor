@@ -168,12 +168,8 @@ export function MonthYearPicker({
                 key={monthLabel}
                 type="button"
                 aria-pressed={isMonthSelected(monthDate, selectedDate)}
-                variant={
-                  isMonthSelected(monthDate, selectedDate)
-                    ? "default"
-                    : "outline"
-                }
-                className="justify-center"
+                variant="outline"
+                className="justify-center aria-pressed:border-transparent aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:hover:bg-primary/80 aria-pressed:hover:text-primary-foreground"
                 disabled={isMonthDisabled(monthDate, minDate)}
                 onClick={() => handleSelectMonth(monthIndex)}
               >
