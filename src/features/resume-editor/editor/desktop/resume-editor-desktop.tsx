@@ -119,6 +119,7 @@ export function ResumeEditorDesktop({
     }
     setRail(key);
     setIsSidebarCollapsed(false);
+    if (key !== "edit") backToList();
   }
 
   function backToList() {
