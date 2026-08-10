@@ -120,14 +120,13 @@
    coin-flip against the layout's override or won it and rendered near-illegible
    against the accent. One colour, no override needed, no contrast trap. */
 
-/* Icons sit on the text baseline at the text's own size and colour, so they
-   inherit whatever surface they land on (a rail's on-secondary, a band's
-   on-accent) with no per-layout override. */
+/* Icons take the text's own colour, so they inherit whatever surface they land
+   on with no per-layout override. Sized and nudged to the cap band, not 1em. */
 :where(.root) :global(.contact-icon) {
   display: inline-block;
-  width: 1em;
-  height: 1em;
-  vertical-align: -0.13em;
+  width: 0.875em;
+  height: 0.875em;
+  margin-top: -0.06em;
   margin-right: 0.32em;
   stroke-width: 2;
   flex-shrink: 0;
