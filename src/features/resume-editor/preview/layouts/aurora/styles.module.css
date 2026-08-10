@@ -14,22 +14,22 @@
 }
 
 /* The label gutter: heading parks in a fixed left column, content runs beside
-   it. Sections are siblings of the summary or wrapped one level deep, so the
-   hairline goes on every section and comes off the first — and stays faint: it
-   separates, it should not stripe the page. */
+   it. The hairline sits under each section — including the last, which closes
+   the page — and stays faint: it separates, it should not stripe the page. */
 .layout :global(.section) {
   display: grid;
   grid-template-columns: 128px minmax(0, 1fr);
   gap: var(--resume-gutter);
   align-items: start;
   padding: var(--resume-gap-section) 0;
-  border-top: 1px solid
+  border-bottom: 1px solid
     color-mix(in srgb, var(--resume-border) 40%, transparent);
 }
 
+/* The band already supplies the air above the first section. */
 .layout :global(.layout-body > *:first-child .section),
 .layout :global(.layout-body > .section:first-child) {
-  border-top: none;
+  padding-top: 0;
 }
 
 .layout :global(.section-heading) {
@@ -57,7 +57,8 @@
   font-weight: 700;
 }
 
-/* Square bullet markers instead of discs, matching the tag corners. */
+/* Small solid dots, drawn rather than inherited, so they match the muted text
+   instead of the browser's default disc. */
 .layout :global(.rich-text ul) {
   list-style: none;
   padding-left: var(--resume-indent);
@@ -71,10 +72,12 @@
   content: "";
   position: absolute;
   left: calc(var(--resume-indent) * -1);
-  top: 0.45em;
-  width: 0.42em;
-  height: 0.42em;
-  border-radius: 2px;
+  top: 0.5em;
+  /* Whole pixels and a 50% radius: an em-sized box lands on fractions and
+     antialiases into an oval on some lines but not others. */
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
   background: var(--resume-muted);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
@@ -100,11 +103,10 @@
   -webkit-print-color-adjust: exact;
 }
 
-/* Soft colour blobs on white, not one flat sweep: three radial gradients at
-   different sizes and hues, each fading to transparent well before its edge so
-   the falloff reads as blur without a filter (which would smear the photo too).
-   `secondary` falls back to `accent` when a preset leaves it unset, which
-   degrades to a one-hue wash rather than a broken band. */
+/* Two soft colour circles near the top, not a flat sweep. Each fades out well
+   before its edge, so the falloff reads as blur without a filter (which would
+   smear the photo too). `secondary` falls back to `accent` when a preset leaves
+   it unset, which degrades to a one-hue wash rather than a broken band. */
 .header :global(.aurora-band) {
   display: flex;
   align-items: center;
@@ -115,17 +117,17 @@
        resolves to the paper white so there is no edge to see. */
     linear-gradient(to bottom, rgb(255 255 255 / 0) 42%, #ffffff 100%),
     radial-gradient(
-      62% 115% at 16% -18%,
+      62% 115% at 27% -18%,
       var(--resume-accent) 0%,
       transparent 72%
     ),
     radial-gradient(
-      58% 110% at 84% -12%,
+      58% 110% at 73% -12%,
       var(--resume-secondary) 0%,
       transparent 74%
     );
   padding: var(--resume-page-margin) var(--resume-page-margin)
-    calc(var(--resume-page-margin) * 0.8);
+    var(--resume-gap-section);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
