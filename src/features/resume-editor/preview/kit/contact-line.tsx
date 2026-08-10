@@ -8,7 +8,7 @@ import type { PreviewContactItem, PreviewRenderContext } from "../types";
 
 /**
  * `stacked` is the only variant that reads in a narrow rail. Icons are opt-in: they clash with
- * typographic layouts (minimal, academic) whose identity is unadorned text.
+ * typographic layouts (academic) whose identity is unadorned text.
  */
 type ContactVariant = "inline" | "stacked";
 

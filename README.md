@@ -76,15 +76,11 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <br /><sub><b>Academic</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/minimal-air.webp" alt="Minimal" width="180" />
-      <br /><sub><b>Minimal</b></sub>
-    </td>
-  </tr>
-  <tr>
-    <td align="center">
       <img src="public/templates/inset-steel.webp" alt="Inset" width="180" />
       <br /><sub><b>Inset</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="public/templates/banner-royal.webp" alt="Banner" width="180" />
       <br /><sub><b>Banner</b></sub>
@@ -93,14 +89,9 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <img src="public/templates/split-midnight.webp" alt="Split" width="180" />
       <br /><sub><b>Split</b></sub>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="public/templates/bold-citrus.webp" alt="Bold Type" width="180" />
       <br /><sub><b>Bold Type</b></sub>
-    </td>
-    <td align="center">
-      <!-- empty cell to align -->
     </td>
   </tr>
 </table>
@@ -229,7 +220,7 @@ src/
       shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
     forms/                     # react-hook-form field bindings, rich-text, schemas
     preview/
-      layouts/                 # classic | sidebar | modern-centered | timeline | academic | minimal | inset | banner | split | bold-type
+      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type
       components/, descriptors/, kit/, helpers/
     server/                    # Server-side PDF export & Gemini helpers
     state/                     # Zustand store

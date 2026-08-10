@@ -63,7 +63,7 @@ describe("getPageMarginMm", () => {
     // The whole reason the margin moved from a user knob onto the layout: a
     // 0.36fr rail and a whitespace-led page cannot share one value.
     expect(getPageMarginMm("split", "standard")).toBeLessThan(
-      getPageMarginMm("minimal", "standard"),
+      getPageMarginMm("academic", "standard"),
     );
   });
 
@@ -167,9 +167,9 @@ describe("resolvePdfPresentation", () => {
   it("derives the page margin from the layout, not a user setting", () => {
     const base = createDefaultPdfPresentation();
     const split = resolvePdfPresentation({ ...base, layoutId: "split" });
-    const minimal = resolvePdfPresentation({ ...base, layoutId: "minimal" });
+    const academicMargin = resolvePdfPresentation({ ...base, layoutId: "academic" });
     expect(split.vars["--resume-page-margin"]).toBe("9mm");
-    expect(minimal.vars["--resume-page-margin"]).toBe("18mm");
+    expect(academicMargin.vars["--resume-page-margin"]).toBe("18mm");
   });
 
   it("ties the gutter to half the page margin so inner air tracks the edge", () => {
@@ -177,9 +177,9 @@ describe("resolvePdfPresentation", () => {
     // gutter is deliberately derived from the margin, not set per layout.
     const base = createDefaultPdfPresentation();
     const split = resolvePdfPresentation({ ...base, layoutId: "split" });
-    const minimal = resolvePdfPresentation({ ...base, layoutId: "minimal" });
+    const academicMargin = resolvePdfPresentation({ ...base, layoutId: "academic" });
     expect(split.vars["--resume-gutter"]).toBe("4.5mm");
-    expect(minimal.vars["--resume-gutter"]).toBe("9mm");
+    expect(academicMargin.vars["--resume-gutter"]).toBe("9mm");
   });
 
   it("emits paper dimensions for the selected paper size", () => {

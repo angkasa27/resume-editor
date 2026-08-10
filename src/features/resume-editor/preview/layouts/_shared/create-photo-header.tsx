@@ -5,7 +5,7 @@ import {
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 
 /**
- * The photo-left header shared by classic/inset/minimal/timeline/sidebar:
+ * The photo-left header shared by classic/inset/timeline/sidebar:
  * optional photo frame, then name + contact line. Each layout passes its own
  * `styles` module and `data-layout` value, and may tune how its contacts read.
  */

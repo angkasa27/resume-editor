@@ -207,45 +207,6 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // minimal — whitespace is the layout. Airy and relaxed, or it is just classic.
-  {
-    id: "minimal-air",
-    label: "Air",
-    layoutId: "minimal",
-    style: {
-      accent: "#0e7490",
-      fontFamilyId: "inter",
-      fontScale: "sm",
-      spacing: "airy",
-      lineHeight: "relaxed",
-    },
-  },
-  {
-    id: "minimal-warm",
-    label: "Warm",
-    layoutId: "minimal",
-    style: {
-      accent: "#9a3412",
-      fontFamilyId: "lora",
-      fontScale: "md",
-      spacing: "airy",
-      lineHeight: "relaxed",
-    },
-  },
-  // No colour at all — the most restrained thing the editor can produce.
-  {
-    id: "minimal-mono",
-    label: "Mono",
-    layoutId: "minimal",
-    style: {
-      accent: "#111827",
-      fontFamilyId: "inter",
-      fontScale: "sm",
-      spacing: "airy",
-      lineHeight: "relaxed",
-    },
-  },
-
   // inset — the label gutter eats 110px, so these run tight to keep the
   // content column wide enough to read.
   {

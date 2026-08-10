@@ -17,7 +17,6 @@ export const pdfLayoutIds = [
   "modern-centered",
   "timeline",
   "academic",
-  "minimal",
   "inset",
   "banner",
   "split",
@@ -28,6 +27,7 @@ export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 /** Retired layout ids mapped to their closest relative, so a saved draft doesn't silently fall back to `classic`. */
 const retiredLayoutIds: Record<string, PdfLayoutId> = {
   tinted: "sidebar",
+  minimal: "academic",
 };
 
 export const pdfFontScaleIds = ["sm", "md", "lg"] as const;
@@ -140,7 +140,6 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   banner: 14, // body matches classic; the band owns its own padding
   "modern-centered": 16, // centered header needs side air or the name crowds the edge
   academic: 18, // the margin is the formality
-  minimal: 18, // whitespace is the identity
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */

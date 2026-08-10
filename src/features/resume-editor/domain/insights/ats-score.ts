@@ -246,19 +246,18 @@ type LayoutVerdict = { status: CheckStatus; message?: string };
 const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   classic: { status: "pass" },
   timeline: { status: "pass" },
-  minimal: { status: "pass" },
   inset: { status: "pass" },
   banner: { status: "pass" },
   "bold-type": { status: "pass" },
   "modern-centered": {
     status: "warn",
     message:
-      "Centered headers usually parse fine. Classic or minimal is safer if you expect a strict parser.",
+      "Centered headers usually parse fine. Classic is safer if you expect a strict parser.",
   },
   academic: {
     status: "warn",
     message:
-      "Academic layouts usually parse fine. Classic or minimal is safer if you expect a strict parser.",
+      "Academic layouts usually parse fine. Classic is safer if you expect a strict parser.",
   },
   sidebar: {
     status: "fail",

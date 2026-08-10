@@ -16,8 +16,6 @@ export const CAROUSEL_SCREENSHOTS: CarouselScreenshot[] = [
   { id: "timeline-amber", label: "Timeline Amber" },
   { id: "academic-oxford", label: "Academic Oxford" },
   { id: "academic-burgundy", label: "Academic Burgundy" },
-  { id: "minimal-air", label: "Minimal Air" },
-  { id: "minimal-warm", label: "Minimal Warm" },
   { id: "inset-steel", label: "Inset Steel" },
   { id: "inset-crimson", label: "Inset Crimson" },
   { id: "banner-royal", label: "Banner Royal" },

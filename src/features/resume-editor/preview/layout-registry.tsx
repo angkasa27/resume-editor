@@ -7,7 +7,6 @@ import { bannerLayout } from "./layouts/banner/layout";
 import { boldTypeLayout } from "./layouts/bold-type/layout";
 import { classicLayout } from "./layouts/classic/layout";
 import { insetLayout } from "./layouts/inset/layout";
-import { minimalLayout } from "./layouts/minimal/layout";
 import { modernCenteredLayout } from "./layouts/modern-centered/layout";
 import { sidebarLayout } from "./layouts/sidebar/layout";
 import { splitLayout } from "./layouts/split/layout";
@@ -21,7 +20,6 @@ export const previewLayoutDefinitions = [
   modernCenteredLayout,
   timelineLayout,
   academicLayout,
-  minimalLayout,
   insetLayout,
   bannerLayout,
   splitLayout,
