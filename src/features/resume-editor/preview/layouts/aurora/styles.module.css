@@ -1,4 +1,4 @@
-/* Full-bleed: the gradient band paints to the top/left/right paper edges; the
+/* Full-bleed: the colour band paints to the top/left/right paper edges; the
    body below keeps the page margin. */
 .layout {
   display: flex;
@@ -14,22 +14,22 @@
 }
 
 /* The label gutter: heading parks in a fixed left column, content runs beside
-   it, and a hairline separates one section from the next. */
+   it. Sections are siblings of the summary or wrapped one level deep, so the
+   hairline goes on every section and comes off the first — and stays faint: it
+   separates, it should not stripe the page. */
 .layout :global(.section) {
   display: grid;
   grid-template-columns: 128px minmax(0, 1fr);
   gap: var(--resume-gutter);
   align-items: start;
   padding: var(--resume-gap-section) 0;
+  border-top: 1px solid
+    color-mix(in srgb, var(--resume-border) 40%, transparent);
 }
 
-.layout :global(.section + .section),
-.layout :global(.layout-body > div + div .section) {
-  border-top: 1px solid var(--resume-border);
-}
-
-.layout :global(.layout-body > div .section) {
-  border-top: 1px solid var(--resume-border);
+.layout :global(.layout-body > *:first-child .section),
+.layout :global(.layout-body > .section:first-child) {
+  border-top: none;
 }
 
 .layout :global(.section-heading) {
@@ -75,7 +75,7 @@
   width: 0.42em;
   height: 0.42em;
   border-radius: 2px;
-  background: color-mix(in srgb, var(--resume-accent) 45%, transparent);
+  background: var(--resume-muted);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -100,17 +100,30 @@
   -webkit-print-color-adjust: exact;
 }
 
-/* Edge-to-edge gradient. `secondary` falls back to `accent` when a preset
-   leaves it unset, which degrades to a flat band rather than a broken one. */
+/* Soft colour blobs on white, not one flat sweep: three radial gradients at
+   different sizes and hues, each fading to transparent well before its edge so
+   the falloff reads as blur without a filter (which would smear the photo too).
+   `secondary` falls back to `accent` when a preset leaves it unset, which
+   degrades to a one-hue wash rather than a broken band. */
 .header :global(.aurora-band) {
   display: flex;
   align-items: center;
   gap: var(--resume-gutter);
-  background: linear-gradient(
-    110deg,
-    var(--resume-accent) 0%,
-    var(--resume-secondary) 100%
-  );
+  background-color: #ffffff;
+  background-image:
+    /* Melts the band into the page: colour only lives up top, and the bottom
+       resolves to the paper white so there is no edge to see. */
+    linear-gradient(to bottom, rgb(255 255 255 / 0) 42%, #ffffff 100%),
+    radial-gradient(
+      62% 115% at 16% -18%,
+      var(--resume-accent) 0%,
+      transparent 72%
+    ),
+    radial-gradient(
+      58% 110% at 84% -12%,
+      var(--resume-secondary) 0%,
+      transparent 74%
+    );
   padding: var(--resume-page-margin) var(--resume-page-margin)
     calc(var(--resume-page-margin) * 0.8);
   print-color-adjust: exact;
@@ -130,15 +143,15 @@
 .header :global(.name) {
   --resume-name-color: var(--resume-text);
   color: var(--resume-text);
-  font-size: calc(var(--resume-h1) * 1.25);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.05;
+  font-size: calc(var(--resume-h1) * 1.45);
+  font-weight: 900;
+  letter-spacing: -0.035em;
+  line-height: 1.02;
 }
 
 .header :global(.header-photo) {
-  width: 112px;
-  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  width: 108px;
+  aspect-ratio: var(--resume-photo-aspect, 3 / 4);
   height: auto;
   border-radius: var(--resume-photo-radius, 12px);
   overflow: hidden;
@@ -159,13 +172,22 @@
   gap: var(--resume-gap-inner);
 }
 
-.header :global(.contact-links) {
-  flex-direction: row;
+/* Inline runs, like every other layout's contact line; the links wrap as a row
+   of pills instead of stacking one per line. */
+.header :global(.contact-line) {
+  display: flex;
   flex-wrap: wrap;
+  align-items: center;
+  gap: 2px var(--resume-gap-item);
+}
+
+.header :global(.contact-links) {
   gap: var(--resume-gap-inner);
 }
 
 .header :global(.contact-links .contact-item) {
+  display: inline-flex;
+  align-items: center;
   border: 1px solid color-mix(in srgb, var(--resume-text) 25%, transparent);
   border-radius: 999px;
   padding: 0.15em 0.7em;

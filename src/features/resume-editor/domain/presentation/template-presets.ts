@@ -386,14 +386,14 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // aurora — the gradient band sits behind dark text, so both ends stay pale.
-  // A saturated pick here would bury the name it is meant to frame.
+  // aurora — two soft colour circles at the top of the band, fading to paper
+  // white. Both stay light: the name and contacts sit on them in dark text.
   {
     id: "aurora-haze",
     label: "Haze",
     layoutId: "aurora",
     style: {
-      accent: "#c7d2fe",
+      accent: "#a78bfa",
       secondary: "#a5f3fc",
       fontFamilyId: "inter",
       fontScale: "sm",
@@ -406,8 +406,8 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     label: "Peach",
     layoutId: "aurora",
     style: {
-      accent: "#fecdd3",
-      secondary: "#fed7aa",
+      accent: "#fda4af",
+      secondary: "#fdba74",
       fontFamilyId: "lato",
       fontScale: "sm",
       spacing: "standard",

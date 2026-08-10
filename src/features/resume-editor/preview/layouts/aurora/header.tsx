@@ -21,7 +21,7 @@ export function AuroraHeader({ context }: LayoutHeaderProps) {
           </h1>
           <PreviewContactLine
             context={context}
-            presentation={{ variant: "stacked", icons: true }}
+            presentation={{ variant: "inline", icons: true }}
           />
         </div>
       </div>

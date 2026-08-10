@@ -11,13 +11,15 @@ export function EducationItem({ item }: { item: SectionItem<"education"> }) {
           {item.degree && item.name ? (
             <div className="meta">{item.name}</div>
           ) : null}
+          {/* GPA belongs to the school. On the right it hung under the date
+              with nothing across from it. */}
+          {item.gpa ? <div className="meta">GPA: {item.gpa}</div> : null}
         </div>
         <div className="item-header-side">
           <div className="item-date">
             {renderDateRange(item.startDate, item.endDate)}
           </div>
           {item.location ? <div className="meta">{item.location}</div> : null}
-          {item.gpa ? <div className="meta">GPA: {item.gpa}</div> : null}
         </div>
       </div>
       <PreviewRichTextBlock content={item.description} />
