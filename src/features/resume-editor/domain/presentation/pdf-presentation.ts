@@ -23,6 +23,7 @@ export const pdfLayoutIds = [
   "bold-type",
   "studio",
   "mosaic",
+  "spotlight",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -135,6 +136,7 @@ const indentPx: Record<PdfSpacingId, number> = {
 const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   split: 9, // 0.36fr solid full-height rail — tightest; the rail needs the width
   sidebar: 10, // 0.42fr rail bleeding left+bottom
+  spotlight: 10, // gradient rail bleeds like sidebar
   "bold-type": 12, // oversized type wants edge tension
   studio: 15, // chips and badges need room to sit apart
   mosaic: 12, // the cards carry their own padding

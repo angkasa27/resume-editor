@@ -46,7 +46,7 @@ export type Persona = {
   };
 };
 
-// 20 personas, one per presets that has a screenshot. Screenshot filename equals
+// 21 personas, one per preset that has a screenshot. Screenshot filename equals
 // presetId — public/templates/<presetId>.webp.
 export const PERSONAS: Persona[] = [
   // ── Row 1 ──────────────────────────────────────────────────────────────────
@@ -2391,6 +2391,315 @@ export const PERSONAS: Persona[] = [
       degree: "B.A. in English (Technical Communication)",
       gpa: "3.76 / 4.0",
       note: "Specialised in technical writing and information design; capstone project on API documentation usability for the UW IT department, which was adopted as the department's standard template. Minor in Computer Science.",
+    },
+  },
+  {
+    layoutId: "studio",
+    presetId: "studio-violet",
+    photo: "https://i.pravatar.cc/320?img=47",
+    fullName: "Amara Osei",
+    location: "Toronto, ON",
+    phone: "+1 (416) 555-0173",
+    email: "amara.osei@hey.com",
+    links: [
+      "https://www.linkedin.com/in/amaraosei",
+      "https://github.com/amaraosei",
+    ],
+    summary:
+      "<p>Data scientist with 7 years turning messy product telemetry into decisions leadership actually makes. I build the model, the pipeline that feeds it, and the dashboard that explains it, then stay close enough to the business to know when a simpler answer wins.</p>",
+    work: [
+      {
+        company: "Northwind Analytics",
+        position: "Senior Data Scientist",
+        location: "Toronto, ON",
+        start: "May 2021",
+        end: "current",
+        bullets: [
+          "Built a churn model that flagged at-risk accounts 6 weeks earlier than the previous heuristic, guiding retention plays worth $4.2M in saved ARR.",
+          "Replaced a nightly batch pipeline with an incremental dbt build, cutting warehouse spend 38% and shrinking data latency from 14 hours to 40 minutes.",
+          "Ran the experimentation review for 60+ tests a year, killing three shipped-by-default features whose lift did not survive a sequential test.",
+          "Mentored 4 analysts into full-stack modelling work, two of whom now own their own product areas.",
+        ],
+      },
+      {
+        company: "Marrow Health",
+        position: "Data Scientist",
+        location: "Toronto, ON",
+        start: "Aug 2018",
+        end: "Apr 2021",
+        bullets: [
+          "Developed a triage-time forecasting model deployed across 9 clinics, reducing average patient wait by 22 minutes at peak hours.",
+          "Standardised a feature store that removed four duplicate definitions of 'active patient' and ended a recurring reporting dispute.",
+          "Published the team's first model card template, later adopted as the clinical review requirement for every deployed model.",
+        ],
+      },
+      {
+        company: "Beacon Retail Group",
+        position: "Analytics Engineer",
+        location: "Mississauga, ON",
+        start: "Jun 2016",
+        end: "Jul 2018",
+        bullets: [
+          "Rebuilt demand forecasting for 240 stores, cutting overstock write-offs by 17% in the first full season.",
+          "Automated a weekly merchandising report that had consumed two analyst-days per week.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Data & Modelling",
+      items: [
+        "Python",
+        "SQL",
+        "dbt",
+        "PyTorch",
+        "Causal Inference",
+        "Airflow",
+        "Snowflake",
+        "Experimentation",
+      ],
+    },
+    projects: [
+      {
+        name: "Retention Model Rewrite",
+        start: "Mar 2023",
+        end: "Dec 2023",
+        bullets: [
+          "Rewrote the churn pipeline around survival analysis, improving 90-day precision from 0.41 to 0.63.",
+          "Shipped a self-serve cohort explorer so CS could interrogate predictions without asking the data team.",
+          "Instrumented drift monitoring that has caught two silent upstream schema changes since launch.",
+        ],
+      },
+      {
+        name: "Experiment Platform",
+        start: "Jan 2022",
+        end: "Aug 2022",
+        bullets: [
+          "Built sequential testing into the internal A/B tool, ending the habit of peeking at running tests.",
+          "Cut average experiment runtime by 30% through variance reduction on pre-experiment covariates.",
+        ],
+      },
+    ],
+    certs: [
+      {
+        name: "Professional Data Engineer",
+        org: "Google Cloud",
+        date: "Sep 2022",
+      },
+      { name: "dbt Analytics Engineering", org: "dbt Labs", date: "Feb 2021" },
+    ],
+    education: {
+      name: "University of Waterloo",
+      location: "Waterloo, ON",
+      start: "Sep 2012",
+      end: "Jun 2016",
+      degree: "B.Math. in Statistics",
+      gpa: "3.9 / 4.0",
+      note: "Minor in computing; undergraduate thesis on hierarchical models for sparse retail demand, presented at the departmental research symposium.",
+    },
+  },
+  {
+    layoutId: "mosaic",
+    presetId: "mosaic-indigo",
+    photo: "https://i.pravatar.cc/320?img=32",
+    fullName: "Yuki Tanaka",
+    location: "Singapore",
+    phone: "+65 8123 4567",
+    email: "yuki.tanaka@proton.me",
+    links: [
+      "https://www.linkedin.com/in/yukitanaka",
+      "https://yukitanaka.co",
+    ],
+    summary:
+      "<p>Growth marketer with 9 years running acquisition and lifecycle for subscription products across APAC. I own the number, not the channel: I will kill a campaign I built if the payback curve says so, and I write the brief myself when the agency cannot.</p>",
+    work: [
+      {
+        company: "Kaisen Digital",
+        position: "Head of Growth",
+        location: "Singapore",
+        start: "Feb 2022",
+        end: "current",
+        bullets: [
+          "Took paid acquisition from a single-channel Meta spend to a five-channel mix, lowering blended CAC 34% while doubling monthly signups.",
+          "Rebuilt lifecycle messaging around activation milestones instead of calendar days, lifting trial-to-paid conversion from 9% to 14%.",
+          "Ran a quarterly incrementality test programme that reallocated $1.8M of budget away from channels that were taking credit for organic demand.",
+          "Grew and led a team of 7 across performance, lifecycle, and content.",
+        ],
+      },
+      {
+        company: "Orbit Commerce",
+        position: "Growth Marketing Manager",
+        location: "Singapore",
+        start: "Mar 2019",
+        end: "Jan 2022",
+        bullets: [
+          "Launched the Japanese and Korean markets end to end, reaching 40k users in year one on a localisation-first playbook.",
+          "Cut email unsubscribes 41% by replacing the blast calendar with behaviour-triggered journeys.",
+          "Built the first attribution model the finance team was willing to plan against.",
+        ],
+      },
+      {
+        company: "Bright Harbour",
+        position: "Digital Marketing Specialist",
+        location: "Kuala Lumpur, Malaysia",
+        start: "Jul 2016",
+        end: "Feb 2019",
+        bullets: [
+          "Managed a $600k annual search budget across three brands, improving ROAS from 2.1x to 3.4x.",
+          "Introduced structured landing-page testing that raised paid conversion rate 26% over four quarters.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Growth & Lifecycle",
+      items: [
+        "Paid Acquisition",
+        "Lifecycle Marketing",
+        "Incrementality Testing",
+        "SQL",
+        "Braze",
+        "Attribution Modelling",
+        "Localisation",
+      ],
+    },
+    projects: [
+      {
+        name: "APAC Market Entry Playbook",
+        start: "Apr 2022",
+        end: "Feb 2023",
+        bullets: [
+          "Documented a repeatable launch sequence covering pricing, localisation, and channel mix for four markets.",
+          "Cut time-to-first-revenue in a new market from 5 months to 7 weeks.",
+        ],
+      },
+      {
+        name: "Lifecycle Rebuild",
+        start: "Jun 2021",
+        end: "Dec 2021",
+        bullets: [
+          "Migrated 60 legacy campaigns into 11 behaviour-triggered journeys with clear ownership and holdout groups.",
+          "Established a permanent 5% holdout that finally quantified lifecycle's contribution to retention.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Braze Certified Marketer", org: "Braze", date: "May 2022" },
+      { name: "Google Analytics 4", org: "Google", date: "Nov 2021" },
+    ],
+    education: {
+      name: "National University of Singapore",
+      location: "Singapore",
+      start: "Aug 2012",
+      end: "May 2016",
+      degree: "B.B.A. in Marketing",
+      gpa: "3.7 / 4.0",
+      note: "Exchange term at Waseda University; final-year project on subscription pricing sensitivity across three APAC markets.",
+    },
+  },
+  {
+    layoutId: "spotlight",
+    presetId: "spotlight-dusk",
+    photo: "https://i.pravatar.cc/320?img=45",
+    fullName: "Sofia Alvarez",
+    location: "Madrid, Spain",
+    phone: "+34 612 345 678",
+    email: "sofia.alvarez@fastmail.com",
+    links: [
+      "https://www.linkedin.com/in/sofiaalvarez",
+      "https://github.com/salvarez",
+    ],
+    summary:
+      "<p>Platform engineer with 8 years making other engineers faster. I care about the boring parts — build times, rollback safety, the pager at 3am — and I would rather delete a service than add a dashboard for it.</p>",
+    work: [
+      {
+        company: "Terrafirma Cloud",
+        position: "Staff Platform Engineer",
+        location: "Madrid, Spain",
+        start: "Jan 2022",
+        end: "current",
+        bullets: [
+          "Cut median CI time from 24 to 6 minutes by sharding the test suite and caching build layers, saving roughly 900 engineer-hours a year.",
+          "Led the migration of 40 services onto a standard deployment pipeline with automated rollback, taking failed-deploy recovery from 25 minutes to under 2.",
+          "Reduced pager volume 62% by deleting alerts nobody acted on and rewriting the rest around user-visible symptoms.",
+          "Wrote the internal platform golden path, now the default for every new service.",
+        ],
+      },
+      {
+        company: "Cadena Systems",
+        position: "Site Reliability Engineer",
+        location: "Barcelona, Spain",
+        start: "Sep 2018",
+        end: "Dec 2021",
+        bullets: [
+          "Ran the incident programme through a period of 4x traffic growth, holding availability at 99.97%.",
+          "Introduced progressive delivery, catching three regressions at 5% traffic that would have been full outages.",
+          "Halved cloud spend on the largest cluster by right-sizing requests against real usage data.",
+        ],
+      },
+      {
+        company: "Nubila",
+        position: "Backend Engineer",
+        location: "Valencia, Spain",
+        start: "Jun 2016",
+        end: "Aug 2018",
+        bullets: [
+          "Built the billing service that still processes every invoice, with an idempotency design that survived three payment-provider migrations.",
+          "Moved the monolith's async work onto a queue, removing the nightly job that had been the top source of incidents.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Platform & Infrastructure",
+      items: [
+        "Kubernetes",
+        "Terraform",
+        "Go",
+        "AWS",
+        "Observability",
+        "CI/CD",
+        "Incident Response",
+        "Postgres",
+      ],
+    },
+    projects: [
+      {
+        name: "Golden Path Pipeline",
+        start: "Feb 2023",
+        end: "Oct 2023",
+        bullets: [
+          "Shipped a paved-road template covering build, deploy, alerting, and rollback for new services.",
+          "Brought time-to-first-production-deploy for a new service from 3 weeks down to a single afternoon.",
+        ],
+      },
+      {
+        name: "Alert Debt Cleanup",
+        start: "Mar 2022",
+        end: "Jul 2022",
+        bullets: [
+          "Audited 380 alerts against a year of incident data and deleted the 60% that had never led to an action.",
+          "Rewrote the remainder as symptom-based SLO burn alerts with linked runbooks.",
+        ],
+      },
+    ],
+    certs: [
+      {
+        name: "Certified Kubernetes Administrator",
+        org: "Cloud Native Computing Foundation",
+        date: "Apr 2021",
+      },
+      {
+        name: "AWS Solutions Architect - Professional",
+        org: "Amazon Web Services",
+        date: "Oct 2022",
+      },
+    ],
+    education: {
+      name: "Universidad Politécnica de Madrid",
+      location: "Madrid, Spain",
+      start: "Sep 2011",
+      end: "Jun 2016",
+      degree: "M.Eng. in Computer Engineering",
+      gpa: "8.6 / 10",
+      note: "Thesis on scheduling strategies for heterogeneous container workloads; teaching assistant for two years in distributed systems.",
     },
   },
 ];

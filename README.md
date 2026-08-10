@@ -36,7 +36,7 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **10 professional templates**: Switch between ten polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Minimal, Inset, Banner, Split, Bold Type) without retyping a thing.
+- **12 professional templates**: Switch between twelve polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Inset, Banner, Split, Bold Type, Studio, Mosaic, Spotlight) without retyping a thing.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 
@@ -94,9 +94,21 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <br /><sub><b>Bold Type</b></sub>
     </td>
   </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/studio-violet.webp" alt="Studio" width="180" />
+      <br /><sub><b>Studio</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/mosaic-indigo.webp" alt="Mosaic" width="180" />
+      <br /><sub><b>Mosaic</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/spotlight-dusk.webp" alt="Spotlight" width="180" />
+      <br /><sub><b>Spotlight</b></sub>
+    </td>
+  </tr>
 </table>
-
-Each layout ships with 2-3 color/font presets, so the ten layouts above expand into <a href="src/features/resume-editor/domain/presentation/template-presets.ts">25 selectable presets</a>.
 
 ## Quick Start
 
@@ -213,14 +225,14 @@ src/
       schema/                  # Zod schemas for the resume draft (versioned)
       sections/                # Section config & metadata
     editor/
-      desktop/                 # Split-panel layout: sidebar + zoomable canvas preview
+      desktop/                 # Split-panel layout:# classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | mosaic | spotlight+ zoomable canvas preview
       mobile/                  # Full-screen guided-forms layout
       panels/                  # Style tab, Insights tab, extract-CV dialog
       sections/                # Section list, drag-to-reorder, per-section forms
       shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
     forms/                     # react-hook-form field bindings, rich-text, schemas
     preview/
-      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type
+      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | mosaic | spotlight
       components/, descriptors/, kit/, helpers/
     server/                    # Server-side PDF export & Gemini helpers
     state/                     # Zustand store
@@ -233,16 +245,6 @@ The homepage at / is just marketing; the editor itself lives at /editor. On desk
 Downloading a PDF opens /resume-pdf, a plain page that Puppeteer (or Cloudflare Browser Run in production) loads and captures — the draft and presentation settings are passed in as base64-encoded query params, and the export API streams the resulting PDF back.
 
 The AI features are thin wrappers around Gemini: importing a PDF extracts its text and asks Gemini to map it into a structured draft, "Improve with AI" sends the current field's HTML plus instructions and gets sanitized HTML back, and the ATS job match endpoint asks Gemini for keywords from a job description and matches them against the current draft on the client.
-
-## Star History
-
-<a href="https://star-history.com/#angkasa27/resummme&date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=angkasa27/resummme&type=date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=angkasa27/resummme&type=date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=angkasa27/resummme&type=date" />
-  </picture>
-</a>
 
 ## Contributing
 

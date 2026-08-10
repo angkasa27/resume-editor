@@ -38,11 +38,17 @@ describe("resumeTemplatePresets", () => {
   });
 
   it("curates secondary only for the layouts that render it", () => {
-    // Only modern-centered (rule under the name), sidebar (rail tint) and split
-    // (rail fill) read --resume-secondary. Setting it anywhere else is data the
-    // page cannot show, yet getActiveTemplatePresetId still matches on it — so
-    // an invisible field would silently decide whether a template looks active.
-    const RENDERS_SECONDARY = new Set(["modern-centered", "sidebar", "split"]);
+    // Only modern-centered (rule under the name), sidebar (rail tint), split
+    // (rail fill) and spotlight (far end of the rail gradient) read
+    // --resume-secondary. Setting it anywhere else is data the page cannot
+    // show, yet getActiveTemplatePresetId still matches on it — so an invisible
+    // field would silently decide whether a template looks active.
+    const RENDERS_SECONDARY = new Set([
+      "modern-centered",
+      "sidebar",
+      "split",
+      "spotlight",
+    ]);
     for (const preset of resumeTemplatePresets) {
       if (preset.style.secondary) {
         expect(

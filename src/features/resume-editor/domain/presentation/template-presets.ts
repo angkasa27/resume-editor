@@ -382,6 +382,35 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // spotlight — the rail is a gradient between accent and secondary, so both
+  // ends must be set and far enough apart to read as a gradient at all.
+  {
+    id: "spotlight-dusk",
+    label: "Dusk",
+    layoutId: "spotlight",
+    style: {
+      accent: "#4338ca",
+      secondary: "#0f172a",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "spotlight-ember",
+    label: "Ember",
+    layoutId: "spotlight",
+    style: {
+      accent: "#b45309",
+      secondary: "#7f1d1d",
+      fontFamilyId: "roboto",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 /** Applies layout + curated style in one shot; preserves paperSize, clears photoShape. */

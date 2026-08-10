@@ -7,7 +7,7 @@ import {
 } from "@/features/resume-editor/preview/layout-registry";
 
 describe("preview layout registry", () => {
-  it("exposes all eleven built-in layouts", () => {
+  it("exposes all twelve built-in layouts", () => {
     const ids = previewLayoutDefinitions.map((layout) => layout.id);
     expect(ids).toEqual([
       "classic",
@@ -21,6 +21,7 @@ describe("preview layout registry", () => {
       "bold-type",
       "studio",
       "mosaic",
+      "spotlight",
     ]);
   });
 
@@ -37,6 +38,7 @@ describe("preview layout registry", () => {
       "bold-type",
       "studio",
       "mosaic",
+      "spotlight",
     ] as const) {
       expect(getLayout(id).id).toBe(id);
     }

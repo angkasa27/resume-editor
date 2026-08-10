@@ -271,6 +271,11 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
     message:
       "Parsers read two columns straight across, so both sides end up jumbled into one block. Switch to a single-column layout.",
   },
+  spotlight: {
+    status: "fail",
+    message:
+      "Parsers read two columns straight across, so the rail ends up mixed into your experience. Switch to a single-column layout.",
+  },
 };
 
 /** Dingbats, arrows, geometric shapes, emoji — parsers drop these or turn them into noise. */
