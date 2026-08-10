@@ -13,7 +13,7 @@ import { SummaryView } from "@/features/resume-editor/preview/descriptors/summar
 import type { PreviewRendererProps } from "@/features/resume-editor/preview/types";
 import type { LayoutSlots } from "@/features/resume-editor/preview/layout-types";
 import {
-  sectionLabels,
+  sectionTitleFor,
   type EditorPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 
@@ -44,6 +44,8 @@ export function ResumeDocument({
   const hideSummaryHeading = shouldHideSummaryHeading(
     context.presentation.layoutId,
   );
+  // Summary isn't a descriptor-driven section, so it resolves its own title.
+  const summaryTitle = sectionTitleFor(draft.sections, "summary");
 
   // Read-only surfaces pass no handler and get the bare document back.
   function target(panel: EditorPanelKey, label: string, node: ReactNode) {
@@ -65,9 +67,10 @@ export function ResumeDocument({
     summary: context.summaryContent
       ? target(
           "summary",
-          sectionLabels.summary,
+          summaryTitle,
           <SummaryView
             content={context.summaryContent}
+            heading={summaryTitle}
             showHeading={!hideSummaryHeading}
           />,
         )

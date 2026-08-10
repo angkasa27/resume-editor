@@ -50,8 +50,20 @@ export const sectionLabels: Record<
   awards: "Awards",
   languages: "Languages",
   references: "References",
-  organizationVolunteering: "Organizational & Volunteering",
+  organizationVolunteering: "Organizations & Volunteering",
 };
+
+/**
+ * The one read path for a section's heading — the user's own title if they set
+ * one, otherwise the built-in label. Blank means "use the default", so clearing
+ * the rename field is how you reset it.
+ */
+export function sectionTitleFor(
+  sections: ResumeDraft["sections"],
+  sectionKey: ResumeSectionPanelKey,
+) {
+  return sections[sectionKey].title?.trim() || sectionLabels[sectionKey];
+}
 
 export const languageProficiencyOptions = [
   "Elementary proficiency",

@@ -4,7 +4,6 @@ import type { SectionDescriptor } from "./types";
 
 export const publicationsDescriptor: SectionDescriptor<"publications"> = {
   key: "publications",
-  defaultHeading: "Publications",
   hasContent: (item) =>
     Boolean(
       item.title ||

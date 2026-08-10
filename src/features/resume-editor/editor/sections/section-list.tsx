@@ -21,7 +21,7 @@ import {
 } from "@/features/resume-editor/editor/sections/sortable-section-row";
 import {
   partitionCollectionKeys,
-  sectionLabels,
+  sectionTitleFor,
   type CollectionSectionKey,
   type ResumeSectionPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
@@ -100,7 +100,7 @@ export function SectionList({
           />
           <SectionRow
             sectionKey="summary"
-            label={sectionLabels.summary}
+            label={sectionTitleFor(draft.sections, "summary")}
             active={activeSection === "summary"}
             onClick={() => onOpen("summary")}
             trailing={navChevron}
@@ -126,14 +126,14 @@ export function SectionList({
                   <SortableSectionRow
                     key={key}
                     sectionKey={key}
-                    label={sectionLabels[key]}
+                    label={sectionTitleFor(draft.sections, key)}
                     count={draft.sections[key].items.length}
                     active={activeSection === key}
                     onClick={() => onOpen(key)}
                     trailing={navChevron}
                     menu={
                       <RowDeleteButton
-                        label={`${sectionLabels[key]} section`}
+                        label={`${sectionTitleFor(draft.sections, key)} section`}
                         onDelete={() => setPendingRemoveKey(key)}
                       />
                     }
@@ -161,7 +161,7 @@ export function SectionList({
         }}
         title={
           pendingRemoveKey
-            ? `Remove ${sectionLabels[pendingRemoveKey]} section?`
+            ? `Remove ${sectionTitleFor(draft.sections, pendingRemoveKey)} section?`
             : "Remove section?"
         }
         description="Its content is kept — you can add the section back at any time."

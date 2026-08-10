@@ -7,6 +7,7 @@ import {
   getOrderedVisibleSectionKeys,
   isCollectionSectionKey,
   sectionLabels,
+  sectionTitleFor,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 
 describe("isCollectionSectionKey", () => {
@@ -52,5 +53,34 @@ describe("sectionLabels", () => {
       expect(sectionLabels[key]).toBeDefined();
     }
     expect(sectionLabels.summary).toBe("Summary");
+  });
+});
+
+/**
+ * The rename feature's whole contract: a section prints the user's title when
+ * they set one, and falls back to the built-in label otherwise — so clearing the
+ * field is a reset, not a section with a blank heading.
+ */
+describe("sectionTitleFor", () => {
+  const sections = createDefaultResumeDraft().sections;
+
+  it("uses the custom title when set", () => {
+    const renamed = {
+      ...sections,
+      workExperience: {
+        ...sections.workExperience,
+        title: "Professional Experience",
+      },
+    };
+
+    expect(sectionTitleFor(renamed, "workExperience")).toBe(
+      "Professional Experience",
+    );
+  });
+
+  it.each([undefined, "", "   "])("falls back to the label for %j", (title) => {
+    const blank = { ...sections, summary: { ...sections.summary, title } };
+
+    expect(sectionTitleFor(blank, "summary")).toBe(sectionLabels.summary);
   });
 });

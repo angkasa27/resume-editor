@@ -6,6 +6,5 @@ export type SectionItem<K extends CollectionSectionKey> =
 
 export type SectionDescriptor<K extends CollectionSectionKey> = {
   key: K;
-  defaultHeading: string;
   hasContent: (item: SectionItem<K>) => boolean;
 };

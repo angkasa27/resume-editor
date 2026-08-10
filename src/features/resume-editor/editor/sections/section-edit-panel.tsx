@@ -97,7 +97,17 @@ export function SectionEditPanel({
                 resize the animated box mid-slide and jolt the content. */}
             <SectionFormHeader
               sectionKey={openSection}
+              draft={draft}
               onBack={onBack}
+              // Built here rather than in the shells: this is the one layer that
+              // already holds both the draft and the save callback.
+              onRename={(title) => {
+                if (openSection === "profile") return;
+                onSaveSection(openSection, {
+                  ...draft.sections[openSection],
+                  title,
+                });
+              }}
               onAutoSortSection={onAutoSortSection}
               onSetSectionVisibility={onSetSectionVisibility}
             />

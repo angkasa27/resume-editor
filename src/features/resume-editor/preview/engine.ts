@@ -1,7 +1,7 @@
 import {
   getOrderedVisibleSectionKeys,
   isCollectionSectionKey,
-  sectionLabels,
+  sectionTitleFor,
   type CollectionSectionKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 import { resolvePdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
@@ -39,10 +39,14 @@ function buildRenderableSection<K extends CollectionSectionKey>(
   );
   if (items.length === 0) return null;
 
+  // label (the click-to-edit target's name) and heading (what prints) come from
+  // one resolver — two sources is what let them drift apart before.
+  const title = sectionTitleFor(draft.sections, sectionKey);
+
   return {
     key: sectionKey,
-    label: sectionLabels[sectionKey],
-    heading: descriptor.defaultHeading,
+    label: title,
+    heading: title,
     items,
   } as AnyPreviewRenderableSection;
 }

@@ -16,9 +16,14 @@ const datedRangeShape = {
   endDate: textField(),
 } as const;
 
+// A renamed heading. Optional so drafts written before renaming existed still
+// parse and schemaVersion stays at 3; blank falls back to `sectionLabels`.
+const sectionTitleShape = { title: optionalText() } as const;
+
 const summarySectionSchema = z.object({
   visible: z.boolean(),
   order: z.number().int().nonnegative(),
+  ...sectionTitleShape,
   content: richTextField(),
 });
 
@@ -113,6 +118,7 @@ function createCollectionSectionSchema<TItemSchema extends z.ZodTypeAny>(
   return z.object({
     visible: z.boolean(),
     order: z.number().int().nonnegative(),
+    ...sectionTitleShape,
     items: z.array(itemSchema).min(1, "At least one item is required."),
   });
 }
