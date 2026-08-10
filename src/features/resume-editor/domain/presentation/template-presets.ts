@@ -357,32 +357,6 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // mosaic — cards already eat vertical space, so these run compact.
-  {
-    id: "mosaic-indigo",
-    label: "Indigo",
-    layoutId: "mosaic",
-    style: {
-      accent: "#4f46e5",
-      fontFamilyId: "inter",
-      fontScale: "sm",
-      spacing: "compact",
-      lineHeight: "standard",
-    },
-  },
-  {
-    id: "mosaic-rose",
-    label: "Rose",
-    layoutId: "mosaic",
-    style: {
-      accent: "#be123c",
-      fontFamilyId: "lora",
-      fontScale: "sm",
-      spacing: "compact",
-      lineHeight: "standard",
-    },
-  },
-
   // spotlight — the rail is a gradient between accent and secondary, so both
   // ends must be set and far enough apart to read as a gradient at all.
   {

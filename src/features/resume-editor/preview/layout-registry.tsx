@@ -11,7 +11,6 @@ import { modernCenteredLayout } from "./layouts/modern-centered/layout";
 import { sidebarLayout } from "./layouts/sidebar/layout";
 import { splitLayout } from "./layouts/split/layout";
 import { spotlightLayout } from "./layouts/spotlight/layout";
-import { mosaicLayout } from "./layouts/mosaic/layout";
 import { studioLayout } from "./layouts/studio/layout";
 import { timelineLayout } from "./layouts/timeline/layout";
 import type { PreviewLayoutDefinition } from "./layout-types";
@@ -28,7 +27,6 @@ export const previewLayoutDefinitions = [
   splitLayout,
   boldTypeLayout,
   studioLayout,
-  mosaicLayout,
   spotlightLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 

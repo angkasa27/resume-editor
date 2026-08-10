@@ -25,6 +25,5 @@ export const CAROUSEL_SCREENSHOTS: CarouselScreenshot[] = [
   { id: "bold-citrus", label: "Bold Citrus" },
   { id: "bold-lime", label: "Bold Lime" },
   { id: "studio-violet", label: "Studio Violet" },
-  { id: "mosaic-indigo", label: "Mosaic Indigo" },
   { id: "spotlight-dusk", label: "Spotlight Dusk" },
 ];

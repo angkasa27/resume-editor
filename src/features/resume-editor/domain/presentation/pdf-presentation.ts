@@ -22,7 +22,6 @@ export const pdfLayoutIds = [
   "split",
   "bold-type",
   "studio",
-  "mosaic",
   "spotlight",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
@@ -31,6 +30,7 @@ export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 const retiredLayoutIds: Record<string, PdfLayoutId> = {
   tinted: "sidebar",
   minimal: "academic",
+  mosaic: "classic",
 };
 
 export const pdfFontScaleIds = ["sm", "md", "lg"] as const;
@@ -139,7 +139,6 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   spotlight: 10, // gradient rail bleeds like sidebar
   "bold-type": 12, // oversized type wants edge tension
   studio: 15, // chips and badges need room to sit apart
-  mosaic: 12, // the cards carry their own padding
   classic: 14, // traditional letter feel
   timeline: 14, // date gutter already eats width
   inset: 14, // boxed items supply their own inner air

@@ -36,7 +36,7 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **12 professional templates**: Switch between twelve polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Inset, Banner, Split, Bold Type, Studio, Mosaic, Spotlight) without retyping a thing.
+- **11 professional templates**: Switch between eleven polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Inset, Banner, Split, Bold Type, Studio, Spotlight) without retyping a thing.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 
@@ -98,10 +98,6 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
     <td align="center">
       <img src="public/templates/studio-violet.webp" alt="Studio" width="180" />
       <br /><sub><b>Studio</b></sub>
-    </td>
-    <td align="center">
-      <img src="public/templates/mosaic-indigo.webp" alt="Mosaic" width="180" />
-      <br /><sub><b>Mosaic</b></sub>
     </td>
     <td align="center">
       <img src="public/templates/spotlight-dusk.webp" alt="Spotlight" width="180" />
@@ -225,14 +221,14 @@ src/
       schema/                  # Zod schemas for the resume draft (versioned)
       sections/                # Section config & metadata
     editor/
-      desktop/                 # Split-panel layout:# classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | mosaic | spotlight+ zoomable canvas preview
+      desktop/                 # Split-panel layout: sidebar + zoomable canvas preview
       mobile/                  # Full-screen guided-forms layout
       panels/                  # Style tab, Insights tab, extract-CV dialog
       sections/                # Section list, drag-to-reorder, per-section forms
       shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
     forms/                     # react-hook-form field bindings, rich-text, schemas
     preview/
-      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | mosaic | spotlight
+      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | spotlight
       components/, descriptors/, kit/, helpers/
     server/                    # Server-side PDF export & Gemini helpers
     state/                     # Zustand store

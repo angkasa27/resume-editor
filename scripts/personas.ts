@@ -46,7 +46,7 @@ export type Persona = {
   };
 };
 
-// 21 personas, one per preset that has a screenshot. Screenshot filename equals
+// 20 personas, one per preset that has a screenshot. Screenshot filename equals
 // presetId — public/templates/<presetId>.webp.
 export const PERSONAS: Persona[] = [
   // ── Row 1 ──────────────────────────────────────────────────────────────────
@@ -2495,104 +2495,6 @@ export const PERSONAS: Persona[] = [
       degree: "B.Math. in Statistics",
       gpa: "3.9 / 4.0",
       note: "Minor in computing; undergraduate thesis on hierarchical models for sparse retail demand, presented at the departmental research symposium.",
-    },
-  },
-  {
-    layoutId: "mosaic",
-    presetId: "mosaic-indigo",
-    photo: "https://i.pravatar.cc/320?img=32",
-    fullName: "Yuki Tanaka",
-    location: "Singapore",
-    phone: "+65 8123 4567",
-    email: "yuki.tanaka@proton.me",
-    links: [
-      "https://www.linkedin.com/in/yukitanaka",
-      "https://yukitanaka.co",
-    ],
-    summary:
-      "<p>Growth marketer with 9 years running acquisition and lifecycle for subscription products across APAC. I own the number, not the channel: I will kill a campaign I built if the payback curve says so, and I write the brief myself when the agency cannot.</p>",
-    work: [
-      {
-        company: "Kaisen Digital",
-        position: "Head of Growth",
-        location: "Singapore",
-        start: "Feb 2022",
-        end: "current",
-        bullets: [
-          "Took paid acquisition from a single-channel Meta spend to a five-channel mix, lowering blended CAC 34% while doubling monthly signups.",
-          "Rebuilt lifecycle messaging around activation milestones instead of calendar days, lifting trial-to-paid conversion from 9% to 14%.",
-          "Ran a quarterly incrementality test programme that reallocated $1.8M of budget away from channels that were taking credit for organic demand.",
-          "Grew and led a team of 7 across performance, lifecycle, and content.",
-        ],
-      },
-      {
-        company: "Orbit Commerce",
-        position: "Growth Marketing Manager",
-        location: "Singapore",
-        start: "Mar 2019",
-        end: "Jan 2022",
-        bullets: [
-          "Launched the Japanese and Korean markets end to end, reaching 40k users in year one on a localisation-first playbook.",
-          "Cut email unsubscribes 41% by replacing the blast calendar with behaviour-triggered journeys.",
-          "Built the first attribution model the finance team was willing to plan against.",
-        ],
-      },
-      {
-        company: "Bright Harbour",
-        position: "Digital Marketing Specialist",
-        location: "Kuala Lumpur, Malaysia",
-        start: "Jul 2016",
-        end: "Feb 2019",
-        bullets: [
-          "Managed a $600k annual search budget across three brands, improving ROAS from 2.1x to 3.4x.",
-          "Introduced structured landing-page testing that raised paid conversion rate 26% over four quarters.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Growth & Lifecycle",
-      items: [
-        "Paid Acquisition",
-        "Lifecycle Marketing",
-        "Incrementality Testing",
-        "SQL",
-        "Braze",
-        "Attribution Modelling",
-        "Localisation",
-      ],
-    },
-    projects: [
-      {
-        name: "APAC Market Entry Playbook",
-        start: "Apr 2022",
-        end: "Feb 2023",
-        bullets: [
-          "Documented a repeatable launch sequence covering pricing, localisation, and channel mix for four markets.",
-          "Cut time-to-first-revenue in a new market from 5 months to 7 weeks.",
-        ],
-      },
-      {
-        name: "Lifecycle Rebuild",
-        start: "Jun 2021",
-        end: "Dec 2021",
-        bullets: [
-          "Migrated 60 legacy campaigns into 11 behaviour-triggered journeys with clear ownership and holdout groups.",
-          "Established a permanent 5% holdout that finally quantified lifecycle's contribution to retention.",
-        ],
-      },
-    ],
-    certs: [
-      { name: "Braze Certified Marketer", org: "Braze", date: "May 2022" },
-      { name: "Google Analytics 4", org: "Google", date: "Nov 2021" },
-    ],
-    education: {
-      name: "National University of Singapore",
-      location: "Singapore",
-      start: "Aug 2012",
-      end: "May 2016",
-      degree: "B.B.A. in Marketing",
-      gpa: "3.7 / 4.0",
-      note: "Exchange term at Waseda University; final-year project on subscription pricing sensitivity across three APAC markets.",
     },
   },
   {
