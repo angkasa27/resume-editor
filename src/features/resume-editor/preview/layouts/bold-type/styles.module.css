@@ -40,6 +40,16 @@
   gap: calc(var(--resume-gap-item) * 0.8);
 }
 
+/* Nothing in this layout is right-aligned, so the paired rows run left too. */
+.layout :global(.item-row) {
+  justify-content: flex-start;
+  gap: calc(var(--resume-gap-item) * 0.8);
+}
+
+.layout :global(.item-row .meta) {
+  text-align: left;
+}
+
 .layout :global(.item-date) {
   text-align: left;
   font-weight: 600;
