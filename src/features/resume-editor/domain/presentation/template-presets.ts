@@ -356,6 +356,32 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "relaxed",
     },
   },
+
+  // mosaic — cards already eat vertical space, so these run compact.
+  {
+    id: "mosaic-indigo",
+    label: "Indigo",
+    layoutId: "mosaic",
+    style: {
+      accent: "#4f46e5",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "mosaic-rose",
+    label: "Rose",
+    layoutId: "mosaic",
+    style: {
+      accent: "#be123c",
+      fontFamilyId: "lora",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 /** Applies layout + curated style in one shot; preserves paperSize, clears photoShape. */

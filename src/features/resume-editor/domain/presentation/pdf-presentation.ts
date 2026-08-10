@@ -22,6 +22,7 @@ export const pdfLayoutIds = [
   "split",
   "bold-type",
   "studio",
+  "mosaic",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -136,6 +137,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   sidebar: 10, // 0.42fr rail bleeding left+bottom
   "bold-type": 12, // oversized type wants edge tension
   studio: 15, // chips and badges need room to sit apart
+  mosaic: 12, // the cards carry their own padding
   classic: 14, // traditional letter feel
   timeline: 14, // date gutter already eats width
   inset: 14, // boxed items supply their own inner air
