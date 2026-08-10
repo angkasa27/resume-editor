@@ -22,7 +22,6 @@ public/
 .idea/
 
 # Agent / IDE config
-.agents/
 .claude/
 .cursor/
 
