@@ -42,7 +42,7 @@ export function DesignPanel({
           </TabsTrigger>
           <TabsTrigger value="style">
             <PaletteIcon />
-            Style
+            Customize
           </TabsTrigger>
         </TabsList>
       </div>
