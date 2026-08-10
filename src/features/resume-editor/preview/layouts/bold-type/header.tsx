@@ -10,9 +10,7 @@ export function BoldTypeHeader({ context }: LayoutHeaderProps) {
       className={`${styles.header} layout-header`}
       data-layout="bold-type"
     >
-      {/* Contacts sit inside header-top, so the rule is drawn under the whole
-          block rather than between the name and its own contact details —
-          which left the name floating above dead space beside the photo. */}
+      {/* Name and contacts share the column beside the photo. */}
       <div className="header-top">
         <div className="header-body">
           <h1 className="name" data-testid="resume-preview-full-name">

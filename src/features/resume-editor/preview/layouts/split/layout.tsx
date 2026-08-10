@@ -53,6 +53,7 @@ export const splitLayout: PreviewLayoutDefinition = {
   description:
     "Full-height colored rail with photo, contacts, and skills beside a clean main column.",
   Component: SplitLayout,
+  hideSummaryHeading: true,
   Header: SplitHeader,
   itemViews: splitItemViews,
   getColumn: getSideRailColumn,

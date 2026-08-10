@@ -11,7 +11,6 @@ export const boldTypeLayout = createSingleColumnLayout({
   description:
     "Editorial layout with an oversized name, heavy rules, and highlight-marker section headings.",
   styles,
-  hideSummaryHeading: true,
   Header: BoldTypeHeader,
   itemViews: defaultItemViews,
 });
