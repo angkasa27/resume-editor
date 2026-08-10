@@ -46,7 +46,7 @@ export type Persona = {
   };
 };
 
-// 20 personas, one per preset that has a screenshot. Screenshot filename equals
+// 21 personas, one per preset that has a screenshot. Screenshot filename equals
 // presetId — public/templates/<presetId>.webp.
 export const PERSONAS: Persona[] = [
   // ── Row 1 ──────────────────────────────────────────────────────────────────
@@ -2602,6 +2602,110 @@ export const PERSONAS: Persona[] = [
       degree: "M.Eng. in Computer Engineering",
       gpa: "8.6 / 10",
       note: "Thesis on scheduling strategies for heterogeneous container workloads; teaching assistant for two years in distributed systems.",
+    },
+  },
+  {
+    layoutId: "aurora",
+    presetId: "aurora-haze",
+    photo: "https://i.pravatar.cc/320?img=15",
+    fullName: "Rio Baskoro",
+    location: "Bandung, Indonesia",
+    phone: "+62 812 5566 7788",
+    email: "rio.baskoro@proton.me",
+    links: ["https://www.linkedin.com/in/riobaskoro", "https://riobaskoro.dev"],
+    summary:
+      "<p>Front-end engineer with 6 years building internal tools that people are required to use, which is a harder audience than customers. I care about the boring wins: fewer clicks, faster tables, states that explain themselves.</p>",
+    work: [
+      {
+        company: "Sinar Digital",
+        position: "Senior Front-End Engineer",
+        location: "Bandung, Indonesia",
+        start: "Mar 2022",
+        end: "current",
+        bullets: [
+          "Rebuilt the operations console around a virtualised table, taking a 12-second render on 50k rows down to under 400ms.",
+          "Led the migration off a jQuery admin panel one route at a time, shipping continuously instead of holding a six-month rewrite.",
+          "Set up visual regression testing across 40 shared components, ending a recurring class of silent layout breakages.",
+          "Ran the front-end guild: weekly reviews, a documented component API standard, and onboarding that takes two days instead of two weeks.",
+        ],
+      },
+      {
+        company: "Kirana Tech",
+        position: "Front-End Engineer",
+        location: "Jakarta, Indonesia",
+        start: "Jul 2019",
+        end: "Feb 2022",
+        bullets: [
+          "Built the merchant dashboard used by 8,000 sellers, from data fetching layer to accessible chart components.",
+          "Cut bundle size 46% by code-splitting per route and dropping three overlapping date libraries.",
+          "Introduced typed API clients generated from the backend schema, removing an entire category of runtime shape bugs.",
+        ],
+      },
+      {
+        company: "Studio Ombak",
+        position: "Junior Web Developer",
+        location: "Bandung, Indonesia",
+        start: "Aug 2017",
+        end: "Jun 2019",
+        bullets: [
+          "Delivered 14 client sites on a shared component base, cutting project setup from a week to a day.",
+          "Handled the CMS integration work that let non-technical clients stop filing content tickets.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Front-End",
+      items: [
+        "TypeScript",
+        "React",
+        "Next.js",
+        "Tailwind CSS",
+        "React Query",
+        "Storybook",
+        "Playwright",
+        "Figma",
+      ],
+    },
+    projects: [
+      {
+        name: "Operations Console V2",
+        start: "Apr 2023",
+        end: "Jan 2024",
+        bullets: [
+          "Redesigned the console around saved views and keyboard navigation, cutting average task time 38%.",
+          "Shipped an offline-tolerant queue so field staff stopped losing work on flaky connections.",
+        ],
+      },
+      {
+        name: "Component Library",
+        start: "Sep 2022",
+        end: "Mar 2023",
+        bullets: [
+          "Published 40 components with documented props, accessibility notes, and visual tests.",
+          "Adopted by four product squads within a quarter, retiring two competing internal kits.",
+        ],
+      },
+    ],
+    certs: [
+      {
+        name: "Certified Scrum Developer",
+        org: "Scrum Alliance",
+        date: "Nov 2021",
+      },
+      {
+        name: "Web Accessibility Specialist",
+        org: "IAAP",
+        date: "Jun 2023",
+      },
+    ],
+    education: {
+      name: "Institut Teknologi Bandung",
+      location: "Bandung, Indonesia",
+      start: "Aug 2013",
+      end: "Jul 2017",
+      degree: "B.S. in Informatics",
+      gpa: "3.6 / 4.0",
+      note: "Focus on human-computer interaction; final project was a scheduling tool adopted by two campus departments after the pilot.",
     },
   },
 ];

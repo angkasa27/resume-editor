@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
 import { academicLayout } from "./layouts/academic/layout";
+import { auroraLayout } from "./layouts/aurora/layout";
 import { bannerLayout } from "./layouts/banner/layout";
 import { boldTypeLayout } from "./layouts/bold-type/layout";
 import { classicLayout } from "./layouts/classic/layout";
@@ -28,6 +29,7 @@ export const previewLayoutDefinitions = [
   boldTypeLayout,
   studioLayout,
   spotlightLayout,
+  auroraLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain

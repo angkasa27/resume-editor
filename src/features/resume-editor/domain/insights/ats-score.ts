@@ -250,6 +250,7 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   banner: { status: "pass" },
   "bold-type": { status: "pass" },
   studio: { status: "pass" },
+  aurora: { status: "pass" },
   "modern-centered": {
     status: "warn",
     message:

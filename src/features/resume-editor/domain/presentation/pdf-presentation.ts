@@ -23,6 +23,7 @@ export const pdfLayoutIds = [
   "bold-type",
   "studio",
   "spotlight",
+  "aurora",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -137,6 +138,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   split: 9, // 0.36fr solid full-height rail — tightest; the rail needs the width
   sidebar: 10, // 0.42fr rail bleeding left+bottom
   spotlight: 10, // gradient rail bleeds like sidebar
+  aurora: 14, // the label gutter needs the width back
   "bold-type": 12, // oversized type wants edge tension
   studio: 15, // chips and badges need room to sit apart
   classic: 14, // traditional letter feel

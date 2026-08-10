@@ -385,6 +385,35 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // aurora — the gradient band sits behind dark text, so both ends stay pale.
+  // A saturated pick here would bury the name it is meant to frame.
+  {
+    id: "aurora-haze",
+    label: "Haze",
+    layoutId: "aurora",
+    style: {
+      accent: "#c7d2fe",
+      secondary: "#a5f3fc",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "aurora-peach",
+    label: "Peach",
+    layoutId: "aurora",
+    style: {
+      accent: "#fecdd3",
+      secondary: "#fed7aa",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 /** Applies layout + curated style in one shot; preserves paperSize, clears photoShape. */

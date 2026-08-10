@@ -36,7 +36,7 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **11 professional templates**: Switch between eleven polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Inset, Banner, Split, Bold Type, Studio, Spotlight) without retyping a thing.
+- **12 professional templates**: Switch between twelve polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Inset, Banner, Split, Bold Type, Studio, Spotlight, Aurora) without retyping a thing.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 
@@ -102,6 +102,10 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
     <td align="center">
       <img src="public/templates/spotlight-dusk.webp" alt="Spotlight" width="180" />
       <br /><sub><b>Spotlight</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/aurora-haze.webp" alt="Aurora" width="180" />
+      <br /><sub><b>Aurora</b></sub>
     </td>
   </tr>
 </table>
@@ -228,7 +232,7 @@ src/
       shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
     forms/                     # react-hook-form field bindings, rich-text, schemas
     preview/
-      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | spotlight
+      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | spotlight | aurora
       components/, descriptors/, kit/, helpers/
     server/                    # Server-side PDF export & Gemini helpers
     state/                     # Zustand store
