@@ -17,6 +17,7 @@ type SingleColumnConfig = {
   Header: (props: LayoutHeaderProps) => ReactNode;
   itemViews: LayoutSectionItemMap;
   hideSummaryHeading?: boolean;
+  renderSectionHeading?: PreviewLayoutDefinition["renderSectionHeading"];
   /** `"page"` (default) applies shared `page-inset` padding; `"none"` lets full-bleed layouts (e.g. banner) manage their own insets. */
   inset?: "page" | "none";
   /** Extension point for structural uniqueness; defaults to the plain `<div>{node}</div>` wrapper. */
@@ -55,6 +56,7 @@ export function createSingleColumnLayout(
     label: config.label,
     description: config.description,
     hideSummaryHeading: config.hideSummaryHeading,
+    renderSectionHeading: config.renderSectionHeading,
     Component: SingleColumnLayout,
     Header: config.Header,
     itemViews: config.itemViews,

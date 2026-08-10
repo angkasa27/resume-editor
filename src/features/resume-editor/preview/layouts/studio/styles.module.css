@@ -1,0 +1,128 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+/* Icon chip + label. The chip is the layout's whole identity, so headings stay
+   quiet: sentence case, no rule, no accent text. */
+.layout :global(.section-heading) {
+  display: flex;
+  align-items: center;
+  gap: var(--resume-gap-inner);
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--resume-h2);
+}
+
+.layout :global(.section-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.55em;
+  height: 1.55em;
+  flex-shrink: 0;
+  border-radius: 0.45em;
+  color: var(--resume-accent);
+  background: color-mix(in srgb, var(--resume-accent) 12%, transparent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.section-icon svg) {
+  width: 0.85em;
+  height: 0.85em;
+  stroke-width: 2.25;
+}
+
+/* Dates as outlined pills, the one place the item header carries a shape. */
+.layout :global(.item-date) {
+  display: inline-block;
+  padding: 0.1em 0.55em;
+  border: 1px solid color-mix(in srgb, var(--resume-accent) 35%, transparent);
+  border-radius: 999px;
+  color: var(--resume-accent);
+  font-weight: 500;
+  white-space: nowrap;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.item-header-side) {
+  align-items: flex-end;
+  gap: 4px;
+}
+
+/* Skills and languages as filled chips. */
+.layout :global(.chip-list) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--resume-gap-inner);
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  /* Flex items still render their disc marker, which lands after the pill. */
+  list-style: none;
+}
+
+.layout :global(.chip) {
+  padding: 0.15em 0.6em;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--resume-accent) 10%, transparent);
+  color: var(--resume-text);
+  font-size: var(--resume-meta);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.item-row .chip) {
+  flex-shrink: 0;
+}
+
+/* Name left, square photo right — the mirror of the shared photo-left header. */
+.header {
+  display: flex;
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: var(--resume-gap-section);
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.header-body) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-inner);
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.1);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.header :global(.header-photo) {
+  width: 84px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 14px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.contact-icon) {
+  color: var(--resume-accent);
+}

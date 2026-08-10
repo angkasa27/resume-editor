@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
 
 export function SummaryView({
@@ -6,7 +8,7 @@ export function SummaryView({
   showHeading = true,
 }: {
   content: string;
-  heading: string;
+  heading: ReactNode;
   showHeading?: boolean;
 }) {
   return (

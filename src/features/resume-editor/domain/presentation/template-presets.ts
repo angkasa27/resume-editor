@@ -329,6 +329,33 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "tight",
     },
   },
+
+  // studio — badges and chips carry the page, so the accent has to survive being
+  // shrunk to a 12% tint. Mid-tone hues only; pale ones vanish in the chip fill.
+  {
+    id: "studio-violet",
+    label: "Violet",
+    layoutId: "studio",
+    style: {
+      accent: "#7c3aed",
+      fontFamilyId: "inter",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "studio-teal",
+    label: "Teal",
+    layoutId: "studio",
+    style: {
+      accent: "#0d9488",
+      fontFamilyId: "open-sans",
+      fontScale: "md",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
 ];
 
 /** Applies layout + curated style in one shot; preserves paperSize, clears photoShape. */

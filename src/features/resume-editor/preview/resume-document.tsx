@@ -70,7 +70,11 @@ export function ResumeDocument({
           summaryTitle,
           <SummaryView
             content={context.summaryContent}
-            heading={summaryTitle}
+            heading={
+              layout.renderSectionHeading
+                ? layout.renderSectionHeading("summary", summaryTitle)
+                : summaryTitle
+            }
             showHeading={!hideSummaryHeading}
           />,
         )
@@ -86,7 +90,7 @@ export function ResumeDocument({
           node: target(
             section.key,
             section.label,
-            renderSectionBody(layout.itemViews, section),
+            renderSectionBody(layout, section),
           ),
         }) as LayoutSlots["sections"][number],
     ),

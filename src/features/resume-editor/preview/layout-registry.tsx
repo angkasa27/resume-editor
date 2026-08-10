@@ -10,6 +10,7 @@ import { insetLayout } from "./layouts/inset/layout";
 import { modernCenteredLayout } from "./layouts/modern-centered/layout";
 import { sidebarLayout } from "./layouts/sidebar/layout";
 import { splitLayout } from "./layouts/split/layout";
+import { studioLayout } from "./layouts/studio/layout";
 import { timelineLayout } from "./layouts/timeline/layout";
 import type { PreviewLayoutDefinition } from "./layout-types";
 import type { PreviewRenderContext } from "./types";
@@ -24,6 +25,7 @@ export const previewLayoutDefinitions = [
   bannerLayout,
   splitLayout,
   boldTypeLayout,
+  studioLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain

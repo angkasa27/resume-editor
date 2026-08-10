@@ -50,12 +50,21 @@ export type PreviewLayoutDefinition = {
   /**
    * True when the layout renders its own Summary heading, so the shared SummaryView suppresses its <h2>.
    * Single source of truth for `shouldHideSummaryHeading` — no separate hardcoded id list.
-   * Hide only where the summary reads as a lede paragraph under the header (classic, banner, timeline);
+   * Hide only where the summary reads as a lede paragraph under the header (classic, split);
    * keep it shown elsewhere, since a visible heading is also the safer default for ATS parsers.
    */
   hideSummaryHeading?: boolean;
   Component: (props: LayoutComponentProps) => ReactNode;
   Header: (props: LayoutHeaderProps) => ReactNode;
   itemViews: LayoutSectionItemMap;
+  /**
+   * Decorates the shared section <h2> (e.g. with an icon). Layouts cannot do this themselves:
+   * the section node they receive is already wrapped for click-to-edit, so rebuilding it
+   * would drop editor targeting.
+   */
+  renderSectionHeading?: (
+    sectionKey: CollectionSectionKey | "summary",
+    heading: ReactNode,
+  ) => ReactNode;
   getColumn?: (sectionKey: CollectionSectionKey) => LayoutColumn;
 };
