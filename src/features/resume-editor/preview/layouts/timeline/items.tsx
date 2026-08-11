@@ -8,29 +8,6 @@ import {
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
 
-// Splits on " - " so the line only breaks at the separator: `Jan 2024 -` / `Oct 2024`,
-// never `Jan 2024 - Oct` / `2024`, since the date column is narrow.
-function TimelineDate({ date }: { date: string }) {
-  const separator = " - ";
-  const splitAt = date.indexOf(separator);
-  if (splitAt === -1) {
-    return (
-      <span className="item-date">
-        <span className="date-part">{date}</span>
-      </span>
-    );
-  }
-  const start = date.slice(0, splitAt);
-  const end = date.slice(splitAt + separator.length);
-  return (
-    <span className="item-date">
-      <span className="date-part">
-        {start} - {end}
-      </span>
-    </span>
-  );
-}
-
 function TimelineItem({
   title,
   meta,
@@ -45,7 +22,11 @@ function TimelineItem({
   return (
     <div className="item timeline-item">
       <div className="timeline-date">
-        {date ? <TimelineDate date={date} /> : null}
+        {date ? (
+          <span className="item-date">
+            <span className="date-part">{date}</span>
+          </span>
+        ) : null}
       </div>
       <div className="item-content">
         <h3 className="item-title">{title}</h3>

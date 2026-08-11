@@ -6,7 +6,6 @@ import type { RefObject } from "react";
 type UsePreviewScaleOptions = {
   sheetRef: RefObject<HTMLDivElement | null>;
   viewportRef: RefObject<HTMLDivElement | null>;
-  watchValues: unknown[];
 };
 
 function computePreviewScale(
@@ -30,9 +29,7 @@ function computePreviewScale(
 export function usePreviewScale({
   sheetRef,
   viewportRef,
-  watchValues,
 }: UsePreviewScaleOptions) {
-  const watchKey = JSON.stringify(watchValues);
   const [previewScale, setPreviewScale] = useState(1);
   const [previewShellSize, setPreviewShellSize] = useState({
     width: 0,
@@ -77,7 +74,9 @@ export function usePreviewScale({
     return () => {
       window.removeEventListener("resize", updatePreviewScale);
     };
-  }, [sheetRef, viewportRef, watchKey]);
+    // Draft/presentation changes need no re-run: the ResizeObserver above already
+    // watches both elements, so any size they cause is picked up directly.
+  }, [sheetRef, viewportRef]);
 
   return {
     previewScale,

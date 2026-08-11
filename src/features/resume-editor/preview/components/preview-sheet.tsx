@@ -19,7 +19,6 @@ export function PreviewSheet({ draft, presentation }: PreviewSheetProps) {
   const { previewScale, previewShellSize } = usePreviewScale({
     sheetRef: previewSheetRef,
     viewportRef: previewViewportRef,
-    watchValues: [draft, presentation],
   });
 
   // Memoised because it is the pagination hook's re-run key: a fresh object

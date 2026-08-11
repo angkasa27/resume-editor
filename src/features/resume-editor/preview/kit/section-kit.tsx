@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
-import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 
 // Primitives for a custom layout Component/renderSection. Must emit the same class/data-*/data-testid
 // contract as the shared LayoutSection scaffold, so layouts built from these stay CSS-consistent.
@@ -54,14 +53,4 @@ export function PhotoFrame({
       <img src={src} alt={alt} />
     </div>
   );
-}
-
-export function DateRange({
-  startDate,
-  endDate,
-}: {
-  startDate?: string;
-  endDate?: string;
-}) {
-  return <>{renderDateRange(startDate, endDate)}</>;
 }

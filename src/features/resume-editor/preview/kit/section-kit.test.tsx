@@ -2,7 +2,6 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { describe, expect, it } from "vitest";
 
 import {
-  DateRange,
   ItemList,
   PhotoFrame,
   SectionHeading,
@@ -61,11 +60,5 @@ describe("section-kit primitives", () => {
     ).toContain(
       '<div class="side-photo" data-slot="photo-frame"><img src="/a.png" alt="Jane"/></div>',
     );
-  });
-
-  it("DateRange renders the shared date-range string", () => {
-    expect(
-      renderToStaticMarkup(<DateRange startDate="Jan 2024" endDate="current" />),
-    ).toBe("Jan 2024 - Current");
   });
 });

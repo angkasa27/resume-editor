@@ -141,7 +141,7 @@ function measureUnitBottom(block: HTMLElement, rect: DOMRect): number {
  * height matters as much as the spacers: left in place, the next pass measures
  * the last count instead of the content, and the clip cuts what the user added.
  */
-export function resetPagination(article: HTMLElement): void {
+function resetPagination(article: HTMLElement): void {
   for (const spacer of Array.from(
     article.querySelectorAll("[data-page-spacer]"),
   )) {

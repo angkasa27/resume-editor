@@ -1,10 +1,7 @@
 import { PreviewLinkedTitle } from "@/features/resume-editor/preview/kit/linked-title";
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
 import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
-import {
-  commaJoin,
-  joinParts,
-} from "@/features/resume-editor/preview/helpers/string";
+import { commaJoin } from "@/features/resume-editor/preview/helpers/string";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
 
@@ -181,9 +178,6 @@ function OrganizationVolunteeringItem({
     </div>
   );
 }
-
-// joinParts kept imported for parity / future use
-void joinParts;
 
 export const academicItemViews: LayoutSectionItemMap = {
   workExperience: WorkExperienceItem,

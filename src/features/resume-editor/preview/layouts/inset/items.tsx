@@ -35,12 +35,10 @@ function InsetItemFrame({
 
 function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
   const titleMeta = item.companyName ? `· ${item.companyName}` : undefined;
-  const row2 = joinParts(
-    [
-      item.location,
-      renderDateRange(item.startDate, item.endDate) || undefined,
-    ].filter(Boolean),
-  );
+  const row2 = joinParts([
+    item.location,
+    renderDateRange(item.startDate, item.endDate),
+  ]);
   return (
     <InsetItemFrame
       title={item.position}
@@ -54,13 +52,11 @@ function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
 function EducationItem({ item }: { item: SectionItem<"education"> }) {
   const title = item.degree || item.name;
   const titleMeta = item.degree && item.name ? `· ${item.name}` : undefined;
-  const row2 = joinParts(
-    [
-      item.location || undefined,
-      renderDateRange(item.startDate, item.endDate) || undefined,
-      item.gpa ? `GPA ${item.gpa}` : undefined,
-    ].filter(Boolean),
-  );
+  const row2 = joinParts([
+    item.location,
+    renderDateRange(item.startDate, item.endDate),
+    item.gpa ? `GPA ${item.gpa}` : undefined,
+  ]);
   return (
     <InsetItemFrame
       title={title}
@@ -87,12 +83,10 @@ function ProjectsItem({ item }: { item: SectionItem<"projects"> }) {
 function SkillsItem({ item }: { item: SectionItem<"skills"> }) {
   const skills = commaJoin(item.skills);
   return (
-    <div className={`item ${styles.insetItem}`}>
-      <div className={styles.itemRow1}>
-        <h3 className="item-title">{item.categoryName}</h3>
-        {skills ? <span className="meta">· {skills}</span> : null}
-      </div>
-    </div>
+    <InsetItemFrame
+      title={item.categoryName}
+      titleMeta={skills ? `· ${skills}` : undefined}
+    />
   );
 }
 
@@ -113,12 +107,10 @@ function CertificationsItem({ item }: { item: SectionItem<"certifications"> }) {
   const titleMeta = item.issuingOrganization
     ? `· ${item.issuingOrganization}`
     : undefined;
-  const row2 = joinParts(
-    [
-      item.issuedDate || undefined,
-      item.credentialId ? `Credential ID: ${item.credentialId}` : undefined,
-    ].filter(Boolean),
-  );
+  const row2 = joinParts([
+    item.issuedDate,
+    item.credentialId ? `Credential ID: ${item.credentialId}` : undefined,
+  ]);
   return (
     <InsetItemFrame
       title={
@@ -146,14 +138,10 @@ function AwardsItem({ item }: { item: SectionItem<"awards"> }) {
 
 function LanguagesItem({ item }: { item: SectionItem<"languages"> }) {
   return (
-    <div className={`item ${styles.insetItem}`}>
-      <div className={styles.itemRow1}>
-        <h3 className="item-title">{item.language}</h3>
-        {item.proficiency ? (
-          <span className="meta">· {item.proficiency}</span>
-        ) : null}
-      </div>
-    </div>
+    <InsetItemFrame
+      title={item.language}
+      titleMeta={item.proficiency ? `· ${item.proficiency}` : undefined}
+    />
   );
 }
 
@@ -175,12 +163,10 @@ function OrganizationVolunteeringItem({
   const titleMeta = item.organizationName
     ? `· ${item.organizationName}`
     : undefined;
-  const row2 = joinParts(
-    [
-      item.location || undefined,
-      renderDateRange(item.startDate, item.endDate) || undefined,
-    ].filter(Boolean),
-  );
+  const row2 = joinParts([
+    item.location,
+    renderDateRange(item.startDate, item.endDate),
+  ]);
   return (
     <InsetItemFrame
       title={item.position}
