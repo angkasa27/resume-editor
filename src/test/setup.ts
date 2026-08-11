@@ -31,30 +31,6 @@ Object.defineProperty(globalThis, "ResizeObserver", {
   value: ResizeObserverMock,
 });
 
-// JSDOM has no IntersectionObserver. Report every observed element as visible
-// so viewport-gated content (useInViewOnce) renders in tests instead of
-// silently staying empty.
-class IntersectionObserverMock {
-  constructor(private readonly callback: IntersectionObserverCallback) {}
-
-  observe(target: Element) {
-    this.callback(
-      [{ target, isIntersecting: true } as IntersectionObserverEntry],
-      this as unknown as IntersectionObserver,
-    );
-  }
-
-  unobserve() {}
-
-  disconnect() {}
-}
-
-Object.defineProperty(globalThis, "IntersectionObserver", {
-  writable: true,
-  configurable: true,
-  value: IntersectionObserverMock,
-});
-
 const zeroDomRect = {
   x: 0,
   y: 0,
