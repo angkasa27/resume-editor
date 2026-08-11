@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "@/components/ui/toast";
+import { postJson } from "@/lib/api-client";
 
 import {
   matchKeywords,
@@ -25,21 +26,14 @@ type SubmitState =
 async function requestKeywordMatch(
   jobDescription: string,
 ): Promise<ExtractedKeyword[]> {
-  const response = await fetch("/api/insights/match-keywords", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify({ jobDescription }),
-  });
-  const payload = (await response.json()) as {
-    keywords?: ExtractedKeyword[];
-    message?: string;
-  };
+  const fallback = "Could not analyze the job description.";
+  const payload = await postJson<{ keywords: ExtractedKeyword[] }>(
+    "/api/insights/match-keywords",
+    { jobDescription },
+    fallback,
+  );
 
-  if (!response.ok || !payload.keywords) {
-    throw new Error(
-      payload.message || "Could not analyze the job description.",
-    );
-  }
+  if (!payload.keywords) throw new Error(payload.message || fallback);
 
   return payload.keywords;
 }

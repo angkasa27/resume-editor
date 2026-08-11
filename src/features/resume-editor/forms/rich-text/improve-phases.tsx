@@ -4,6 +4,7 @@ import { SparklesIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
+import { postJson } from "@/lib/api-client";
 import { useRotatingMessage } from "@/features/resume-editor/editor/shared/use-rotating-message";
 
 // The loading spinner and before/after diff, shared by every surface that
@@ -95,22 +96,14 @@ export async function requestContentImprovement(input: {
   customInstruction: string;
   keywords?: string[];
 }): Promise<string> {
-  const response = await fetch("/api/improve-content", {
-    method: "POST",
-    headers: { "content-type": "application/json" },
-    body: JSON.stringify(input),
-  });
+  const fallback = "Could not rewrite the content. Try again.";
+  const payload = await postJson<{ improved: string }>(
+    "/api/improve-content",
+    input,
+    fallback,
+  );
 
-  const payload = (await response.json()) as {
-    improved?: string;
-    message?: string;
-  };
-
-  if (!response.ok || !payload.improved) {
-    throw new Error(
-      payload.message ?? "Could not rewrite the content. Try again.",
-    );
-  }
+  if (!payload.improved) throw new Error(payload.message || fallback);
 
   return payload.improved;
 }
