@@ -130,6 +130,11 @@ function SaveStatusIndicator({ status }: { status: SaveStatus }) {
   if (status === "idle") return null;
 
   const config = {
+    saving: {
+      icon: <Spinner aria-hidden className="size-3.5" />,
+      label: "Saving…",
+      className: "text-muted-foreground",
+    },
     saved: {
       icon: <CheckIcon className="size-3.5" />,
       label: "Saved",
