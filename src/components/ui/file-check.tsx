@@ -3,14 +3,13 @@
 import type { Variants } from "motion/react";
 import { motion, useAnimation } from "motion/react";
 import type { HTMLAttributes } from "react";
-import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { forwardRef } from "react";
 
+import {
+  useAnimatedIconHandle,
+  type AnimatedIconHandle as FileCheckIconHandle,
+} from "@/components/ui/use-animated-icon-handle";
 import { cn } from "@/lib/utils";
-
-interface FileCheckIconHandle {
-  startAnimation: () => void;
-  stopAnimation: () => void;
-}
 
 interface FileCheckIconProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
@@ -37,37 +36,13 @@ const CHECK_VARIANTS: Variants = {
 const FileCheckIcon = forwardRef<FileCheckIconHandle, FileCheckIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
     const controls = useAnimation();
-    const isControlledRef = useRef(false);
-
-    useImperativeHandle(ref, () => {
-      isControlledRef.current = true;
-
-      return {
+    const { handleMouseEnter, handleMouseLeave } = useAnimatedIconHandle(
+      ref,
+      {
         startAnimation: () => controls.start("animate"),
         stopAnimation: () => controls.start("normal"),
-      };
-    });
-
-    const handleMouseEnter = useCallback(
-      (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isControlledRef.current) {
-          onMouseEnter?.(e);
-        } else {
-          controls.start("animate");
-        }
       },
-      [controls, onMouseEnter],
-    );
-
-    const handleMouseLeave = useCallback(
-      (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isControlledRef.current) {
-          onMouseLeave?.(e);
-        } else {
-          controls.start("normal");
-        }
-      },
-      [controls, onMouseLeave],
+      { onMouseEnter, onMouseLeave },
     );
 
     return (

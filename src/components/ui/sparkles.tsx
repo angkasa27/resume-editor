@@ -3,14 +3,13 @@
 import type { Variants } from "motion/react";
 import { motion, useAnimation } from "motion/react";
 import type { HTMLAttributes } from "react";
-import { forwardRef, useCallback, useImperativeHandle, useRef } from "react";
+import { forwardRef } from "react";
 
+import {
+  useAnimatedIconHandle,
+  type AnimatedIconHandle as SparklesIconHandle,
+} from "@/components/ui/use-animated-icon-handle";
 import { cn } from "@/lib/utils";
-
-interface SparklesIconHandle {
-  startAnimation: () => void;
-  stopAnimation: () => void;
-}
 
 interface SparklesIconProps extends HTMLAttributes<HTMLDivElement> {
   size?: number;
@@ -53,12 +52,9 @@ const SparklesIcon = forwardRef<SparklesIconHandle, SparklesIconProps>(
   ({ onMouseEnter, onMouseLeave, className, size = 28, ...props }, ref) => {
     const starControls = useAnimation();
     const sparkleControls = useAnimation();
-    const isControlledRef = useRef(false);
-
-    useImperativeHandle(ref, () => {
-      isControlledRef.current = true;
-
-      return {
+    const { handleMouseEnter, handleMouseLeave } = useAnimatedIconHandle(
+      ref,
+      {
         startAnimation: () => {
           sparkleControls.start("hover");
           starControls.start("blink", { delay: 1 });
@@ -67,31 +63,8 @@ const SparklesIcon = forwardRef<SparklesIconHandle, SparklesIconProps>(
           sparkleControls.start("initial");
           starControls.start("initial");
         },
-      };
-    });
-
-    const handleMouseEnter = useCallback(
-      (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isControlledRef.current) {
-          onMouseEnter?.(e);
-        } else {
-          sparkleControls.start("hover");
-          starControls.start("blink", { delay: 1 });
-        }
       },
-      [onMouseEnter, sparkleControls, starControls]
-    );
-
-    const handleMouseLeave = useCallback(
-      (e: React.MouseEvent<HTMLDivElement>) => {
-        if (isControlledRef.current) {
-          onMouseLeave?.(e);
-        } else {
-          sparkleControls.start("initial");
-          starControls.start("initial");
-        }
-      },
-      [sparkleControls, starControls, onMouseLeave]
+      { onMouseEnter, onMouseLeave },
     );
 
     return (
