@@ -22,7 +22,7 @@ import {
 import { Spinner } from "@/components/ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
-import type { SaveStatus } from "@/features/resume-editor/domain/draft/draft-storage";
+import type { SaveStatus } from "@/features/resume-editor/domain/draft/local-draft-storage";
 
 type EditorTopBarProps = {
   saveStatus: SaveStatus;
@@ -126,7 +126,7 @@ export function EditorTopBar({
 }
 
 function SaveStatusIndicator({ status }: { status: SaveStatus }) {
-  // Synchronous (local) storage never leaves "idle" — nothing to show.
+  // "idle" only holds until the first save of the session — nothing to report yet.
   if (status === "idle") return null;
 
   const config = {

@@ -1,7 +1,3 @@
-import {
-  DraftStorage,
-  SaveStatus,
-} from "@/features/resume-editor/domain/draft/draft-storage";
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
 import {
   RESUME_STORAGE_KEY,
@@ -11,6 +7,8 @@ import {
 import { parseResumeDraft } from "@/features/resume-editor/domain/schema";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
+export type SaveStatus = "idle" | "saving" | "saved" | "error";
+
 function warn(message: string, error: unknown) {
   console.warn(
     message,
@@ -18,7 +16,7 @@ function warn(message: string, error: unknown) {
   );
 }
 
-export class LocalDraftStorage implements DraftStorage {
+export class LocalDraftStorage {
   private status: SaveStatus = "idle";
   private readonly listeners = new Set<(status: SaveStatus) => void>();
 

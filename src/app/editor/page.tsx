@@ -1,9 +1,5 @@
-import { EditorHost } from "@/lib/editor-host";
+import { ResumeEditor } from "@/features/resume-editor/editor/resume-editor";
 
-export default async function EditorPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  return <EditorHost searchParams={await searchParams} />;
+export default function EditorPage() {
+  return <ResumeEditor />;
 }

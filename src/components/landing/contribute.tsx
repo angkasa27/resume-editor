@@ -4,7 +4,7 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { RevealItem, RevealStagger } from "./reveal";
 
-const GITHUB_URL = "https://github.com/angkasa27/resume-editor";
+const GITHUB_URL = "https://github.com/angkasa27/resummme";
 
 export function Contribute() {
   return (

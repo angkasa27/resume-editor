@@ -1,79 +1,29 @@
 import { act, renderHook } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { useResumeEditorController } from "@/features/resume-editor/state/use-resume-editor-controller";
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
-import type {
-  DraftStorage,
-  SaveStatus,
-} from "@/features/resume-editor/domain/draft/draft-storage";
-import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
-
-function createStatusStorage() {
-  let status: SaveStatus = "idle";
-  const listeners = new Set<(status: SaveStatus) => void>();
-  const draft = createDefaultResumeDraft();
-
-  const storage: DraftStorage = {
-    load: () => structuredClone(draft),
-    save: vi.fn((next: ResumeDraft) => next),
-    getSaveStatus: () => status,
-    subscribeSaveStatus: (listener) => {
-      listeners.add(listener);
-      return () => listeners.delete(listener);
-    },
-  };
-
-  return {
-    storage,
-    setStatus(next: SaveStatus) {
-      status = next;
-      listeners.forEach((listener) => listener(next));
-    },
-  };
-}
 
 describe("useResumeEditorController", () => {
-  // Why: the SaaS fork injects a DB-backed storage and relies on the editor
-  // surfacing its async progress. If saveStatus stopped tracking the injected
-  // storage, the fork's save indicator would silently go dead.
-  it("surfaces the injected storage's save status", () => {
-    const { storage, setStatus } = createStatusStorage();
-    const { result } = renderHook(() => useResumeEditorController({ storage }));
+  // Why: the top bar's save indicator reads this and nothing else. The
+  // controller and the store have to share one storage instance — give the
+  // store its own and this subscription watches an object that never saves,
+  // leaving the indicator permanently on "idle" while saves succeed.
+  it("tracks the save status through a real save", () => {
+    const { result } = renderHook(() =>
+      useResumeEditorController({ initialDraft: createDefaultResumeDraft() }),
+    );
 
     expect(result.current.saveStatus).toBe("idle");
-
-    act(() => setStatus("saving"));
-    expect(result.current.saveStatus).toBe("saving");
-
-    act(() => setStatus("saved"));
-    expect(result.current.saveStatus).toBe("saved");
-  });
-
-  // Why: injecting persistence is the whole seam — saves must flow to the
-  // provided module, not a hardcoded default.
-  it("persists edits through the injected storage", () => {
-    const { storage } = createStatusStorage();
-    const { result } = renderHook(() => useResumeEditorController({ storage }));
 
     act(() => {
       result.current.saveProfile({
         ...result.current.draft.profile,
-        fullName: "Injected Storage",
+        fullName: "Saved Once",
       });
     });
 
-    expect(storage.save).toHaveBeenCalledTimes(1);
-    expect(result.current.draft.profile.fullName).toBe("Injected Storage");
-  });
-
-  // Why: the default (local) path is synchronous and must not render a stray
-  // "saving"/"saved" indicator.
-  it("reports idle status when storage does not track saves", () => {
-    const { result } = renderHook(() =>
-      useResumeEditorController({ initialDraft: createDefaultResumeDraft() })
-    );
-
-    expect(result.current.saveStatus).toBe("idle");
+    expect(result.current.saveStatus).toBe("saved");
+    expect(result.current.draft.profile.fullName).toBe("Saved Once");
   });
 });

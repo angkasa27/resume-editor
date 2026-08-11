@@ -214,7 +214,7 @@ src/
   components/ui/               # Shared UI primitives (Button, Dialog, Select…)
   components/landing/          # Landing page sections
   hooks/                       # App-level React hooks
-  lib/                         # Utilities (cn, editor host, etc.)
+  lib/                         # Utilities (cn, etc.)
   test/                        # Vitest setup
   features/resume-editor/
     domain/

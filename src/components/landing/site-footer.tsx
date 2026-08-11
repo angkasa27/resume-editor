@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const GITHUB_URL = "https://github.com/angkasa27/resume-editor";
+const GITHUB_URL = "https://github.com/angkasa27/resummme";
 
 export function SiteFooter() {
   return (

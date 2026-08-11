@@ -16,22 +16,11 @@ import {
 import { useIsMobile } from "@/hooks/use-mobile";
 import { useKeyboardShortcuts } from "@/hooks/use-keyboard-shortcuts";
 import { toast } from "@/components/ui/toast";
-import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
-import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
 import { JobKeywordsContext } from "@/features/resume-editor/state/job-keywords";
 import { selectAlignmentKeywords } from "@/features/resume-editor/domain/insights/alignment-keywords";
 
-type ResumeEditorMobileProps = {
-  initialDraft?: ResumeDraft;
-  /** Persistence module ("batteries"). Defaults to local storage. */
-  storage?: DraftStorage;
-};
-
-export function ResumeEditorMobile({
-  initialDraft,
-  storage,
-}: ResumeEditorMobileProps) {
+export function ResumeEditorMobile() {
   const isMobile = useIsMobile();
   const [isExtractCvOpen, setIsExtractCvOpen] = useState(false);
   const {
@@ -59,7 +48,7 @@ export function ResumeEditorMobile({
     canRedo,
     saveStatus,
     revision,
-  } = useResumeEditorController({ initialDraft, storage });
+  } = useResumeEditorController();
 
   useEditorHeader({
     saveStatus,

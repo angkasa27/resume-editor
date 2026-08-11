@@ -1,7 +1,3 @@
-# Drizzle snapshot files — every column becomes a noise node and creates
-# dozens of tiny same-key communities that drown the real architecture.
-drizzle/meta/
-
 # Build & test artifacts
 .next/
 .next-test/

@@ -2,7 +2,7 @@
 
 import { useEffect, useLayoutEffect, useRef } from "react";
 
-import type { SaveStatus } from "@/features/resume-editor/domain/draft/draft-storage";
+import type { SaveStatus } from "@/features/resume-editor/domain/draft/local-draft-storage";
 import { useEditorHeaderStore } from "@/features/resume-editor/editor/top-bar/editor-header-store";
 
 const noop = () => {};

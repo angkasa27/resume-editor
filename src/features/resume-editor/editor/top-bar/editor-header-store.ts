@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import type { SaveStatus } from "@/features/resume-editor/domain/draft/draft-storage";
+import type { SaveStatus } from "@/features/resume-editor/domain/draft/local-draft-storage";
 
 type EditorHeaderState = {
   saveStatus: SaveStatus;

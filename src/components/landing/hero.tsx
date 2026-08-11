@@ -21,7 +21,7 @@ import { KineticText } from "./kinetic-text";
 // of the page's reveals (single source of timing/easing).
 import { blurUp as item, staggerContainer as container } from "./reveal";
 
-const GITHUB_URL = "https://github.com/angkasa27/resume-editor";
+const GITHUB_URL = "https://github.com/angkasa27/resummme";
 
 export function Hero() {
   const reduce = useReducedMotion();

@@ -12,7 +12,6 @@ import {
   setSectionVisibilityWithOrder,
 } from "@/features/resume-editor/state/draft-utils";
 import { normalizeCollectionItem } from "@/features/resume-editor/domain/sections/normalize-collection-item";
-import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
 import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
 import type {
@@ -117,7 +116,7 @@ function pushUndoStack(
 }
 
 export function createResumeEditorStore(config?: {
-  storage?: DraftStorage;
+  storage?: LocalDraftStorage;
   initialDraft?: ResumeDraft;
 }) {
   const storage = config?.storage ?? new LocalDraftStorage();

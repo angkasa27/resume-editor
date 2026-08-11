@@ -25,23 +25,12 @@ import {
   type EditorPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { ResumeEditorPanelKey } from "@/features/resume-editor/state/resume-editor-store";
-import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
-import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
 import { useEditorHeader } from "@/features/resume-editor/editor/top-bar/use-editor-header";
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
 import { JobKeywordsContext } from "@/features/resume-editor/state/job-keywords";
 import { selectAlignmentKeywords } from "@/features/resume-editor/domain/insights/alignment-keywords";
 
-type ResumeEditorDesktopProps = {
-  initialDraft?: ResumeDraft;
-  /** Persistence module ("batteries"). Defaults to local storage. */
-  storage?: DraftStorage;
-};
-
-export function ResumeEditorDesktop({
-  initialDraft,
-  storage,
-}: ResumeEditorDesktopProps) {
+export function ResumeEditorDesktop() {
   const {
     jsonFileInputRef,
     draft,
@@ -65,7 +54,7 @@ export function ResumeEditorDesktop({
     canRedo,
     saveStatus,
     revision,
-  } = useResumeEditorController({ initialDraft, storage });
+  } = useResumeEditorController();
 
   useEditorHeader({
     saveStatus,

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
 import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
-import type { SaveStatus } from "@/features/resume-editor/domain/draft/draft-storage";
+import type { SaveStatus } from "@/features/resume-editor/domain/draft/local-draft-storage";
 import {
   RESUME_STORAGE_KEY,
   exportResumeDraft,

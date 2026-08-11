@@ -11,11 +11,10 @@ import type {
   ResumeDraft,
 } from "@/features/resume-editor/domain/schema";
 import { createResumePdfFilename } from "@/features/resume-editor/domain/draft/resume-pdf-filename";
-import type {
-  DraftStorage,
-  SaveStatus,
-} from "@/features/resume-editor/domain/draft/draft-storage";
-import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
+import {
+  LocalDraftStorage,
+  type SaveStatus,
+} from "@/features/resume-editor/domain/draft/local-draft-storage";
 import { importResumeDraft } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
@@ -30,12 +29,6 @@ type ResumeEditorStore = ReturnType<typeof createResumeEditorStore>;
 
 type UseResumeEditorControllerOptions = {
   initialDraft?: ResumeDraft;
-  /**
-   * Persistence module ("batteries"). Defaults to {@link LocalDraftStorage}.
-   * The SaaS fork injects a DB-backed implementation here. Must be a stable
-   * reference — it is captured once on mount.
-   */
-  storage?: DraftStorage;
 };
 
 type ResumeEditorController = {
@@ -288,22 +281,20 @@ function useUndoRedo(store: ResumeEditorStore) {
 
 export function useResumeEditorController({
   initialDraft,
-  storage: providedStorage,
 }: UseResumeEditorControllerOptions = {}): ResumeEditorController {
-  const [storage] = useState<DraftStorage>(
-    () => providedStorage ?? new LocalDraftStorage(),
-  );
+  // The store must share this instance — a second one would leave the status
+  // subscription below watching an object that never saves.
+  const [storage] = useState(() => new LocalDraftStorage());
   const [store] = useState(() =>
     createResumeEditorStore({ storage, initialDraft }),
   );
 
   const subscribeSaveStatus = useCallback(
-    (onChange: () => void) =>
-      storage.subscribeSaveStatus?.(() => onChange()) ?? (() => {}),
+    (onChange: () => void) => storage.subscribeSaveStatus(() => onChange()),
     [storage],
   );
   const getSaveStatus = useCallback(
-    (): SaveStatus => storage.getSaveStatus?.() ?? "idle",
+    (): SaveStatus => storage.getSaveStatus(),
     [storage],
   );
   const saveStatus = useSyncExternalStore(

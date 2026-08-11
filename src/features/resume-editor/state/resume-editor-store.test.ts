@@ -2,15 +2,18 @@ import { describe, expect, it, vi } from "vitest";
 
 import { createResumeEditorStore } from "@/features/resume-editor/state/resume-editor-store";
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
-import type { DraftStorage } from "@/features/resume-editor/domain/draft/draft-storage";
+import { LocalDraftStorage } from "@/features/resume-editor/domain/draft/local-draft-storage";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
+/** The real storage with its two IO methods spied out — no localStorage here. */
 function createMockStorage(initialDraft?: ResumeDraft) {
   const draft = initialDraft ?? createDefaultResumeDraft();
-  return {
-    save: vi.fn((d: ResumeDraft) => d),
-    load: vi.fn(() => structuredClone(draft)),
-  } satisfies DraftStorage;
+  const storage = new LocalDraftStorage();
+  const save = vi.spyOn(storage, "save").mockImplementation((d) => d);
+  const load = vi.spyOn(storage, "load").mockReturnValue(structuredClone(draft));
+  // spyOn already replaced both in place; re-attaching only widens the type so
+  // callers can reach .mockClear() etc.
+  return Object.assign(storage, { save, load });
 }
 
 describe("resume editor store", () => {
