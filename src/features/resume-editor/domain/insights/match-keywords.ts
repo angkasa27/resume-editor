@@ -54,20 +54,32 @@ function normalize(value: string): string {
   return value.toLowerCase().replace(/[^a-z0-9+#.\s-]/g, " ").replace(/\s+/g, " ").trim();
 }
 
+const ALIAS_BY_TERM = new Map(
+  ALIASES.flatMap(([long, short]) => [
+    [long, short],
+    [short, long],
+  ] as const),
+);
+
 /** The other form of a term, when it has one. */
 function aliasOf(normalized: string): string | undefined {
-  for (const [long, short] of ALIASES) {
-    if (normalized === long) return short;
-    if (normalized === short) return long;
-  }
-  return undefined;
+  return ALIAS_BY_TERM.get(normalized);
 }
+
+// Matching runs per keyword on every commit while the Insights panel is open, so
+// the compiled patterns are cached instead of rebuilt each call.
+const termPatterns = new Map<string, RegExp>();
 
 function containsTerm(haystack: string, variant: string): boolean {
   if (!variant) return false;
-  // Word-boundary match on the variant (escape regex specials).
-  const escaped = variant.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  return new RegExp(`(?:^|\\W)${escaped}(?:\\W|$)`, "i").test(haystack);
+  let pattern = termPatterns.get(variant);
+  if (!pattern) {
+    // Word-boundary match on the variant (escape regex specials).
+    const escaped = variant.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    pattern = new RegExp(`(?:^|\\W)${escaped}(?:\\W|$)`, "i");
+    termPatterns.set(variant, pattern);
+  }
+  return pattern.test(haystack);
 }
 
 export function matchKeywords(

@@ -105,6 +105,30 @@ type DatedEntry = {
   panel: EditorPanelKey;
 };
 
+/** The label the editor and the score agree on for a work-experience row. */
+export function roleLabel(role: {
+  position: string;
+  companyName: string;
+}): string {
+  return (
+    [role.position, role.companyName].filter(Boolean).join(" at ") ||
+    "Untitled role"
+  );
+}
+
+function datedEntriesFrom<T extends { startDate: string; endDate: string }>(
+  items: readonly T[],
+  panel: EditorPanelKey,
+  label: (item: T) => string,
+): DatedEntry[] {
+  return items.map((item) => ({
+    label: label(item),
+    startDate: item.startDate,
+    endDate: item.endDate,
+    panel,
+  }));
+}
+
 type AtsContext = {
   draft: ResumeDraft;
   presentation: PdfPresentation;
@@ -140,33 +164,23 @@ function buildContext(
   ].filter(Boolean);
 
   const datedEntries: DatedEntry[] = [
-    ...sections.workExperience.items.map((item) => ({
-      label: [item.position, item.companyName].filter(Boolean).join(" at ") ||
-        "Untitled role",
-      startDate: item.startDate,
-      endDate: item.endDate,
-      panel: "workExperience" as EditorPanelKey,
-    })),
-    ...sections.education.items.map((item) => ({
-      label: [item.degree, item.name].filter(Boolean).join(", ") ||
-        "Untitled education entry",
-      startDate: item.startDate,
-      endDate: item.endDate,
-      panel: "education" as EditorPanelKey,
-    })),
-    ...sections.projects.items.map((item) => ({
-      label: item.projectName || "Untitled project",
-      startDate: item.startDate,
-      endDate: item.endDate,
-      panel: "projects" as EditorPanelKey,
-    })),
-    ...sections.organizationVolunteering.items.map((item) => ({
-      label: [item.position, item.organizationName].filter(Boolean).join(" at ") ||
+    ...datedEntriesFrom(sections.workExperience.items, "workExperience", (item) =>
+      roleLabel(item),
+    ),
+    ...datedEntriesFrom(sections.education.items, "education", (item) =>
+      [item.degree, item.name].filter(Boolean).join(", ") ||
+      "Untitled education entry",
+    ),
+    ...datedEntriesFrom(sections.projects.items, "projects", (item) =>
+      item.projectName || "Untitled project",
+    ),
+    ...datedEntriesFrom(
+      sections.organizationVolunteering.items,
+      "organizationVolunteering",
+      (item) =>
+        [item.position, item.organizationName].filter(Boolean).join(" at ") ||
         "Untitled organization entry",
-      startDate: item.startDate,
-      endDate: item.endDate,
-      panel: "organizationVolunteering" as EditorPanelKey,
-    })),
+    ),
   ];
 
   return {

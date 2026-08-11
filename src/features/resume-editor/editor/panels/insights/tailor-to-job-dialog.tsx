@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/select";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { roleLabel } from "@/features/resume-editor/domain/insights/ats-score";
 import {
   DialogHeaderRow,
   DialogHeaderSection,
@@ -177,9 +178,7 @@ function TailorBody({
     { value: SKILLS_TARGET, label: "Skills (added as written, no AI)" },
     ...roles.map((role) => ({
       value: role.id,
-      label:
-        [role.position, role.companyName].filter(Boolean).join(" at ") ||
-        "Untitled role",
+      label: roleLabel(role),
     })),
   ];
   const labelFor = (options: { value: string; label: string }[], value: string) =>

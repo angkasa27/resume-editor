@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
+import { computeAtsScore } from "@/features/resume-editor/domain/insights/ats-score";
 import type { EditorPanelKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
@@ -14,7 +15,6 @@ import { JobDescriptionPanel } from "./job-description-panel";
 import { ScoreRing } from "./score-ring";
 import { SuggestionList } from "./suggestion-list";
 import { TailorToJobDialog } from "./tailor-to-job-dialog";
-import { useAtsScore } from "./use-ats-score";
 import { useJobMatch } from "./use-job-match";
 
 type InsightsTabProps = {
@@ -37,7 +37,10 @@ export function InsightsTab({
     draft,
     onSaveInsights,
   );
-  const score = useAtsScore(draft, jobMatch ?? undefined);
+  const score = useMemo(
+    () => computeAtsScore(draft, jobMatch ?? undefined),
+    [draft, jobMatch],
+  );
   const [isAnalyzeOpen, setIsAnalyzeOpen] = useState(false);
   const [tailorTerm, setTailorTerm] = useState<string | null>(null);
 
