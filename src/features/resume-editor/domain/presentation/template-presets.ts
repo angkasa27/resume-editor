@@ -416,6 +416,15 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
   },
 ];
 
+/** "Bold Type Citrus" — the layout id titled, then the preset's own label. */
+export function templateLabel(preset: ResumeTemplatePreset): string {
+  const layout = preset.layoutId
+    .split("-")
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join(" ");
+  return `${layout} ${preset.label}`;
+}
+
 /** Applies layout + curated style in one shot; preserves paperSize, clears photoShape. */
 export function applyTemplatePreset(
   preset: ResumeTemplatePreset,

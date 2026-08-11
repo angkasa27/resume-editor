@@ -46,8 +46,9 @@ export type Persona = {
   };
 };
 
-// 21 personas, one per preset that has a screenshot. Screenshot filename equals
-// presetId — public/templates/<presetId>.webp.
+// One persona per template preset — the landing carousel is the preview of what
+// the gallery offers, so every preset needs its own screenshot. Filename equals
+// presetId: public/templates/<presetId>.webp.
 export const PERSONAS: Persona[] = [
   // ── Row 1 ──────────────────────────────────────────────────────────────────
   {
@@ -2396,14 +2397,14 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "studio",
     presetId: "studio-violet",
-    photo: "https://i.pravatar.cc/320?img=47",
-    fullName: "Amara Osei",
+    photo: "https://i.pravatar.cc/320?img=54",
+    fullName: "Kwame Osei",
     location: "Toronto, ON",
     phone: "+1 (416) 555-0173",
-    email: "amara.osei@hey.com",
+    email: "kwame.osei@hey.com",
     links: [
-      "https://www.linkedin.com/in/amaraosei",
-      "https://github.com/amaraosei",
+      "https://www.linkedin.com/in/kwameosei",
+      "https://github.com/kwameosei",
     ],
     summary:
       "<p>Data scientist with 7 years turning messy product telemetry into decisions leadership actually makes. I build the model, the pipeline that feeds it, and the dashboard that explains it, then stay close enough to the business to know when a simpler answer wins.</p>",
@@ -2500,14 +2501,14 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "spotlight",
     presetId: "spotlight-dusk",
-    photo: "https://i.pravatar.cc/320?img=45",
-    fullName: "Sofia Alvarez",
+    photo: "https://i.pravatar.cc/320?img=57",
+    fullName: "Mateo Alvarez",
     location: "Madrid, Spain",
     phone: "+34 612 345 678",
-    email: "sofia.alvarez@fastmail.com",
+    email: "mateo.alvarez@fastmail.com",
     links: [
-      "https://www.linkedin.com/in/sofiaalvarez",
-      "https://github.com/salvarez",
+      "https://www.linkedin.com/in/mateoalvarez",
+      "https://github.com/malvarez",
     ],
     summary:
       "<p>Platform engineer with 8 years making other engineers faster. I care about the boring parts — build times, rollback safety, the pager at 3am — and I would rather delete a service than add a dashboard for it.</p>",
@@ -2607,7 +2608,7 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "aurora",
     presetId: "aurora-haze",
-    photo: "https://i.pravatar.cc/320?img=15",
+    photo: "https://i.pravatar.cc/320?img=60",
     fullName: "Rio Baskoro",
     location: "Bandung, Indonesia",
     phone: "+62 812 5566 7788",
@@ -2706,6 +2707,685 @@ export const PERSONAS: Persona[] = [
       degree: "B.S. in Informatics",
       gpa: "3.6 / 4.0",
       note: "Focus on human-computer interaction; final project was a scheduling tool adopted by two campus departments after the pilot.",
+    },
+  },
+  {
+    layoutId: "classic",
+    presetId: "classic-ats",
+    photo: "https://i.pravatar.cc/320?img=59",
+    fullName: "Gregory Vance",
+    location: "Chicago, IL",
+    phone: "+1 (312) 555-0186",
+    email: "gregory.vance@fastmail.com",
+    links: ["https://www.linkedin.com/in/gregoryvance"],
+    summary:
+      "<p>Financial analyst with 9 years in corporate FP&amp;A, covering forecasting, board reporting, and the unglamorous reconciliation work that makes the forecast trustworthy. I would rather present a model somebody can audit than one that only I can run.</p>",
+    work: [
+      {
+        company: "Halstead Manufacturing",
+        position: "Senior Financial Analyst",
+        location: "Chicago, IL",
+        start: "Jun 2020",
+        end: "current",
+        bullets: [
+          "Rebuilt the rolling 13-week cash forecast, cutting variance against actuals from 14% to under 4% within two quarters.",
+          "Led the annual planning cycle across 6 business units, consolidating 40 submissions into a board deck that survived audit without restatement.",
+          "Automated the monthly close pack in Power BI, removing 3 days of manual assembly per cycle.",
+          "Built the unit-economics model behind a plant consolidation decision that removed $6.8M of annual fixed cost.",
+        ],
+      },
+      {
+        company: "Ridgeline Foods",
+        position: "Financial Analyst",
+        location: "Milwaukee, WI",
+        start: "Aug 2017",
+        end: "May 2020",
+        bullets: [
+          "Owned COGS analysis for a $240M product portfolio, identifying $3.1M in recoverable freight and packaging spend.",
+          "Standardised margin reporting across 4 regions, ending a long-running dispute about which numbers were real.",
+          "Supported two audit cycles with zero material findings on the schedules I prepared.",
+        ],
+      },
+      {
+        company: "Corbin & Meyer",
+        position: "Staff Accountant",
+        location: "Chicago, IL",
+        start: "Jul 2015",
+        end: "Jul 2017",
+        bullets: [
+          "Prepared monthly financial statements for 12 mid-market clients across manufacturing and retail.",
+          "Cleaned up a chart of accounts that had accumulated 300 unused codes, shortening close by a full day.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Finance",
+      items: [
+        "FP&A",
+        "Financial Modeling",
+        "Power BI",
+        "SQL",
+        "NetSuite",
+        "Variance Analysis",
+        "Excel",
+        "US GAAP",
+      ],
+    },
+    projects: [
+      {
+        name: "Close Automation",
+        start: "Jan 2022",
+        end: "Sep 2022",
+        bullets: [
+          "Replaced a 60-tab workbook with a modelled data source and scheduled refresh, cutting close prep from 3 days to 4 hours.",
+          "Documented every calculation so the pack survives the analyst who built it leaving.",
+        ],
+      },
+      {
+        name: "Plant Consolidation Model",
+        start: "Mar 2021",
+        end: "Aug 2021",
+        bullets: [
+          "Modelled three consolidation scenarios with sensitivity on freight, labour, and utilisation.",
+          "Presented to the board; the selected option removed $6.8M of annual fixed cost.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Certified Public Accountant", org: "Illinois Board of Examiners", date: "Nov 2018" },
+      { name: "FP&A Certification", org: "Association for Financial Professionals", date: "Apr 2021" },
+    ],
+    education: {
+      name: "University of Illinois Urbana-Champaign",
+      location: "Champaign, IL",
+      start: "Aug 2011",
+      end: "May 2015",
+      degree: "B.S. in Accountancy",
+      gpa: "3.7 / 4.0",
+      note: "Minor in economics; treasurer of the student investment fund, which reported quarterly to a faculty oversight committee.",
+    },
+  },
+  {
+    layoutId: "sidebar",
+    presetId: "sidebar-lavender",
+    photo: "https://i.pravatar.cc/320?img=8",
+    fullName: "Tomas Herrera",
+    location: "Mexico City, Mexico",
+    phone: "+52 55 1234 5678",
+    email: "tomas.herrera@hey.com",
+    links: [
+      "https://www.linkedin.com/in/tomasherrera",
+      "https://tomasherrera.co",
+    ],
+    summary:
+      "<p>UX researcher with 7 years turning what users actually do into decisions teams can act on. I run the study that answers the argument in the room, not the one that produces the prettiest report.</p>",
+    work: [
+      {
+        company: "Vega Financiera",
+        position: "Lead UX Researcher",
+        location: "Mexico City, Mexico",
+        start: "Feb 2021",
+        end: "current",
+        bullets: [
+          "Ran the research programme behind a lending app redesign that lifted application completion from 42% to 68%.",
+          "Built a participant panel of 900 customers across 5 states, cutting recruitment time from 3 weeks to 4 days.",
+          "Introduced a research repository with tagged findings, so teams stopped re-running studies that already existed.",
+          "Trained 14 designers and PMs to moderate their own sessions, tripling study throughput without adding headcount.",
+        ],
+      },
+      {
+        company: "Mercado Norte",
+        position: "UX Researcher",
+        location: "Guadalajara, Mexico",
+        start: "Sep 2018",
+        end: "Jan 2021",
+        bullets: [
+          "Led discovery for the seller onboarding flow, cutting drop-off at identity verification by 31%.",
+          "Combined analytics with 40 field interviews to explain a cart abandonment spike nobody could reproduce in the office.",
+          "Established a quarterly usability benchmark that made design regressions visible before launch.",
+        ],
+      },
+      {
+        company: "Estudio Cardinal",
+        position: "Design Researcher",
+        location: "Mexico City, Mexico",
+        start: "Jun 2016",
+        end: "Aug 2018",
+        bullets: [
+          "Delivered research for 11 client engagements across fintech, logistics, and public services.",
+          "Built the studio's first interview guide library, cutting study setup from a week to a day.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Research",
+      items: [
+        "Usability Testing",
+        "Field Research",
+        "Survey Design",
+        "Journey Mapping",
+        "Dovetail",
+        "Figma",
+        "Statistics",
+      ],
+    },
+    projects: [
+      {
+        name: "Research Repository",
+        start: "May 2022",
+        end: "Dec 2022",
+        bullets: [
+          "Consolidated 5 years of scattered study decks into a searchable, tagged repository.",
+          "Cut duplicate studies to near zero in the first year and shortened new-hire ramp-up considerably.",
+        ],
+      },
+      {
+        name: "Accessibility Audit Programme",
+        start: "Feb 2021",
+        end: "Jul 2021",
+        bullets: [
+          "Ran moderated sessions with 18 participants using screen readers and switch access.",
+          "Produced a prioritised remediation backlog that closed 34 blocking issues before the next release.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Certified Usability Analyst", org: "Human Factors International", date: "Aug 2019" },
+      { name: "Qualitative Research Methods", org: "Nielsen Norman Group", date: "Mar 2022" },
+    ],
+    education: {
+      name: "Universidad Nacional Autónoma de México",
+      location: "Mexico City, Mexico",
+      start: "Aug 2012",
+      end: "Jun 2016",
+      degree: "B.A. in Psychology",
+      gpa: "9.1 / 10",
+      note: "Thesis on decision fatigue in multi-step forms; teaching assistant in research methods for three semesters.",
+    },
+  },
+  {
+    layoutId: "academic",
+    presetId: "academic-journal",
+    photo: "https://i.pravatar.cc/320?img=65",
+    fullName: "Dr. Viktor Novak",
+    location: "Prague, Czech Republic",
+    phone: "+420 601 234 567",
+    email: "v.novak@univ-prague.cz",
+    links: ["https://www.linkedin.com/in/viktornovak"],
+    summary:
+      "<p>Condensed matter physicist with 15 years of research on low-dimensional materials, split between experiment and the instrumentation that makes the experiment possible. I publish what replicates and I say so when it does not.</p>",
+    work: [
+      {
+        company: "Charles University",
+        position: "Associate Professor of Physics",
+        location: "Prague, Czech Republic",
+        start: "Sep 2018",
+        end: "current",
+        bullets: [
+          "Lead a group of 9 researchers studying transport phenomena in two-dimensional heterostructures.",
+          "Principal investigator on €2.4M of competitive funding across four national and EU grants.",
+          "Published 31 peer-reviewed papers, 12 as corresponding author, cited over 1,800 times.",
+          "Rebuilt the graduate methods course around reproducibility, requiring every submission to ship its analysis code.",
+        ],
+      },
+      {
+        company: "Max Planck Institute for Solid State Research",
+        position: "Postdoctoral Researcher",
+        location: "Stuttgart, Germany",
+        start: "Oct 2014",
+        end: "Aug 2018",
+        bullets: [
+          "Designed a cryogenic measurement setup that reduced noise floor by an order of magnitude over the previous rig.",
+          "Resolved a long-standing discrepancy between two reported conductance measurements by identifying a thermal gradient artefact.",
+          "Supervised 5 graduate students, three of whom now hold independent research positions.",
+        ],
+      },
+      {
+        company: "Institute of Physics, Czech Academy of Sciences",
+        position: "Research Assistant",
+        location: "Prague, Czech Republic",
+        start: "Sep 2010",
+        end: "Sep 2014",
+        bullets: [
+          "Carried out sample preparation and characterisation for a national thin-film research programme.",
+          "Maintained and calibrated shared instrumentation used by four research groups.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Research",
+      items: [
+        "Condensed Matter Physics",
+        "Cryogenic Measurement",
+        "Thin-Film Deposition",
+        "Python",
+        "LabVIEW",
+        "Grant Writing",
+        "Peer Review",
+      ],
+    },
+    projects: [
+      {
+        name: "Low-Noise Transport Platform",
+        start: "Jan 2019",
+        end: "Nov 2021",
+        bullets: [
+          "Built an open-hardware measurement platform now replicated by three external laboratories.",
+          "Released the control software and calibration procedure under a permissive licence.",
+        ],
+      },
+      {
+        name: "Replication Study Programme",
+        start: "Mar 2022",
+        end: "Oct 2023",
+        bullets: [
+          "Coordinated independent replication of six widely cited transport results; two failed to reproduce.",
+          "Published the negative results, which drew more correspondence than any positive result in the group's history.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Radiation Safety Officer", org: "State Office for Nuclear Safety", date: "Feb 2016" },
+      { name: "Advanced Research Supervision", org: "Charles University", date: "Sep 2019" },
+    ],
+    education: {
+      name: "Charles University",
+      location: "Prague, Czech Republic",
+      start: "Sep 2006",
+      end: "Aug 2010",
+      degree: "Ph.D. in Physics",
+      gpa: "—",
+      note: "Dissertation on electron transport in disordered two-dimensional systems; awarded the faculty prize for the year's outstanding thesis.",
+    },
+  },
+  {
+    layoutId: "banner",
+    presetId: "banner-charcoal",
+    photo: "https://i.pravatar.cc/320?img=64",
+    fullName: "Daniel Okafor",
+    location: "Lagos, Nigeria",
+    phone: "+234 802 345 6789",
+    email: "daniel.okafor@proton.me",
+    links: ["https://www.linkedin.com/in/danielokafor"],
+    summary:
+      "<p>Enterprise sales leader with 11 years selling infrastructure software across West Africa. I build pipelines that survive a forecast review, and I have walked away from deals that would have churned in month four.</p>",
+    work: [
+      {
+        company: "Ardent Cloud",
+        position: "Director of Sales, West Africa",
+        location: "Lagos, Nigeria",
+        start: "Apr 2021",
+        end: "current",
+        bullets: [
+          "Grew regional ARR from $4.2M to $17.5M in three years while holding net revenue retention above 115%.",
+          "Built and led a team of 12 across sales and solution engineering, with voluntary attrition under 8%.",
+          "Introduced a qualification standard that cut late-stage slippage from 38% of pipeline to 11%.",
+          "Closed the region's three largest contracts to date, including a $3.1M multi-year platform agreement.",
+        ],
+      },
+      {
+        company: "Northgate Systems",
+        position: "Enterprise Account Executive",
+        location: "Lagos, Nigeria",
+        start: "Jan 2017",
+        end: "Mar 2021",
+        bullets: [
+          "Carried a $3.5M quota and finished four consecutive years above 120% attainment.",
+          "Opened the banking vertical from zero to 9 logos, which became the company's most durable segment.",
+          "Ran joint pursuits with two systems integrators, adding $2.2M of sourced pipeline annually.",
+        ],
+      },
+      {
+        company: "Meridian Software",
+        position: "Account Manager",
+        location: "Abuja, Nigeria",
+        start: "Jun 2014",
+        end: "Dec 2016",
+        bullets: [
+          "Managed 40 mid-market accounts, growing renewals from 78% to 93%.",
+          "Built the first territory plan the regional team actually worked from.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Sales",
+      items: [
+        "Enterprise Sales",
+        "Forecasting",
+        "MEDDICC",
+        "Channel Partnerships",
+        "Negotiation",
+        "Team Leadership",
+        "Salesforce",
+      ],
+    },
+    projects: [
+      {
+        name: "Regional Partner Programme",
+        start: "Feb 2022",
+        end: "Dec 2022",
+        bullets: [
+          "Recruited and enabled 6 integration partners, who now source a third of regional pipeline.",
+          "Wrote the deal-registration rules that ended channel conflict with the direct team.",
+        ],
+      },
+      {
+        name: "Forecast Discipline Rollout",
+        start: "May 2021",
+        end: "Oct 2021",
+        bullets: [
+          "Replaced optimistic stage definitions with evidence-based exit criteria across the region.",
+          "Forecast accuracy moved from ±32% to ±9% within two quarters.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "MEDDICC Certified", org: "MEDDICC Ltd", date: "Jul 2020" },
+      { name: "Strategic Negotiation", org: "Harvard Business School Online", date: "Mar 2022" },
+    ],
+    education: {
+      name: "University of Lagos",
+      location: "Lagos, Nigeria",
+      start: "Sep 2009",
+      end: "Jul 2013",
+      degree: "B.Sc. in Business Administration",
+      gpa: "3.6 / 4.0",
+      note: "Focus on marketing and operations; led the student enterprise society through its first profitable trading year.",
+    },
+  },
+  {
+    layoutId: "studio",
+    presetId: "studio-teal",
+    photo: "https://i.pravatar.cc/320?img=56",
+    fullName: "Haruki Sato",
+    location: "Osaka, Japan",
+    phone: "+81 90 1234 5678",
+    email: "haruki.sato@fastmail.com",
+    links: [
+      "https://www.linkedin.com/in/harukisato",
+      "https://github.com/hsato",
+    ],
+    summary:
+      "<p>Mobile engineer with 8 years shipping iOS and Android apps that run on phones people actually own, not just the newest ones. Crash-free sessions and cold-start time are the two numbers I defend.</p>",
+    work: [
+      {
+        company: "Kitagawa Mobility",
+        position: "Senior Mobile Engineer",
+        location: "Osaka, Japan",
+        start: "Jul 2021",
+        end: "current",
+        bullets: [
+          "Cut cold-start time on mid-range Android devices from 4.1s to 1.3s by deferring initialisation off the main thread.",
+          "Raised crash-free sessions from 98.2% to 99.85% by rebuilding the offline sync layer around a durable queue.",
+          "Led the Kotlin Multiplatform migration for shared business logic, removing a whole class of iOS/Android drift bugs.",
+          "Owned release engineering: staged rollouts, automated regression suite, and a rollback that takes minutes.",
+        ],
+      },
+      {
+        company: "Sunfield Interactive",
+        position: "Mobile Engineer",
+        location: "Kyoto, Japan",
+        start: "Apr 2018",
+        end: "Jun 2021",
+        bullets: [
+          "Shipped a live-ops feature framework that let designers launch events without an app release.",
+          "Reduced app size 34% through resource auditing and on-demand asset delivery.",
+          "Built the accessibility pass that brought the app to full VoiceOver and TalkBack support.",
+        ],
+      },
+      {
+        company: "Aozora Works",
+        position: "Junior Developer",
+        location: "Osaka, Japan",
+        start: "Apr 2016",
+        end: "Mar 2018",
+        bullets: [
+          "Delivered 6 client apps across retail and transport on a shared internal SDK.",
+          "Automated the release checklist, ending a recurring class of missed provisioning errors.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Mobile",
+      items: [
+        "Swift",
+        "Kotlin",
+        "Kotlin Multiplatform",
+        "SwiftUI",
+        "Jetpack Compose",
+        "Instrumentation",
+        "CI/CD",
+        "Accessibility",
+      ],
+    },
+    projects: [
+      {
+        name: "Offline Sync Rewrite",
+        start: "Jan 2023",
+        end: "Sep 2023",
+        bullets: [
+          "Replaced best-effort syncing with a durable, idempotent queue that survives process death.",
+          "Support tickets about lost trip records dropped to zero in the quarter after launch.",
+        ],
+      },
+      {
+        name: "Startup Time Programme",
+        start: "Mar 2022",
+        end: "Aug 2022",
+        bullets: [
+          "Instrumented cold start end to end and published a per-release budget the team defends.",
+          "Held the budget through eighteen months of feature work.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Associate Android Developer", org: "Google", date: "Oct 2019" },
+      { name: "Accessibility in Mobile Apps", org: "Deque University", date: "May 2022" },
+    ],
+    education: {
+      name: "Osaka University",
+      location: "Osaka, Japan",
+      start: "Apr 2012",
+      end: "Mar 2016",
+      degree: "B.Eng. in Information Science",
+      gpa: "3.5 / 4.0",
+      note: "Graduation project on energy-efficient background scheduling for mobile devices, later the basis of a conference workshop paper.",
+    },
+  },
+  {
+    layoutId: "spotlight",
+    presetId: "spotlight-ember",
+    photo: "https://i.pravatar.cc/320?img=52",
+    fullName: "Luca Bianchi",
+    location: "Milan, Italy",
+    phone: "+39 340 123 4567",
+    email: "luca.bianchi@proton.me",
+    links: [
+      "https://www.linkedin.com/in/lucabianchi",
+      "https://github.com/lbianchi",
+    ],
+    summary:
+      "<p>Developer advocate with 7 years between engineering and the people using what engineering ships. I write the sample app, file the bug it uncovers, and tell the product team what the docs cannot paper over.</p>",
+    work: [
+      {
+        company: "Corva Data",
+        position: "Lead Developer Advocate",
+        location: "Milan, Italy",
+        start: "Jan 2022",
+        end: "current",
+        bullets: [
+          "Rebuilt the getting-started path around a working sample, taking time-to-first-successful-call from 45 minutes to under 8.",
+          "Grew the community forum from 300 to 6,400 members, with median first response under 3 hours.",
+          "Filed 90 issues from real integration attempts, 34 of which shipped as API changes.",
+          "Ran a quarterly design-partner programme that fed directly into the roadmap.",
+        ],
+      },
+      {
+        company: "Fabbrica Cloud",
+        position: "Developer Advocate",
+        location: "Turin, Italy",
+        start: "Mar 2019",
+        end: "Dec 2021",
+        bullets: [
+          "Wrote and maintained 11 SDK quickstarts across four languages, all tested in CI so they never rot.",
+          "Spoke at 18 conferences and meetups; talks drove a measurable step-change in trial signups each quarter.",
+          "Reduced support load by rewriting the three docs pages responsible for a third of all tickets.",
+        ],
+      },
+      {
+        company: "Novaris",
+        position: "Backend Engineer",
+        location: "Milan, Italy",
+        start: "Sep 2016",
+        end: "Feb 2019",
+        bullets: [
+          "Built and operated the public API that later became the company's main integration surface.",
+          "Introduced contract testing between services, ending a recurring class of breaking-change incidents.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Advocacy & Engineering",
+      items: [
+        "Go",
+        "TypeScript",
+        "API Design",
+        "Technical Writing",
+        "Public Speaking",
+        "Community Building",
+        "OpenAPI",
+      ],
+    },
+    projects: [
+      {
+        name: "Quickstart Overhaul",
+        start: "Feb 2022",
+        end: "Aug 2022",
+        bullets: [
+          "Replaced prose-first docs with a runnable sample repository covering four languages.",
+          "Every snippet runs in CI, so a breaking release fails the docs build before it reaches users.",
+        ],
+      },
+      {
+        name: "Design Partner Programme",
+        start: "Mar 2023",
+        end: "Nov 2023",
+        bullets: [
+          "Recruited 12 teams to build against pre-release APIs and report friction weekly.",
+          "Three planned endpoints were redesigned before launch on the strength of that feedback.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Certified Kubernetes Application Developer", org: "Cloud Native Computing Foundation", date: "Jun 2021" },
+      { name: "Technical Writing Certification", org: "Google", date: "Feb 2020" },
+    ],
+    education: {
+      name: "Politecnico di Milano",
+      location: "Milan, Italy",
+      start: "Sep 2011",
+      end: "Jul 2016",
+      degree: "M.Sc. in Computer Engineering",
+      gpa: "108 / 110",
+      note: "Thesis on API usability, including a controlled study of error-message design across three client libraries.",
+    },
+  },
+  {
+    layoutId: "aurora",
+    presetId: "aurora-peach",
+    photo: "https://i.pravatar.cc/320?img=17",
+    fullName: "Elliot Grant",
+    location: "Melbourne, Australia",
+    phone: "+61 412 345 678",
+    email: "elliot.grant@hey.com",
+    links: [
+      "https://www.linkedin.com/in/elliotgrant",
+      "https://elliotgrant.design",
+    ],
+    summary:
+      "<p>Product designer with 10 years on data-heavy tools, where the hard part is deciding what not to show. I prototype in code when a static mock would hide the problem.</p>",
+    work: [
+      {
+        company: "Southbank Health",
+        position: "Principal Product Designer",
+        location: "Melbourne, Australia",
+        start: "Aug 2021",
+        end: "current",
+        bullets: [
+          "Redesigned the clinician workspace around one prioritised worklist, cutting average time-to-decision by 27%.",
+          "Ran the design system through a WCAG AA audit and closed every blocking issue before the compliance deadline.",
+          "Prototyped three information-density options in code, which settled a six-month debate in one session.",
+          "Mentor four designers and run the fortnightly critique that keeps the surface coherent across squads.",
+        ],
+      },
+      {
+        company: "Latitude Analytics",
+        position: "Senior Product Designer",
+        location: "Sydney, Australia",
+        start: "Feb 2018",
+        end: "Jul 2021",
+        bullets: [
+          "Designed the query builder that took self-serve report creation from 12% of users to 46%.",
+          "Established the charting guidelines still used across the product, including colour rules that survive greyscale printing.",
+          "Partnered with research on a longitudinal study that reframed the onboarding roadmap.",
+        ],
+      },
+      {
+        company: "Harbourline Studio",
+        position: "Product Designer",
+        location: "Melbourne, Australia",
+        start: "Jan 2015",
+        end: "Jan 2018",
+        bullets: [
+          "Delivered end-to-end design for 9 client products across health, logistics, and government.",
+          "Built the studio's reusable pattern library, cutting project setup by roughly a week each.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Product Design",
+      items: [
+        "Figma",
+        "Design Systems",
+        "Prototyping",
+        "Data Visualisation",
+        "Accessibility",
+        "HTML/CSS",
+        "User Research",
+      ],
+    },
+    projects: [
+      {
+        name: "Clinician Worklist",
+        start: "Mar 2022",
+        end: "Feb 2023",
+        bullets: [
+          "Replaced five competing dashboards with a single prioritised worklist, validated through 24 shadowing sessions.",
+          "Reduced average time-to-decision by 27% and cut mis-triage escalations by a third.",
+        ],
+      },
+      {
+        name: "Charting Guidelines",
+        start: "Jun 2019",
+        end: "Dec 2019",
+        bullets: [
+          "Published colour, axis, and annotation rules that hold up in greyscale and for colour-blind readers.",
+          "Adopted across four product teams and still the reference three years on.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Accessibility Specialist (WAS)", org: "IAAP", date: "Sep 2022" },
+      { name: "Data Visualisation", org: "Royal Melbourne Institute of Technology", date: "Apr 2020" },
+    ],
+    education: {
+      name: "RMIT University",
+      location: "Melbourne, Australia",
+      start: "Feb 2011",
+      end: "Nov 2014",
+      degree: "B.Des. in Communication Design",
+      gpa: "3.8 / 4.0",
+      note: "Major in interaction design; final-year exhibition on legibility of clinical interfaces under time pressure.",
     },
   },
 ];

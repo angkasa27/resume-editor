@@ -37,6 +37,23 @@ const TIMEOUT = 30_000;
 const ul = (bullets: string[]) =>
   `<ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`;
 
+/**
+ * The landing carousel is derived from the preset list, so a preset with no
+ * persona would render as a broken image there. Fail here instead, where the
+ * missing persona can actually be written.
+ */
+function assertEveryPresetHasAPersona() {
+  const covered = new Set(PERSONAS.map((p) => p.presetId));
+  const missing = resumeTemplatePresets
+    .filter((preset) => !covered.has(preset.id))
+    .map((preset) => preset.id);
+  if (missing.length > 0) {
+    throw new Error(
+      `No persona for ${missing.join(", ")} — add one to scripts/personas.ts`,
+    );
+  }
+}
+
 function buildDraft(p: Persona): ResumeDraft {
   const draft = createDefaultResumeDraft();
   const preset = resumeTemplatePresets.find((t) => t.id === p.presetId);
@@ -228,6 +245,7 @@ async function assertServerUp() {
 }
 
 async function main() {
+  assertEveryPresetHasAPersona();
   await assertServerUp();
   await mkdir(TEMPLATES_DIR, { recursive: true });
 

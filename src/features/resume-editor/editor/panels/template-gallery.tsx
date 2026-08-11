@@ -18,21 +18,11 @@ import {
   applyTemplatePresetLayoutOnly,
   getActiveTemplatePresetId,
   resumeTemplatePresets,
+  templateLabel,
   type ResumeTemplatePreset,
 } from "@/features/resume-editor/domain/presentation/template-presets";
 import type { PdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
-
-function layoutLabel(preset: ResumeTemplatePreset): string {
-  return preset.layoutId
-    .split("-")
-    .map((word) => word[0].toUpperCase() + word.slice(1))
-    .join(" ");
-}
-
-function templateLabel(preset: ResumeTemplatePreset): string {
-  return `${layoutLabel(preset)} ${preset.label}`;
-}
 
 type TemplateGalleryProps = {
   draft: ResumeDraft;

@@ -1,3 +1,8 @@
+import {
+  resumeTemplatePresets,
+  templateLabel,
+} from "@/features/resume-editor/domain/presentation/template-presets";
+
 type CarouselScreenshot = {
   /** Matches presetId; also the filename stem: public/templates/<id>.webp */
   id: string;
@@ -5,26 +10,14 @@ type CarouselScreenshot = {
   label: string;
 };
 
-export const CAROUSEL_SCREENSHOTS: CarouselScreenshot[] = [
-  { id: "classic-modern", label: "Classic Modern" },
-  { id: "classic-executive", label: "Classic Executive" },
-  { id: "sidebar-slate", label: "Sidebar Slate" },
-  { id: "sidebar-forest", label: "Sidebar Forest" },
-  { id: "centered-ocean", label: "Centered Ocean" },
-  { id: "centered-editorial", label: "Centered Editorial" },
-  { id: "timeline-indigo", label: "Timeline Indigo" },
-  { id: "timeline-amber", label: "Timeline Amber" },
-  { id: "academic-oxford", label: "Academic Oxford" },
-  { id: "academic-burgundy", label: "Academic Burgundy" },
-  { id: "inset-steel", label: "Inset Steel" },
-  { id: "inset-crimson", label: "Inset Crimson" },
-  { id: "banner-royal", label: "Banner Royal" },
-  { id: "banner-emerald", label: "Banner Emerald" },
-  { id: "split-midnight", label: "Split Midnight" },
-  { id: "split-terracotta", label: "Split Terracotta" },
-  { id: "bold-citrus", label: "Bold Citrus" },
-  { id: "bold-lime", label: "Bold Lime" },
-  { id: "studio-violet", label: "Studio Violet" },
-  { id: "spotlight-dusk", label: "Spotlight Dusk" },
-  { id: "aurora-haze", label: "Aurora Haze" },
-];
+/**
+ * Derived, not hand-listed: the carousel is the landing page's preview of what
+ * the template gallery actually offers, so the two must not drift. A new preset
+ * appears here automatically, and `pnpm screenshots` refuses to run until that
+ * preset has a persona — so the image exists before the card does.
+ */
+export const CAROUSEL_SCREENSHOTS: CarouselScreenshot[] =
+  resumeTemplatePresets.map((preset) => ({
+    id: preset.id,
+    label: templateLabel(preset),
+  }));
