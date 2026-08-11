@@ -2,6 +2,7 @@ import { ResumeImportError } from "@/features/resume-editor/server/resume-import
 import {
   callGeminiApi,
   extractResponseText,
+  stripCodeFences,
 } from "@/features/resume-editor/server/gemini-client";
 
 export type ImproveContentInput = {
@@ -100,8 +101,5 @@ export async function improveContentWithGemini(
   }
 
   // Strip markdown code fences in case the model wraps HTML anyway.
-  return responseText
-    .replace(/^```(?:html)?\s*/i, "")
-    .replace(/\s*```$/, "")
-    .trim();
+  return stripCodeFences(responseText);
 }

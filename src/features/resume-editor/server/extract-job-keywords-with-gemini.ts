@@ -1,9 +1,7 @@
 import { z } from "zod";
 
-import {
-  KEYWORD_CATEGORIES,
-  type ExtractedKeyword,
-} from "@/features/resume-editor/domain/insights/match-keywords";
+import type { ExtractedKeyword } from "@/features/resume-editor/domain/insights/match-keywords";
+import { extractedKeywordSchema } from "@/features/resume-editor/domain/schema/insights-schemas";
 import { ResumeImportError } from "@/features/resume-editor/server/resume-import-error";
 import {
   callGeminiApi,
@@ -11,14 +9,14 @@ import {
   stripCodeFences,
 } from "@/features/resume-editor/server/gemini-client";
 
-const extractedKeywordSchema = z.object({
-  term: z.string().min(1),
-  category: z.enum(KEYWORD_CATEGORIES),
+// The persisted schema deliberately leaves `weight` unbounded so a drifting
+// model response can't break a saved draft; at this boundary we can be strict.
+const responseKeywordSchema = extractedKeywordSchema.extend({
   weight: z.number().min(0).max(1),
 });
 
 const responseSchema = z.object({
-  keywords: z.array(extractedKeywordSchema).max(60),
+  keywords: z.array(responseKeywordSchema).max(60),
 });
 
 function buildPrompt(jobDescription: string) {

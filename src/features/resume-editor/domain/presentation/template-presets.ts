@@ -457,18 +457,14 @@ export function getActiveTemplatePresetId(
 ): string | null {
   for (const preset of resumeTemplatePresets) {
     const applied = applyTemplatePreset(preset, presentation);
-    if (
-      applied.layoutId === presentation.layoutId &&
-      applied.accent === presentation.accent &&
-      (applied.secondary ?? null) === (presentation.secondary ?? null) &&
-      applied.fontFamilyId === presentation.fontFamilyId &&
-      applied.fontScale === presentation.fontScale &&
-      applied.spacing === presentation.spacing &&
-      applied.lineHeight === presentation.lineHeight &&
-      (presentation.photoShape ?? null) === null
-    ) {
-      return preset.id;
-    }
+    // Compared over the keys `applyTemplatePreset` writes — so a new style key
+    // is only covered here once it's applied there too. `?? null` because the
+    // preset clears photoShape/secondary with `undefined` while a stored
+    // presentation may hold `null`.
+    const isActive = (
+      Object.keys(applied) as Array<keyof typeof applied>
+    ).every((key) => (applied[key] ?? null) === (presentation[key] ?? null));
+    if (isActive) return preset.id;
   }
   return null;
 }

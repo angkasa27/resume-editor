@@ -23,7 +23,8 @@ export function extractResponseText(payload: GeminiResponse): string | undefined
 
 export function stripCodeFences(value: string): string {
   return value
-    .replace(/^```(?:json)?\s*/i, "")
+    // Any language tag, not just json — the HTML caller strips fences too.
+    .replace(/^```[a-z]*\s*/i, "")
     .replace(/\s*```$/, "")
     .trim();
 }

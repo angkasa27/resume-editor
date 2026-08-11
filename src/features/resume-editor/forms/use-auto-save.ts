@@ -75,8 +75,10 @@ export function useAutoSave<T extends FieldValues>(
 
     const unsubscribe = form.subscribe({
       formState: { values: true },
+      // No equality check here — that would serialize the whole form (photo data
+      // URL included) on every keystroke just to skip arming a timer. Invariant 2
+      // makes the fired save a no-op when nothing actually changed.
       callback: () => {
-        if (JSON.stringify(form.getValues()) === lastSavedRef.current) return;
         clearTimeout(timerRef.current);
         timerRef.current = setTimeout(save, delay);
       },

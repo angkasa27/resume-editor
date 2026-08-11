@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Placeholder } from "@tiptap/extensions";
@@ -79,6 +79,8 @@ export function RichTextEditor({
   placeholder,
   onImproveWithAi,
 }: RichTextEditorProps) {
+  /** The last HTML this component and its `value` prop are known to agree on. */
+  const lastSyncedRef = useRef<string | null>(null);
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
@@ -104,7 +106,9 @@ export function RichTextEditor({
       },
     },
     onUpdate: ({ editor: nextEditor }) => {
-      onChange(nextEditor.getHTML());
+      const html = nextEditor.getHTML();
+      lastSyncedRef.current = html;
+      onChange(html);
     },
   });
 
@@ -113,11 +117,14 @@ export function RichTextEditor({
       return;
     }
 
-    if (editor.getHTML() === value) {
+    // The common case is `value` echoing back the HTML we just emitted; comparing
+    // against the ref avoids re-serializing the whole document per keystroke.
+    if (lastSyncedRef.current === value || editor.getHTML() === value) {
       return;
     }
 
     editor.commands.setContent(value || "<p></p>", { emitUpdate: false });
+    lastSyncedRef.current = value;
   }, [editor, value]);
 
   if (!editor) {

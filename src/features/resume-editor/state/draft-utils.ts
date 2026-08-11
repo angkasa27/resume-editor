@@ -3,7 +3,7 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 type ResumeSectionKey = keyof ResumeDraft["sections"];
 
 export function cloneDraft<T>(value: T): T {
-  return JSON.parse(JSON.stringify(value)) as T;
+  return structuredClone(value);
 }
 
 export function getOrderedSectionEntries(sections: ResumeDraft["sections"]) {
