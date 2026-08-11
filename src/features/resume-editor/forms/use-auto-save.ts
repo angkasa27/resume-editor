@@ -3,7 +3,6 @@ import type { FieldValues, UseFormReturn } from "react-hook-form";
 
 import { useEditorRevision } from "@/features/resume-editor/state/editor-revision";
 
-/** Asks every mounted `useAutoSave` to save now — see `flushOpenForms`. */
 const FLUSH_EVENT = "resume-editor:flush-forms";
 
 /** Every leaf path in a value tree, as react-hook-form names it: `items.0.url`. */
@@ -20,15 +19,12 @@ function* leafPaths(
   if (prefix) yield [prefix, value];
 }
 
-/** SAVE-FLOW.md invariant 6: read-then-replace actions (auto-sort) must flush first, or pending keystrokes are lost. */
+/** Lands every open form's pending edit now. Invariant 6 — callers must re-read after. */
 export function flushOpenForms() {
   window.dispatchEvent(new Event(FLUSH_EVENT));
 }
 
-/**
- * Owns a section form's persistence both ways: debounced save on edit/unmount/hide/flush,
- * and re-seed (reset + abandon pending edit) when the draft is replaced externally. See SAVE-FLOW.md.
- */
+/** A section form's persistence both ways: debounced save, and re-seed on external replace. See SAVE-FLOW.md. */
 export function useAutoSave<T extends FieldValues>(
   form: UseFormReturn<T>,
   values: T,
@@ -43,8 +39,8 @@ export function useAutoSave<T extends FieldValues>(
   const revision = useEditorRevision();
   const prevRevision = useRef(revision);
   const timerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  // Serialized, not the object — invariant 1: getValues() returns nested objects by
-  // reference and RHF mutates them in place, so an object snapshot would alias live values.
+  // Invariant 1: a string, never the object — getValues() hands back nested
+  // objects by reference and RHF mutates them in place.
   const lastSavedRef = useRef<string>(JSON.stringify(values));
 
   useEffect(() => {
@@ -52,8 +48,8 @@ export function useAutoSave<T extends FieldValues>(
     prevRevision.current = revision;
     clearTimeout(timerRef.current);
     lastSavedRef.current = JSON.stringify(values);
-    // Invariant 4: reactCompiler memoizes field components so they never re-render after
-    // mount, so a plain reset's DOM write-back never lands — walk the leaves and setValue each.
+    // Invariant 4: reactCompiler means the field components never re-render, so
+    // reset's own write-back never lands. Keep the refs, then set every leaf.
     form.reset(values, { keepFieldsRef: true });
     for (const [path, leaf] of leafPaths(values)) {
       form.setValue(path as never, leaf as never);
@@ -61,23 +57,21 @@ export function useAutoSave<T extends FieldValues>(
   }, [revision, values, form]);
 
   useEffect(() => {
-    // Invariant 2: idempotent and cancels any pending debounce, or a re-seed's half-applied
-    // state could fire a save identical to what was just seeded and wipe the redo stack.
+    // Invariant 2: idempotent, and cancels the debounce it beats.
     const save = () => {
       clearTimeout(timerRef.current);
       const next = form.getValues();
       const serialized = JSON.stringify(next);
       if (serialized === lastSavedRef.current) return;
-      // Marked saved only after onSave returns, so a throw leaves it stale and retries.
+      // After onSave, never before: a throw must leave this dirty so it retries.
       onSaveRef.current(next);
       lastSavedRef.current = serialized;
     };
 
     const unsubscribe = form.subscribe({
       formState: { values: true },
-      // No equality check here — that would serialize the whole form (photo data
-      // URL included) on every keystroke just to skip arming a timer. Invariant 2
-      // makes the fired save a no-op when nothing actually changed.
+      // No equality check — that serializes the whole form (photo data URL and
+      // all) per keystroke just to skip arming a timer. Invariant 2 covers it.
       callback: () => {
         clearTimeout(timerRef.current);
         timerRef.current = setTimeout(save, delay);

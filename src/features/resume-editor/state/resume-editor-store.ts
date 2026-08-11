@@ -28,7 +28,7 @@ type ResumeEditorStoreState = {
   activeSection: ResumeEditorPanelKey;
   undoStack: ResumeDraft[];
   redoStack: ResumeDraft[];
-  /** Bumps only on external draft replacement (replaceDraft/undo/redo), never on saveSection/saveProfile — lets an open form tell a genuine replace from its own autosave echo. */
+  /** Invariant 5: bumps only on external replacement, never on a form's own save. */
   revision: number;
   saveProfile: (profile: Profile) => void;
   savePdfPresentation: (pdfPresentation: PdfPresentation) => void;
@@ -88,10 +88,8 @@ function normalizeSectionValue<K extends ResumeSectionKey>(
 }
 
 /**
- * The job target isn't part of the edit history — `saveInsights` deliberately
- * doesn't snapshot it — so a history entry predating the analysis still carries
- * the old (usually absent) value. Undoing onto it would silently drop the saved
- * job description, so the live one is carried across instead.
+ * History entries predate the analysis, so restoring one would drop the saved
+ * job description. Carry the live one across instead — see `saveInsights`.
  */
 function carryInsights(
   currentDraft: ResumeDraft,
@@ -103,9 +101,7 @@ function carryInsights(
 
 const MAX_HISTORY = 50;
 
-// History keeps the previous draft by reference (no clone): drafts are never
-// mutated in place — createNextDraft spreads a new object, the draft-utils
-// mutators clone their input, and parseResumeDraft returns fresh objects.
+// By reference, no clone — nothing mutates a draft in place. Keep it that way.
 function pushUndoStack(
   stack: ResumeDraft[],
   draft: ResumeDraft,
@@ -123,10 +119,9 @@ export function createResumeEditorStore(config?: {
   const initialDraft = config?.initialDraft ?? storage.load();
 
   return createStore<ResumeEditorStoreState>()((set, get) => {
-    // Shared save path: persist the next draft, snapshot the previous one into
-    // history, and clear the redo stack.
-    // `bumpRevision` marks the commit as an external replacement, so an open
-    // section form re-seeds from it instead of keeping its own stale values.
+    // Persist, snapshot the previous draft, clear redo. `bumpRevision` marks the
+    // commit as an external replace, so an open form re-seeds from it (invariant 5).
+    // Throws if the draft fails validation — deliberately, see SAVE-FLOW.md.
     const commit = (
       updater: (draft: ResumeDraft) => Partial<ResumeDraft>,
       bumpRevision = false,
@@ -152,9 +147,8 @@ export function createResumeEditorStore(config?: {
       saveProfile: (profile) => commit(() => ({ profile })),
       savePdfPresentation: (pdfPresentation) =>
         commit(() => ({ pdfPresentation })),
-      // Deliberately not `commit`: analyzing a job description isn't a document
-      // edit, so it must not consume an undo slot — and `commit` clears the redo
-      // stack, which would silently kill a pending redo.
+      // Not `commit`: analyzing a job description isn't a document edit, so it
+      // must take no undo slot and must not clear redo. Pairs with `carryInsights`.
       saveInsights: (insights) => {
         const state = get();
         set({
@@ -181,10 +175,8 @@ export function createResumeEditorStore(config?: {
             visible,
           ),
         })),
-      // Runs on the store rather than the item form, so it lands on the undo
-      // stack (the old form-local version never did). It fires from the section
-      // form header, though — so it commits with a revision bump, or the open
-      // form would keep showing the pre-sort order while the preview re-sorts.
+      // Fires from the open form's own header, so it must bump the revision or
+      // the form keeps showing the pre-sort order. Callers flush first (invariant 6).
       autoSortSection: (sectionKey) =>
         commit((draft) => {
           const dateRange = collectionSectionConfigs[sectionKey].dateRange;

@@ -38,8 +38,18 @@ export class LocalDraftStorage {
   }
 
   save(draft: ResumeDraft): ResumeDraft {
-    // The persisted schema is lenient, so this never rejects real user input.
-    const validatedDraft = parseResumeDraft(draft);
+    // The persisted schema is lenient, so this rejects only structural breakage
+    // (a section emptied to zero items). Status first — the header claimed
+    // "Saved" while nothing was written — but it must still throw: callers mark
+    // the edit persisted only once this returns.
+    let validatedDraft: ResumeDraft;
+    try {
+      validatedDraft = parseResumeDraft(draft);
+    } catch (error) {
+      warn("Refusing to persist an invalid resume draft:", error);
+      this.setStatus("error");
+      throw error;
+    }
 
     if (typeof window === "undefined") {
       return validatedDraft;

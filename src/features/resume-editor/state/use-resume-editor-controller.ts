@@ -188,12 +188,20 @@ function usePdfImport(store: ResumeEditorStore) {
   };
 }
 
-function useDraftExport(draft: ResumeDraft) {
+function useDraftExport(store: ResumeEditorStore) {
   const isExportingPdfRef = useRef(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
 
+  // Invariant 6. Both halves matter: without the flush the file misses the last
+  // 500ms of typing, and without the re-read it misses it anyway — the flush is
+  // synchronous but React has not re-rendered, so a captured `draft` is stale.
+  function currentDraft(): ResumeDraft {
+    flushOpenForms();
+    return store.getState().draft;
+  }
+
   function handleExport() {
-    const serialized = JSON.stringify(draft, null, 2);
+    const serialized = JSON.stringify(currentDraft(), null, 2);
     const blob = new Blob([serialized], { type: "application/json" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
@@ -209,6 +217,7 @@ function useDraftExport(draft: ResumeDraft) {
       return;
     }
 
+    const draft = currentDraft();
     isExportingPdfRef.current = true;
     setIsExportingPdf(true);
     const loadingId = toast.add({
@@ -309,7 +318,7 @@ export function useResumeEditorController({
 
   const jsonImport = useJsonImport(store);
   const pdfImport = usePdfImport(store);
-  const draftExport = useDraftExport(draft);
+  const draftExport = useDraftExport(store);
   const undoRedo = useUndoRedo(store);
 
   // Stable passthrough identities (store is a stable ref) so consumers'
@@ -331,9 +340,8 @@ export function useResumeEditorController({
   );
   const autoSortSection = useCallback(
     (sectionKey: CollectionSectionKey) => {
-      // The sort button sits in the open section's header, so land whatever is
-      // still in the debounce first: the sort reads the stored items, and its
-      // revision bump re-seeds the form on top of the pending edit.
+      // Invariant 6: the sort reads the stored items and its revision bump
+      // re-seeds the form, so a pending edit would be ignored then discarded.
       flushOpenForms();
       store.getState().autoSortSection(sectionKey);
     },

@@ -111,6 +111,22 @@ describe("LocalDraftStorage", () => {
     setItem.mockRestore();
   });
 
+  it("reports an error status when the draft fails validation, and still throws", () => {
+    // Why: `save` marks the edit persisted only once it returns, so this has to
+    // keep throwing — but the header indicator used to stay on "saved" while
+    // nothing was written. A section emptied to zero items is the way in.
+    const draft = createDefaultResumeDraft();
+    draft.sections.workExperience.items = [];
+    storage.save(createDefaultResumeDraft());
+    expect(storage.getSaveStatus()).toBe("saved");
+    const persisted = window.localStorage.getItem(RESUME_STORAGE_KEY);
+
+    expect(() => storage.save(draft)).toThrow();
+
+    expect(storage.getSaveStatus()).toBe("error");
+    expect(window.localStorage.getItem(RESUME_STORAGE_KEY)).toBe(persisted);
+  });
+
   it("sanitizes imported rich text content", () => {
     const draft = createDefaultResumeDraft();
     draft.sections.summary.content =

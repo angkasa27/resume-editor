@@ -46,11 +46,9 @@ function isRealItem(item: unknown): boolean {
 }
 
 /**
- * Shared state and handlers for a collection section editor: the react-hook-form
- * field array, per-item collapse tracking, pending-delete index, list motion,
- * and save normalization. The surrounding surface owns persistence and layout.
- * Auto-sort lives on the store — it fires from the section list, where no form
- * is mounted.
+ * Shared state and handlers for a collection section editor: the field array,
+ * collapse tracking, pending-delete index, and save normalization. The
+ * surrounding surface owns persistence and layout.
  */
 export function useCollectionItemsForm(
   draft: ResumeDraft,
@@ -112,9 +110,8 @@ export function useCollectionItemsForm(
   function toSectionValue(values: CollectionItemsFormValues) {
     return {
       ...sectionValue,
-      // Keep only real items: a removed row stays mounted through its exit animation and its
-      // Controller fields write a partial back into the spliced-out index — normalizing that
-      // would resurrect it. Genuine items always carry an `id`; a ghost never does.
+      // Invariant 3: a removed row lives on through its exit animation and writes
+      // a partial back into the spliced-out index. Normalizing that resurrects it.
       items: values.items
         .filter(isRealItem)
         .map((item) => normalizeCollectionItem(item, config.createItem())),
