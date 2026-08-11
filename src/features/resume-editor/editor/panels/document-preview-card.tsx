@@ -29,8 +29,7 @@ type DocumentPreviewCardProps = {
 
 /**
  * A selectable card rendering a live, scaled-down preview of the user's own
- * resume under a given presentation. Shared by the Layout tab (per-layout
- * variants) and the Template gallery (per-preset variants).
+ * resume under one of the Template gallery's presets.
  */
 export const DocumentPreviewCard = memo(function DocumentPreviewCard({
   draft,

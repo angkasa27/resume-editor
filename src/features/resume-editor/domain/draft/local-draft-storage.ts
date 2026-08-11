@@ -7,7 +7,8 @@ import {
 import { parseResumeDraft } from "@/features/resume-editor/domain/schema";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
-export type SaveStatus = "idle" | "saving" | "saved" | "error";
+/** Saving is synchronous, so there is no in-flight state to report. */
+export type SaveStatus = "idle" | "saved" | "error";
 
 function warn(message: string, error: unknown) {
   console.warn(
@@ -75,8 +76,10 @@ export class LocalDraftStorage {
     try {
       return importResumeDraft(storedDraft);
     } catch (error) {
+      // Deliberately does not touch save status: this is a read failure, and
+      // flagging it would show "Save failed" in the top bar before the user
+      // has saved anything.
       warn("Failed to parse stored resume draft, using default:", error);
-      this.setStatus("error");
       return createDefaultResumeDraft();
     }
   }

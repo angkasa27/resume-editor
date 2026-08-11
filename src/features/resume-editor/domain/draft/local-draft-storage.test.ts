@@ -40,14 +40,17 @@ describe("LocalDraftStorage", () => {
     );
   });
 
-  it("falls back to the default draft and reports an error status when storage is malformed", () => {
+  // Why: a draft too old to parse is a read failure, not a write one. Reporting
+  // it as a save error puts "Save failed" in the top bar the moment the editor
+  // opens, before the user has typed anything.
+  it("falls back to the default draft without reporting a save error", () => {
     window.localStorage.setItem(RESUME_STORAGE_KEY, "{");
 
     const loaded = storage.load();
 
     expect(loaded.schemaVersion).toBe(3);
     expect(loaded.profile.fullName).toBeTruthy();
-    expect(storage.getSaveStatus()).toBe("error");
+    expect(storage.getSaveStatus()).toBe("idle");
   });
 
   it("exports and re-imports a draft as the same contract", () => {

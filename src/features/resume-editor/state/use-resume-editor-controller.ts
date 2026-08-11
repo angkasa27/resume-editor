@@ -27,10 +27,6 @@ import {
 
 type ResumeEditorStore = ReturnType<typeof createResumeEditorStore>;
 
-type UseResumeEditorControllerOptions = {
-  initialDraft?: ResumeDraft;
-};
-
 type ResumeEditorController = {
   jsonFileInputRef: RefObject<HTMLInputElement | null>;
   pdfFileInputRef: RefObject<HTMLInputElement | null>;
@@ -279,15 +275,11 @@ function useUndoRedo(store: ResumeEditorStore) {
   return { canUndo, canRedo, undo, redo };
 }
 
-export function useResumeEditorController({
-  initialDraft,
-}: UseResumeEditorControllerOptions = {}): ResumeEditorController {
+export function useResumeEditorController(): ResumeEditorController {
   // The store must share this instance — a second one would leave the status
   // subscription below watching an object that never saves.
   const [storage] = useState(() => new LocalDraftStorage());
-  const [store] = useState(() =>
-    createResumeEditorStore({ storage, initialDraft }),
-  );
+  const [store] = useState(() => createResumeEditorStore({ storage }));
 
   const subscribeSaveStatus = useCallback(
     (onChange: () => void) => storage.subscribeSaveStatus(() => onChange()),
