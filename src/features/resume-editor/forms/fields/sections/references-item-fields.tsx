@@ -18,7 +18,12 @@ export function ReferencesItemFields({
 
   return (
     <FieldGroup layout="grid">
-      <TextField form={form} name={`${prefix}.name`} label="Name" />
+      <TextField
+        form={form}
+        name={`${prefix}.name`}
+        label="Name"
+        className="col-span-full"
+      />
       <TextField
         form={form}
         name={`${prefix}.background`}
