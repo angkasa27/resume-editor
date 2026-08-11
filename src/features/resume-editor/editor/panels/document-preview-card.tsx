@@ -1,6 +1,6 @@
 "use client";
 
-import { memo, useMemo } from "react";
+import { memo, useCallback, useMemo } from "react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -8,6 +8,7 @@ import {
   SELECTION_RING_CLASS,
 } from "@/features/resume-editor/forms/fields/field-control";
 import { useElementWidth } from "@/hooks/use-element-width";
+import { useInViewOnce } from "@/hooks/use-in-view-once";
 import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
 import {
   getPaperWidthPx,
@@ -39,7 +40,15 @@ export const DocumentPreviewCard = memo(function DocumentPreviewCard({
   selected,
   onSelect,
 }: DocumentPreviewCardProps) {
-  const [ref, width] = useElementWidth<HTMLButtonElement>();
+  const [widthRef, width] = useElementWidth<HTMLButtonElement>();
+  const [inViewRef, seen] = useInViewOnce<HTMLButtonElement>();
+  const ref = useCallback(
+    (node: HTMLButtonElement | null) => {
+      widthRef.current = node;
+      inViewRef.current = node;
+    },
+    [widthRef, inViewRef],
+  );
   const paper = paperDimensions[presentation.paperSize];
   const paperWidthPx = getPaperWidthPx(presentation.paperSize);
   const scale = width > 0 ? width / paperWidthPx : 0;
@@ -57,7 +66,9 @@ export const DocumentPreviewCard = memo(function DocumentPreviewCard({
       aria-pressed={selected}
       onClick={onSelect}
       className={cn(
-        "relative w-full overflow-hidden rounded-md bg-white transition",
+        // content-visibility keeps scrolling cheap once every card has mounted;
+        // aspectRatio below sizes the card, so no contain-intrinsic-size needed.
+        "relative w-full overflow-hidden rounded-md bg-white transition [content-visibility:auto]",
         "hover:border-ring",
         FOCUS_RING_CLASS,
         "group border border-border",
@@ -71,7 +82,9 @@ export const DocumentPreviewCard = memo(function DocumentPreviewCard({
         className="pointer-events-none absolute left-0 top-0 origin-top-left text-left"
         style={{ width: paperWidthPx, transform: `scale(${scale})` }}
       >
-        {scale > 0 ? <ResumeDocument draft={cardDraft} mode="preview" /> : null}
+        {scale > 0 && seen ? (
+          <ResumeDocument draft={cardDraft} mode="preview" />
+        ) : null}
       </div>
       <div
         className={cn(
