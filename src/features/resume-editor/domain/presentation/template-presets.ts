@@ -416,6 +416,38 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
   },
 ];
 
+export const templateCategoryIds = ["ats", "professional", "creative"] as const;
+export type TemplateCategoryId = (typeof templateCategoryIds)[number];
+
+/**
+ * Categories hang off the layout, not the preset — all 28 presets share 12 layouts.
+ * A layout carries every category it honestly reads as, so the chips overlap.
+ * Keying on PdfLayoutId makes a new layout a type error here.
+ */
+const layoutCategories: Record<
+  PdfLayoutId,
+  ReadonlyArray<TemplateCategoryId>
+> = {
+  classic: ["ats"],
+  academic: ["ats"],
+  "modern-centered": ["ats", "professional"],
+  inset: ["ats", "professional"],
+  timeline: ["ats", "creative"],
+  sidebar: ["professional"],
+  banner: ["professional"],
+  split: ["professional"],
+  spotlight: ["professional"],
+  "bold-type": ["creative"],
+  studio: ["creative"],
+  aurora: ["creative"],
+};
+
+export function templateCategories(
+  preset: ResumeTemplatePreset,
+): ReadonlyArray<TemplateCategoryId> {
+  return layoutCategories[preset.layoutId];
+}
+
 /** "Bold Type Citrus" — the layout id titled, then the preset's own label. */
 export function templateLabel(preset: ResumeTemplatePreset): string {
   const layout = preset.layoutId

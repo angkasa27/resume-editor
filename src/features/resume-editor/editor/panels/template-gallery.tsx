@@ -13,21 +13,35 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
   applyTemplatePreset,
   applyTemplatePresetLayoutOnly,
   getActiveTemplatePresetId,
   resumeTemplatePresets,
+  templateCategories,
   templateLabel,
   type ResumeTemplatePreset,
+  type TemplateCategoryId,
 } from "@/features/resume-editor/domain/presentation/template-presets";
 import type { PdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
+import { cn } from "@/lib/utils";
+
+type FilterValue = TemplateCategoryId | "all";
+
+const FILTERS: ReadonlyArray<{ value: FilterValue; label: string }> = [
+  { value: "all", label: "All" },
+  { value: "ats", label: "ATS" },
+  { value: "professional", label: "Professional" },
+  { value: "creative", label: "Creative" },
+];
 
 type TemplateGalleryProps = {
   draft: ResumeDraft;
   presentation: PdfPresentation;
   onApply: (next: PdfPresentation) => void;
+  scrollPaddingClassName?: string;
 };
 
 /**
@@ -38,12 +52,24 @@ export function TemplateGallery({
   draft,
   presentation,
   onApply,
+  scrollPaddingClassName,
 }: TemplateGalleryProps) {
   // Snapshot the draft on mount: the gallery remounts when opened, and live
   // previews shouldn't re-render per keystroke.
   const [snapshot] = useState(draft);
   const activePresetId = getActiveTemplatePresetId(presentation);
   const [pending, setPending] = useState<ResumeTemplatePreset | null>(null);
+  const [filter, setFilter] = useState<FilterValue>("all");
+
+  const visiblePresets = useMemo(
+    () =>
+      filter === "all"
+        ? resumeTemplatePresets
+        : resumeTemplatePresets.filter((preset) =>
+            templateCategories(preset).includes(filter),
+          ),
+    [filter],
+  );
 
   // Stable handler so preset cards don't re-render on every apply.
   const presentationRef = useRef(presentation);
@@ -72,17 +98,54 @@ export function TemplateGallery({
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-4">
-        {resumeTemplatePresets.map((preset) => (
-          <TemplatePresetCard
-            key={preset.id}
-            draft={snapshot}
-            basePresentation={basePresentation}
-            preset={preset}
-            selected={preset.id === activePresetId}
-            onApply={handleSelect}
-          />
-        ))}
+      {/* Filter row sits outside the scroll box, so it holds without sticky. */}
+      <div className="flex h-full flex-col">
+        <div className="shrink-0 px-3 pt-3 pb-4">
+          {/* spacing detaches the group into chips — a joined 4-up segment reads as a second tab bar. */}
+          <ToggleGroup
+            multiple
+            spacing={2}
+            aria-label="Filter templates"
+            value={[filter]}
+            variant="outline"
+            size="sm"
+            className="flex flex-wrap"
+            onValueChange={(next) => {
+              const value = next.at(-1);
+              if (value) setFilter(value as FilterValue);
+            }}
+          >
+            {FILTERS.map((option) => (
+              <ToggleGroupItem
+                key={option.value}
+                value={option.value}
+                // Active reads as the rail's nav item, not the toggle's muted fill.
+                className="rounded-full aria-pressed:border-primary/20 aria-pressed:bg-primary/10 aria-pressed:text-primary px-4 h-7 text-xs"
+              >
+                {option.label}
+              </ToggleGroupItem>
+            ))}
+          </ToggleGroup>
+        </div>
+        <div
+          className={cn(
+            "min-h-0 flex-1 overflow-y-auto px-3 pb-3",
+            scrollPaddingClassName,
+          )}
+        >
+          <div className="grid grid-cols-2 gap-4">
+            {visiblePresets.map((preset) => (
+              <TemplatePresetCard
+                key={preset.id}
+                draft={snapshot}
+                basePresentation={basePresentation}
+                preset={preset}
+                selected={preset.id === activePresetId}
+                onApply={handleSelect}
+              />
+            ))}
+          </div>
+        </div>
       </div>
       <Dialog
         open={pending !== null}

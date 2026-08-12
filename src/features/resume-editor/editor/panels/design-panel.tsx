@@ -46,11 +46,16 @@ export function DesignPanel({
           </TabsTrigger>
         </TabsList>
       </div>
-      <TabsContent value="template" className={tabContentClassName}>
+      {/* The gallery scrolls internally so its filter row can sit still above the grid. */}
+      <TabsContent
+        value="template"
+        className="min-h-0 flex-1 overflow-hidden @container/form"
+      >
         <TemplateGallery
           draft={draft}
           presentation={presentation}
           onApply={onPresentationChange}
+          scrollPaddingClassName={scrollPaddingClassName}
         />
       </TabsContent>
       <TabsContent value="style" className={tabContentClassName}>

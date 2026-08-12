@@ -14,6 +14,8 @@ const toggleVariants = cva(
         ai: "rounded-full px-3 text-xs font-medium border border-input bg-transparent shadow-xs data-[state=on]:border-violet-500 data-[state=on]:bg-gradient-to-br data-[state=on]:from-violet-500 data-[state=on]:to-indigo-600 data-[state=on]:text-white aria-pressed:border-violet-500 aria-pressed:bg-gradient-to-br aria-pressed:from-violet-500 aria-pressed:to-indigo-600 aria-pressed:text-white",
       },
       size: {
+        // Mirrors the Button ramp's xs step.
+        xs: "h-6 min-w-6 px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
         default:
           "h-9 min-w-9 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
         sm: "h-8 min-w-8 px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5",

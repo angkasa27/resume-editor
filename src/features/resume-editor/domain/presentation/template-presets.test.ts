@@ -9,6 +9,8 @@ import {
   applyTemplatePresetLayoutOnly,
   getActiveTemplatePresetId,
   resumeTemplatePresets,
+  templateCategories,
+  templateCategoryIds,
 } from "@/features/resume-editor/domain/presentation/template-presets";
 import { pdfPresentationSchema } from "@/features/resume-editor/domain/schema/presentation-schemas";
 
@@ -27,6 +29,20 @@ describe("resumeTemplatePresets", () => {
     }
     // Every layout must be reachable from the template gallery.
     expect(layoutsUsed.size).toBe(pdfLayoutIds.length);
+  });
+
+  it("gives every preset a category, and every filter chip results", () => {
+    const seen = new Set<string>();
+    for (const preset of resumeTemplatePresets) {
+      const categories = templateCategories(preset);
+      expect(categories.length).toBeGreaterThan(0);
+      for (const category of categories) {
+        expect(templateCategoryIds).toContain(category);
+        seen.add(category);
+      }
+    }
+    // A chip that filters down to an empty grid is a dead control.
+    expect(seen.size).toBe(templateCategoryIds.length);
   });
 
   it("every applied preset yields a valid presentation", () => {
