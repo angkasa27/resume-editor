@@ -95,7 +95,7 @@
 
 /* Sharp-cornered square photo matches the editorial look. */
 .header :global(.header-photo) {
-  width: 72px;
+  width: 100px;
   aspect-ratio: var(--resume-photo-aspect, 1 / 1);
   height: auto;
   border-radius: var(--resume-photo-radius, 0);
@@ -120,9 +120,5 @@
   text-transform: uppercase;
   letter-spacing: 0.1em;
   font-weight: 700;
-  --resume-headline-color: color-mix(
-    in srgb,
-    var(--resume-text) 80%,
-    transparent
-  );
+  --resume-headline-color: var(--resume-text);
 }

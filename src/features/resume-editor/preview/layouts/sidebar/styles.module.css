@@ -120,10 +120,6 @@
 
 /* On the accent band, so it reads in on-accent like the name above it. */
 .header :global(.headline) {
-  --resume-headline-color: color-mix(
-    in srgb,
-    var(--resume-on-accent) 88%,
-    transparent
-  );
+  --resume-headline-color: var(--resume-on-accent);
   font-weight: 400;
 }

@@ -99,9 +99,5 @@
   text-transform: uppercase;
   letter-spacing: 0.08em;
   font-weight: 600;
-  --resume-headline-color: color-mix(
-    in srgb,
-    var(--resume-text) 75%,
-    transparent
-  );
+  --resume-headline-color: var(--resume-text);
 }

@@ -68,17 +68,15 @@
 
 /* Sized off the NAME, not the body ramp: it is the second line of the identity
    block, and a headline pegged to --resume-h3 reads as a caption next to a name
-   three times its size. Colour is derived from currentColor so it stays legible
-   on a coloured band, where a fixed grey turns to mud. Each layout tunes both —
-   see the per-layout modules. */
+   three times its size. It inherits the surrounding text colour at full strength:
+   a title set lighter than the body it introduces reads as an afterthought, and
+   on a coloured band a softened grey turns to mud. Each layout tunes it — see
+   the per-layout modules. */
 :where(.root) :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.52);
   font-weight: 500;
   line-height: 1.25;
-  color: var(
-    --resume-headline-color,
-    color-mix(in srgb, currentColor 85%, transparent)
-  );
+  color: var(--resume-headline-color, currentColor);
   margin: 0;
 }
 
