@@ -15,7 +15,7 @@ export const FIELD_CONTROL_CLASS = [
 export const FOCUS_RING_CLASS =
   "outline-none focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/40";
 
-/** Colour stays at the call site: `ring-primary` for cards, `ring-foreground/60` over swatches. */
+/** Colour stays at the call site, and it is `ring-primary` everywhere — cards and swatches alike. */
 export const SELECTION_RING_CLASS =
   // eslint-disable-next-line no-restricted-syntax -- the one definition the rule points at
   "aria-pressed:ring-2 aria-pressed:ring-offset-2 aria-pressed:ring-offset-background";

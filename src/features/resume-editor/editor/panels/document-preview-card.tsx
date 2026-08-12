@@ -1,6 +1,7 @@
 "use client";
 
 import { memo, useCallback, useMemo } from "react";
+import { CheckIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import {
@@ -88,6 +89,15 @@ export const DocumentPreviewCard = memo(function DocumentPreviewCard({
         {scale > 0 && seen ? (
           <ResumeDocument draft={cardDraft} mode="preview" />
         ) : null}
+      </div>
+      <div
+        aria-hidden
+        className={cn(
+          "absolute top-2 right-2 grid size-5 place-items-center rounded-full bg-primary text-primary-foreground opacity-0 transition-opacity",
+          "group-aria-pressed:opacity-100",
+        )}
+      >
+        <CheckIcon className="size-3" />
       </div>
       <div
         className={cn(

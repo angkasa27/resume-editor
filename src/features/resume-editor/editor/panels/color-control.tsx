@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import { HexColorPicker } from "react-colorful";
-import { PaletteIcon } from "lucide-react";
+import { CheckIcon, PaletteIcon } from "lucide-react";
 
 import {
   Popover,
@@ -24,6 +24,7 @@ import {
   FOCUS_RING_CLASS,
   SELECTION_RING_CLASS,
 } from "@/features/resume-editor/forms/fields/field-control";
+import { readableTextOn } from "@/features/resume-editor/domain/presentation/color-utils";
 
 const ACCENT_SWATCHES: ReadonlyArray<{ name: string; hex: string }> = [
   { name: "Slate", hex: "#1f2937" },
@@ -77,13 +78,20 @@ function ColorSwatchButton({
       aria-pressed={isActive}
       onClick={onSelect}
       className={cn(
-        "size-7 rounded-md border border-black/10 transition-transform hover:scale-110 active:scale-105",
+        "grid size-7 place-items-center rounded-md border border-black/10 transition-transform hover:scale-105",
         FOCUS_RING_CLASS,
         SELECTION_RING_CLASS,
-        "aria-pressed:ring-foreground/60",
+        "aria-pressed:ring-primary",
       )}
-      style={{ backgroundColor: swatch.hex }}
-    />
+      style={
+        {
+          backgroundColor: swatch.hex,
+          color: readableTextOn(swatch.hex),
+        } as CSSProperties
+      }
+    >
+      {isActive ? <CheckIcon className="size-3.5" /> : null}
+    </button>
   );
 }
 
@@ -125,10 +133,10 @@ export function ColorControl({
             aria-pressed={allowAuto.active}
             onClick={allowAuto.onSelect}
             className={cn(
-              "size-7 rounded-md border border-black/10 bg-muted text-xs font-semibold text-muted-foreground transition-transform hover:scale-110 active:scale-105",
+              "size-7 rounded-md border border-black/10 bg-muted text-xs font-semibold text-muted-foreground transition-transform hover:scale-105",
               FOCUS_RING_CLASS,
               SELECTION_RING_CLASS,
-              "aria-pressed:ring-foreground/60",
+              "aria-pressed:ring-primary",
             )}
           >
             A
@@ -157,17 +165,22 @@ export function ColorControl({
                 aria-label="Custom color"
                 aria-pressed={isCustomColorActive}
                 className={cn(
-                  "relative size-7 rounded-md transition-transform hover:scale-110 active:scale-105",
+                  "relative grid size-7 place-items-center rounded-md transition-transform hover:scale-105",
                   FOCUS_RING_CLASS,
                   SELECTION_RING_CLASS,
-                  "aria-pressed:ring-foreground/60",
+                  "aria-pressed:ring-primary",
                 )}
-                style={{
-                  background: matchedSwatch
-                    ? "conic-gradient(from 0deg, #ef4444, #eab308, #22c55e, #06b6d4, #6366f1, #ec4899, #ef4444)"
-                    : value,
-                }}
-              />
+                style={
+                  {
+                    background: matchedSwatch
+                      ? "conic-gradient(from 0deg, #ef4444, #eab308, #22c55e, #06b6d4, #6366f1, #ec4899, #ef4444)"
+                      : value,
+                    color: readableTextOn(value),
+                  } as CSSProperties
+                }
+              >
+                {isCustomColorActive ? <CheckIcon className="size-3.5" /> : null}
+              </button>
             }
           />
           <PopoverContent

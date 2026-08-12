@@ -109,7 +109,7 @@ This replaces the old three-role float/stacked/none recipe (`FloatingField` + `f
 | | Ring | Offset | Colour |
 |---|---|---|---|
 | **Focus** | `ring-3` | **none** | `focus-visible:border-ring` + `focus-visible:ring-ring/40` |
-| **Selection** | `ring-2` | `ring-offset-2 ring-offset-background` | opaque `ring-primary`, or `ring-foreground/60` over arbitrary swatch fills |
+| **Selection** | `ring-2` | `ring-offset-2 ring-offset-background` | opaque `ring-primary`, including over arbitrary swatch fills |
 
 Focus is transient and soft: `--ring` is a **light primary** (`--color-ring: var(--ring)`, retinted per theme in `globals.css`), a blue halo bleeding off the border rather than a second outline. It is never offset — in a dense form an offset ring collides with the neighbouring control. `ring-[3px]` ≡ `ring-3`; don't reintroduce the arbitrary spelling, and the halo is `/40` (not `/10`, not `/50`). The string lives in `FOCUS_RING_CLASS` (`field-control.ts`); feature code spreads it, `ui/*` inline the identical string by shadcn convention (colour is token-driven, so a re-tint is one edit). Semantic states recolour but keep the geometry: destructive `ring-destructive/20`, ai `ring-violet-400/40`, every `aria-invalid:ring-destructive/*`.
 
