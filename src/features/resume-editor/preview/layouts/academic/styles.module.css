@@ -59,11 +59,13 @@
 }
 
 /* Header — name centered, contact in small caps, narrow gutter. */
+/* The photo carries its own margin-bottom, so this column can step by the
+   identity rhythm without the photo crowding the name. */
 .header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--resume-gap-item);
+  gap: var(--resume-gap-header);
   --resume-name-color: var(--resume-text);
   text-align: center;
   padding-bottom: var(--resume-gap-section);

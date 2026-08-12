@@ -42,7 +42,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: var(--resume-gap-item);
+  gap: var(--resume-gap-header);
 }
 
 /* Traditional and unadorned: a plain subtitle at half the name. */

@@ -139,7 +139,7 @@
   flex-direction: column;
   /* Name+title pair tightly inside .name-block; the contacts below them are a
      separate thing and need the full step, not the inner gap. */
-  gap: var(--resume-gap-item);
+  gap: var(--resume-gap-header);
 }
 
 /* The band is pale by design, so the name takes the text colour — the accent
