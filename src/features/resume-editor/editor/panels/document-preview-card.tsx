@@ -79,7 +79,10 @@ export const DocumentPreviewCard = memo(function DocumentPreviewCard({
     >
       <div
         aria-hidden
-        className="pointer-events-none absolute left-0 top-0 origin-top-left text-left"
+        className={cn(
+          "pointer-events-none absolute top-0 left-0 origin-top-left text-left transition-opacity duration-300",
+          scale > 0 && seen ? "opacity-100" : "opacity-0",
+        )}
         style={{ width: paperWidthPx, transform: `scale(${scale})` }}
       >
         {scale > 0 && seen ? (
