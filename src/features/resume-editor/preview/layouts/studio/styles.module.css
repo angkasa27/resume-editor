@@ -126,3 +126,10 @@
 .header :global(.contact-icon) {
   color: var(--resume-accent);
 }
+
+/* Sentence case like the section headings, in the accent the badges and chips
+   already carry. */
+.header :global(.headline) {
+  --resume-headline-color: var(--resume-accent);
+  font-weight: 600;
+}

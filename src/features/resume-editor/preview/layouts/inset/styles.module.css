@@ -92,3 +92,16 @@
   flex-direction: column;
   gap: var(--resume-gap-item);
 }
+
+/* Tracked like the label gutter below it, at subtitle size. */
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.4);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  --resume-headline-color: color-mix(
+    in srgb,
+    var(--resume-text) 75%,
+    transparent
+  );
+}

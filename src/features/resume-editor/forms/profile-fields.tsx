@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { Controller, type FieldError as RhfFieldError } from "react-hook-form";
 import {
+  BriefcaseBusinessIcon,
   ImageUpIcon,
   Link,
   Mail,
@@ -66,7 +67,7 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
           className="col-span-full"
         />
 
-        <Field data-invalid={invalid("fullName")}>
+        <Field data-invalid={invalid("fullName")} className="col-span-full">
           <FieldLabel htmlFor={`${idPrefix}-full-name`} className="sr-only">
             <FieldLabelText label="Full name" />
           </FieldLabel>
@@ -79,6 +80,28 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
               {...register("fullName")}
             />
             <FieldError errors={[error("fullName")]} />
+          </FieldContent>
+        </Field>
+
+        {/* Optional: blank means every layout header omits the line. */}
+        <Field data-invalid={invalid("headline")} className="col-span-full">
+          <FieldLabel htmlFor={`${idPrefix}-headline`} className="sr-only">
+            <FieldLabelText label="Job title" />
+          </FieldLabel>
+          <FieldContent>
+            <InputGroup>
+              <InputGroupAddon>
+                <BriefcaseBusinessIcon />
+              </InputGroupAddon>
+              <InputGroupInput
+                id={`${idPrefix}-headline`}
+                autoComplete="organization-title"
+                placeholder="Job title"
+                aria-invalid={invalid("headline")}
+                {...register("headline")}
+              />
+            </InputGroup>
+            <FieldError errors={[error("headline")]} />
           </FieldContent>
         </Field>
 
@@ -128,7 +151,7 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
           </FieldContent>
         </Field>
 
-        <Field data-invalid={invalid("email")}>
+        <Field data-invalid={invalid("email")} className="col-span-full">
           <FieldLabel htmlFor={`${idPrefix}-email`} className="sr-only">
             <FieldLabelText label="Email address" />
           </FieldLabel>
@@ -374,7 +397,7 @@ function PhotoField({
             </div>
             <p className="text-xs text-muted-foreground">
               Drag &amp; drop or click to upload. PNG, JPG, or WEBP up to
-              8&nbsp;MB — crop and zoom after choosing.
+              8&nbsp;MB. Crop and zoom after choosing.
             </p>
           </div>
         </div>

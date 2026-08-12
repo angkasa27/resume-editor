@@ -7,6 +7,7 @@ describe("buildImportedResumeDraft", () => {
     const result = buildImportedResumeDraft({
       profile: {
         fullName: "Jane Doe",
+        headline: "Frontend Engineer",
         location: "Jakarta, Indonesia",
         phone: "+62 812 1234 5678",
         email: "jane@example.com",
@@ -41,6 +42,8 @@ describe("buildImportedResumeDraft", () => {
 
     expect(result.warnings).toEqual([]);
     expect(result.draft.profile.fullName).toBe("Jane Doe");
+    // Extraction used to drop the title line under the name entirely.
+    expect(result.draft.profile.headline).toBe("Frontend Engineer");
     expect(result.draft.profile.photo).toBe("");
     expect(result.draft.profile.extraLinks).toHaveLength(2);
     expect(result.draft.sections.summary.visible).toBe(true);
@@ -56,6 +59,7 @@ describe("buildImportedResumeDraft", () => {
     const result = buildImportedResumeDraft({
       profile: {
         fullName: "Jane Doe",
+        headline: "",
         location: "",
         phone: "",
         email: "",

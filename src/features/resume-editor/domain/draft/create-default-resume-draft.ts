@@ -134,6 +134,7 @@ export function createDefaultResumeDraft(): ResumeDraft {
     pdfPresentation: createDefaultPdfPresentation(),
     profile: {
       fullName: "Dimas Angkasa",
+      headline: "Software Engineer",
       location: "Jakarta, Indonesia",
       phone: "+62 812-3344-5566",
       email: "dimas.angkasa@proton.me",

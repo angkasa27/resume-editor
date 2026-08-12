@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import {
+  optionalText,
   requiredText,
   textField,
 } from "@/features/resume-editor/domain/schema/shared";
@@ -18,6 +19,10 @@ const extraLinkSchema = z
 
 export const profileSchema = z.object({
   fullName: textField(),
+  // The line under the name ("Front-End Developer · Graphic Designer"). Optional
+  // so drafts written before it existed still parse and schemaVersion stays at 3;
+  // blank means every layout header simply omits it.
+  headline: optionalText(),
   location: textField(),
   phone: textField(),
   email: textField(),

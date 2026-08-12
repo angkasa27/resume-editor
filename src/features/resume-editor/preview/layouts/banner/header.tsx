@@ -9,9 +9,14 @@ export function BannerHeader({ context }: LayoutHeaderProps) {
     <header className={`${styles.header} layout-header`} data-layout="banner">
       <div className="banner-band">
         <div className="header-body">
-          <h1 className="name" data-testid="resume-preview-full-name">
-            {draft.profile.fullName}
-          </h1>
+          <div className="name-block">
+            <h1 className="name" data-testid="resume-preview-full-name">
+              {draft.profile.fullName}
+            </h1>
+            {draft.profile.headline ? (
+              <p className="headline">{draft.profile.headline}</p>
+            ) : null}
+          </div>
           <PreviewContactLine context={context} />
         </div>
         {draft.profile.photo ? (

@@ -201,3 +201,15 @@
 .header :global(.contact-icon) {
   color: var(--resume-text);
 }
+
+/* As in the reference: a roomy plain subtitle under the heavy name, with no
+   tracking or caps competing with it. */
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.6);
+  font-weight: 400;
+  --resume-headline-color: color-mix(
+    in srgb,
+    var(--resume-text) 72%,
+    transparent
+  );
+}

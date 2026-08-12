@@ -21,11 +21,13 @@ Rules:
 - Normalize links so they are absolute URLs when possible.
 - Put summary content into the "summary" array as short paragraphs.
 - Put role/project/school detail bullets into "highlights".
+- "headline" is the title line under the name (e.g. "Front-End Developer"). Leave it blank rather than deriving one from the most recent job.
 
 Expected JSON shape:
 {
   "profile": {
     "fullName": "",
+    "headline": "",
     "location": "",
     "phone": "",
     "email": "",

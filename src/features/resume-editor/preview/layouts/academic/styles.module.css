@@ -93,3 +93,14 @@
   font-variant: small-caps;
   letter-spacing: 0.04em;
 }
+
+/* Italic, the convention this layout uses for every secondary line. */
+.header :global(.headline) {
+  font-style: italic;
+  font-weight: 400;
+  --resume-headline-color: color-mix(
+    in srgb,
+    var(--resume-text) 88%,
+    transparent
+  );
+}

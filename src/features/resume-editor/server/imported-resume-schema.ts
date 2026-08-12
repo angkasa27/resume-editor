@@ -13,6 +13,7 @@ export const importedResumeSchema = z
     profile: z
       .object({
         fullName: importedText,
+        headline: importedText,
         location: importedText,
         phone: importedText,
         email: importedText,
@@ -21,6 +22,7 @@ export const importedResumeSchema = z
       .optional()
       .default({
         fullName: "",
+        headline: "",
         location: "",
         phone: "",
         email: "",

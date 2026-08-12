@@ -112,3 +112,17 @@
 .header :global(.contact-line) {
   letter-spacing: 0.02em;
 }
+
+/* The name runs at 1.5x h1 here, so the subtitle needs real weight to hold the
+   line under it — tracked caps, not a whisper. */
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.44);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  --resume-headline-color: color-mix(
+    in srgb,
+    var(--resume-text) 80%,
+    transparent
+  );
+}

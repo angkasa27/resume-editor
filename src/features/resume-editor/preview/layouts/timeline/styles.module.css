@@ -97,3 +97,9 @@
   flex-direction: column;
   gap: var(--resume-gap-item);
 }
+
+/* The accent belongs to the rule under this header and to the timeline dots,
+   so the subtitle stays neutral. */
+.header :global(.headline) {
+  font-weight: 400;
+}

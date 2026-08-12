@@ -194,6 +194,7 @@ export function buildImportedResumeDraft(
     updatedAt: new Date().toISOString(),
     profile: {
       fullName: cleanText(importedResume.profile.fullName),
+      headline: cleanText(importedResume.profile.headline),
       location: cleanText(importedResume.profile.location),
       phone: cleanText(importedResume.profile.phone),
       email: cleanText(importedResume.profile.email),

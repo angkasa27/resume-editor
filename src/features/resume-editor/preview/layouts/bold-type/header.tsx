@@ -13,9 +13,14 @@ export function BoldTypeHeader({ context }: LayoutHeaderProps) {
       {/* Name and contacts share the column beside the photo. */}
       <div className="header-top">
         <div className="header-body">
-          <h1 className="name" data-testid="resume-preview-full-name">
-            {draft.profile.fullName}
-          </h1>
+          <div className="name-block">
+            <h1 className="name" data-testid="resume-preview-full-name">
+              {draft.profile.fullName}
+            </h1>
+            {draft.profile.headline ? (
+              <p className="headline">{draft.profile.headline}</p>
+            ) : null}
+          </div>
           <PreviewContactLine context={context} />
         </div>
         {draft.profile.photo ? (

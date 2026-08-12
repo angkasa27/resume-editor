@@ -32,9 +32,14 @@ export function createPhotoHeader({
           </div>
         ) : null}
         <div className="header-body">
-          <h1 className="name" data-testid="resume-preview-full-name">
-            {draft.profile.fullName}
-          </h1>
+          <div className="name-block">
+            <h1 className="name" data-testid="resume-preview-full-name">
+              {draft.profile.fullName}
+            </h1>
+            {draft.profile.headline ? (
+              <p className="headline">{draft.profile.headline}</p>
+            ) : null}
+          </div>
           <PreviewContactLine context={context} presentation={contact} />
         </div>
       </header>

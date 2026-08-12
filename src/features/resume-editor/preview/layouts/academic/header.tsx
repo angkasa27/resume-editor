@@ -16,9 +16,14 @@ export function AcademicHeader({ context }: LayoutHeaderProps) {
           <img src={draft.profile.photo} alt={draft.profile.fullName} />
         </div>
       ) : null}
-      <h1 className="name" data-testid="resume-preview-full-name">
-        {draft.profile.fullName}
-      </h1>
+      <div className="name-block">
+        <h1 className="name" data-testid="resume-preview-full-name">
+          {draft.profile.fullName}
+        </h1>
+        {draft.profile.headline ? (
+          <p className="headline">{draft.profile.headline}</p>
+        ) : null}
+      </div>
       {/* No icons: contacts render in small-caps here, where a glyph looks
           alien and the academic convention is plain text. Shortening the links
           is what this layout actually needed — a small-caps raw URL read as
