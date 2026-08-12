@@ -93,7 +93,7 @@
   gap: var(--resume-gap-header);
 }
 
-/* Tracked like the label gutter below it, at subtitle size. */
+/* Tracked like the label gutter below it. */
 .header :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.4);
   text-transform: uppercase;

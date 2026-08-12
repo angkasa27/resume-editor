@@ -59,7 +59,6 @@
   object-fit: cover;
 }
 
-/* Inside the band: on-accent, never the muted grey used on paper. */
 .header :global(.headline) {
   --resume-headline-color: var(--resume-on-accent);
   font-weight: 400;

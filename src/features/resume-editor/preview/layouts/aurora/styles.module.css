@@ -137,8 +137,6 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  /* Name+title pair tightly inside .name-block; the contacts below them are a
-     separate thing and need the full step, not the inner gap. */
   gap: var(--resume-gap-header);
 }
 
@@ -204,8 +202,6 @@
   color: var(--resume-text);
 }
 
-/* As in the reference: a roomy plain subtitle under the heavy name, with no
-   tracking or caps competing with it. */
 .header :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.6);
   font-weight: 400;

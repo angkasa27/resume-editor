@@ -45,7 +45,6 @@
   gap: var(--resume-gap-header);
 }
 
-/* Traditional and unadorned: a plain subtitle at half the name. */
 .header :global(.headline) {
   font-weight: 400;
 }

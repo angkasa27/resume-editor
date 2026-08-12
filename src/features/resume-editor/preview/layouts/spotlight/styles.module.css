@@ -116,8 +116,7 @@
   letter-spacing: -0.01em;
 }
 
-/* Centred in the rail under the name. The rail is narrow, so this runs a step
-   smaller than elsewhere and tracks like the rail's headings. */
+/* A step smaller: the rail is narrow. */
 .header :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.36);
   text-transform: uppercase;

@@ -112,8 +112,6 @@
   -webkit-print-color-adjust: exact;
 }
 
-/* Centred under the name's rule. Tracked like this layout's headings, but kept
-   large enough to read as a subtitle rather than a kicker label. */
 .header :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.42);
   text-transform: uppercase;

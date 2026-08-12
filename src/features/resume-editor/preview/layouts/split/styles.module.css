@@ -108,8 +108,6 @@
   --resume-name-color: var(--resume-accent);
 }
 
-/* Under the accent name in the main column; plain, so the accent keeps its
-   one job here. */
 .header :global(.headline) {
   font-weight: 400;
 }

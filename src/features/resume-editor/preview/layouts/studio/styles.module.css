@@ -99,8 +99,6 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  /* Name+title pair tightly inside .name-block; the contacts below them are a
-     separate thing and need the full step, not the inner gap. */
   gap: var(--resume-gap-header);
 }
 
@@ -129,8 +127,6 @@
   color: var(--resume-accent);
 }
 
-/* Sentence case like the section headings, in the accent the badges and chips
-   already carry. */
 .header :global(.headline) {
   --resume-headline-color: var(--resume-accent);
   font-weight: 600;

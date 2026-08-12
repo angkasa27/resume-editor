@@ -83,7 +83,6 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
           </FieldContent>
         </Field>
 
-        {/* Optional: blank means every layout header omits the line. */}
         <Field data-invalid={invalid("headline")} className="col-span-full">
           <FieldLabel htmlFor={`${idPrefix}-headline`} className="sr-only">
             <FieldLabelText label="Job title" />

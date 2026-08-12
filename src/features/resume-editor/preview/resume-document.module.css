@@ -1,7 +1,6 @@
 .root {
-  /* The identity block's own rhythm: name → title, details → links, and the
-     block → contacts all step by this. Deliberately not --resume-gap-item, which
-     is the spacing between separate items in a section. */
+  /* Lines within the identity block. Not --resume-gap-item, which is the step
+     between separate items in a section. */
   --resume-gap-header: 3px;
   font-family: var(--resume-font);
   color: var(--resume-text);
@@ -61,8 +60,6 @@
   margin: 0;
 }
 
-/* Name + job title are one typographic unit, so they pair tightly here rather
-   than inheriting whatever gap the surrounding header uses between its parts. */
 :where(.root) :global(.name-block) {
   display: flex;
   flex-direction: column;
@@ -70,12 +67,8 @@
   min-width: 0;
 }
 
-/* Sized off the NAME, not the body ramp: it is the second line of the identity
-   block, and a headline pegged to --resume-h3 reads as a caption next to a name
-   three times its size. It inherits the surrounding text colour at full strength:
-   a title set lighter than the body it introduces reads as an afterthought, and
-   on a coloured band a softened grey turns to mud. Each layout tunes it — see
-   the per-layout modules. */
+/* Sized off the name, not the body ramp — at --resume-h3 it reads as a caption
+   beside it. Full-strength colour: a softened grey turns to mud on a band. */
 :where(.root) :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.52);
   font-weight: 500;

@@ -113,8 +113,7 @@
   letter-spacing: 0.02em;
 }
 
-/* The name runs at 1.5x h1 here, so the subtitle needs real weight to hold the
-   line under it — tracked caps, not a whisper. */
+/* Tracked caps: the name runs at 1.5x h1 and would swallow anything lighter. */
 .header :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.44);
   text-transform: uppercase;
