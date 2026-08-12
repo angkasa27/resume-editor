@@ -100,7 +100,7 @@ export function TemplateGallery({
     <>
       {/* Filter row sits outside the scroll box, so it holds without sticky. */}
       <div className="flex h-full flex-col">
-        <div className="shrink-0 px-3 pt-3 pb-4">
+        <div className="shrink-0 px-3 pt-3 pb-2">
           {/* spacing detaches the group into chips — a joined 4-up segment reads as a second tab bar. */}
           <ToggleGroup
             multiple
@@ -129,7 +129,7 @@ export function TemplateGallery({
         </div>
         <div
           className={cn(
-            "min-h-0 flex-1 overflow-y-auto px-3 pb-3",
+            "min-h-0 flex-1 overflow-y-auto p-3 pt-2",
             scrollPaddingClassName,
           )}
         >
