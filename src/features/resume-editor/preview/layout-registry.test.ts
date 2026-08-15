@@ -7,38 +7,40 @@ import {
 } from "@/features/resume-editor/preview/layout-registry";
 
 describe("preview layout registry", () => {
-  it("exposes all twelve built-in layouts", () => {
+  it("exposes all thirteen built-in layouts", () => {
     const ids = previewLayoutDefinitions.map((layout) => layout.id);
     expect(ids).toEqual([
       "classic",
-      "sidebar",
       "modern-centered",
       "timeline",
       "academic",
       "inset",
-      "banner",
       "split",
       "bold-type",
       "studio",
-      "spotlight",
       "aurora",
+      "ledger",
+      "dossier",
+      "crest",
+      "masthead",
     ]);
   });
 
   it("resolves layouts by id", () => {
     for (const id of [
       "classic",
-      "sidebar",
       "modern-centered",
       "timeline",
       "academic",
       "inset",
-      "banner",
       "split",
       "bold-type",
       "studio",
-      "spotlight",
       "aurora",
+      "ledger",
+      "dossier",
+      "crest",
+      "masthead",
     ] as const) {
       expect(getLayout(id).id).toBe(id);
     }
@@ -49,7 +51,7 @@ describe("preview layout registry", () => {
   });
 
   it("partitions sections into side and main columns in the sidebar and split layouts", () => {
-    for (const id of ["sidebar", "split"] as const) {
+    for (const id of ["split", "ledger", "dossier"] as const) {
       const layout = getLayout(id);
       expect(layout.getColumn?.("skills")).toBe("side");
       expect(layout.getColumn?.("languages")).toBe("side");
@@ -75,8 +77,8 @@ describe("preview layout registry", () => {
     expect(shouldHideSummaryHeading("split")).toBe(true);
     expect(shouldHideSummaryHeading("bold-type")).toBe(false);
     expect(shouldHideSummaryHeading("timeline")).toBe(false);
-    expect(shouldHideSummaryHeading("banner")).toBe(false);
-    expect(shouldHideSummaryHeading("sidebar")).toBe(false);
+    expect(shouldHideSummaryHeading("ledger")).toBe(false);
+    expect(shouldHideSummaryHeading("masthead")).toBe(false);
   });
 
   it("single-column layouts have no column partitioning", () => {
@@ -85,9 +87,10 @@ describe("preview layout registry", () => {
     expect(getLayout("timeline").getColumn).toBeUndefined();
     expect(getLayout("academic").getColumn).toBeUndefined();
     expect(getLayout("inset").getColumn).toBeUndefined();
-    expect(getLayout("banner").getColumn).toBeUndefined();
     expect(getLayout("bold-type").getColumn).toBeUndefined();
     expect(getLayout("studio").getColumn).toBeUndefined();
     expect(getLayout("aurora").getColumn).toBeUndefined();
+    expect(getLayout("crest").getColumn).toBeUndefined();
+    expect(getLayout("masthead").getColumn).toBeUndefined();
   });
 });

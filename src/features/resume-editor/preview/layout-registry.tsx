@@ -4,14 +4,15 @@ import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/p
 
 import { academicLayout } from "./layouts/academic/layout";
 import { auroraLayout } from "./layouts/aurora/layout";
-import { bannerLayout } from "./layouts/banner/layout";
 import { boldTypeLayout } from "./layouts/bold-type/layout";
 import { classicLayout } from "./layouts/classic/layout";
+import { crestLayout } from "./layouts/crest/layout";
+import { dossierLayout } from "./layouts/dossier/layout";
 import { insetLayout } from "./layouts/inset/layout";
+import { ledgerLayout } from "./layouts/ledger/layout";
+import { mastheadLayout } from "./layouts/masthead/layout";
 import { modernCenteredLayout } from "./layouts/modern-centered/layout";
-import { sidebarLayout } from "./layouts/sidebar/layout";
 import { splitLayout } from "./layouts/split/layout";
-import { spotlightLayout } from "./layouts/spotlight/layout";
 import { studioLayout } from "./layouts/studio/layout";
 import { timelineLayout } from "./layouts/timeline/layout";
 import type { PreviewLayoutDefinition } from "./layout-types";
@@ -19,17 +20,18 @@ import type { PreviewRenderContext } from "./types";
 
 export const previewLayoutDefinitions = [
   classicLayout,
-  sidebarLayout,
   modernCenteredLayout,
   timelineLayout,
   academicLayout,
   insetLayout,
-  bannerLayout,
   splitLayout,
   boldTypeLayout,
   studioLayout,
-  spotlightLayout,
   auroraLayout,
+  ledgerLayout,
+  dossierLayout,
+  crestLayout,
+  mastheadLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain

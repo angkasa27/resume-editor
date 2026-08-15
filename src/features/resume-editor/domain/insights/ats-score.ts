@@ -261,7 +261,6 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   classic: { status: "pass" },
   timeline: { status: "pass" },
   inset: { status: "pass" },
-  banner: { status: "pass" },
   "bold-type": { status: "pass" },
   studio: { status: "pass" },
   aurora: { status: "pass" },
@@ -275,17 +274,19 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
     message:
       "Academic layouts usually parse fine. Classic is safer if you expect a strict parser.",
   },
-  sidebar: {
-    status: "fail",
-    message:
-      "Parsers read two columns straight across, so your sidebar ends up mixed into your experience. Switch to a single-column layout.",
-  },
   split: {
     status: "fail",
     message:
       "Parsers read two columns straight across, so both sides end up jumbled into one block. Switch to a single-column layout.",
   },
-  spotlight: {
+  crest: { status: "pass" },
+  masthead: { status: "pass" },
+  ledger: {
+    status: "fail",
+    message:
+      "Parsers read two columns straight across, so your details column ends up mixed into your experience. Switch to a single-column layout.",
+  },
+  dossier: {
     status: "fail",
     message:
       "Parsers read two columns straight across, so the rail ends up mixed into your experience. Switch to a single-column layout.",

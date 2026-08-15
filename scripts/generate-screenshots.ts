@@ -173,8 +173,28 @@ function shapeAsA4Page() {
   el.style.overflow = "hidden";
 }
 
+/**
+ * `SCREENSHOT_ONLY=ledger-ink,crest-charcoal` re-shoots just those presets. Adding
+ * one template otherwise rewrites all ~36 webps, which buries the one that changed
+ * in a binary diff nobody can review.
+ */
+function selectedPersonas() {
+  const only = process.env.SCREENSHOT_ONLY?.split(",")
+    .map((id) => id.trim())
+    .filter(Boolean);
+  if (!only?.length) return PERSONAS;
+  const selected = PERSONAS.filter((p) => only.includes(p.presetId));
+  const unknown = only.filter(
+    (id) => !PERSONAS.some((p) => p.presetId === id),
+  );
+  if (unknown.length > 0) {
+    throw new Error(`SCREENSHOT_ONLY names no such preset: ${unknown.join(", ")}`);
+  }
+  return selected;
+}
+
 async function captureTemplates(browser: Browser) {
-  for (const persona of PERSONAS) {
+  for (const persona of selectedPersonas()) {
     const serialized = exportResumeDraft(buildDraft(persona));
 
     const page = await browser.newPage();
@@ -252,7 +272,8 @@ async function main() {
   const browser = await puppeteer.launch({ headless: true });
   try {
     await captureTemplates(browser);
-    await captureBuilder(browser);
+    // A targeted re-shoot means "these templates changed", not "the editor did".
+    if (!process.env.SCREENSHOT_ONLY) await captureBuilder(browser);
   } finally {
     await browser.close();
   }

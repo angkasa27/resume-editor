@@ -181,120 +181,6 @@ export const PERSONAS: Persona[] = [
     },
   },
   {
-    layoutId: "sidebar",
-    presetId: "sidebar-slate",
-    photo: "https://i.pravatar.cc/320?img=12",
-    fullName: "Ryan O'Brien",
-    location: "Dublin, Ireland",
-    phone: "+353 85 123 4567",
-    email: "ryan.obrien@proton.me",
-    links: [
-      "https://www.linkedin.com/in/ryanobrien",
-      "https://github.com/ryanob",
-    ],
-    summary:
-      "<p>Frontend engineer with 6+ years building performant, accessible web products in e-commerce and SaaS. I specialise in modern React architectures, design-system governance, and developer tooling that raises the whole team's velocity. Passionate about type-safe code and smooth developer experiences.</p>",
-    work: [
-      {
-        company: "TradeDesk Europe",
-        position: "Lead Frontend Engineer",
-        location: "Dublin, Ireland",
-        start: "Mar 2022",
-        end: "current",
-        bullets: [
-          "Led the migration of a 200-page storefront to the Next.js App Router, reducing average page load time by 38% and Core Web Vitals pass rate from 54% to 92%.",
-          "Launched a reusable component library used by 6 squads, cutting feature delivery time by 25% and eliminating duplicate patterns across the codebase.",
-          "Mentored 4 engineers through architecture reviews and rollout plans for high-traffic releases, improving team onboarding speed by 30%.",
-          "Introduced a visual regression testing pipeline with Chromatic that caught 40+ unintended visual changes before production.",
-        ],
-      },
-      {
-        company: "SagePay Online",
-        position: "Frontend Engineer",
-        location: "Dublin, Ireland",
-        start: "Aug 2019",
-        end: "Feb 2022",
-        bullets: [
-          "Rebuilt the checkout flow and raised the Lighthouse performance score from 62 to 95, directly contributing to a 12% lift in conversion rate.",
-          "Introduced an A/B testing framework adopted across 3 product teams, enabling data-driven decisions on UI changes.",
-          "Developed a shared ESLint and Prettier config that standardised code style across 4 repositories.",
-        ],
-      },
-      {
-        company: "PixelForge Studio",
-        position: "Junior Frontend Engineer",
-        location: "Dublin, Ireland",
-        start: "Jul 2017",
-        end: "Jul 2019",
-        bullets: [
-          "Built marketing sites for 10+ clients and drove a shared component library that reduced project setup time by 60%.",
-          "Implemented responsive layouts and accessible forms that passed WCAG AA audits on every client project.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Frontend Engineering",
-      items: [
-        "React",
-        "Next.js",
-        "TypeScript",
-        "Tailwind CSS",
-        "Design Systems",
-        "Vitest",
-        "Storybook",
-        "GraphQL",
-      ],
-    },
-    projects: [
-      {
-        name: "Merchant Analytics Dashboard",
-        start: "Jan 2024",
-        end: "Oct 2024",
-        bullets: [
-          "Built a role-based analytics dashboard with interactive charts, CSV exports, and custom saved filters serving 2,000+ merchants.",
-          "Optimised GraphQL query batching, cutting dashboard load time from 5.2s to 1.9s on high-volume accounts.",
-          "Implemented real-time data streaming via Server-Sent Events, giving merchants live order and revenue updates.",
-        ],
-      },
-      {
-        name: "Design Tokens Pipeline",
-        start: "Mar 2023",
-        end: "Aug 2023",
-        bullets: [
-          "Automated theming across 4 apps with a CI-driven token pipeline, removing a recurring source of visual drift.",
-          "Built a Figma plugin that lets designers preview and publish token changes directly to the codebase.",
-        ],
-      },
-      {
-        name: "Accessibility Audit Tool",
-        start: "Jun 2022",
-        end: "Nov 2022",
-        bullets: [
-          "Developed an internal a11y audit tool that automated 80% of WCAG AA checks in CI, catching issues before code review.",
-          "Integrated axe-core and Playwright into the pipeline, generating actionable reports per pull request.",
-        ],
-      },
-    ],
-    certs: [
-      { name: "Meta Front-End Developer", org: "Meta", date: "May 2022" },
-      {
-        name: "AWS Certified Cloud Practitioner",
-        org: "Amazon Web Services",
-        date: "Sep 2021",
-      },
-      { name: "Google Mobile Web Specialist", org: "Google", date: "Mar 2020" },
-    ],
-    education: {
-      name: "Trinity College Dublin",
-      location: "Dublin, Ireland",
-      start: "Sep 2013",
-      end: "May 2017",
-      degree: "B.A.I. in Computer Engineering",
-      gpa: "First Class Honours",
-      note: "Focused on web engineering and human-computer interaction; capstone project on real-time collaborative editing received the faculty innovation award.",
-    },
-  },
-  {
     layoutId: "modern-centered",
     presetId: "centered-ocean",
     photo: "https://i.pravatar.cc/320?img=69",
@@ -941,141 +827,6 @@ export const PERSONAS: Persona[] = [
     },
   },
   {
-    layoutId: "sidebar",
-    presetId: "sidebar-forest",
-    photo: "https://i.pravatar.cc/320?img=51",
-    fullName: "Liam Gallagher",
-    location: "Toronto, ON",
-    phone: "+1 (416) 555-0425",
-    email: "liam.gallagher@outlook.com",
-    links: [
-      "https://www.linkedin.com/in/liamgallagher",
-      "https://github.com/liamg",
-    ],
-    summary:
-      "<p>DevOps engineer with 7 years building reliable, scalable infrastructure for SaaS platforms. I automate everything that can be automated and design systems that fail gracefully. I'm passionate about developer experience, observability, and building platforms that make teams productive and operations boring.</p>",
-    work: [
-      {
-        company: "MapleCloud Services",
-        position: "Senior DevOps Engineer",
-        location: "Toronto, ON",
-        start: "Jan 2022",
-        end: "current",
-        bullets: [
-          "Designed and implemented a multi-cluster Kubernetes architecture across 3 cloud providers, supporting 99.99% uptime SLAs for 50+ microservices.",
-          "Built a GitOps pipeline with ArgoCD that eliminated manual deployments, reducing deploy times from 30m to 8m and cutting rollback time to 2m.",
-          "Reduced cloud infrastructure costs by $1.2M/year through right-sizing, spot-instance adoption, and commitment-based discounts.",
-          "Mentored 4 engineers on DevOps practices, establishing guild sessions, brown-bag talks, and an internal DevOps certification track.",
-        ],
-      },
-      {
-        company: "Northbay Tech",
-        position: "DevOps Engineer",
-        location: "Toronto, ON",
-        start: "Jun 2018",
-        end: "Dec 2021",
-        bullets: [
-          "Led the migration from a monolithic data-centre deployment to AWS, achieving zero-downtime cutover for a 2M-user platform.",
-          "Implemented comprehensive monitoring and alerting with Prometheus and Grafana, reducing MTTR from 90m to 25m.",
-          "Automated CI/CD pipelines with GitHub Actions and Terraform, enabling 30+ developers to deploy independently with confidence.",
-        ],
-      },
-      {
-        company: "RocketShip SaaS",
-        position: "Junior DevOps Engineer",
-        location: "Toronto, ON",
-        start: "May 2016",
-        end: "May 2018",
-        bullets: [
-          "Containerised 15 legacy applications using Docker, standardising development environments and eliminating the 'works on my machine' problem.",
-          "Built an internal tool for ephemeral preview environments per pull request, adopted by all 5 product teams.",
-        ],
-      },
-    ],
-    skills: {
-      category: "DevOps",
-      items: [
-        "Kubernetes",
-        "Terraform",
-        "ArgoCD",
-        "AWS",
-        "Docker",
-        "Prometheus",
-        "GitHub Actions",
-        "Linux",
-      ],
-    },
-    projects: [
-      {
-        name: "Multi-Cloud DR Strategy",
-        start: "Mar 2023",
-        end: "Dec 2023",
-        bullets: [
-          "Designed and validated a multi-region disaster recovery plan spanning 2 cloud providers with RPO of 5 minutes and RTO of 30 minutes.",
-          "Automated failover drills that ran quarterly, reducing exercise time from 2 days to 4 hours while increasing coverage from 40% to 90% of critical services.",
-        ],
-      },
-      {
-        name: "Secrets Management Platform",
-        start: "Jan 2022",
-        end: "Jun 2022",
-        bullets: [
-          "Deployed HashiCorp Vault with dynamic secrets generation for database credentials and API keys across 200+ services.",
-          "Replaced hardcoded secrets with Vault agent sidecars, passing a SOC 2 audit with zero findings related to secrets management.",
-        ],
-      },
-      {
-        name: "Observability Stack Upgrade",
-        start: "May 2021",
-        end: "Nov 2021",
-        bullets: [
-          "Upgraded the logging stack from ELK to Loki + Grafana, reducing log storage costs by 60% while maintaining 30-day retention.",
-          "Built custom dashboards for each engineering team's SLOs and error budgets, enabling data-driven reliability decisions.",
-        ],
-      },
-      {
-        name: "Infrastructure as Code Migration",
-        start: "Feb 2020",
-        end: "Aug 2020",
-        bullets: [
-          "Migrated 500+ AWS resources from CloudFormation to Terraform with zero downtime, standardising modules across all teams.",
-          "Created a Terraform module registry used by 8 teams, reducing infrastructure setup time from weeks to hours.",
-        ],
-      },
-    ],
-    certs: [
-      {
-        name: "AWS Certified DevOps Engineer – Professional",
-        org: "Amazon Web Services",
-        date: "Nov 2022",
-      },
-      {
-        name: "Certified Kubernetes Administrator",
-        org: "CNCF",
-        date: "May 2021",
-      },
-      {
-        name: "HashiCorp Certified: Terraform Associate",
-        org: "HashiCorp",
-        date: "Mar 2021",
-      },
-      {
-        name: "CKA: Certified Kubernetes Application Developer",
-        org: "CNCF",
-        date: "Jan 2020",
-      },
-    ],
-    education: {
-      name: "University of Toronto",
-      location: "Toronto, ON",
-      start: "Sep 2012",
-      end: "Jun 2016",
-      degree: "B.A.Sc. in Computer Engineering",
-      gpa: "3.70 / 4.00",
-      note: "Focused on networking and distributed systems; thesis on software-defined networking for data centres. Co-captain of the university's cybersecurity competition team.",
-    },
-  },
-  {
     layoutId: "modern-centered",
     presetId: "centered-editorial",
     photo: "https://i.pravatar.cc/320?img=53",
@@ -1585,151 +1336,6 @@ export const PERSONAS: Persona[] = [
       note: "Valedictorian of the graduating class; thesis project on generative brand systems was exhibited at the Portland Art Museum's annual design showcase. Awarded the department's excellence in design scholarship.",
     },
   },
-
-  // ── New templates: banner ──────────────────────────────────────────────────
-  {
-    layoutId: "banner",
-    presetId: "banner-royal",
-    photo: "https://i.pravatar.cc/320?img=12",
-    fullName: "Kyle Anderson",
-    location: "Los Angeles, CA",
-    phone: "+1 (323) 555-0173",
-    email: "kyle.anderson@hey.com",
-    links: [
-      "https://www.linkedin.com/in/kyleanderson",
-      "https://kyleanderson.studio",
-    ],
-    summary:
-      "<p>Creative director with 10+ years shaping brand narratives for entertainment and tech clients. I blend strategic thinking with hands-on design execution, leading multidisciplinary teams to produce award-winning campaigns. I believe great creative is grounded in sharp briefs, rigorous craft, and a willingness to take calculated risks.</p>",
-    work: [
-      {
-        company: "Sonder Creative Agency",
-        position: "Creative Director",
-        location: "Los Angeles, CA",
-        start: "Jun 2020",
-        end: "current",
-        bullets: [
-          "Led creative strategy and execution for 30+ campaigns across entertainment, fashion, and SaaS clients, generating $8M in annual billings.",
-          "Grew the agency's creative team from 6 to 18, establishing a career ladder, review cadence, and mentorship programme that improved retention by 35%.",
-          "Directed a brand campaign for a major streaming platform that won a Gold Clio and drove a 22% lift in subscriber awareness.",
-          "Introduced a structured creative development process that reduced iteration cycles from 5 rounds to 2 while improving client satisfaction scores.",
-        ],
-      },
-      {
-        company: "Magnet Media",
-        position: "Associate Creative Director",
-        location: "Los Angeles, CA",
-        start: "Apr 2016",
-        end: "May 2020",
-        bullets: [
-          "Conceptualised and produced integrated campaigns for 12 national brands, managing budgets from $200k to $2M.",
-          "Built a motion design capability from scratch, hiring 4 directors and winning 3 new clients in the first year.",
-          "Collaborated with strategy and production teams to deliver a Super Bowl commercial that ranked in the top 5 most recalled ads.",
-        ],
-      },
-      {
-        company: "Bright Idea Studio",
-        position: "Senior Designer",
-        location: "Los Angeles, CA",
-        start: "Aug 2012",
-        end: "Mar 2016",
-        bullets: [
-          "Designed visual identities and campaign assets for startup and mid-market clients across tech, CPG, and hospitality.",
-          "Won 2 Communication Arts awards for a brand identity project that was featured in the annual design annual.",
-        ],
-      },
-      {
-        company: "Firebrand Collective",
-        position: "Junior Designer",
-        location: "Los Angeles, CA",
-        start: "Jun 2010",
-        end: "Jul 2012",
-        bullets: [
-          "Produced digital and print assets for a portfolio of 15+ clients in the music and lifestyle space.",
-          "Assisted on photoshoots and post-production, developing a keen eye for art direction and colour grading.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Creative Direction",
-      items: [
-        "Brand Strategy",
-        "Art Direction",
-        "Campaign Development",
-        "Motion Design",
-        "Copywriting",
-        "Team Leadership",
-        "Client Presentations",
-        "Adobe Creative Suite",
-      ],
-    },
-    projects: [
-      {
-        name: "Streaming Platform Rebrand",
-        start: "Mar 2023",
-        end: "Feb 2024",
-        bullets: [
-          "Led the creative direction for a global rebrand of a major streaming platform, overseeing a team of 20 across strategy, design, and production.",
-          "The campaign launched across 12 markets with a unified creative system, achieving a 34% increase in unaided brand recall.",
-          "Won Gold at the Clio Awards and Silver at Cannes Lions in the Brand Experience category.",
-        ],
-      },
-      {
-        name: "In-House Agency Build",
-        start: "Jan 2022",
-        end: "Oct 2022",
-        bullets: [
-          "Designed and implemented the operating model for the agency's in-house creative team, including workflows, tooling, and resourcing processes.",
-          "Reduced external agency spend by $1.5M annually while increasing output velocity by 40%.",
-        ],
-      },
-      {
-        name: "Fashion Brand Launch",
-        start: "Jun 2021",
-        end: "Dec 2021",
-        bullets: [
-          "Directed the full creative launch for a direct-to-consumer fashion brand, from brand identity and packaging to digital campaigns and runway show.",
-          "The launch exceeded first-year revenue targets by 25% and was featured in Vogue and GQ.",
-        ],
-      },
-      {
-        name: "Creative Tooling Overhaul",
-        start: "Jan 2020",
-        end: "May 2020",
-        bullets: [
-          "Led the agency's transition from Adobe Creative Suite–only workflows to a Figma-centric pipeline, improving cross-disciplinary collaboration.",
-          "Trained 25+ creatives on the new tooling, resulting in a 30% reduction in asset production time.",
-        ],
-      },
-    ],
-    certs: [
-      {
-        name: "Certified Brand Strategist",
-        org: "DMI (Design Management Institute)",
-        date: "Jun 2022",
-      },
-      {
-        name: "Creative Leadership Certificate",
-        org: "Adweek Academy",
-        date: "Mar 2021",
-      },
-      {
-        name: "Adobe Certified Professional – Visual Design",
-        org: "Adobe",
-        date: "Sep 2020",
-      },
-      { name: "Clio Awards Jury Member", org: "Clio Awards", date: "Jan 2023" },
-    ],
-    education: {
-      name: "ArtCenter College of Design",
-      location: "Pasadena, CA",
-      start: "Sep 2006",
-      end: "May 2010",
-      degree: "B.F.A. in Graphic Design",
-      gpa: "3.85 / 4.0",
-      note: "Focus on branding and advertising; senior thesis on the role of generational aesthetics in brand loyalty. Interned at an agency where two spec campaigns were picked up by paying clients.",
-    },
-  },
   {
     layoutId: "split",
     presetId: "split-midnight",
@@ -2012,138 +1618,6 @@ export const PERSONAS: Persona[] = [
       degree: "B.S. in Journalism",
       gpa: "3.74 / 4.0",
       note: "Specialised in magazine writing and digital media; managed the university's student-run online publication, growing readership from 8k to 35k monthly. Minored in marketing.",
-    },
-  },
-
-  // ── New templates: banner-alt ──────────────────────────────────────────────
-  {
-    layoutId: "banner",
-    presetId: "banner-emerald",
-    photo: "https://i.pravatar.cc/320?img=55",
-    fullName: "Derek Mitchell",
-    location: "Brooklyn, NY",
-    phone: "+1 (718) 555-0274",
-    email: "derek.mitchell@hey.com",
-    links: [
-      "https://www.linkedin.com/in/derekmitchell",
-      "https://derekmitchell.art",
-    ],
-    summary:
-      "<p>Art director with 9 years creating visual narratives for publishing, fashion, and lifestyle brands. I bring a multidisciplinary approach blending photography, typography, and illustration to craft distinctive brand worlds. I'm drawn to projects with cultural resonance and teams that value craft as much as concept.</p>",
-    work: [
-      {
-        company: "The Standard Creative",
-        position: "Art Director",
-        location: "Brooklyn, NY",
-        start: "Aug 2020",
-        end: "current",
-        bullets: [
-          "Directed visual identity and campaign creative for 20+ clients across luxury, fashion, and editorial sectors, managing a team of 5 designers and photographers.",
-          "Led the art direction for a biannual print magazine, overseeing photoshoots, typography, and production across 200+ pages per issue.",
-          "Rebuilt the studio's digital portfolio and social presence, resulting in a 3x increase in inbound client inquiries and features in Communication Arts.",
-          "Established a mentorship track for junior designers, pairing each with a senior creative for quarterly portfolio reviews and career development.",
-        ],
-      },
-      {
-        company: "Blank Slate Studio",
-        position: "Senior Designer",
-        location: "Brooklyn, NY",
-        start: "Apr 2016",
-        end: "Jul 2020",
-        bullets: [
-          "Art directed photoshoots and designed layouts for a monthly lifestyle magazine with a circulation of 180k readers.",
-          "Collaborated with editorial and sales teams to create advertiser-sponsored content that increased ad revenue by 25% year over year.",
-          "Designed 3 book covers that were recognised in the AIGA 50 Books / 50 Covers competition.",
-        ],
-      },
-      {
-        company: "Type & Image",
-        position: "Graphic Designer",
-        location: "Brooklyn, NY",
-        start: "Jun 2013",
-        end: "Mar 2016",
-        bullets: [
-          "Produced print and digital assets for cultural institutions and non-profit clients, including exhibition catalogues, posters, and social campaigns.",
-          "Developed a modular poster system for a museum's lecture series that reduced production time by 60% while maintaining visual cohesion across 40+ events.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Art Direction",
-      items: [
-        "Art Direction",
-        "Photography",
-        "Typography",
-        "Editorial Design",
-        "Brand Identity",
-        "Creative Direction",
-        "Print Production",
-        "Adobe Creative Suite",
-      ],
-    },
-    projects: [
-      {
-        name: "Magazine Relaunch",
-        start: "Feb 2023",
-        end: "Jan 2024",
-        bullets: [
-          "Directed the complete redesign of a 50-year-old culture magazine, from logo and grid system to typography and colour palette.",
-          "The relaunch issue sold out on newsstands within 2 weeks and was awarded Best Cover Design by the Society of Publication Designers.",
-        ],
-      },
-      {
-        name: "Lifestyle Brand Campaign",
-        start: "Apr 2022",
-        end: "Oct 2022",
-        bullets: [
-          "Art directed a 360° campaign for a premium denim brand, including print, OOH, digital, and an experiential pop-up in SoHo.",
-          "The campaign drove a 40% increase in foot traffic to the pop-up and generated 15M+ social impressions in its first month.",
-        ],
-      },
-      {
-        name: "Photography Book Project",
-        start: "Jan 2021",
-        end: "Aug 2021",
-        bullets: [
-          "Designed and produced a fine-art photography monograph for an acclaimed street photographer, handling layout, typography, colour proofing, and print vendor management.",
-          "The book was shortlisted for the Paris Photo–Aperture Foundation PhotoBook Awards and sold out its first print run of 3,000 copies.",
-        ],
-      },
-      {
-        name: "Digital Archive Platform",
-        start: "Jun 2020",
-        end: "Nov 2020",
-        bullets: [
-          "Designed the UX and visual interface for a digital archive of 50k+ historical photographs, balancing browseability with scholarly depth.",
-          "The platform was adopted by 3 university libraries for their digital collections and received a Webby Award nomination.",
-        ],
-      },
-    ],
-    certs: [
-      {
-        name: "AIGA Professional Design Certification",
-        org: "AIGA",
-        date: "Jun 2022",
-      },
-      {
-        name: "Advanced Typography Specialisation",
-        org: "Cooper Union",
-        date: "May 2021",
-      },
-      {
-        name: "Photography for Designers",
-        org: "School of Visual Arts",
-        date: "Aug 2020",
-      },
-    ],
-    education: {
-      name: "School of Visual Arts",
-      location: "New York, NY",
-      start: "Sep 2009",
-      end: "May 2013",
-      degree: "B.F.A. in Graphic Design",
-      gpa: "3.82 / 4.0",
-      note: "Concentration in typography and publication design; senior thesis on the evolution of magazine layout in the digital age was published in the SVA senior thesis archive. Interned at a major design consultancy.",
     },
   },
   {
@@ -2499,113 +1973,6 @@ export const PERSONAS: Persona[] = [
     },
   },
   {
-    layoutId: "spotlight",
-    presetId: "spotlight-dusk",
-    photo: "https://i.pravatar.cc/320?img=57",
-    fullName: "Mateo Alvarez",
-    location: "Madrid, Spain",
-    phone: "+34 612 345 678",
-    email: "mateo.alvarez@fastmail.com",
-    links: [
-      "https://www.linkedin.com/in/mateoalvarez",
-      "https://github.com/malvarez",
-    ],
-    summary:
-      "<p>Platform engineer with 8 years making other engineers faster. I care about the boring parts — build times, rollback safety, the pager at 3am — and I would rather delete a service than add a dashboard for it.</p>",
-    work: [
-      {
-        company: "Terrafirma Cloud",
-        position: "Staff Platform Engineer",
-        location: "Madrid, Spain",
-        start: "Jan 2022",
-        end: "current",
-        bullets: [
-          "Cut median CI time from 24 to 6 minutes by sharding the test suite and caching build layers, saving roughly 900 engineer-hours a year.",
-          "Led the migration of 40 services onto a standard deployment pipeline with automated rollback, taking failed-deploy recovery from 25 minutes to under 2.",
-          "Reduced pager volume 62% by deleting alerts nobody acted on and rewriting the rest around user-visible symptoms.",
-          "Wrote the internal platform golden path, now the default for every new service.",
-        ],
-      },
-      {
-        company: "Cadena Systems",
-        position: "Site Reliability Engineer",
-        location: "Barcelona, Spain",
-        start: "Sep 2018",
-        end: "Dec 2021",
-        bullets: [
-          "Ran the incident programme through a period of 4x traffic growth, holding availability at 99.97%.",
-          "Introduced progressive delivery, catching three regressions at 5% traffic that would have been full outages.",
-          "Halved cloud spend on the largest cluster by right-sizing requests against real usage data.",
-        ],
-      },
-      {
-        company: "Nubila",
-        position: "Backend Engineer",
-        location: "Valencia, Spain",
-        start: "Jun 2016",
-        end: "Aug 2018",
-        bullets: [
-          "Built the billing service that still processes every invoice, with an idempotency design that survived three payment-provider migrations.",
-          "Moved the monolith's async work onto a queue, removing the nightly job that had been the top source of incidents.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Platform & Infrastructure",
-      items: [
-        "Kubernetes",
-        "Terraform",
-        "Go",
-        "AWS",
-        "Observability",
-        "CI/CD",
-        "Incident Response",
-        "Postgres",
-      ],
-    },
-    projects: [
-      {
-        name: "Golden Path Pipeline",
-        start: "Feb 2023",
-        end: "Oct 2023",
-        bullets: [
-          "Shipped a paved-road template covering build, deploy, alerting, and rollback for new services.",
-          "Brought time-to-first-production-deploy for a new service from 3 weeks down to a single afternoon.",
-        ],
-      },
-      {
-        name: "Alert Debt Cleanup",
-        start: "Mar 2022",
-        end: "Jul 2022",
-        bullets: [
-          "Audited 380 alerts against a year of incident data and deleted the 60% that had never led to an action.",
-          "Rewrote the remainder as symptom-based SLO burn alerts with linked runbooks.",
-        ],
-      },
-    ],
-    certs: [
-      {
-        name: "Certified Kubernetes Administrator",
-        org: "Cloud Native Computing Foundation",
-        date: "Apr 2021",
-      },
-      {
-        name: "AWS Solutions Architect - Professional",
-        org: "Amazon Web Services",
-        date: "Oct 2022",
-      },
-    ],
-    education: {
-      name: "Universidad Politécnica de Madrid",
-      location: "Madrid, Spain",
-      start: "Sep 2011",
-      end: "Jun 2016",
-      degree: "M.Eng. in Computer Engineering",
-      gpa: "8.6 / 10",
-      note: "Thesis on scheduling strategies for heterogeneous container workloads; teaching assistant for two years in distributed systems.",
-    },
-  },
-  {
     layoutId: "aurora",
     presetId: "aurora-haze",
     photo: "https://i.pravatar.cc/320?img=60",
@@ -2806,104 +2173,6 @@ export const PERSONAS: Persona[] = [
     },
   },
   {
-    layoutId: "sidebar",
-    presetId: "sidebar-lavender",
-    photo: "https://i.pravatar.cc/320?img=8",
-    fullName: "Tomas Herrera",
-    location: "Mexico City, Mexico",
-    phone: "+52 55 1234 5678",
-    email: "tomas.herrera@hey.com",
-    links: [
-      "https://www.linkedin.com/in/tomasherrera",
-      "https://tomasherrera.co",
-    ],
-    summary:
-      "<p>UX researcher with 7 years turning what users actually do into decisions teams can act on. I run the study that answers the argument in the room, not the one that produces the prettiest report.</p>",
-    work: [
-      {
-        company: "Vega Financiera",
-        position: "Lead UX Researcher",
-        location: "Mexico City, Mexico",
-        start: "Feb 2021",
-        end: "current",
-        bullets: [
-          "Ran the research programme behind a lending app redesign that lifted application completion from 42% to 68%.",
-          "Built a participant panel of 900 customers across 5 states, cutting recruitment time from 3 weeks to 4 days.",
-          "Introduced a research repository with tagged findings, so teams stopped re-running studies that already existed.",
-          "Trained 14 designers and PMs to moderate their own sessions, tripling study throughput without adding headcount.",
-        ],
-      },
-      {
-        company: "Mercado Norte",
-        position: "UX Researcher",
-        location: "Guadalajara, Mexico",
-        start: "Sep 2018",
-        end: "Jan 2021",
-        bullets: [
-          "Led discovery for the seller onboarding flow, cutting drop-off at identity verification by 31%.",
-          "Combined analytics with 40 field interviews to explain a cart abandonment spike nobody could reproduce in the office.",
-          "Established a quarterly usability benchmark that made design regressions visible before launch.",
-        ],
-      },
-      {
-        company: "Estudio Cardinal",
-        position: "Design Researcher",
-        location: "Mexico City, Mexico",
-        start: "Jun 2016",
-        end: "Aug 2018",
-        bullets: [
-          "Delivered research for 11 client engagements across fintech, logistics, and public services.",
-          "Built the studio's first interview guide library, cutting study setup from a week to a day.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Research",
-      items: [
-        "Usability Testing",
-        "Field Research",
-        "Survey Design",
-        "Journey Mapping",
-        "Dovetail",
-        "Figma",
-        "Statistics",
-      ],
-    },
-    projects: [
-      {
-        name: "Research Repository",
-        start: "May 2022",
-        end: "Dec 2022",
-        bullets: [
-          "Consolidated 5 years of scattered study decks into a searchable, tagged repository.",
-          "Cut duplicate studies to near zero in the first year and shortened new-hire ramp-up considerably.",
-        ],
-      },
-      {
-        name: "Accessibility Audit Programme",
-        start: "Feb 2021",
-        end: "Jul 2021",
-        bullets: [
-          "Ran moderated sessions with 18 participants using screen readers and switch access.",
-          "Produced a prioritised remediation backlog that closed 34 blocking issues before the next release.",
-        ],
-      },
-    ],
-    certs: [
-      { name: "Certified Usability Analyst", org: "Human Factors International", date: "Aug 2019" },
-      { name: "Qualitative Research Methods", org: "Nielsen Norman Group", date: "Mar 2022" },
-    ],
-    education: {
-      name: "Universidad Nacional Autónoma de México",
-      location: "Mexico City, Mexico",
-      start: "Aug 2012",
-      end: "Jun 2016",
-      degree: "B.A. in Psychology",
-      gpa: "9.1 / 10",
-      note: "Thesis on decision fatigue in multi-step forms; teaching assistant in research methods for three semesters.",
-    },
-  },
-  {
     layoutId: "academic",
     presetId: "academic-journal",
     photo: "https://i.pravatar.cc/320?img=65",
@@ -2996,101 +2265,6 @@ export const PERSONAS: Persona[] = [
       degree: "Ph.D. in Physics",
       gpa: "—",
       note: "Dissertation on electron transport in disordered two-dimensional systems; awarded the faculty prize for the year's outstanding thesis.",
-    },
-  },
-  {
-    layoutId: "banner",
-    presetId: "banner-charcoal",
-    photo: "https://i.pravatar.cc/320?img=64",
-    fullName: "Daniel Okafor",
-    location: "Lagos, Nigeria",
-    phone: "+234 802 345 6789",
-    email: "daniel.okafor@proton.me",
-    links: ["https://www.linkedin.com/in/danielokafor"],
-    summary:
-      "<p>Enterprise sales leader with 11 years selling infrastructure software across West Africa. I build pipelines that survive a forecast review, and I have walked away from deals that would have churned in month four.</p>",
-    work: [
-      {
-        company: "Ardent Cloud",
-        position: "Director of Sales, West Africa",
-        location: "Lagos, Nigeria",
-        start: "Apr 2021",
-        end: "current",
-        bullets: [
-          "Grew regional ARR from $4.2M to $17.5M in three years while holding net revenue retention above 115%.",
-          "Built and led a team of 12 across sales and solution engineering, with voluntary attrition under 8%.",
-          "Introduced a qualification standard that cut late-stage slippage from 38% of pipeline to 11%.",
-          "Closed the region's three largest contracts to date, including a $3.1M multi-year platform agreement.",
-        ],
-      },
-      {
-        company: "Northgate Systems",
-        position: "Enterprise Account Executive",
-        location: "Lagos, Nigeria",
-        start: "Jan 2017",
-        end: "Mar 2021",
-        bullets: [
-          "Carried a $3.5M quota and finished four consecutive years above 120% attainment.",
-          "Opened the banking vertical from zero to 9 logos, which became the company's most durable segment.",
-          "Ran joint pursuits with two systems integrators, adding $2.2M of sourced pipeline annually.",
-        ],
-      },
-      {
-        company: "Meridian Software",
-        position: "Account Manager",
-        location: "Abuja, Nigeria",
-        start: "Jun 2014",
-        end: "Dec 2016",
-        bullets: [
-          "Managed 40 mid-market accounts, growing renewals from 78% to 93%.",
-          "Built the first territory plan the regional team actually worked from.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Sales",
-      items: [
-        "Enterprise Sales",
-        "Forecasting",
-        "MEDDICC",
-        "Channel Partnerships",
-        "Negotiation",
-        "Team Leadership",
-        "Salesforce",
-      ],
-    },
-    projects: [
-      {
-        name: "Regional Partner Programme",
-        start: "Feb 2022",
-        end: "Dec 2022",
-        bullets: [
-          "Recruited and enabled 6 integration partners, who now source a third of regional pipeline.",
-          "Wrote the deal-registration rules that ended channel conflict with the direct team.",
-        ],
-      },
-      {
-        name: "Forecast Discipline Rollout",
-        start: "May 2021",
-        end: "Oct 2021",
-        bullets: [
-          "Replaced optimistic stage definitions with evidence-based exit criteria across the region.",
-          "Forecast accuracy moved from ±32% to ±9% within two quarters.",
-        ],
-      },
-    ],
-    certs: [
-      { name: "MEDDICC Certified", org: "MEDDICC Ltd", date: "Jul 2020" },
-      { name: "Strategic Negotiation", org: "Harvard Business School Online", date: "Mar 2022" },
-    ],
-    education: {
-      name: "University of Lagos",
-      location: "Lagos, Nigeria",
-      start: "Sep 2009",
-      end: "Jul 2013",
-      degree: "B.Sc. in Business Administration",
-      gpa: "3.6 / 4.0",
-      note: "Focus on marketing and operations; led the student enterprise society through its first profitable trading year.",
     },
   },
   {
@@ -3193,104 +2367,6 @@ export const PERSONAS: Persona[] = [
     },
   },
   {
-    layoutId: "spotlight",
-    presetId: "spotlight-ember",
-    photo: "https://i.pravatar.cc/320?img=52",
-    fullName: "Luca Bianchi",
-    location: "Milan, Italy",
-    phone: "+39 340 123 4567",
-    email: "luca.bianchi@proton.me",
-    links: [
-      "https://www.linkedin.com/in/lucabianchi",
-      "https://github.com/lbianchi",
-    ],
-    summary:
-      "<p>Developer advocate with 7 years between engineering and the people using what engineering ships. I write the sample app, file the bug it uncovers, and tell the product team what the docs cannot paper over.</p>",
-    work: [
-      {
-        company: "Corva Data",
-        position: "Lead Developer Advocate",
-        location: "Milan, Italy",
-        start: "Jan 2022",
-        end: "current",
-        bullets: [
-          "Rebuilt the getting-started path around a working sample, taking time-to-first-successful-call from 45 minutes to under 8.",
-          "Grew the community forum from 300 to 6,400 members, with median first response under 3 hours.",
-          "Filed 90 issues from real integration attempts, 34 of which shipped as API changes.",
-          "Ran a quarterly design-partner programme that fed directly into the roadmap.",
-        ],
-      },
-      {
-        company: "Fabbrica Cloud",
-        position: "Developer Advocate",
-        location: "Turin, Italy",
-        start: "Mar 2019",
-        end: "Dec 2021",
-        bullets: [
-          "Wrote and maintained 11 SDK quickstarts across four languages, all tested in CI so they never rot.",
-          "Spoke at 18 conferences and meetups; talks drove a measurable step-change in trial signups each quarter.",
-          "Reduced support load by rewriting the three docs pages responsible for a third of all tickets.",
-        ],
-      },
-      {
-        company: "Novaris",
-        position: "Backend Engineer",
-        location: "Milan, Italy",
-        start: "Sep 2016",
-        end: "Feb 2019",
-        bullets: [
-          "Built and operated the public API that later became the company's main integration surface.",
-          "Introduced contract testing between services, ending a recurring class of breaking-change incidents.",
-        ],
-      },
-    ],
-    skills: {
-      category: "Advocacy & Engineering",
-      items: [
-        "Go",
-        "TypeScript",
-        "API Design",
-        "Technical Writing",
-        "Public Speaking",
-        "Community Building",
-        "OpenAPI",
-      ],
-    },
-    projects: [
-      {
-        name: "Quickstart Overhaul",
-        start: "Feb 2022",
-        end: "Aug 2022",
-        bullets: [
-          "Replaced prose-first docs with a runnable sample repository covering four languages.",
-          "Every snippet runs in CI, so a breaking release fails the docs build before it reaches users.",
-        ],
-      },
-      {
-        name: "Design Partner Programme",
-        start: "Mar 2023",
-        end: "Nov 2023",
-        bullets: [
-          "Recruited 12 teams to build against pre-release APIs and report friction weekly.",
-          "Three planned endpoints were redesigned before launch on the strength of that feedback.",
-        ],
-      },
-    ],
-    certs: [
-      { name: "Certified Kubernetes Application Developer", org: "Cloud Native Computing Foundation", date: "Jun 2021" },
-      { name: "Technical Writing Certification", org: "Google", date: "Feb 2020" },
-    ],
-    education: {
-      name: "Politecnico di Milano",
-      location: "Milan, Italy",
-      start: "Sep 2011",
-      end: "Jul 2016",
-      degree: "M.Sc. in Computer Engineering",
-      gpa: "108 / 110",
-      note: "Thesis on API usability, including a controlled study of error-message design across three client libraries.",
-    },
-  },
-  {
     layoutId: "aurora",
     presetId: "aurora-peach",
     photo: "https://i.pravatar.cc/320?img=17",
@@ -3386,6 +2462,567 @@ export const PERSONAS: Persona[] = [
       degree: "B.Des. in Communication Design",
       gpa: "3.8 / 4.0",
       note: "Major in interaction design; final-year exhibition on legibility of clinical interfaces under time pressure.",
+    },
+  },
+  // ── Ledger / Dossier / Crest / Masthead ────────────────────────────────────
+  {
+    layoutId: "ledger",
+    presetId: "ledger-graphite",
+    photo: "https://i.pravatar.cc/320?img=44",
+    fullName: "Anneke Visser",
+    location: "Amsterdam, Netherlands",
+    phone: "+31 6 2145 8890",
+    email: "anneke.visser@proton.me",
+    links: ["https://www.linkedin.com/in/annekevisser", "https://visser.works"],
+    summary:
+      "<p>Operations manager for high-growth logistics teams, with ten years turning improvised processes into ones that survive a tenfold increase in volume. I work close to the warehouse floor, measure before I change anything, and leave documentation behind.</p>",
+    work: [
+      {
+        company: "Kaden Freight",
+        position: "Head of Operations",
+        location: "Amsterdam, Netherlands",
+        start: "Feb 2021",
+        end: "current",
+        bullets: [
+          "Rebuilt the dispatch process around a single planning board, lifting on-time delivery from 82% to 96% across four depots.",
+          "Renegotiated eleven carrier contracts, cutting line-haul cost per pallet 18% without changing service levels.",
+          "Introduced a weekly exception review that closed the top ten recurring failure causes within two quarters.",
+        ],
+      },
+      {
+        company: "Nordveld Distribution",
+        position: "Operations Manager",
+        location: "Utrecht, Netherlands",
+        start: "Mar 2016",
+        end: "Jan 2021",
+        bullets: [
+          "Ran a 60-person shift operation through a warehouse move with no missed delivery day.",
+          "Cut picking errors by half by redesigning the slotting layout around actual order pairs rather than product category.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Operations",
+      items: [
+        "S&OP",
+        "Lean",
+        "WMS Rollouts",
+        "Carrier Negotiation",
+        "Capacity Planning",
+        "SQL",
+      ],
+    },
+    projects: [
+      {
+        name: "Depot Consolidation",
+        start: "Jan 2022",
+        end: "Oct 2022",
+        bullets: [
+          "Merged three regional depots into two without a service interruption, releasing €1.4M in annual lease cost.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "APICS CPIM", org: "ASCM", date: "Jun 2019" },
+      { name: "Lean Six Sigma Black Belt", org: "ASQ", date: "Nov 2017" },
+    ],
+    education: {
+      name: "Erasmus University Rotterdam",
+      location: "Rotterdam, Netherlands",
+      start: "Sep 2010",
+      end: "Jul 2014",
+      degree: "BSc in Supply Chain Management",
+      gpa: "8.1 / 10",
+      note: "Thesis on buffer placement in multi-echelon distribution networks.",
+    },
+  },
+  {
+    layoutId: "ledger",
+    presetId: "ledger-ink",
+    photo: "https://i.pravatar.cc/320?img=52",
+    fullName: "Tomás Ferreira",
+    location: "Lisbon, Portugal",
+    phone: "+351 912 447 013",
+    email: "tomas.ferreira@fastmail.com",
+    links: ["https://www.linkedin.com/in/tomasferreira"],
+    summary:
+      "<p>Financial analyst covering European mid-cap industrials. I build models other people can audit, and I would rather publish a narrower view I can defend than a wide one I cannot.</p>",
+    work: [
+      {
+        company: "Aveiro Capital",
+        position: "Senior Analyst, Industrials",
+        location: "Lisbon, Portugal",
+        start: "Sep 2020",
+        end: "current",
+        bullets: [
+          "Cover 22 names across machinery and building products; published theses outperformed the sector index by 6.4pp over three years.",
+          "Rebuilt the team's valuation template around auditable driver assumptions, cutting model review time from two days to four hours.",
+        ],
+      },
+      {
+        company: "Banco Serra",
+        position: "Equity Analyst",
+        location: "Porto, Portugal",
+        start: "Aug 2016",
+        end: "Aug 2020",
+        bullets: [
+          "Initiated coverage on nine Iberian small-caps, three of which became core desk positions.",
+          "Built the quarterly channel-check process still used by the research desk.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Analysis",
+      items: [
+        "DCF & Comps",
+        "Financial Modelling",
+        "Python",
+        "Bloomberg",
+        "IFRS",
+        "Scenario Analysis",
+      ],
+    },
+    projects: [
+      {
+        name: "Sector Screening Engine",
+        start: "Feb 2022",
+        end: "Jun 2022",
+        bullets: [
+          "Automated a 400-name screen on quality and capital-intensity factors, replacing a monthly manual sweep.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "CFA Charterholder", org: "CFA Institute", date: "Sep 2021" },
+      { name: "FRM Part II", org: "GARP", date: "May 2018" },
+    ],
+    education: {
+      name: "Nova School of Business and Economics",
+      location: "Lisbon, Portugal",
+      start: "Sep 2012",
+      end: "Jun 2016",
+      degree: "BSc in Economics",
+      gpa: "16 / 20",
+      note: "Final project on capital-cycle timing in European cement.",
+    },
+  },
+  {
+    layoutId: "dossier",
+    presetId: "dossier-navy",
+    photo: "https://i.pravatar.cc/320?img=45",
+    fullName: "Priya Raghunathan",
+    location: "Bengaluru, India",
+    phone: "+91 98450 21766",
+    email: "priya.raghunathan@hey.com",
+    links: [
+      "https://www.linkedin.com/in/priyaraghunathan",
+      "https://priya.dev",
+    ],
+    summary:
+      "<p>Data scientist working on forecasting and pricing for retail. I care most about the boring half of the job — the evaluation harness, the drift monitoring, the rollback plan — because that is what decides whether a model survives contact with a business.</p>",
+    work: [
+      {
+        company: "Thela Commerce",
+        position: "Staff Data Scientist",
+        location: "Bengaluru, India",
+        start: "Apr 2021",
+        end: "current",
+        bullets: [
+          "Owned demand forecasting across 90k SKUs; cut forecast error 22% and released ₹40Cr of tied-up inventory.",
+          "Built the offline/online evaluation harness now used by every model the team ships.",
+          "Mentored six analysts into modelling roles, three of them internal transfers.",
+        ],
+      },
+      {
+        company: "Kavi Analytics",
+        position: "Data Scientist",
+        location: "Chennai, India",
+        start: "Jun 2017",
+        end: "Mar 2021",
+        bullets: [
+          "Shipped a churn model that raised retention-campaign ROI 3.4x by scoring on intent rather than recency.",
+          "Replaced a nightly batch pipeline with a streaming feature store, cutting feature latency from 18 hours to 4 minutes.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Data Science",
+      items: [
+        "Python",
+        "PyTorch",
+        "Forecasting",
+        "Causal Inference",
+        "dbt",
+        "Airflow",
+        "SQL",
+      ],
+    },
+    projects: [
+      {
+        name: "Price Elasticity Service",
+        start: "Aug 2022",
+        end: "Apr 2023",
+        bullets: [
+          "Estimated category-level elasticities from observational data with a double-ML design, validated against 14 live price tests.",
+          "Adopted by merchandising for weekly markdown decisions across three categories.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Google Cloud Professional ML Engineer", org: "Google", date: "Feb 2022" },
+    ],
+    education: {
+      name: "Indian Institute of Technology Madras",
+      location: "Chennai, India",
+      start: "Jul 2013",
+      end: "May 2017",
+      degree: "B.Tech in Computer Science",
+      gpa: "8.7 / 10",
+      note: "Undergraduate thesis on hierarchical time-series reconciliation.",
+    },
+  },
+  {
+    layoutId: "dossier",
+    presetId: "dossier-forest",
+    photo: "https://i.pravatar.cc/320?img=58",
+    fullName: "Jonas Bergqvist",
+    location: "Stockholm, Sweden",
+    phone: "+46 70 448 2291",
+    email: "jonas.bergqvist@posteo.net",
+    links: ["https://www.linkedin.com/in/jonasbergqvist"],
+    summary:
+      "<p>Sustainability lead for manufacturing groups. I translate reporting obligations into engineering work that actually reduces emissions, and I am comfortable telling a board which of its targets is not reachable.</p>",
+    work: [
+      {
+        company: "Vasten Industri",
+        position: "Head of Sustainability",
+        location: "Stockholm, Sweden",
+        start: "Jan 2020",
+        end: "current",
+        bullets: [
+          "Delivered the group's first CSRD-aligned report across 11 sites and 4 jurisdictions, signed off with no material qualifications.",
+          "Cut Scope 1 and 2 emissions 34% in four years through electrified process heat and a recontracted power supply.",
+          "Built a supplier engagement programme covering 78% of spend, replacing spend-based Scope 3 estimates with primary data.",
+        ],
+      },
+      {
+        company: "Nordisk Energi Rådgivning",
+        position: "Senior Consultant",
+        location: "Gothenburg, Sweden",
+        start: "Sep 2015",
+        end: "Dec 2019",
+        bullets: [
+          "Ran energy audits for 30+ industrial clients, with an average identified saving of 12% of site consumption.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Sustainability",
+      items: [
+        "GHG Protocol",
+        "CSRD / ESRS",
+        "LCA",
+        "Energy Audits",
+        "Supplier Engagement",
+        "Power BI",
+      ],
+    },
+    projects: [
+      {
+        name: "Process Heat Electrification",
+        start: "Mar 2021",
+        end: "Nov 2022",
+        bullets: [
+          "Business case and rollout for high-temperature heat pumps at two sites, removing 8,400 tCO2e a year with a 6.5-year payback.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "GHG Protocol Corporate Standard", org: "WRI", date: "Mar 2019" },
+      { name: "Certified Energy Manager", org: "AEE", date: "Oct 2017" },
+    ],
+    education: {
+      name: "KTH Royal Institute of Technology",
+      location: "Stockholm, Sweden",
+      start: "Aug 2010",
+      end: "Jun 2015",
+      degree: "MSc in Energy Engineering",
+      gpa: "4.4 / 5",
+      note: "Thesis on waste-heat recovery economics in Nordic pulp mills.",
+    },
+  },
+  {
+    layoutId: "crest",
+    presetId: "crest-charcoal",
+    photo: "https://i.pravatar.cc/320?img=50",
+    fullName: "Marcus Delaney",
+    location: "Dublin, Ireland",
+    phone: "+353 87 442 9106",
+    email: "marcus.delaney@hey.com",
+    links: ["https://www.linkedin.com/in/marcusdelaney", "https://delaney.ie"],
+    summary:
+      "<p>Communications director with fifteen years in regulated industries. I have written the statement that goes out at 6am on the worst day of a company's year, and I would rather spend the budget on being ready than on being loud.</p>",
+    work: [
+      {
+        company: "Ardmore Group",
+        position: "Director of Communications",
+        location: "Dublin, Ireland",
+        start: "May 2019",
+        end: "current",
+        bullets: [
+          "Led communications through a contested acquisition and two regulatory investigations with no adverse coverage cycle lasting beyond 48 hours.",
+          "Rebuilt the spokesperson bench from two people to nine, with quarterly drills and a maintained holding-statement library.",
+          "Grew earned coverage in tier-one outlets 2.6x while cutting agency spend by a third.",
+        ],
+      },
+      {
+        company: "Kilbride Public Affairs",
+        position: "Associate Director",
+        location: "Dublin, Ireland",
+        start: "Feb 2013",
+        end: "Apr 2019",
+        bullets: [
+          "Ran public affairs for six financial-services clients through the post-crisis regulatory rewrite.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Communications",
+      items: [
+        "Crisis Communications",
+        "Media Relations",
+        "Public Affairs",
+        "Executive Positioning",
+        "Internal Comms",
+      ],
+    },
+    projects: [
+      {
+        name: "Group Newsroom",
+        start: "Jan 2021",
+        end: "Sep 2021",
+        bullets: [
+          "Consolidated seven brand press pages into one newsroom, doubling direct journalist enquiries and halving time-to-publish.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Accredited in Public Relations (APR)", org: "PRSA", date: "Jun 2018" },
+    ],
+    education: {
+      name: "Trinity College Dublin",
+      location: "Dublin, Ireland",
+      start: "Sep 2005",
+      end: "Jun 2009",
+      degree: "BA in History and Political Science",
+      gpa: "First Class Honours",
+      note: "Editor of the student newspaper in final year.",
+    },
+  },
+  {
+    layoutId: "crest",
+    presetId: "crest-burgundy",
+    photo: "https://i.pravatar.cc/320?img=32",
+    fullName: "Sofia Marchetti",
+    location: "Milan, Italy",
+    phone: "+39 340 118 7742",
+    email: "sofia.marchetti@proton.me",
+    links: ["https://www.linkedin.com/in/sofiamarchetti", "https://marchetti.art"],
+    summary:
+      "<p>Curator of contemporary photography, working between institutions and artist estates. My exhibitions are built from primary research; my catalogues are written to still be useful in twenty years.</p>",
+    work: [
+      {
+        company: "Fondazione Lucerna",
+        position: "Senior Curator",
+        location: "Milan, Italy",
+        start: "Mar 2018",
+        end: "current",
+        bullets: [
+          "Curated 14 exhibitions, including two that toured to four European institutions and drew 210,000 combined visitors.",
+          "Negotiated the acquisition and cataloguing of a 6,000-print estate archive, now fully digitised and open to researchers.",
+          "Raised €2.1M in exhibition funding across public grants and private patrons.",
+        ],
+      },
+      {
+        company: "Galleria Ponte Rosso",
+        position: "Associate Curator",
+        location: "Turin, Italy",
+        start: "Sep 2013",
+        end: "Feb 2018",
+        bullets: [
+          "Programmed the gallery's emerging-artist series; six of the eleven exhibited artists entered public collections.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Curatorial",
+      items: [
+        "Exhibition Development",
+        "Archival Research",
+        "Catalogue Writing",
+        "Collection Management",
+        "Grant Writing",
+      ],
+    },
+    projects: [
+      {
+        name: "Luce Ferma (touring exhibition)",
+        start: "Feb 2022",
+        end: "Oct 2023",
+        bullets: [
+          "Four-venue survey of Italian post-war documentary photography, with a 240-page catalogue and a newly compiled chronology.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Collections Care Certificate", org: "ICCROM", date: "Nov 2016" },
+    ],
+    education: {
+      name: "Università Ca' Foscari Venezia",
+      location: "Venice, Italy",
+      start: "Sep 2008",
+      end: "Jul 2013",
+      degree: "MA in History of Art",
+      gpa: "110 / 110 cum laude",
+      note: "Thesis on exhibition-making and the photographic archive in 1970s Italy.",
+    },
+  },
+  {
+    layoutId: "masthead",
+    presetId: "masthead-citrus",
+    photo: "https://i.pravatar.cc/320?img=26",
+    fullName: "Riley Okafor",
+    location: "Lagos, Nigeria",
+    phone: "+234 803 552 7188",
+    email: "riley@okafor.studio",
+    links: ["https://okafor.studio", "https://www.linkedin.com/in/rileyokafor"],
+    summary:
+      "<p>Brand designer building identities for consumer companies that have to work at billboard size and at 32 pixels. I hand over systems, not decks — type scales, motion rules, and the awkward cases nobody asked about.</p>",
+    work: [
+      {
+        company: "Studio Okafor",
+        position: "Founder & Design Director",
+        location: "Lagos, Nigeria",
+        start: "Jan 2020",
+        end: "current",
+        bullets: [
+          "Delivered 30+ brand systems for fintech, food, and media clients across West Africa and the UK.",
+          "Built an identity for a payments app that scaled from launch to 4M users without a rebrand.",
+          "Ran the studio to profitability in year one and to a team of six by year three.",
+        ],
+      },
+      {
+        company: "Tandem Brand Partners",
+        position: "Senior Designer",
+        location: "London, United Kingdom",
+        start: "Aug 2016",
+        end: "Dec 2019",
+        bullets: [
+          "Led identity design for four consumer rebrands, including a national grocery chain's 900-store rollout.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Brand & Design",
+      items: [
+        "Identity Systems",
+        "Typography",
+        "Art Direction",
+        "Packaging",
+        "Motion",
+        "Figma",
+      ],
+    },
+    projects: [
+      {
+        name: "Kobo Pay Identity",
+        start: "Mar 2021",
+        end: "Nov 2021",
+        bullets: [
+          "Full identity, product UI kit, and motion system, built to hold up at app-icon size and on transit advertising.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Type Design Intensive", org: "Type@Cooper", date: "Aug 2019" },
+    ],
+    education: {
+      name: "University of Lagos",
+      location: "Lagos, Nigeria",
+      start: "Oct 2011",
+      end: "Jul 2015",
+      degree: "BA in Visual Arts",
+      gpa: "First Class Honours",
+      note: "Final-year work on Nigerian vernacular signage and letterforms.",
+    },
+  },
+  {
+    layoutId: "masthead",
+    presetId: "masthead-cobalt",
+    photo: "https://i.pravatar.cc/320?img=41",
+    fullName: "Nina Kovac",
+    location: "Ljubljana, Slovenia",
+    phone: "+386 41 226 508",
+    email: "nina.kovac@fastmail.com",
+    links: ["https://www.linkedin.com/in/ninakovac", "https://ninakovac.dev"],
+    summary:
+      "<p>Mobile engineer shipping iOS and Android from one codebase without pretending the two platforms are the same. I optimise for startup time, offline behaviour, and the review queue.</p>",
+    work: [
+      {
+        company: "Rivet Mobility",
+        position: "Lead Mobile Engineer",
+        location: "Ljubljana, Slovenia",
+        start: "Jun 2021",
+        end: "current",
+        bullets: [
+          "Cut cold-start time from 3.4s to 1.1s on mid-range Android, lifting day-one retention 9%.",
+          "Rebuilt the offline sync layer around a conflict-free log; support tickets about lost trips dropped to near zero.",
+          "Set up a release train with automated store submission, taking releases from monthly to weekly.",
+        ],
+      },
+      {
+        company: "Bistra Apps",
+        position: "Mobile Engineer",
+        location: "Maribor, Slovenia",
+        start: "Feb 2017",
+        end: "May 2021",
+        bullets: [
+          "Shipped seven client apps on React Native, two of which featured on the App Store front page.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Mobile Engineering",
+      items: [
+        "Swift",
+        "Kotlin",
+        "React Native",
+        "TypeScript",
+        "CI/CD",
+        "Performance Profiling",
+      ],
+    },
+    projects: [
+      {
+        name: "Offline Sync Engine",
+        start: "Jan 2022",
+        end: "Aug 2022",
+        bullets: [
+          "Conflict-free replicated log for trip data, surviving multi-day offline use and clock skew across devices.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "AWS Certified Developer – Associate", org: "AWS", date: "Apr 2021" },
+    ],
+    education: {
+      name: "University of Ljubljana",
+      location: "Ljubljana, Slovenia",
+      start: "Oct 2012",
+      end: "Sep 2016",
+      degree: "BSc in Computer Science",
+      gpa: "9.1 / 10",
+      note: "Thesis on energy profiling of background sync on mobile devices.",
     },
   },
 ];

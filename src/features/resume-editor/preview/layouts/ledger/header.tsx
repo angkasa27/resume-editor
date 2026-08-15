@@ -1,13 +1,14 @@
+import { PhotoFrame } from "@/features/resume-editor/preview/kit/section-kit";
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 
 import styles from "./styles.module.css";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
-/* Name only — the split layout renders contacts inside the colored rail. */
-export function SplitHeader({ context }: LayoutHeaderProps) {
+/* Name left, square photo right, spanning both columns — ledger keeps contacts in the left rail. */
+export function LedgerHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;
   return (
-    <header className={`${styles.header} layout-header`} data-layout="split">
+    <header className={`${styles.header} layout-header`} data-layout="ledger">
       <div className="name-block">
         <h1 className="name" data-testid="resume-preview-full-name">
           <WrapOnSpace text={draft.profile.fullName} />
@@ -16,6 +17,9 @@ export function SplitHeader({ context }: LayoutHeaderProps) {
           <p className="headline">{draft.profile.headline}</p>
         ) : null}
       </div>
+      {draft.profile.photo ? (
+        <PhotoFrame src={draft.profile.photo} alt={draft.profile.fullName} />
+      ) : null}
     </header>
   );
 }

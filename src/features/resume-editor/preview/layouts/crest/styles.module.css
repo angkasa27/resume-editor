@@ -1,0 +1,127 @@
+/* Full-bleed: the band paints to the top/left/right paper edges; the body below
+   keeps the page margin. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  padding: var(--resume-gap-section) var(--resume-page-margin)
+    var(--resume-page-margin);
+}
+
+/* Sentence case at display size: after a band that shouts, the body should not. */
+.layout :global(.section-heading) {
+  font-size: calc(var(--resume-h2) * 1.35);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+/* Everything reads down the left edge: no field is pushed to the right margin,
+   including any shared rule that right-aligns a date or a meta line. */
+.layout :global(.item-row) {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.layout :global(.item-header-side),
+.layout :global(.item-row .meta),
+.layout :global(.item-header .meta) {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.layout :global(.item-title) {
+  font-weight: 700;
+}
+
+.layout :global(.item-date) {
+  text-align: left;
+}
+
+/* The band: solid accent to three paper edges, everything on it in the readable
+   on-accent colour. */
+.header :global(.crest-band) {
+  background: var(--resume-accent);
+  color: var(--resume-on-accent);
+  --resume-name-color: var(--resume-on-accent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.header :global(.crest-identity) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--resume-gap-item);
+  text-align: center;
+  padding: var(--resume-page-margin) var(--resume-page-margin)
+    var(--resume-gap-section);
+}
+
+.header :global(.header-photo) {
+  width: 84px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 50%);
+  overflow: hidden;
+  flex-shrink: 0;
+  /* A ring in the on-accent colour so the photo detaches from the band behind it
+     whatever hue the accent is. */
+  border: 2px solid color-mix(in srgb, var(--resume-on-accent) 65%, transparent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.15);
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-meta) * 0.92);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  --resume-headline-color: color-mix(
+    in srgb,
+    var(--resume-on-accent) 85%,
+    transparent
+  );
+}
+
+/* The strip: same band, second course, divided by a rule that runs the full
+   paper width because the border sits on this full-bleed block itself. */
+.header :global(.crest-contacts) {
+  border-top: 1px solid
+    color-mix(in srgb, var(--resume-on-accent) 30%, transparent);
+  padding: var(--resume-gap-item) var(--resume-page-margin);
+}
+
+.header :global(.contact-block) {
+  gap: var(--resume-gap-inner);
+}
+
+/* Spread edge to edge rather than clustered: with few contacts this reads as a
+   nav bar, and it still wraps to a second line when there are many. */
+.header :global(.crest-contacts .contact-line) {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--resume-gap-inner) var(--resume-gap-item);
+  width: 100%;
+}

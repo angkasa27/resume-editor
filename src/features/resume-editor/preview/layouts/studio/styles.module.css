@@ -88,7 +88,6 @@
 /* Name left, square photo right — the mirror of the shared photo-left header. */
 .header {
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
   gap: var(--resume-gap-section);
   --resume-name-color: var(--resume-text);

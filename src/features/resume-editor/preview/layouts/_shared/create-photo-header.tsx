@@ -3,6 +3,7 @@ import {
   type ContactPresentation,
 } from "@/features/resume-editor/preview/kit/contact-line";
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
+import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
 /**
  * The photo-left header shared by classic/inset/timeline/sidebar:
@@ -34,7 +35,7 @@ export function createPhotoHeader({
         <div className="header-body">
           <div className="name-block">
             <h1 className="name" data-testid="resume-preview-full-name">
-              {draft.profile.fullName}
+              <WrapOnSpace text={draft.profile.fullName} />
             </h1>
             {draft.profile.headline ? (
               <p className="headline">{draft.profile.headline}</p>

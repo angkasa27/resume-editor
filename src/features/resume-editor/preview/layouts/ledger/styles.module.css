@@ -1,0 +1,142 @@
+/* Monochrome by construction: nothing here paints a fill, so the accent is spent
+   on one thing only — the short rule under each section heading. Everything else
+   takes the text colour, which is what makes it read as a printed document. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  /* No gap: the spine has to start exactly where the header rule ends. The
+     columns below carry the air as their own padding-top instead, so the
+     border-right spans it and the two rules meet at a corner. */
+  gap: 0;
+  --resume-heading-color: var(--resume-text);
+  --resume-name-color: var(--resume-text);
+}
+
+.layout :global(.layout-body) {
+  display: grid;
+  grid-template-columns: minmax(0, 0.34fr) minmax(0, 1fr);
+  /* Columns own the space around the spine, so each contributes the same half. */
+  gap: 0;
+  flex: 1;
+}
+
+.layout :global(.layout-side),
+.layout :global(.layout-main) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  min-width: 0;
+  padding-top: var(--resume-gap-section);
+}
+
+/* The spine. A single hairline down the middle is the whole ornament budget. */
+.layout :global(.layout-side) {
+  border-right: 1px solid var(--resume-border);
+  padding-right: var(--resume-gutter);
+}
+
+.layout :global(.layout-main) {
+  padding-left: var(--resume-gutter);
+}
+
+.layout :global(.rail-block) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-item);
+}
+
+/* Uppercase, and underlined by a rule of one fixed length regardless of how long
+   the heading is — a full-width underline would restripe the page per section. */
+.layout :global(.section-heading) {
+  font-size: calc(var(--resume-h2) * 1.05);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.layout :global(.section-heading)::after {
+  content: "";
+  display: block;
+  width: 28px;
+  height: 2px;
+  margin-top: 6px;
+  background: var(--resume-accent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* The date sits under its title rather than across from it, so it must not read
+   as muted metadata in the right column — it reads as a line of the entry. */
+.layout :global(.item-date) {
+  color: var(--resume-text);
+  font-weight: 500;
+  text-align: left;
+}
+
+.layout :global(.item-header .meta) {
+  text-align: right;
+}
+
+/* The rail is a third of the page: the title/place split that reads well in the
+   main column squeezes the issuer into two words a line there, so stack it. */
+.layout :global(.layout-side .item-header) {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  min-width: 0;
+}
+
+.layout :global(.layout-side .item-header .meta) {
+  text-align: left;
+}
+
+.layout :global(.rich-text) {
+  color: var(--resume-muted);
+}
+
+/* Name takes the page's full width above the spine, with the rule under it
+   closing the identity block. */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--resume-gutter);
+  border-bottom: 1px solid var(--resume-border);
+  padding-bottom: var(--resume-gap-section);
+}
+
+/* Square, unrounded: the page's only other shapes are two straight rules. */
+.header :global(.header-photo) {
+  width: 96px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 0);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.45);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  /* The sample breaks the name across lines at a fixed measure rather than
+     running it edge to edge. */
+  max-width: 8em;
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.4);
+  font-weight: 400;
+  color: var(--resume-muted);
+  --resume-headline-color: var(--resume-muted);
+  margin-top: var(--resume-gap-item);
+}

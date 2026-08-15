@@ -9,8 +9,10 @@ import type { PreviewContactItem, PreviewRenderContext } from "../types";
 /**
  * `stacked` is the only variant that reads in a narrow rail. Icons are opt-in: they clash with
  * typographic layouts (academic) whose identity is unadorned text.
+ * `labeled` stacks too, but names each field ("Phone" over the number) instead of glyphing it —
+ * the directory look ledger needs, where the rail has no icons to lean on.
  */
-type ContactVariant = "inline" | "stacked";
+type ContactVariant = "inline" | "stacked" | "labeled";
 
 export type ContactPresentation = {
   variant: ContactVariant;
@@ -42,18 +44,27 @@ export function PreviewContactLine({
   context,
   className,
   presentation = DEFAULT_CONTACT_PRESENTATION,
+  only,
 }: {
   context: PreviewRenderContext;
   className?: string;
   presentation?: ContactPresentation;
+  /** Splits the block so a layout can head the two halves separately ("Details" / "Links"). */
+  only?: "details" | "links";
 }) {
   const { contactItems } = context;
-  const details = contactItems.filter((item) => item.kind !== "link");
-  const links = contactItems.filter((item) => item.kind === "link");
+  const labeled = presentation.variant === "labeled";
+  const details =
+    only === "links" ? [] : contactItems.filter((item) => item.kind !== "link");
+  const links =
+    only === "details"
+      ? []
+      : contactItems.filter((item) => item.kind === "link");
 
   const listClass = cn(
     "contact-line",
-    presentation.variant === "stacked" && "contact-line-stacked",
+    (presentation.variant === "stacked" || labeled) && "contact-line-stacked",
+    labeled && "contact-line-labeled",
     presentation.icons && "contact-line-iconic",
     className,
   );
@@ -67,6 +78,9 @@ export function PreviewContactLine({
               key={`${item.kind}-${item.value}-${index}`}
               className="contact-item"
             >
+              {labeled ? (
+                <span className="contact-label">{LABEL_BY_KIND[item.kind]}</span>
+              ) : null}
               <PreviewContactItemText item={item} icons={presentation.icons} />
             </li>
           ))}

@@ -2,6 +2,7 @@ import { PreviewContactLine } from "@/features/resume-editor/preview/kit/contact
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 
 import styles from "./styles.module.css";
+import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
 /* Photo left, name and contacts right, all inside a full-bleed gradient band. */
 export function AuroraHeader({ context }: LayoutHeaderProps) {
@@ -18,7 +19,7 @@ export function AuroraHeader({ context }: LayoutHeaderProps) {
         <div className="header-body">
           <div className="name-block">
             <h1 className="name" data-testid="resume-preview-full-name">
-              {draft.profile.fullName}
+              <WrapOnSpace text={draft.profile.fullName} />
             </h1>
             {draft.profile.headline ? (
               <p className="headline">{draft.profile.headline}</p>

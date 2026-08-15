@@ -51,6 +51,15 @@
    one, so source order alone decided the winner — which let banner's name fall
    back to --resume-accent and vanish into its own accent band. Layouts now set
    --resume-name-color on an ancestor and inheritance settles it. */
+/* Emitted by <WrapOnSpace> around a hyphenated word, so a title breaks at its
+   spaces instead of mid-surname ("Hammam / Al-Hakim", not "Hammam Al- / Hakim").
+   CSS alone cannot express this: a hyphen is a UAX#14 break opportunity and
+   Chromium — which renders both the preview and the PDF — keeps breaking there
+   under `word-break: keep-all`. */
+:where(.root) :global(.keep-word) {
+  white-space: nowrap;
+}
+
 :where(.root) :global(.name) {
   font-size: var(--resume-h1);
   font-weight: 700;
@@ -203,6 +212,23 @@
 
 :where(.root) :global(.contact-line-stacked .contact-item + .contact-item)::before {
   content: none;
+}
+
+/* Labelled: the field name sits over its value, so the rail reads as a
+   directory. Stacked already puts one item per line; this only re-stacks the
+   pair inside each item. */
+:where(.root) :global(.contact-line-labeled .contact-item) {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+:where(.root) :global(.contact-label) {
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  font-size: var(--resume-meta);
+  color: var(--resume-text);
 }
 
 /* Shortened labels fit, so only break a link as a last resort. */

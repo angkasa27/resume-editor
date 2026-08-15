@@ -1,0 +1,120 @@
+/* Full-bleed: the photo and the plate reach the top/left/right paper edges; the
+   body below keeps the page margin. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  padding: 0 var(--resume-page-margin) var(--resume-page-margin);
+}
+
+.layout :global(.detail-block) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-item);
+}
+
+/* Every heading is a filled tag. `align-self` because `.section` is a stretch
+   column — without it the badge would run the full measure and read as a bar. */
+.layout :global(.section-heading) {
+  align-self: flex-start;
+  background: var(--resume-secondary);
+  color: var(--resume-on-secondary);
+  /* Square corners everywhere: the plate, the photo and the badges are all cut
+     from the same rectangle, and one rounded edge breaks that. */
+  border-radius: 0;
+  padding: 0.3em 0.75em;
+  font-size: calc(var(--resume-meta) * 0.92);
+  letter-spacing: 0.1em;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Everything reads down the left edge: no field is pushed to the right margin,
+   including any shared rule that right-aligns a date or a meta line. */
+.layout :global(.item-row) {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.layout :global(.item-header-side),
+.layout :global(.item-row .meta),
+.layout :global(.item-header .meta) {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.layout :global(.item-title) {
+  font-weight: 700;
+}
+
+/* Tracked caption under the title, matching the badge's letterspacing so the
+   page has one voice for its small type. */
+.layout :global(.item-date) {
+  text-align: left;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: calc(var(--resume-meta) * 0.86);
+}
+
+/* Photo column sized by the picture itself; the plate stretches to match its
+   height, and the 6px gap is the only white between the two bleeding blocks. */
+.header :global(.masthead-band) {
+  display: grid;
+  grid-template-columns: minmax(0, 0.28fr) minmax(0, 1fr);
+  gap: 6px;
+  align-items: stretch;
+}
+
+.header :global(.header-photo) {
+  grid-column: 1;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  border-radius: var(--resume-photo-radius, 0);
+  overflow: hidden;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Column 2 when there is a photo, the full width when there isn't. */
+.header :global(.masthead-plate) {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: var(--resume-accent);
+  color: var(--resume-on-accent);
+  --resume-name-color: var(--resume-on-accent);
+  padding: var(--resume-page-margin);
+  min-width: 0;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.header :global(.masthead-plate:first-child) {
+  grid-column: 1 / -1;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.5);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.5);
+  font-weight: 400;
+  margin-top: var(--resume-gap-item);
+  --resume-headline-color: var(--resume-on-accent);
+}

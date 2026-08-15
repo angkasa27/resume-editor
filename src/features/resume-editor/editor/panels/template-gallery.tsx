@@ -61,13 +61,17 @@ export function TemplateGallery({
   const [pending, setPending] = useState<ResumeTemplatePreset | null>(null);
   const [filter, setFilter] = useState<FilterValue>("all");
 
+  // Sorted by the name on the card, so the grid reads alphabetically rather
+  // than in the curation order of the preset list — and so a chip only ever
+  // removes cards, never reshuffles the ones that stay.
   const visiblePresets = useMemo(
     () =>
-      filter === "all"
-        ? resumeTemplatePresets
-        : resumeTemplatePresets.filter((preset) =>
-            templateCategories(preset).includes(filter),
-          ),
+      resumeTemplatePresets
+        .filter(
+          (preset) =>
+            filter === "all" || templateCategories(preset).includes(filter),
+        )
+        .sort((a, b) => templateLabel(a).localeCompare(templateLabel(b))),
     [filter],
   );
 

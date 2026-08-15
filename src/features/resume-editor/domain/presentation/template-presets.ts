@@ -26,8 +26,9 @@ export type ResumeTemplatePreset = {
 };
 
 export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
-  // Curation rules: `secondary` only set for the 3 layouts that render it (modern-centered,
-  // sidebar, split) — elsewhere it'd be dead data getActiveTemplatePresetId still has to match.
+  // Curation rules: `secondary` only set for the layouts that render it (modern-centered,
+  // split, aurora, dossier, masthead) — elsewhere it'd be dead data
+  // getActiveTemplatePresetId still has to match.
   // `accent` usage varies per layout (band fill vs. highlighter vs. heading text). Density
   // follows layout structure (rails run tight, whitespace-led run airy), not taste.
 
@@ -64,48 +65,6 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#1f2937",
       fontFamilyId: "arial",
-      fontScale: "md",
-      spacing: "standard",
-      lineHeight: "standard",
-    },
-  },
-
-  // sidebar — accent band over a secondary-tinted rail. Two colour slots, so
-  // accent and secondary are siblings: same hue family, enough gap to read.
-  {
-    id: "sidebar-slate",
-    label: "Slate",
-    layoutId: "sidebar",
-    style: {
-      accent: "#334155",
-      secondary: "#475569",
-      fontFamilyId: "inter",
-      fontScale: "md",
-      spacing: "standard",
-      lineHeight: "standard",
-    },
-  },
-  {
-    id: "sidebar-forest",
-    label: "Forest",
-    layoutId: "sidebar",
-    style: {
-      accent: "#166534",
-      secondary: "#15803d",
-      fontFamilyId: "lato",
-      fontScale: "md",
-      spacing: "standard",
-      lineHeight: "standard",
-    },
-  },
-  {
-    id: "sidebar-lavender",
-    label: "Lavender",
-    layoutId: "sidebar",
-    style: {
-      accent: "#6d28d9",
-      secondary: "#7c3aed",
-      fontFamilyId: "inter",
       fontScale: "md",
       spacing: "standard",
       lineHeight: "standard",
@@ -234,45 +193,6 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // banner — accent is a full-bleed band behind white text, so every pick is
-  // deep enough to carry it. No secondary: banner never renders one.
-  {
-    id: "banner-royal",
-    label: "Royal",
-    layoutId: "banner",
-    style: {
-      accent: "#1d4ed8",
-      fontFamilyId: "inter",
-      fontScale: "md",
-      spacing: "standard",
-      lineHeight: "standard",
-    },
-  },
-  {
-    id: "banner-emerald",
-    label: "Emerald",
-    layoutId: "banner",
-    style: {
-      accent: "#047857",
-      fontFamilyId: "lato",
-      fontScale: "md",
-      spacing: "standard",
-      lineHeight: "standard",
-    },
-  },
-  {
-    id: "banner-charcoal",
-    label: "Charcoal",
-    layoutId: "banner",
-    style: {
-      accent: "#1f2937",
-      fontFamilyId: "roboto",
-      fontScale: "md",
-      spacing: "compact",
-      lineHeight: "standard",
-    },
-  },
-
   // split — secondary fills the full-height rail and accent is the name beside
   // it, so the two are set far enough apart to separate the columns.
   {
@@ -357,35 +277,6 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // spotlight — the rail is a gradient between accent and secondary, so both
-  // ends must be set and far enough apart to read as a gradient at all.
-  {
-    id: "spotlight-dusk",
-    label: "Dusk",
-    layoutId: "spotlight",
-    style: {
-      accent: "#4338ca",
-      secondary: "#0f172a",
-      fontFamilyId: "inter",
-      fontScale: "sm",
-      spacing: "compact",
-      lineHeight: "standard",
-    },
-  },
-  {
-    id: "spotlight-ember",
-    label: "Ember",
-    layoutId: "spotlight",
-    style: {
-      accent: "#b45309",
-      secondary: "#7f1d1d",
-      fontFamilyId: "roboto",
-      fontScale: "sm",
-      spacing: "compact",
-      lineHeight: "standard",
-    },
-  },
-
   // aurora — two soft colour circles at the top of the band, fading to paper
   // white. Both stay light: the name and contacts sit on them in dark text.
   {
@@ -414,13 +305,126 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+  // ledger — monochrome by construction: the accent only paints the short rule
+  // under each heading, so a near-black reads as intended rather than as a
+  // colour the layout forgot to use.
+  {
+    id: "ledger-graphite",
+    label: "Graphite",
+    layoutId: "ledger",
+    style: {
+      accent: "#111827",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "ledger-ink",
+    label: "Ink",
+    layoutId: "ledger",
+    style: {
+      accent: "#1e3a5f",
+      fontFamilyId: "georgia",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
+  // dossier — accent is heading text in the main column, secondary fills the
+  // right rail. Deep secondary, near-black accent: the rail is the only colour.
+  {
+    id: "dossier-navy",
+    label: "Navy",
+    layoutId: "dossier",
+    style: {
+      accent: "#111827",
+      secondary: "#152a4a",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "dossier-forest",
+    label: "Forest",
+    layoutId: "dossier",
+    style: {
+      accent: "#14261d",
+      secondary: "#1f3d2b",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+
+  // crest — accent is the whole band behind the photo, name and contact strip,
+  // so it must be dark enough for on-accent text to sit on it.
+  {
+    id: "crest-charcoal",
+    label: "Charcoal",
+    layoutId: "crest",
+    style: {
+      accent: "#2f2f2f",
+      fontFamilyId: "georgia",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "crest-burgundy",
+    label: "Burgundy",
+    layoutId: "crest",
+    style: {
+      accent: "#5b1f2a",
+      fontFamilyId: "georgia",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
+  // masthead — the two colours do different jobs: accent is the name plate
+  // (large, so it can be bright), secondary fills the heading badges (small, so
+  // it has to be dark enough to read white text at caption size).
+  {
+    id: "masthead-citrus",
+    label: "Citrus",
+    layoutId: "masthead",
+    style: {
+      accent: "#f7d949",
+      secondary: "#111827",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "masthead-cobalt",
+    label: "Cobalt",
+    layoutId: "masthead",
+    style: {
+      accent: "#2563eb",
+      secondary: "#0f172a",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
 export type TemplateCategoryId = (typeof templateCategoryIds)[number];
 
 /**
- * Categories hang off the layout, not the preset — all 28 presets share 12 layouts.
+ * Categories hang off the layout, not the preset — all 28 presets share 13 layouts.
  * A layout carries every category it honestly reads as, so the chips overlap.
  * Keying on PdfLayoutId makes a new layout a type error here.
  */
@@ -430,13 +434,16 @@ const layoutCategories: Record<
 > = {
   classic: ["ats"],
   academic: ["ats"],
+  // Two columns, so not an "ats" chip however plain it looks — the ATS scorer
+  // fails every two-column layout, and the chip must not promise otherwise.
+  ledger: ["professional"],
+  dossier: ["professional"],
+  crest: ["professional", "creative"],
+  masthead: ["creative"],
   "modern-centered": ["ats", "professional"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
-  sidebar: ["professional"],
-  banner: ["professional"],
   split: ["professional"],
-  spotlight: ["professional"],
   "bold-type": ["creative"],
   studio: ["creative"],
   aurora: ["creative"],

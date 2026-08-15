@@ -52,7 +52,7 @@ describe("LocalDraftStorage", () => {
 
   it("exports and re-imports a draft as the same contract", () => {
     const draft = createDefaultResumeDraft();
-    draft.pdfPresentation.layoutId = "sidebar";
+    draft.pdfPresentation.layoutId = "dossier";
     draft.pdfPresentation.fontScale = "lg";
     draft.pdfPresentation.lineHeight = "relaxed";
     draft.pdfPresentation.spacing = "airy";

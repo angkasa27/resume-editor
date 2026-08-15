@@ -19,9 +19,13 @@
 }
 
 /* Items sit off the rail's edge rather than butting straight against it, so
-   the label column reads as a margin note and not as a second text column. */
+   the label column reads as a margin note and not as a second text column.
+   `.skillsLine` is in here too: inset renders skills as one merged line rather
+   than an item list, so it misses the indent every other body gets and hangs a
+   notch left of the whole page. */
 .layout :global(.item-list),
-.layout :global([data-section="summary"] .rich-text) {
+.layout :global([data-section="summary"] .rich-text),
+.skillsLine {
   padding-left: var(--resume-indent);
 }
 
@@ -59,18 +63,26 @@
 }
 
 .skillsLine {
-  padding: var(--resume-gap-item) 0;
+  padding-top: var(--resume-gap-item);
+  padding-bottom: var(--resume-gap-item);
   color: var(--resume-muted);
   line-height: var(--resume-leading);
 }
 
 .header {
-  display: flex;
+  /* Same two tracks as `.section` (110px label rail + item gap), so the name,
+     headline and contacts start on the line the section content starts on and
+     the photo sits in the label rail. Columns are placed explicitly, so a
+     photo-less resume keeps the alignment instead of sliding left. */
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr);
+  gap: var(--resume-gap-item);
   align-items: center;
-  gap: var(--resume-gap-section);
 }
 
 .header :global(.header-photo) {
+  grid-column: 1;
+  justify-self: start;
   width: 72px;
   aspect-ratio: var(--resume-photo-aspect, 72 / 96);
   height: auto;
@@ -86,8 +98,11 @@
 }
 
 .header :global(.header-body) {
-  flex: 1;
+  grid-column: 2;
   min-width: 0;
+  /* The item lists indent off the rail; the header body must match or the name
+     hangs a notch left of every line under it. */
+  padding-left: var(--resume-indent);
   display: flex;
   flex-direction: column;
   gap: var(--resume-gap-header);

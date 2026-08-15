@@ -108,7 +108,13 @@
    smear the photo too). `secondary` falls back to `accent` when a preset leaves
    it unset, which degrades to a one-hue wash rather than a broken band. */
 .header :global(.aurora-band) {
-  display: flex;
+  /* Same two tracks as `.section` below (128px label gutter + gutter gap), so the
+     name, headline and contact pills start on the very line the section content
+     starts on — the photo parks in the label column where the section names go.
+     Columns are placed explicitly, so a resume with no photo keeps the alignment
+     instead of sliding the identity block into the gutter. */
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
   align-items: center;
   gap: var(--resume-gutter);
   background-color: #ffffff;
@@ -133,7 +139,7 @@
 }
 
 .header :global(.header-body) {
-  flex: 1;
+  grid-column: 2;
   min-width: 0;
   display: flex;
   flex-direction: column;
@@ -152,6 +158,8 @@
 }
 
 .header :global(.header-photo) {
+  grid-column: 1;
+  justify-self: start;
   width: 92px;
   aspect-ratio: var(--resume-photo-aspect, 3 / 4);
   height: auto;

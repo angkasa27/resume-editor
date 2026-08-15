@@ -159,7 +159,7 @@ describe("parse checks", () => {
     const classic = createDefaultResumeDraft();
     classic.pdfPresentation.layoutId = "classic";
     const sidebar = createDefaultResumeDraft();
-    sidebar.pdfPresentation.layoutId = "sidebar";
+    sidebar.pdfPresentation.layoutId = "dossier";
 
     expect(find(classic, "parse/layout")?.severity).toBe("ok");
     expect(find(sidebar, "parse/layout")?.severity).toBe("fail");

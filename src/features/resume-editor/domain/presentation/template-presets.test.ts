@@ -54,17 +54,18 @@ describe("resumeTemplatePresets", () => {
   });
 
   it("curates secondary only for the layouts that render it", () => {
-    // Only modern-centered (rule under the name), sidebar (rail tint), split
-    // (rail fill), spotlight (rail gradient) and aurora (header gradient) read
+    // Only modern-centered (rule under the name), split (rail fill), aurora
+    // (header gradient), dossier (right rail fill) and masthead (heading
+    // badges) read
     // --resume-secondary. Setting it anywhere else is data the page cannot
     // show, yet getActiveTemplatePresetId still matches on it — so an invisible
     // field would silently decide whether a template looks active.
     const RENDERS_SECONDARY = new Set([
       "modern-centered",
-      "sidebar",
       "split",
-      "spotlight",
       "aurora",
+      "dossier",
+      "masthead",
     ]);
     for (const preset of resumeTemplatePresets) {
       if (preset.style.secondary) {

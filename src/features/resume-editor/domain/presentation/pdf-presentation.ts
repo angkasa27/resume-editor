@@ -13,25 +13,30 @@ export { resumeFontIds, type ResumeFontId };
 
 export const pdfLayoutIds = [
   "classic",
-  "sidebar",
   "modern-centered",
   "timeline",
   "academic",
   "inset",
-  "banner",
   "split",
   "bold-type",
   "studio",
-  "spotlight",
   "aurora",
+  "ledger",
+  "dossier",
+  "crest",
+  "masthead",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
 /** Retired layout ids mapped to their closest relative, so a saved draft doesn't silently fall back to `classic`. */
 const retiredLayoutIds: Record<string, PdfLayoutId> = {
-  tinted: "sidebar",
+  tinted: "split",
   minimal: "academic",
   mosaic: "classic",
+  // Culled July 2026 — all three read as near-duplicates of what replaced them.
+  sidebar: "ledger",
+  spotlight: "split",
+  banner: "crest",
 };
 
 export const pdfFontScaleIds = ["sm", "md", "lg"] as const;
@@ -136,17 +141,18 @@ const indentPx: Record<PdfSpacingId, number> = {
 /** Page margin is per-layout, not a user knob: a rail layout needs it tight, a typographic one needs it wide. */
 const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   split: 9, // 0.36fr solid full-height rail — tightest; the rail needs the width
-  sidebar: 10, // 0.42fr rail bleeding left+bottom
-  spotlight: 10, // gradient rail bleeds like sidebar
   aurora: 14, // the label gutter needs the width back
   "bold-type": 12, // oversized type wants edge tension
   studio: 15, // chips and badges need room to sit apart
   classic: 14, // traditional letter feel
   timeline: 14, // date gutter already eats width
   inset: 14, // boxed items supply their own inner air
-  banner: 14, // body matches classic; the band owns its own padding
   "modern-centered": 16, // centered header needs side air or the name crowds the edge
   academic: 18, // the margin is the formality
+  dossier: 10, // 0.34fr solid rail on the right, same economics as split
+  masthead: 12, // badge headings already indent the body optically
+  crest: 14, // body matches classic; the band owns its own padding
+  ledger: 16, // the divider rule needs air on both sides to read as a spine
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */

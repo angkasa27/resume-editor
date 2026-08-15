@@ -3,12 +3,13 @@ import type {
   LayoutComponentProps,
 } from "@/features/resume-editor/preview/layout-types";
 
+import { ContactRailBlocks } from "../_shared/contact-rail";
 import { getSideRailColumn } from "../_shared/side-rail-sections";
-import { SidebarHeader } from "./header";
-import { sidebarItemViews } from "./items";
+import { LedgerHeader } from "./header";
+import { ledgerItemViews } from "./items";
 import styles from "./styles.module.css";
 
-function SidebarLayout({ slots }: LayoutComponentProps) {
+function LedgerLayout({ context, slots }: LayoutComponentProps) {
   const side: typeof slots.sections = [];
   const main: typeof slots.sections = [];
   for (const entry of slots.sections) {
@@ -16,10 +17,11 @@ function SidebarLayout({ slots }: LayoutComponentProps) {
   }
 
   return (
-    <div className={styles.layout}>
+    <div className={`${styles.layout} page-inset`}>
       {slots.header}
       <div className="layout-body">
         <div className="layout-side">
+          <ContactRailBlocks context={context} detailVariant="labeled" />
           {side.map(({ key, node }) => (
             <div key={key}>{node}</div>
           ))}
@@ -35,13 +37,13 @@ function SidebarLayout({ slots }: LayoutComponentProps) {
   );
 }
 
-export const sidebarLayout: PreviewLayoutDefinition = {
-  id: "sidebar",
-  label: "Sidebar",
+export const ledgerLayout: PreviewLayoutDefinition = {
+  id: "ledger",
+  label: "Ledger",
   description:
-    "Two-column resume with skills, languages, certifications, and references in a side rail.",
-  Component: SidebarLayout,
-  Header: SidebarHeader,
-  itemViews: sidebarItemViews,
+    "Monochrome two-column: a full-width name over a ruled spine, details left, history right.",
+  Component: LedgerLayout,
+  Header: LedgerHeader,
+  itemViews: ledgerItemViews,
   getColumn: getSideRailColumn,
 };

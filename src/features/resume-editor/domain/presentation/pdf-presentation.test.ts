@@ -85,16 +85,26 @@ describe("normalizePdfPresentation", () => {
   });
 
   it("passes through valid values", () => {
-    const result = normalizePdfPresentation({ layoutId: "sidebar" });
-    expect(result.layoutId).toBe("sidebar");
+    const result = normalizePdfPresentation({ layoutId: "dossier" });
+    expect(result.layoutId).toBe("dossier");
   });
 
   it("remaps a retired layout id to its successor rather than the default", () => {
-    // A draft saved on `tinted` must land on sidebar, not fall through to the
-    // classic default — the user picked a tinted surface and sidebar's rail
+    // A draft saved on `tinted` must land on split, not fall through to the
+    // classic default — the user picked a tinted surface and split's rail
     // still has one.
     expect(normalizePdfPresentation({ layoutId: "tinted" }).layoutId).toBe(
-      "sidebar",
+      "split",
+    );
+    // Culled July 2026: these three were real ids in shipped drafts.
+    expect(normalizePdfPresentation({ layoutId: "sidebar" }).layoutId).toBe(
+      "ledger",
+    );
+    expect(normalizePdfPresentation({ layoutId: "banner" }).layoutId).toBe(
+      "crest",
+    );
+    expect(normalizePdfPresentation({ layoutId: "spotlight" }).layoutId).toBe(
+      "split",
     );
   });
 

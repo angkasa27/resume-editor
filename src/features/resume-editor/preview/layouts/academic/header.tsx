@@ -2,6 +2,7 @@ import { PreviewContactLine } from "@/features/resume-editor/preview/kit/contact
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 
 import styles from "./styles.module.css";
+import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
 export function AcademicHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;
@@ -18,7 +19,7 @@ export function AcademicHeader({ context }: LayoutHeaderProps) {
       ) : null}
       <div className="name-block">
         <h1 className="name" data-testid="resume-preview-full-name">
-          {draft.profile.fullName}
+          <WrapOnSpace text={draft.profile.fullName} />
         </h1>
         {draft.profile.headline ? (
           <p className="headline">{draft.profile.headline}</p>

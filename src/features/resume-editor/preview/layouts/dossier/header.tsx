@@ -1,13 +1,17 @@
+import { PhotoFrame } from "@/features/resume-editor/preview/kit/section-kit";
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 
 import styles from "./styles.module.css";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
-/* Name only — the split layout renders contacts inside the colored rail. */
-export function SplitHeader({ context }: LayoutHeaderProps) {
+/* Photo and name in the wide column; no contacts — dossier renders those in the rail. */
+export function DossierHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;
   return (
-    <header className={`${styles.header} layout-header`} data-layout="split">
+    <header className={`${styles.header} layout-header`} data-layout="dossier">
+      {draft.profile.photo ? (
+        <PhotoFrame src={draft.profile.photo} alt={draft.profile.fullName} />
+      ) : null}
       <div className="name-block">
         <h1 className="name" data-testid="resume-preview-full-name">
           <WrapOnSpace text={draft.profile.fullName} />

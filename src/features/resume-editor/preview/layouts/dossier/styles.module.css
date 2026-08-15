@@ -1,0 +1,128 @@
+/* Full-bleed: the rail paints to the right/top/bottom paper edges while the main
+   column keeps the page margin. Mirror of split — the colour supports the page
+   from the outside edge instead of leading it. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr);
+  gap: 0;
+}
+
+.layout :global(.layout-main) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  min-width: 0;
+  padding: var(--resume-page-margin) var(--resume-gutter)
+    var(--resume-page-margin) var(--resume-page-margin);
+}
+
+.layout :global(.layout-side) {
+  background: var(--resume-secondary);
+  color: var(--resume-on-secondary);
+  --resume-text: var(--resume-on-secondary);
+  --resume-muted: color-mix(
+    in srgb,
+    var(--resume-on-secondary) 78%,
+    transparent
+  );
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  min-width: 0;
+  /* Starts well below the top edge: the sample lets the name breathe alone at
+     the top of the page, with the rail's first block landing beside the summary. */
+  padding: calc(var(--resume-page-margin) * 3) var(--resume-page-margin)
+    var(--resume-page-margin) var(--resume-gutter);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.rail-block) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-inner);
+}
+
+.layout :global(.layout-side .section-heading) {
+  /* A step above the item titles it heads. At the shared --resume-h3 both were
+     the same size and the rail had no hierarchy to read. */
+  font-size: calc(var(--resume-h2) * 1.05);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--resume-on-secondary);
+}
+
+.layout :global(.layout-side .item-title) {
+  font-size: var(--resume-body);
+  font-weight: 600;
+}
+
+.layout :global(.layout-side a),
+.layout :global(.layout-side .item-title) {
+  color: var(--resume-on-secondary);
+}
+
+.layout :global(.layout-side .contact-block) {
+  gap: var(--resume-gap-inner);
+}
+
+/* Sentence-case section headings at display size — the sample's headings read as
+   chapter titles, not as the uppercase labels the shared rule sets. */
+.layout :global(.layout-main .section-heading) {
+  font-size: calc(var(--resume-h2) * 1.3);
+  font-weight: 800;
+  text-transform: none;
+  letter-spacing: -0.01em;
+}
+
+/* Date under the title, set as a tracked caption so it separates from the bold
+   title line above it without another colour or rule. */
+.layout :global(.layout-main .item-date) {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: calc(var(--resume-meta) * 0.86);
+}
+
+.layout :global(.layout-main .item-title) {
+  font-weight: 700;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  /* Same step the page puts between sections, so the photo reads as separated
+     from the name by the document's own rhythm and not by an ad-hoc gap. */
+  gap: var(--resume-gap-section);
+}
+
+.header :global(.header-photo) {
+  width: 64px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 50%);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.1);
+  font-weight: 800;
+  --resume-name-color: var(--resume-text);
+}
+
+/* A tracked caption under the name, so the role reads as a subtitle rather than
+   competing with it at half the name's size. */
+.header :global(.headline) {
+  font-size: calc(var(--resume-meta) * 0.9);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  --resume-headline-color: var(--resume-muted);
+}

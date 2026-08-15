@@ -1,8 +1,10 @@
 import { commaJoin } from "@/features/resume-editor/preview/helpers/string";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 
-// Rail-only variants (sidebar, split): skills drop the `.meta` wrapper and languages drop
-// `.item-row` + guard empty proficiency, since the rail stacks item headers vertically.
+// Left-stacked variants: skills drop the `.meta` wrapper and languages drop `.item-row` +
+// guard empty proficiency. Used by the rails (split, dossier, ledger), which stack item
+// headers vertically, and by the layouts that put every field on the left edge with nothing
+// pushed to the right (crest, masthead).
 // Different DOM/CSS from the canonical `_shared/items` versions — do not swap those in.
 export function RailSkillsItem({ item }: { item: SectionItem<"skills"> }) {
   return (

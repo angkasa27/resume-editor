@@ -79,10 +79,10 @@ describe("resume editor store", () => {
 
       store.getState().savePdfPresentation({
         ...store.getState().draft.pdfPresentation,
-        layoutId: "sidebar",
+        layoutId: "dossier",
       });
 
-      expect(store.getState().draft.pdfPresentation.layoutId).toBe("sidebar");
+      expect(store.getState().draft.pdfPresentation.layoutId).toBe("dossier");
       expect(storage.save).toHaveBeenCalledTimes(1);
     });
 
@@ -100,7 +100,7 @@ describe("resume editor store", () => {
 
       store.getState().savePdfPresentation({
         ...store.getState().draft.pdfPresentation,
-        layoutId: "sidebar",
+        layoutId: "dossier",
       });
 
       expect(store.getState().redoStack).toHaveLength(0);
