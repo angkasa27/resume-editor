@@ -1,18 +1,7 @@
 /**
- * Generates landing-page screenshots:
- *   - public/templates/<id>.webp — each resume template, a different persona
- *   - public/builder.webp        — the editor (desktop canvas view)
- *
- * Reuses the PDF render path: it seeds a résumé draft into sessionStorage (the
- * same key the /resume-pdf page reads), navigates there, waits for
- * `data-pdf-ready`, restores page margins + forces an A4 page, and clips to the
- * `.resume-document` article.
- *
- * Requires the app to be running (dev or prod):
- *   pnpm dev          # in one terminal
- *   pnpm screenshots  # in another
- *
- * Override the target with SCREENSHOT_BASE_URL (default http://localhost:3000).
+ * Generates landing-page screenshots (public/templates/<id>.webp and public/builder.webp),
+ * reusing the /resume-pdf render path.
+ * Usage: pnpm dev && pnpm screenshots
  */
 import { mkdir } from "node:fs/promises";
 import path from "node:path";
@@ -38,9 +27,8 @@ const ul = (bullets: string[]) =>
   `<ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`;
 
 /**
- * The landing carousel is derived from the preset list, so a preset with no
- * persona would render as a broken image there. Fail here instead, where the
- * missing persona can actually be written.
+ * The landing carousel derives from the preset list, so a preset with no persona
+ * renders a broken image there — fail here instead, where it can be fixed.
  */
 function assertEveryPresetHasAPersona() {
   const covered = new Set(PERSONAS.map((p) => p.presetId));
@@ -150,11 +138,7 @@ function buildDraft(p: Persona): ResumeDraft {
   return draft;
 }
 
-/**
- * Forces exactly one A4 page so the clipped screenshot is portrait-proportioned
- * (runs in the browser). Layouts are full-bleed and own their content insets,
- * so no extra padding is applied here.
- */
+/** Forces exactly one A4 page so the clipped screenshot is portrait-proportioned (runs in the browser). */
 function shapeAsA4Page() {
   const el = document.querySelector<HTMLElement>(".resume-document");
   if (!el) return;
@@ -162,22 +146,16 @@ function shapeAsA4Page() {
   const paper = cs.getPropertyValue("--resume-paper-width").trim();
   el.style.boxSizing = "border-box";
   el.style.alignSelf = "flex-start";
-  // The page-break pass (preview/paginate-document.ts) pins an inline
-  // min-height of N whole pages, which would beat the crop height below and
-  // give a multi-page persona an N-page thumbnail.
+  // The pagination pass (paginate-document.ts) pins a min-height of N whole pages;
+  // clear it or a multi-page persona becomes an N-page thumbnail.
   el.style.minHeight = "0";
   if (paper) el.style.width = paper;
-  // Exactly one A4 page tall (210:297). Overflowing content is cropped so
-  // every screenshot is the same height.
+  // One A4 page tall (210:297); overflow is cropped so all screenshots match.
   el.style.height = `${el.offsetWidth * 1.41421}px`;
   el.style.overflow = "hidden";
 }
 
-/**
- * `SCREENSHOT_ONLY=ledger-ink,crest-charcoal` re-shoots just those presets. Adding
- * one template otherwise rewrites all ~36 webps, which buries the one that changed
- * in a binary diff nobody can review.
- */
+/** SCREENSHOT_ONLY=id1,id2 re-shoots just those presets — otherwise adding one template rewrites all ~36 webps. */
 function selectedPersonas() {
   const only = process.env.SCREENSHOT_ONLY?.split(",")
     .map((id) => id.trim())

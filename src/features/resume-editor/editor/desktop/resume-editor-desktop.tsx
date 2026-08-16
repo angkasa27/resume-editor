@@ -125,11 +125,8 @@ export function ResumeEditorDesktop() {
     setIsSidebarCollapsed(true);
   }
 
-  /**
-   * The single way a section gets opened — from a click on the paper, from the
-   * sidebar list, or from an Insights suggestion. Hidden sections are brought
-   * back first, otherwise the form would edit something the paper can't show.
-   */
+  /** The single way a section opens (paper click, list, or Insights). Hidden sections
+   * are revealed first, else the form edits what the paper can't show. */
   function focusSection(panel: EditorPanelKey) {
     if (needsSectionReveal(draft.sections, panel)) {
       setSectionVisibility(panel, true);

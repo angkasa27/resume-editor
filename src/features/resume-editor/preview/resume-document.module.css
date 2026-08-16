@@ -1,28 +1,24 @@
 .root {
-  /* Lines within the identity block. Not --resume-gap-item, which is the step
-     between separate items in a section. */
+  /* Lines within the identity block, not between items (that's --resume-gap-item). */
   --resume-gap-header: 3px;
   font-family: var(--resume-font);
   color: var(--resume-text);
   font-size: var(--resume-body);
   line-height: var(--resume-leading);
-  /* Full-bleed page: the root spans the whole sheet; a short resume still
-     fills one page so edge-to-edge rails/bands reach the bottom edge. */
+/* Full-bleed: the root spans the whole sheet, so edge-to-edge rails/bands reach the bottom edge. */
   display: flex;
   flex-direction: column;
   min-height: var(--resume-paper-height);
 }
 
-/* The layout component is always the root's first child — stretch it so
-   full-height decorative surfaces (Split/Sidebar rails) meet the page edge.
-   Later siblings (editor-only chrome like hidden-section pills) keep their
+/* Stretch the layout (always the root's first child) so full-height decorative
+   surfaces (Split/Sidebar rails) meet the page edge; later siblings keep their
    natural height. */
 .root > :global(*:first-child) {
   flex: 1 0 auto;
 }
 
-/* Shared content insets — layouts opt in per side instead of the root forcing
-   a uniform padding, so decorative surfaces can bleed to the paper edge. */
+/* Shared content insets — layouts opt in per side so decorative surfaces can bleed to the paper edge. */
 :where(.root) :global(.page-inset) {
   padding: var(--resume-page-margin);
 }
@@ -46,18 +42,13 @@
   overflow-wrap: anywhere;
 }
 
-/* Colour arrives through an inheriting custom property, not a competing rule.
-   A layout override (`.header :global(.name)`) has the SAME specificity as this
-   one, so source order alone decided the winner — which let banner's name fall
-   back to --resume-accent and vanish into its own accent band. Layouts now set
-   --resume-name-color on an ancestor and inheritance settles it. */
-/* Emitted by <WrapOnSpace> around a hyphen and the character after it, so a
-   title breaks at its spaces instead of mid-surname ("Maya / Dela-Cruz", not
-   "Maya Dela- / Cruz"). Only that run is pinned: pinning the whole word
-   would also swallow `overflow-wrap` and take away the emergency break for a
-   hyphenated compound too long for its column. CSS alone cannot express this:
-   a hyphen is a UAX#14 break opportunity and Chromium — which renders both the
-   preview and the PDF — keeps breaking there under `word-break: keep-all`. */
+/* Colour arrives via an inheriting custom property: a layout override has the
+   same specificity, so source order alone picked the winner and banner's name
+   fell back to --resume-accent. Ancestors set --resume-name-color instead. */
+/* Emitted by <WrapOnSpace> around a hyphen and the next char, so a title breaks
+   at spaces, not mid-surname. Only that run is pinned — pinning the whole word
+   would swallow `overflow-wrap`. CSS can't express this: a hyphen is a UAX#14
+   break opportunity and Chromium keeps breaking there under keep-all. */
 :where(.root) :global(.keep-word) {
   white-space: nowrap;
 }
@@ -69,9 +60,7 @@
   letter-spacing: -0.02em;
   color: var(--resume-name-color, var(--resume-accent));
   margin: 0;
-  /* The name is the one field that must never be lost: a single token longer
-     than the line would otherwise run off the paper edge. Only overflow breaks
-     it — normal names wrap at spaces untouched. */
+  /* The name must never run off the paper edge; only overflow breaks it — normal names wrap at spaces. */
   overflow-wrap: anywhere;
 }
 
@@ -82,8 +71,7 @@
   min-width: 0;
 }
 
-/* Sized off the name, not the body ramp — at --resume-h3 it reads as a caption
-   beside it. Full-strength colour: a softened grey turns to mud on a band. */
+/* Sized off the name, not the body ramp; full-strength colour so it doesn't turn to mud on a band. */
 :where(.root) :global(.headline) {
   font-size: calc(var(--resume-h1) * 0.52);
   font-weight: 500;
@@ -92,8 +80,7 @@
   margin: 0;
 }
 
-/* Same inheriting-property hand-off as `.name`, for the same reason: a layout's
-   `.layout :global(.section-heading)` override ties this rule on specificity. */
+/* Same inheriting-property hand-off as `.name` — a layout override ties this rule on specificity. */
 :where(.root) :global(.section-heading) {
   font-size: var(--resume-h2);
   font-weight: 700;
@@ -119,8 +106,7 @@
 :where(.root) :global(.meta) {
   color: var(--resume-muted);
   font-size: var(--resume-meta);
-  /* A long unbreakable token (an email, a credential id) otherwise spills out
-     of a narrow column — visible as reference emails escaping the side rail. */
+  /* Long unbreakable tokens otherwise spill out of a narrow column. */
   overflow-wrap: break-word;
 }
 
@@ -142,21 +128,17 @@
   display: inline;
 }
 
-/* Inline separator dots live in CSS so layouts can stack items instead. The
-   spacing is margin, not part of `content`, so the dot sits evenly between
-   items rather than glued to the preceding one. */
+/* Separator dots live in CSS so layouts can stack items; spacing is margin, not
+   part of `content`, so the dot sits evenly between items. */
 :where(.root) :global(.contact-line .contact-item + .contact-item)::before {
   content: "•";
   margin-inline: 0.45em;
 }
 
-/* Links read in the same colour as the rest of the contact block. Muting them
-   fought every coloured surface: on a band the grey either lost a source-order
-   coin-flip against the layout's override or won it and rendered near-illegible
-   against the accent. One colour, no override needed, no contrast trap. */
+/* Links keep the contact block's colour: a muted grey fought every coloured
+   surface — one colour, no override, no contrast trap. */
 
-/* Icons take the text's own colour, so they inherit whatever surface they land
-   on with no per-layout override. Sized and nudged to the cap band, not 1em. */
+/* Icons take the text's own colour, so they inherit whatever surface they land on. */
 :where(.root) :global(.contact-icon) {
   display: inline-block;
   width: 0.875em;
@@ -184,9 +166,8 @@
   min-width: 0;
 }
 
-/* Bind each icon to its own text. Without this the anchor stays inline, so a
-   link too long for its column wraps after the glyph and strands it alone on
-   the line above. The text still breaks internally via min-width: 0. */
+/* Bind each icon to its own text: an inline anchor would wrap after the glyph
+   and strand it alone on the line above; the text still breaks via min-width: 0. */
 :where(.root) :global(.contact-line-iconic .contact-item > a),
 :where(.root) :global(.contact-line-iconic .contact-item > span) {
   display: inline-flex;
@@ -194,17 +175,15 @@
   min-width: 0;
 }
 
-/* The flex child <span> has min-width:auto by default, which forces its parent
-   inline-flex container as wide as the URL text.  Without min-width:0 the text
-   overflows the narrow 0.36fr rail instead of wrapping. */
+/* The flex child <span> has min-width: auto by default, forcing its parent
+   inline-flex container as wide as the URL text; min-width: 0 lets it wrap in a narrow rail. */
 :where(.root) :global(.contact-line-iconic .contact-item > a > span),
 :where(.root) :global(.contact-line-iconic .contact-item > span > span) {
   min-width: 0;
   overflow-wrap: break-word;
 }
 
-/* Stacked: one contact per line. The narrow rails need this — an inline run of
-   emails and URLs has nowhere to wrap and breaks mid-word. */
+/* Stacked: one contact per line — an inline run of emails/URLs has nowhere to wrap in narrow rails. */
 :where(.root) :global(.contact-line-stacked) {
   display: flex;
   flex-direction: column;
@@ -220,9 +199,7 @@
   content: none;
 }
 
-/* Labelled: the field name sits over its value, so the rail reads as a
-   directory. Stacked already puts one item per line; this only re-stacks the
-   pair inside each item. */
+/* Labelled: the field name sits over its value; stacked already puts one item per line. */
 :where(.root) :global(.contact-line-labeled .contact-item) {
   flex-direction: column;
   align-items: flex-start;
@@ -261,8 +238,7 @@
   flex-direction: column;
   gap: var(--resume-gap-inner);
   min-width: 0;
-  /* With zero physical PDF margins, page breaks land inside section gaps
-     instead of mid-item so content keeps breathing room at page edges. */
+  /* With zero physical PDF margins, page breaks land in section gaps, not mid-item. */
   break-inside: avoid;
 }
 
@@ -283,11 +259,9 @@
 
 :where(.root) :global(.item-header) {
   display: grid;
-  /* `fit-content(38%)` rather than `auto`: an `auto` track takes max-content, so
-     a long organisation name on the right held its full width and forced the
-     title — the only flexible track — to wrap one word per line. Short content
-     (a date) still takes exactly the width it needs; anything longer caps at
-     38% and wraps there, so both columns break instead of only the title. */
+  /* `fit-content(38%)`, not `auto`: an auto track takes max-content and forces
+     the title — the only flexible track — to wrap one word per line; both
+     columns break instead. */
   grid-template-columns: minmax(0, 1fr) fit-content(38%);
   align-items: start;
   gap: var(--resume-gap-item);

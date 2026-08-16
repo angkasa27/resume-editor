@@ -14,11 +14,7 @@ const extraLinkFormSchema = z
   })
   .strict();
 
-/**
- * Form-only profile schema: re-applies the strict email + link-URL format
- * checks on top of the lenient persisted `profileSchema`, so the editor shows
- * "invalid email/URL" errors without ever blocking the save.
- */
+/** Form-only: re-applies strict email/URL checks on the lenient `profileSchema`, so the editor flags errors without ever blocking the save. */
 export const profileFormSchema = profileSchema.extend({
   email: emailField("Email address"),
   extraLinks: z.array(extraLinkFormSchema),

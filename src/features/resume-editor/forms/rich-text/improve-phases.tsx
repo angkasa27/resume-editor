@@ -7,9 +7,7 @@ import { Spinner } from "@/components/ui/spinner";
 import { postJson } from "@/lib/api-client";
 import { useRotatingMessage } from "@/features/resume-editor/editor/shared/use-rotating-message";
 
-// The loading spinner and before/after diff, shared by every surface that
-// rewrites content: the per-field "Improve with AI" dialog and the Insights
-// "tailor to this job" flow.
+// Loading spinner and before/after diff, shared by every surface that rewrites content.
 
 const PROGRESS_MESSAGES = [
   "Reading your content…",

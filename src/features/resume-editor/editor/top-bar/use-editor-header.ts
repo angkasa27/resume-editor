@@ -13,23 +13,18 @@ type EditorHeaderControls = {
   canRedo: boolean;
   onUndo: () => void;
   onRedo: () => void;
-  /** The top bar's Download PDF action. */
   onExportPdf: () => void;
   isExportingPdf: boolean;
   /** Behind the Download PDF split menu. */
   onExportJson: () => void;
 };
 
-/**
- * Publishes an editor page's header controls to the shared store so the persistent top bar
- * (in `app/editor/layout.tsx`) can drive undo/redo, save indicator, and Download PDF. Keeping
- * the bar in the layout lets the Canvas/Classic tab pill animate across navigation.
- */
+/** Publishes the page's header controls to the shared store for the persistent top
+ * bar (in `app/editor/layout.tsx`) — keeping it there lets the tab pill animate. */
 export function useEditorHeader(controls: EditorHeaderControls) {
   const setControls = useEditorHeaderStore((s) => s.setControls);
 
-  // Handler identities change every render; keep them behind stable refs so the
-  // stored controls don't need re-publishing on each keystroke.
+  // Handler identities change every render; keep them behind stable refs.
   const onUndoRef = useRef(controls.onUndo);
   const onRedoRef = useRef(controls.onRedo);
   const onExportPdfRef = useRef(controls.onExportPdf);
@@ -41,9 +36,8 @@ export function useEditorHeader(controls: EditorHeaderControls) {
     onExportJsonRef.current = controls.onExportJson;
   });
 
-  // Handlers are read through refs, so only the export *flag* belongs in the
-  // dependency list — re-publishing on every render would re-render the layout
-  // for nothing.
+  // Handlers go through refs, so only the export flag belongs in the deps list —
+  // re-publishing every render would re-render the layout for nothing.
   const isExportingPdf = controls.isExportingPdf;
 
   useEffect(() => {

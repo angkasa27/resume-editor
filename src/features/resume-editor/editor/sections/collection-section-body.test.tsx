@@ -30,9 +30,8 @@ describe("CollectionSectionBody autosave", () => {
   });
 
   it("does not resurrect a deleted item from its leftover form slot", async () => {
-    // A removed card stays mounted through its exit animation and its date fields
-    // write back into the spliced-out index; normalizing that partial used to
-    // rebuild it as a blank item.
+    // A removed card stays mounted through its exit animation, and its fields write
+    // back into the spliced-out index — normalizing used to resurrect it as a blank item.
     const user = userEvent.setup();
     const onSave = vi.fn();
     const draft = createDefaultResumeDraft();
@@ -59,8 +58,7 @@ describe("CollectionSectionBody autosave", () => {
 
   it("collapses every item once a drag starts, not just the dragged one", async () => {
     // Mixed row heights make the swap preview unreadable. Safe only because the dragged
-    // row moves to a DragOverlay — in the list its layout origin would shift as the
-    // rows above it collapse.
+    // row is in a DragOverlay — its list slot collapses under it.
     const user = userEvent.setup();
     const onSave = vi.fn();
     const draft = createDefaultResumeDraft();

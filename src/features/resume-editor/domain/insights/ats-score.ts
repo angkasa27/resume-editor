@@ -12,13 +12,8 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { extractBullets, stripRichText } from "./extract-text";
 import type { JobMatchResult } from "./match-keywords";
 
-/**
- * A deterministic model of what applicant tracking software actually does to a
- * resume, in the order it does it: parse the file → locate the sections →
- * extract the fields → (recruiter side) read the content → match it to a req.
- *
- * Every check here is computed locally. Nothing in this module calls a model.
- */
+/** Deterministic model of what ATS software does, in order: parse → sections → fields → content → match.
+ *  Every check is computed locally; nothing here calls a model. */
 export const ATS_CATEGORIES = [
   "parse",
   "structure",
@@ -43,7 +38,7 @@ export type Suggestion = {
   category: AtsCategory;
   severity: Severity;
   message: string;
-  /** The actual offending strings — the difference between a complaint and a to-do list. */
+  /** The offending strings behind the complaint. */
   evidence?: string[];
   fix?: { panel: EditorPanelKey };
 };
@@ -93,9 +88,7 @@ type AtsCheck = {
   run: (ctx: AtsContext) => CheckOutcome;
 };
 
-// ---------------------------------------------------------------------------
 // Context — every derived value the checks share, computed once.
-// ---------------------------------------------------------------------------
 
 type DatedEntry = {
   /** Human label for evidence, e.g. "Engineer at Acme". */
@@ -206,9 +199,7 @@ function buildContext(
   };
 }
 
-// ---------------------------------------------------------------------------
 // Shared helpers
-// ---------------------------------------------------------------------------
 
 /** Cap evidence so a badly broken resume doesn't render a wall of text. */
 const EVIDENCE_LIMIT = 4;
@@ -247,16 +238,11 @@ function isReadableDate(value: string): boolean {
 /** Milliseconds → whole months, for gap detection. */
 const MS_PER_MONTH = 1000 * 60 * 60 * 24 * 30.44;
 
-// ---------------------------------------------------------------------------
 // Parse — can the machine read the file at all?
-// ---------------------------------------------------------------------------
 
 type LayoutVerdict = { status: CheckStatus; message?: string };
 
-/**
- * Column count is the single biggest parse risk: a two-column layout is read
- * left-to-right across both columns by most parsers, interleaving the text.
- */
+/** Two-column layouts are the biggest parse risk: parsers read straight across both columns. */
 const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   classic: { status: "pass" },
   timeline: { status: "pass" },
@@ -379,9 +365,7 @@ const PARSE_CHECKS: AtsCheck[] = [
   },
 ];
 
-// ---------------------------------------------------------------------------
 // Structure — can it tell which block is which section?
-// ---------------------------------------------------------------------------
 
 const STRUCTURE_CHECKS: AtsCheck[] = [
   {
@@ -394,8 +378,7 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
     fix: { panel: "workExperience" },
     run: (ctx) => {
       const { sections } = ctx.draft;
-      // Visible-but-blank is the same as absent once it reaches the parser, so
-      // both are checked — a Skills heading with no skills under it is nothing.
+      // Visible-but-blank equals absent to a parser — a Skills heading with no skills is nothing.
       const verdict = (
         label: string,
         section: { visible: boolean },
@@ -446,9 +429,8 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
       "A role needs a title, an employer and a start date to be indexed as a job. Without all three it will not count toward your years of experience.",
     fix: { panel: "workExperience" },
     run: (ctx) => {
-      // Every collection section holds at least one row (schema `min(1)`), so a
-      // resume with "no roles" is really one blank row — which must still fail,
-      // not fall through to `na`.
+      // Sections always hold ≥1 row (schema `min(1)`), so "no roles" is one blank row
+      // that must still fail, not fall through to `na`.
       const items = ctx.draft.sections.workExperience.items;
       const incomplete = items
         .map((item) => {
@@ -508,11 +490,9 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
   },
 ];
 
-// ---------------------------------------------------------------------------
 // Contact & dates — can it extract structured fields?
-// ---------------------------------------------------------------------------
 
-// Deliberately permissive: this flags obvious typos, it is not RFC 5322.
+// Deliberately permissive: flags obvious typos, not RFC 5322.
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@.]+(?:\.[^\s@.]+)+$/;
 
 const CONTACT_CHECKS: AtsCheck[] = [
@@ -692,9 +672,7 @@ const CONTACT_CHECKS: AtsCheck[] = [
   },
 ];
 
-// ---------------------------------------------------------------------------
 // Content — will a human keep reading once it parses?
-// ---------------------------------------------------------------------------
 
 const ACTION_VERBS = new Set([
   "led", "built", "shipped", "drove", "owned", "architected", "designed",
@@ -752,9 +730,8 @@ function firstWord(text: string): string {
   return (text.match(/[a-zA-Z][a-zA-Z'-]*/)?.[0] ?? "").toLowerCase();
 }
 
-// The ideal band, and the point past which a bullet is actually flagged. They
-// differ on purpose — 25-28 words is long but not wrong, so it is not worth a
-// warning — but every string below quotes the number it is really using.
+// The ideal band and the flag point differ on purpose (25-28 words is long but
+// not wrong), but every copy below quotes the number it actually uses.
 const IDEAL_MIN_WORDS = 8;
 const IDEAL_MAX_WORDS = 24;
 const TOO_LONG_WORDS = 28;
@@ -843,8 +820,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
       if (offenders.length === 0) return { status: "pass" };
       const ratio = 1 - offenders.length / ctx.bullets.length;
       return {
-        // Floor at `warn`: the copy below names offenders, so "pass" would
-        // render "Bullets are a readable length" directly above the bad ones.
+        // Floor at `warn`: "pass" would render "readable length" above the named offenders.
         status: ratio >= 0.4 ? "warn" : "fail",
         message:
           short.length >= long.length
@@ -942,8 +918,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
             ? 1.2
             : 1;
 
-      // ponytail: item-count heuristic, not a real layout measurement. Swap for
-      // the paginator's actual page count if this proves off in practice.
+      // ponytail: item-count heuristic, not a real measurement; swap for the paginator's page count if off.
       const pages =
         ((ctx.visibleItemCount * 18 + ctx.bullets.length * 6 + 60) *
           fontFactor *
@@ -969,9 +944,7 @@ const CONTENT_CHECKS: AtsCheck[] = [
   },
 ];
 
-// ---------------------------------------------------------------------------
 // Job match — how this resume scores against one specific req.
-// ---------------------------------------------------------------------------
 
 const JOB_MATCH_CHECKS: AtsCheck[] = [
   {
@@ -981,8 +954,7 @@ const JOB_MATCH_CHECKS: AtsCheck[] = [
     pass: "You cover most of the job's key terms.",
     message: "You're missing terms the job description leans on.",
     run: (ctx) => {
-      // No keywords means extraction came back empty — there is nothing for the
-      // user to fix, so this must not drag the score down.
+      // No keywords = empty extraction; nothing for the user to fix, so don't drag the score.
       if (!ctx.jobMatch || ctx.jobMatch.keywords.length === 0)
         return { status: "na" };
       const status = byRatio(ctx.jobMatch.coverage, 0.75, 0.5);
@@ -1025,9 +997,7 @@ const ALL_CHECKS: AtsCheck[] = [
   ...JOB_MATCH_CHECKS,
 ];
 
-// ---------------------------------------------------------------------------
 // Scoring
-// ---------------------------------------------------------------------------
 
 const STATUS_VALUE: Record<Exclude<CheckStatus, "na">, number> = {
   pass: 1,
@@ -1060,8 +1030,7 @@ export function computeAtsScore(
   const scoredCategories = ATS_CATEGORIES.filter((category) =>
     results.some((r) => r.check.category === category),
   );
-  // Categories that scored nothing (no JD) drop out, so the rest are rescaled to
-  // sum to 100 — otherwise the UI's weight labels wouldn't add up to the score.
+  // Categories with no checks (no JD) drop out; the rest rescale to 100 so the UI weight labels add up.
   const liveWeight = scoredCategories.reduce(
     (sum, category) => sum + CATEGORY_WEIGHTS[category],
     0,
@@ -1106,7 +1075,6 @@ export function computeAtsScore(
         ? check.pass
         : (outcome.message ?? check.message),
     ...(outcome.evidence?.length ? { evidence: outcome.evidence } : {}),
-    // A passing check has nothing to fix.
     ...(check.fix && outcome.status !== "pass" ? { fix: check.fix } : {}),
   }));
 

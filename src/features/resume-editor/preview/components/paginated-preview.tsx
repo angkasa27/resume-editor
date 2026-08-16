@@ -8,12 +8,9 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import type { EditorPanelKey } from "@/features/resume-editor/domain/sections/section-metadata";
 
 /**
- * The editor's copy of the paper, laid out in pages by the same pass the export
- * runs — so a break the user sees here is the break they get in the PDF, rather
- * than a second implementation kept in sync by hand.
- *
- * No debounce of its own: the store already commits on a 500ms debounce (see
- * SAVE-FLOW.md), so `draft` changes at most that often while typing.
+ * The editor's copy of the paper, laid out by the same pass the export runs, so
+ * a break seen here is the break in the PDF. No debounce of its own: the store
+ * already commits on a 500ms debounce (SAVE-FLOW.md).
  */
 export function PaginatedPreview({
   draft,
@@ -31,21 +28,17 @@ export function PaginatedPreview({
   useDocumentPagination(
     hostRef,
     draft,
-    // Re-rendering here is safe and intended, unlike on the PDF page: React
-    // leaves the pass's spacers alone (they are not its nodes), and the markers
-    // need the count. The setter bails when the count is unchanged, so a pass
-    // that shifts nothing costs no render.
+    // Re-rendering here is safe and intended: the setter bails when the count
+    // is unchanged, so a pass that shifts nothing costs no render.
     useCallback((next: number) => setPageCount(next), []),
   );
 
   return (
     <div ref={hostRef}>
-      {/* Keyed on the layout so switching one rebuilds the document instead of
-          reconciling into it. The pass's spacers are raw DOM nodes React does
-          not own: reconciling a *different* layout's component tree around them
-          leaves them stranded in containers they were never measured against,
-          which is why a layout change produced broken breaks that a reload
-          fixed. A remount throws the whole subtree — spacers included — away. */}
+      {/* Keyed on the layout so switching one remounts the document: the pass's
+          spacers are raw DOM nodes React does not own, and reconciling a
+          different layout's tree around them strands them in unmeasured
+          containers. */}
       <ResumeDocument
         key={layoutId}
         draft={draft}

@@ -243,9 +243,8 @@ function ImproveWithAiBody({
 }
 
 // ─── Convenience wrapper ──────────────────────────────────────────────────────
-// Bundles RichTextEditor + ImproveWithAiDialog into a single drop-in component
-// so any form that has a richText field can opt-in to AI improvement without
-// duplicating the open-state boilerplate.
+// Bundles RichTextEditor + ImproveWithAiDialog so any richText field can opt-in
+// to AI improvement without duplicating open-state boilerplate.
 
 type RichTextEditorWithImproveProps = {
   value: string;

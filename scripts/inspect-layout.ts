@@ -1,15 +1,9 @@
 /**
- * Renders one real draft through /resume-pdf per layout and reports what the
- * pagination pass actually did: every inserted spacer, and every block that
- * landed in a page's margin band.
- *
- * Unlike check-pagebreak.ts this takes a *file* of real content rather than a
- * synthesised one, because the failures worth chasing come from real item
- * shapes (a work entry with nine bullets, a publication title that wraps to
- * eight lines) that a generated draft does not reproduce.
+ * Renders one real draft through /resume-pdf per layout and reports every inserted
+ * spacer and margin-band violation (real item shapes, unlike generated drafts).
  *
  *   pnpm tsx scripts/inspect-layout.ts <draft.json> [layout,layout,...]
- *   SHOTS=1 pnpm tsx scripts/inspect-layout.ts ...   # also write /tmp/layout/<id>.png
+ *   SHOTS=1 ... # also write /tmp/layout/<id>.png
  */
 import { readFileSync, mkdirSync } from "node:fs";
 
@@ -54,9 +48,8 @@ async function main() {
       ({ key, value }) => window.sessionStorage.setItem(key, value),
       { key: RESUME_PDF_SESSION_STORAGE_KEY, value: exportResumeDraft(draft) },
     );
-    // esbuild (via tsx) compiles named functions with a `__name` helper that
-    // only exists in the Node bundle, so anything it touches throws in the page.
-    // Injected as a source string, which esbuild does not rewrite.
+    // esbuild (via tsx) wraps named functions in a Node-only `__name` helper that
+    // throws in the page; inject it as a source string so esbuild can't rewrite it.
     await page.evaluateOnNewDocument("globalThis.__name = (fn) => fn;");
     await page.goto(new URL("/resume-pdf", ORIGIN).toString(), {
       waitUntil: "networkidle0",
@@ -64,8 +57,7 @@ async function main() {
     });
     await page.waitForSelector('[data-pdf-ready="true"]', { timeout: 30_000 });
 
-    // Inlined, not a named function: esbuild's keepNames wraps declared
-    // functions in a __name() helper that does not exist in the page.
+    // Inlined, not a named function: keepNames would wrap it in a Node-only __name() helper.
     const report = await page.evaluate(() => {
   const article = document.querySelector<HTMLElement>(".resume-document");
   if (!article) return null;

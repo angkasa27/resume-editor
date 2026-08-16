@@ -17,8 +17,7 @@ import { cn } from "@/lib/utils";
 import { motionTokens } from "@/lib/motion-tokens";
 import { BuilderFrame } from "./builder-showcase";
 import { KineticText } from "./kinetic-text";
-// Shared landing entrance vocabulary — keeps the hero in lockstep with the rest
-// of the page's reveals (single source of timing/easing).
+// Shared landing entrance vocabulary — single source of timing/easing.
 import { blurUp as item, staggerContainer as container } from "./reveal";
 
 const GITHUB_URL = "https://github.com/angkasa27/resummme";
@@ -33,23 +32,21 @@ export function Hero() {
     offset: ["start start", "end start"],
   });
 
-  // Scroll-linked transforms — tamed magnitudes, desktop-only (see `parallax`).
-  // Frame tilts back + scales down, flattening in.
+  // Scroll-linked (desktop-only): frame tilts back + scales down, flattening in.
   const rotateX = useTransform(scrollYProgress, [0, 0.65], [12, 0]);
   const scale = useTransform(scrollYProgress, [0, 0.65], [0.85, 1]);
   // The frame rises up (faster than scroll) over the copy.
   const frameY = useTransform(scrollYProgress, [0, 1], ["15%", "-12%"]);
   const contentFrameY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
-  // Entrance fades run everywhere (except reduced-motion); scroll-linked
-  // parallax/tilt only on desktop, where it's smooth and not jank-prone.
+  // Entrances run everywhere (except reduced-motion); parallax/tilt only on
+  // desktop, where it's smooth and not jank-prone.
   const entrance = !reduce;
   const parallax = !reduce && !isMobile;
   const itemVariants = entrance ? item : undefined;
 
   return (
     <section ref={ref} className="relative">
-      {/* Copy — previous hero padding, no scroll fade */}
       <div className="relative z-10 flex flex-col items-center gap-6 px-6 pt-24 text-center sm:pt-32 md:pt-48">
         <HeroBackdrop scrollYProgress={scrollYProgress} animated={parallax} />
 
@@ -126,7 +123,7 @@ export function Hero() {
         </motion.div>
       </div>
 
-      {/* Builder frame — previous showcase layout, rises up to cover the copy */}
+      {/* Builder frame — rises up to cover the copy */}
       <motion.div
         style={parallax ? { y: frameY } : undefined}
         className="relative z-20 px-6"

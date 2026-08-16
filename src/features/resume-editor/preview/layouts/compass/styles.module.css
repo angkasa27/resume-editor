@@ -2,9 +2,8 @@
   display: flex;
   flex-direction: column;
   gap: var(--resume-gap-section);
-  /* One number for the hanging glyph's width plus its gap, so the heading text
-     and every line of body under it share the same left edge. Derived from the
-     heading's own size — the glyph is 1em of *that*, and computing the indent
+  /* One number for the glyph's width plus its gap, so the heading text and body
+     share the same left edge. Derived from the heading's own size — computing
      from the body's 1em left the content a few pixels short. */
   --compass-heading: calc(var(--resume-h2) * 1.15);
   --compass-indent: calc(var(--compass-heading) + 10px);
@@ -32,9 +31,8 @@
   gap: var(--resume-gap-inner);
 }
 
-/* The glyph hangs in the margin and the heading text sets the real left edge —
-   deliberately out of line with the icon, so the icons read as a marginal index
-   down the page rather than as part of the text column. */
+/* The glyph hangs in the margin and the heading text sets the real left edge,
+   so the icons read as a marginal index, not part of the text column. */
 .layout :global(.section-heading) {
   display: flex;
   align-items: center;
@@ -126,11 +124,9 @@
   object-fit: cover;
 }
 
-/* The columns below start at a fixed edge, so a name that wrapped would push
-   them down by a whole line. Cropping it is worse: the name is the one field
-   on the page that must never be lost, so it wraps instead and the extra line
-   simply drops both columns together. `line-height` is raised off the shared
-   1.1 so the last line's descenders — the tail of a `g` — aren't clipped. */
+/* A name that wrapped would push the columns below down a whole line; cropping
+   is worse — the name must never be lost — so it wraps and the extra line drops
+   both columns together. `line-height` is raised so descenders aren't clipped. */
 .header :global(.name) {
   font-size: calc(var(--resume-h1) * 1.15);
   font-weight: 700;

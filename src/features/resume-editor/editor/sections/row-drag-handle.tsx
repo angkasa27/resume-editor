@@ -10,10 +10,7 @@ type RowDragHandleProps = ComponentProps<"button"> & {
   label: string;
 };
 
-/**
- * The grip on a sortable row. Shared by section rows and collection item rows
- * so both levels drag with the same target and the same affordance.
- */
+/** The grip on a sortable row, shared by section and item rows. */
 export function RowDragHandle({
   label,
   className,
@@ -29,8 +26,7 @@ export function RowDragHandle({
       onKeyDown={(event) => {
         // dnd-kit's KeyboardSensor lifts and drops on Space, from this element.
         onKeyDown?.(event);
-        // preventDefault (not stopPropagation): a native click-on-keyup would cancel the
-        // drag, but dnd-kit still needs the event to reach its document listeners.
+        // preventDefault, not stopPropagation — dnd-kit's document listeners need the event.
         if (event.key === " ") event.preventDefault();
       }}
       className={cn(

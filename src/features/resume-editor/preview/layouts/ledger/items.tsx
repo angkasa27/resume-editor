@@ -11,12 +11,9 @@ import {
 } from "@/features/resume-editor/preview/layouts/_shared/items/rail-items";
 import { ItemDate } from "@/features/resume-editor/preview/layouts/_shared/items/item-date";
 
-/**
- * Ledger's item: role and employer on the title line, the place alone on the right,
- * and the date on its own line *under* the title rather than beside it. The canonical
- * `item-header` pairs date and location in the right column; here the right column
- * carries place only, so the eye scans titles down one edge and places down the other.
- */
+/** Ledger's item: role and employer on the title line, place alone on the
+ * right, and the date on its own line under the title — the eye scans titles
+ * down one edge and places down the other. */
 function TitleRow({
   title,
   side,

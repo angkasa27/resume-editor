@@ -56,11 +56,7 @@ describe("sectionLabels", () => {
   });
 });
 
-/**
- * The rename feature's whole contract: a section prints the user's title when
- * they set one, and falls back to the built-in label otherwise — so clearing the
- * field is a reset, not a section with a blank heading.
- */
+/** Rename contract: user title when set, built-in label otherwise — clearing it is a reset. */
 describe("sectionTitleFor", () => {
   const sections = createDefaultResumeDraft().sections;
 

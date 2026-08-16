@@ -18,11 +18,8 @@ import {
 } from "@/features/resume-editor/domain/sections/section-metadata";
 
 type ResumeDocumentProps = PreviewRendererProps & {
-  /**
-   * Turns each slot into a click target that opens its section in the editor.
-   * Omitted by the read-only surfaces (mobile preview, template cards, PDF), so
-   * they render exactly the printed document and nothing more.
-   */
+  /** Turns each slot into a click target opening its section in the editor.
+   * Omitted by read-only surfaces, so they render the printed document exactly. */
   onSelectSection?: (panel: EditorPanelKey) => void;
   /** The section currently open in the editor, marked on the paper. */
   activeSection?: EditorPanelKey | null;
@@ -79,9 +76,8 @@ export function ResumeDocument({
           />,
         )
       : null,
-    // `section.key` and `section` co-vary at runtime, but TS can't prove that
-    // across the union element, so assert the entry type once here (the single
-    // central place slots are built) rather than casting in every layout.
+    // `section.key` and `section` co-vary at runtime, but TS can't prove it
+    // across the union element, so assert the entry type once here.
     sections: context.sections.map(
       (section) =>
         ({

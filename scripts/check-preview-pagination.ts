@@ -1,21 +1,9 @@
 /**
- * Verifies the editor preview paginates like the export — specifically under
- * canvas zoom, the one place the two can silently disagree.
+ * Verifies the editor preview paginates like the export under canvas zoom —
+ * the one place the two can silently disagree (the pass only re-runs while
+ * zoomed after an edit, so the script makes one).
  *
- * The pass reads `getBoundingClientRect()`, which CSS `zoom` scales, while the
- * paper vars stay in unscaled CSS px. `paginate-document.ts` calibrates itself
- * from the paper's own width; if that derivation breaks, a résumé paginated
- * while zoomed comes out with a different page count than the same résumé
- * paginated at 100% — which is exactly what this asserts it doesn't.
- *
- * Zooming alone can't catch it: the pass runs at mount, and its output (spacer
- * heights, min-height, marker offsets) is all CSS px, so it scales along with
- * everything else. The pass only runs *while* zoomed after an edit, so the
- * script makes one.
- *
- * Requires the app to be running (dev or prod):
- *   pnpm dev
- *   pnpm tsx scripts/check-preview-pagination.ts
+ * Usage: pnpm dev && pnpm tsx scripts/check-preview-pagination.ts
  */
 import puppeteer from "puppeteer";
 
@@ -81,9 +69,8 @@ async function main() {
     const page = await browser.newPage();
     await page.setViewport({ width: 1440, height: 900 });
     const serialized = exportResumeDraft(longDraft(layoutId, 7));
-    // tsx compiles with esbuild's keepNames, which wraps named functions in a
-    // `__name` helper that only exists in Node — `readReport` carries the call
-    // into the page, where it would throw. Stub it there.
+    // esbuild's keepNames wraps named functions in a Node-only `__name` helper;
+    // `readReport` runs in the page, so stub it there.
     await page.evaluateOnNewDocument(() => {
       (globalThis as { __name?: unknown }).__name ??= (fn: unknown) => fn;
     });
@@ -109,8 +96,7 @@ async function main() {
       await page.click('button[aria-label="Zoom in"]');
     }
 
-    // Force a re-paginate at the new scale: the preview re-runs the pass when
-    // the draft changes, and the store commits on a 500ms debounce.
+    // Force a re-paginate at the new scale — the pass re-runs on draft change (500ms store debounce).
     await page.click('[data-testid="resume-preview-full-name"]');
     await page.waitForSelector('input[name="fullName"]', { timeout: 10000 });
     await page.type('input[name="fullName"]', "x");

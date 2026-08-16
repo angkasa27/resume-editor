@@ -5,11 +5,9 @@ import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-
 
 import styles from "./styles.module.css";
 
-/**
- * A masthead: photo, name and role on the left, contacts flush right, closed by a
- * heavy rule with the location hanging under it. Small type throughout — the
- * display size in this layout is spent entirely on the summary below.
- */
+/** A masthead: photo, name and role left, contacts flush right, closed by a
+ * heavy rule with the location hanging under it. Small type — the display size
+ * is spent on the summary below. */
 export function EditorialHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;
   const location = context.contactItems.find(
@@ -33,8 +31,8 @@ export function EditorialHeader({ context }: LayoutHeaderProps) {
             <p className="headline">{draft.profile.headline}</p>
           ) : null}
         </div>
-        {/* Location is pulled out and set under the rule, so the block above it
-            stays two clean lines of contact rather than three ragged ones. */}
+        {/* Location hangs under the rule, keeping the block above it two clean
+            lines of contact. */}
         <PreviewContactLine
           context={context}
           className="editorial-reach"

@@ -17,10 +17,7 @@ type ZoomPillProps = {
   onZoomChange: (next: number) => void;
 };
 
-/**
- * Floating zoom control over the canvas. Detached and centered above the bottom
- * edge, echoing the mobile bottom nav's pill.
- */
+/** Floating zoom control over the canvas, echoing the mobile bottom nav's pill. */
 export function ZoomPill({ zoom, onZoomChange }: ZoomPillProps) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center pb-4 print:hidden">

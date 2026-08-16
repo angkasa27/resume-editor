@@ -192,9 +192,8 @@ function useDraftExport(store: ResumeEditorStore) {
   const isExportingPdfRef = useRef(false);
   const [isExportingPdf, setIsExportingPdf] = useState(false);
 
-  // Invariant 6. Both halves matter: without the flush the file misses the last
-  // 500ms of typing, and without the re-read it misses it anyway — the flush is
-  // synchronous but React has not re-rendered, so a captured `draft` is stale.
+  // Invariant 6: the flush lands the pending edit, the re-read picks it up — the
+  // flush is synchronous but React has not re-rendered, so a captured draft is stale.
   function currentDraft(): ResumeDraft {
     flushOpenForms();
     return store.getState().draft;

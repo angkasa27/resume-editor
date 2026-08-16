@@ -37,8 +37,7 @@ describe("POST /api/improve-content keyword handling", () => {
     expect(forwardedKeywords()).toEqual(["Kubernetes", "GraphQL"]);
   });
 
-  // This field reaches a prompt, so it is a trust boundary: only strings, only
-  // short ones, and only a few — otherwise it becomes a prompt-stuffing channel.
+  // This field reaches a prompt — a trust boundary, so it's strings-only, short, and few.
   it("drops non-string entries", async () => {
     await post({
       html: "<p>x</p>",

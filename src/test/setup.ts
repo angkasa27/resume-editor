@@ -1,7 +1,6 @@
 import "@testing-library/jest-dom/vitest";
 
-// JSDOM does not implement matchMedia; provide a minimal stub so hooks that
-// call window.matchMedia (e.g. useIsMobile) don't throw in unit tests.
+// JSDOM lacks matchMedia; stub it so hooks like useIsMobile don't throw in unit tests.
 Object.defineProperty(globalThis, "matchMedia", {
   writable: true,
   configurable: true,

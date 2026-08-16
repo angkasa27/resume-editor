@@ -26,8 +26,7 @@ function SplitLayout({ context, slots }: LayoutComponentProps) {
             <img src={photo} alt={fullName} />
           </div>
         ) : null}
-        {/* Stacked: the rail is 0.36fr, so an inline run of emails and URLs
-            has nowhere to wrap and used to break mid-word. */}
+        {/* Stacked: in a 0.36fr rail an inline run has nowhere to wrap. */}
         <PreviewContactLine
           context={context}
           presentation={{ variant: "stacked", icons: true }}

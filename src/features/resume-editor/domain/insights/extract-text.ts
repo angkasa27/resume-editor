@@ -15,10 +15,7 @@ export function stripRichText(html: string): string {
     .trim();
 }
 
-/**
- * Split rich-text into bullet/paragraph strings. Splits on </p> and </li>
- * to preserve the document's intent. Empty entries are dropped.
- */
+/** Split rich-text into bullet/paragraph strings on </p>/</li>; empty entries dropped. */
 export function extractBullets(html: string): string[] {
   if (!html) return [];
   return html

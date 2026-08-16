@@ -38,14 +38,9 @@ async function requestKeywordMatch(
   return payload.keywords;
 }
 
-/**
- * Reads the pre-per-resume job target. Deliberately does NOT delete the key —
- * the caller removes it only once the value is safely on the draft, so a parse
- * failure can never destroy a saved job description.
- *
- * Individual bad keywords are dropped rather than rejecting the whole blob:
- * losing one out-of-enum term should not cost the user their job description.
- */
+/** Reads the pre-per-resume job target. Deliberately does NOT delete the key — the
+ * caller removes it only once the value is on the draft. Bad keywords are dropped
+ * rather than rejecting the whole blob. */
 function readLegacyInsights(): Insights | null {
   if (typeof window === "undefined") return null;
   try {
@@ -98,7 +93,6 @@ export function useJobMatch(
     window.localStorage.removeItem(LEGACY_STORAGE_KEY);
   }, [insights, onSaveInsights]);
 
-  // Re-derive matched/partial/missing whenever the draft or the job target changes.
   const jobMatch: JobMatchResult | null = useMemo(() => {
     if (!insights) return null;
     return matchKeywords(draft, insights.jobDescription, insights.keywords);

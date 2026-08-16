@@ -11,8 +11,7 @@ export function exportResumeDraft(draft: ResumeDraft): string {
 
 export function importResumeDraft(serializedDraft: string): ResumeDraft {
   const parsedJson = JSON.parse(serializedDraft) as unknown;
-  // The PDF-import response wraps the draft in a `{ draft }` envelope; accept
-  // either shape.
+  // PDF-import wraps the draft in a `{ draft }` envelope; accept either shape.
   const unwrapped =
     parsedJson && typeof parsedJson === "object" && "draft" in parsedJson
       ? (parsedJson as { draft: unknown }).draft

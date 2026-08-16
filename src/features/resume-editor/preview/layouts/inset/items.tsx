@@ -10,12 +10,8 @@ import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layo
 
 import styles from "./styles.module.css";
 
-/**
- * The `·` separator is glued to the word after it with a no-break space, so a
- * line can never start with a stranded dot. Everything after that first word
- * wraps normally — which it did not before: the meta was one flex item, so it
- * moved to the next line whole, taking the separator with it.
- */
+/** The `·` separator is glued to the next word with a no-break space, so a line
+ * can never start with a stranded dot; the rest of the meta wraps normally. */
 function dotted(value?: string) {
   return value ? `\u00B7\u00A0${value}` : undefined;
 }

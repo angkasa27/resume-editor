@@ -19,9 +19,8 @@ type HoverProps = {
 };
 
 /**
- * The playback contract every animated icon here shares: hovering plays the
- * animation, unless a parent takes the ref — then the parent owns playback and
- * the icon's own hover handlers pass straight through to it instead.
+ * Playback contract for every animated icon here: hover plays the animation,
+ * unless a parent takes the ref — then the parent owns playback.
  */
 export function useAnimatedIconHandle(
   ref: Ref<AnimatedIconHandle>,
@@ -29,8 +28,8 @@ export function useAnimatedIconHandle(
   { onMouseEnter, onMouseLeave }: HoverProps,
 ) {
   const isControlledRef = useRef(false);
-  // `handle` is a fresh object each render; the ref keeps the callbacks below
-  // stable without making every caller memoize it.
+  // `handle` is fresh each render; the ref keeps the callbacks stable without
+  // making every caller memoize it.
   const handleRef = useRef(handle);
   useLayoutEffect(() => {
     handleRef.current = handle;

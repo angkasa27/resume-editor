@@ -24,10 +24,7 @@ const summaryFieldNames = [
   "organizationName",
 ] as const;
 
-/**
- * First non-empty representative value for a collection item (e.g. the company
- * or project name), falling back to a positional label like "Experience 2".
- */
+/** First non-empty representative value for an item (e.g. company name), else a positional label like "Experience 2". */
 export function getCollectionItemSummary(
   item: Record<string, unknown> | undefined,
   itemTitle: string,
@@ -47,8 +44,7 @@ function isRealItem(item: unknown): boolean {
 
 /**
  * Shared state and handlers for a collection section editor: the field array,
- * collapse tracking, pending-delete index, and save normalization. The
- * surrounding surface owns persistence and layout.
+ * collapse tracking, pending-delete index, and save normalization.
  */
 export function useCollectionItemsForm(
   draft: ResumeDraft,
@@ -83,9 +79,8 @@ export function useCollectionItemsForm(
   const currentItems = useWatch({ control, name: "items" });
   const items = useFieldArray({ control, name: "items", keyName: "fieldKey" });
 
-  // Keyed by the item's own id, not react-hook-form's `fieldKey`: RHF mints a
-  // fresh fieldKey on `move()`, so tracking by it silently re-opens every card
-  // the moment you reorder.
+  // Keyed by the item's id, not RHF's `fieldKey`: `move()` mints a fresh one,
+  // so tracking by it would silently re-open every card on reorder.
   const [collapsedIds, setCollapsedIds] = useState<Set<string>>(
     () => new Set(items.fields.slice(1).map((f) => f.id)),
   );
@@ -106,7 +101,6 @@ export function useCollectionItemsForm(
     setCollapsedIds(new Set(items.fields.map((f) => f.id)));
   }
 
-  /** Normalizes edited form items back into a persistable section value. */
   function toSectionValue(values: CollectionItemsFormValues) {
     return {
       ...sectionValue,

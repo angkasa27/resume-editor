@@ -53,11 +53,8 @@ export const sectionLabels: Record<
   organizationVolunteering: "Organizations & Volunteering",
 };
 
-/**
- * The one read path for a section's heading — the user's own title if they set
- * one, otherwise the built-in label. Blank means "use the default", so clearing
- * the rename field is how you reset it.
- */
+/** Single read path for a section heading: the user's title if set, else the built-in
+ *  label — clearing the rename field resets to the default. */
 export function sectionTitleFor(
   sections: ResumeDraft["sections"],
   sectionKey: ResumeSectionPanelKey,
@@ -79,11 +76,8 @@ export function isCollectionSectionKey(
   return collectionSectionKeys.includes(sectionKey as CollectionSectionKey);
 }
 
-/**
- * A hidden collection section must be revealed before it's opened for
- * editing, otherwise the form edits something the paper can't show. Shared by
- * desktop and mobile's "open a panel" entry points.
- */
+/** A hidden collection section must be revealed before editing, or the form edits
+ *  something the paper can't show. Shared by desktop and mobile panel entry points. */
 export function needsSectionReveal(
   sections: ResumeDraft["sections"],
   panel: EditorPanelKey,
@@ -109,11 +103,8 @@ export function getOrderedVisibleSectionKeys(
   );
 }
 
-/**
- * Splits the ordered collection sections into the visible (drag-sortable) keys
- * and the hidden keys offered by the "Add section" menu. Shared by the desktop
- * and mobile section lists.
- */
+/** Splits ordered collection sections into visible (drag-sortable) keys and hidden
+ *  keys for the "Add section" menu. Shared by desktop and mobile section lists. */
 export function partitionCollectionKeys(sections: ResumeDraft["sections"]) {
   const ordered = getOrderedSectionKeys(sections);
   const sortableKeys = ordered.filter(

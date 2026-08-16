@@ -4,8 +4,7 @@ function dateValue(value: string | undefined): number {
   return parseMonthYear(value)?.getTime() ?? 0;
 }
 
-/** -1/1 when exactly one side is "current" (current sorts first), null when
- *  both sides agree (both current or both not) — defer to the next rule. */
+/** -1/1 when exactly one side is "current", null when both agree — defer to the next rule. */
 function compareByCurrentStatus(
   aEnd: string | undefined,
   bEnd: string | undefined,

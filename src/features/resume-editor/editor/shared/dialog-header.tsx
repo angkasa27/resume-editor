@@ -55,9 +55,8 @@ type DialogHeaderRowProps = {
   className?: string;
 };
 
-/** Desktop `Dialog` header row: same layout as {@link DialogHeaderSection},
- *  built on `DialogTitle`/`DialogDescription` so the dialog's a11y wiring
- *  (aria-labelledby/aria-describedby) stays intact. */
+/** Desktop `Dialog` header row: same layout as {@link DialogHeaderSection}, built on
+ *  `DialogTitle`/`DialogDescription` so the dialog's a11y wiring stays intact. */
 export function DialogHeaderRow({
   icon,
   title,

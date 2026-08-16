@@ -22,10 +22,8 @@ function draftWith(layoutId: ResumeDraft["pdfPresentation"]["layoutId"]) {
 
 describe("PaginatedPreview", () => {
   it("rebuilds the document when the layout changes, dropping the pass's spacers", () => {
-    // The pagination pass inserts plain DOM nodes React does not own. Switching
-    // layout renders a different component tree, and reconciling it *into* the
-    // old one left those nodes stranded in containers they were never measured
-    // against — breaks that looked wrong until the page was reloaded.
+    // The pass inserts plain DOM nodes React does not own; reconciling a different
+    // tree around them stranded the spacers, breaking the breaks.
     const { container, rerender } = render(
       <PaginatedPreview draft={draftWith("classic")} />,
     );
@@ -45,9 +43,8 @@ describe("PaginatedPreview", () => {
   });
 
   it("keeps the same document node when only the style changes", () => {
-    // A remount is only warranted by a new component tree. Restyling — a colour,
-    // a font — must not throw the document away, or every keystroke on the
-    // Design panel would flash the whole page.
+    // Restyling must not remount the document, or every Design-panel keystroke
+    // would flash the whole page.
     const base = draftWith("classic");
     const { container, rerender } = render(<PaginatedPreview draft={base} />);
     const before = container.querySelector(".resume-document");

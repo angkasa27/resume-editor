@@ -7,10 +7,9 @@ import type { EditorPanelKey } from "@/features/resume-editor/domain/sections/se
 import { FOCUS_RING_CLASS } from "@/features/resume-editor/forms/fields/field-control";
 
 /**
- * No resting chrome by design: the canvas previews the printed document, so editing affordances
- * live in the sidebar, not on the page. `div` not `button` because sections render real anchors
- * (contact links, linked titles), which a button can't contain; anchors are made inert here so a
- * click can't both follow the link and open the section — links stay live only in the exported PDF.
+ * No resting chrome by design: the canvas previews the printed document. `div`
+ * not `button` — sections render real anchors, made inert here so a click can't
+ * both follow the link and open the section.
  */
 export function PreviewSectionTarget({
   panel,

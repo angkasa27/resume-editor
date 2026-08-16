@@ -115,10 +115,8 @@ describe("reorderSections", () => {
 });
 
 describe("moveSectionToAnchor", () => {
-  // Why: the canvas "move down" button anchors on the next visible sibling.
-  // The old index-based API silently no-opped here (target index equalled the
-  // section's own order), which is exactly the "down doesn't work" bug. Anchor
-  // semantics must actually move the section past its downward neighbor.
+  // Why: "move down" anchors on the next visible sibling; the old index API silently
+  // no-opped here — anchor semantics must move the section past its downward neighbor.
   it("moving onto a lower sibling lands the section after it", () => {
     const sections = makeSections({
       summary: { order: 0 },
@@ -137,9 +135,8 @@ describe("moveSectionToAnchor", () => {
     ]);
   });
 
-  // Why: the canvas "move up" button anchors on the previous visible sibling.
-  // The old code overshot by one (jumping two positions); moving onto an upper
-  // anchor must land the section immediately before it — one step, never two.
+  // Why: the old "move up" code overshot by one — landing on an upper anchor must
+  // put the section immediately before it, one step never two.
   it("moving onto an upper sibling lands the section before it", () => {
     const sections = makeSections({
       summary: { order: 0 },
@@ -158,10 +155,8 @@ describe("moveSectionToAnchor", () => {
     ]);
   });
 
-  // Why: this is the crux of the refactor. Order is a single global space that
-  // includes hidden sections, but the user only reorders the visible ones. An
-  // anchor that is two global slots away (because a hidden section sits between)
-  // must still move the target to sit directly beside that visible anchor.
+  // Why: order is one global space including hidden sections, but the user only
+  // reorders visible ones — an anchor two slots away must still be landed beside.
   it("ignores hidden sections sitting between target and anchor", () => {
     const sections = makeSections({
       summary: { order: 0, visible: true },
@@ -212,7 +207,7 @@ describe("setSectionVisibilityWithOrder", () => {
       workExperience: { order: 1, visible: true },
       projects: { order: 2, visible: true },
     });
-    // Everything else stays visible by default
+    
 
     const result = setSectionVisibilityWithOrder(sections, "projects", false);
 
@@ -222,7 +217,7 @@ describe("setSectionVisibilityWithOrder", () => {
 
     const idx = entries.findIndex(([k]) => k === "projects");
     expect(entries[idx][1].visible).toBe(false);
-    // projects moved after all visible sections
+    
     const visibleAfterProjects = entries
       .slice(idx + 1)
       .filter(([, v]) => v.visible);
@@ -235,7 +230,7 @@ describe("setSectionVisibilityWithOrder", () => {
       workExperience: { order: 1, visible: true },
       projects: { order: 2, visible: false },
     });
-    // Everything else stays visible by default
+    
 
     const result = setSectionVisibilityWithOrder(sections, "projects", true);
 
@@ -245,7 +240,7 @@ describe("setSectionVisibilityWithOrder", () => {
 
     const idx = entries.findIndex(([k]) => k === "projects");
     expect(entries[idx][1].visible).toBe(true);
-    // projects moved after all visible sections
+    
     const visibleAfterProjects = entries
       .slice(idx + 1)
       .filter(([, v]) => v.visible);

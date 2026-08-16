@@ -4,10 +4,7 @@ type ParsedBody<T> =
   | { ok: true; data: T }
   | { ok: false; response: Response };
 
-/**
- * Parse a JSON request body, returning a discriminated result so callers can
- * short-circuit with their own 400 message while sharing the parse/guard.
- */
+/** Parse a JSON body into a discriminated result, so callers share the parse/guard but keep their own 400 message. */
 export async function parseJsonBody<T = unknown>(
   request: Request,
   invalidMessage = "Invalid request body.",
@@ -22,10 +19,7 @@ export async function parseJsonBody<T = unknown>(
   }
 }
 
-/**
- * Map a caught error to a JSON Response: a `ResumeImportError` surfaces its own
- * message + status, anything else falls back to a generic 500.
- */
+/** Map a caught error to a JSON Response: `ResumeImportError` keeps its message + status, anything else is a generic 500. */
 export function handleResumeImportError(
   error: unknown,
   fallbackMessage: string,

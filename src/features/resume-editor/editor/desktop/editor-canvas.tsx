@@ -21,10 +21,7 @@ type EditorCanvasProps = {
   children: ReactNode;
 };
 
-/**
- * The document workspace: a dot-grid surface holding the paper preview, with a
- * floating zoom pill. Panning is plain overflow scroll.
- */
+/** The document workspace: a dot-grid surface holding the paper, with a floating zoom pill. */
 export function EditorCanvas({ zoom, onZoomChange, children }: EditorCanvasProps) {
   return (
     <main className="relative min-h-0 min-w-0 flex-1 bg-muted/40 print:bg-white">
@@ -34,9 +31,8 @@ export function EditorCanvas({ zoom, onZoomChange, children }: EditorCanvasProps
         style={dotGridStyle}
       />
 
-      {/* `zoom` not `transform`, so the scroll area measures the scaled paper, not a visual ghost.
-          `min-w-fit` is load-bearing: a plain `justify-center` row spills equally past both edges,
-          but scrollWidth ignores the start-side spill — without it, zooming in clips the left edge. */}
+      {/* `zoom` not `transform`, so scroll measures the scaled paper. `min-w-fit` is load-bearing:
+          without it scrollWidth ignores the start-side spill and zoom clips the left edge. */}
       <div className="absolute inset-0 overflow-auto">
         <div className="flex min-h-full w-full min-w-fit justify-center px-8 py-10">
           <div style={{ zoom }} className="origin-top print:zoom-[1]">

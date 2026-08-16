@@ -4,9 +4,7 @@ import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/
 import { projectFormItemSchema } from "@/features/resume-editor/forms/schemas/collection-form-item-schemas";
 import { profileFormSchema } from "@/features/resume-editor/forms/schemas/profile-form-schema";
 
-// The form schemas exist only to surface advisory format errors in the editor;
-// persistence (domain/schema) accepts these same values. See the lenient-persist
-// design.
+// Form schemas only surface advisory format errors; persistence accepts these values.
 describe("advisory form schemas", () => {
   it("flags a malformed email but accepts a valid one", () => {
     const { profile } = createDefaultResumeDraft();

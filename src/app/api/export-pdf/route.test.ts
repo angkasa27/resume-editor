@@ -64,8 +64,7 @@ describe("POST /api/export-pdf", () => {
   });
 
   it("renders lenient (advisory-invalid) fields as-is instead of rejecting them", async () => {
-    // Persistence is lenient: format validity is advisory in the editor, not a
-    // hard gate. A draft with a not-yet-valid URL still exports (rendered as-is).
+    // Persistence is lenient: format validity is advisory, so a not-yet-valid URL still exports as-is.
     generateResumePdf.mockResolvedValue(new Uint8Array([1, 2, 3]));
 
     const draft = createDefaultResumeDraft();

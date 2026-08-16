@@ -48,11 +48,8 @@ export function reorderSections(
   return normalizeSectionOrder(sections, nextEntries);
 }
 
-/**
- * Move `targetKey` to the ordered slot currently occupied by `anchorKey`.
- * Callers express intent by which sibling to land next to, never a raw index, so this stays
- * correct regardless of which sections are hidden — both drag-and-drop and up/down buttons reduce to it.
- */
+/** Move `targetKey` to the slot `anchorKey` occupies — sibling intent, never a
+ * raw index, so hidden sections can't break it. Drag and up/down both reduce to it. */
 export function moveSectionToAnchor(
   sections: ResumeDraft["sections"],
   targetKey: ResumeSectionKey,
@@ -73,9 +70,7 @@ export function moveSectionToAnchor(
   const nextEntries = [...orderedEntries];
   const [movedEntry] = nextEntries.splice(fromIndex, 1);
 
-  // Re-find the anchor after removal, then insert on the side that matches the
-  // travel direction: dragging down lands after the anchor, dragging up lands
-  // before it — standard list-reorder behavior.
+  // Re-find the anchor after removal, then insert after it when moving down, before when up.
   const anchorAfterRemoval = nextEntries.findIndex(
     ([sectionKey]) => sectionKey === anchorKey
   );
@@ -116,10 +111,7 @@ export function setSectionVisibilityWithOrder(
     ([, sectionValue]) => !sectionValue.visible
   );
 
-  // Park the toggled section at the visible/hidden boundary: it becomes the
-  // last visible section when shown, or the first hidden section when hidden.
-  // This keeps hidden sections clustered at the tail, so visible sections stay
-  // a contiguous band.
+  // Park at the visible/hidden boundary so hidden sections stay a contiguous tail band.
   const nextEntries = [...includedEntries, nextTargetEntry, ...availableEntries];
 
   return normalizeSectionOrder(sections, nextEntries);

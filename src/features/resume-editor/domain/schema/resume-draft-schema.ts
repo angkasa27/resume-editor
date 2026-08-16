@@ -14,9 +14,8 @@ const resumeDraftSchema = z.object({
     .default(createDefaultPdfPresentation()),
   profile: profileSchema,
   sections: sectionsSchema,
-  // Optional, so existing drafts parse unchanged and schemaVersion stays at 3.
-  // `.catch` degrades a malformed blob to "no job target" rather than failing
-  // the whole draft — losing the resume would be far worse than losing the JD.
+  // Optional so existing drafts parse unchanged (schemaVersion stays 3); `.catch`
+  // degrades a malformed blob to "no job target" rather than failing the draft.
   insights: insightsSchema.optional().catch(undefined),
 });
 

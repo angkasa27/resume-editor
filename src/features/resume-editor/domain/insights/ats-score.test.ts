@@ -100,10 +100,8 @@ function emptyDraft(): ResumeDraft {
 }
 
 describe("scoring floors", () => {
-  // An all-blank resume once scored 73: checks that should have caught it were
-  // missing, and the rest passed vacuously ("no tables", "no clichés") because
-  // there was no content to violate them. Those are `na` now, not credit.
-  // Parseability stays high on purpose — a blank page does parse cleanly.
+  // An all-blank resume once scored 73 — missing checks passed vacuously with no content
+  // to violate them. Those are `na` now; parseability stays high on purpose.
   it("scores an empty resume far below a filled one", () => {
     const empty = computeAtsScore(emptyDraft()).score;
     expect(empty).toBeLessThan(45);
@@ -364,8 +362,7 @@ describe("job match checks", () => {
     expect(computeAtsScore(draft, jobMatch()).breakdown.jobMatch).not.toBeNull();
   });
 
-  // Extraction returning nothing is a service problem, not a resume problem —
-  // scoring it as 0% coverage docked the user for something unfixable.
+  // Empty extraction is a service problem, not a resume one — scoring 0% docked the user for it.
   it("stays out of the score when extraction returned no keywords", () => {
     const empty = jobMatch({ keywords: [], matched: [], coverage: 0 });
     const result = computeAtsScore(createDefaultResumeDraft(), empty);

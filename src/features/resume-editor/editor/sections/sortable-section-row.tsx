@@ -29,9 +29,7 @@ type SortableSectionRowProps = {
   menu?: ReactNode;
 };
 
-/**
- * A drag-sortable section row: grip + `SectionRow`.
- */
+/** A drag-sortable section row: grip + `SectionRow`. */
 export function SortableSectionRow({
   sectionKey,
   label,

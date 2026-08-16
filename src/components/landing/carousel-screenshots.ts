@@ -11,10 +11,9 @@ type CarouselScreenshot = {
 };
 
 /**
- * Derived, not hand-listed: the carousel is the landing page's preview of what
- * the template gallery actually offers, so the two must not drift. A new preset
- * appears here automatically, and `pnpm screenshots` refuses to run until that
- * preset has a persona — so the image exists before the card does.
+ * Derived, not hand-listed — the carousel previews the template gallery, so
+ * the two must not drift. `pnpm screenshots` blocks until each preset has a
+ * persona, so the image exists before the card does.
  */
 export const CAROUSEL_SCREENSHOTS: CarouselScreenshot[] =
   resumeTemplatePresets.map((preset) => ({

@@ -104,9 +104,8 @@ function FeatureCard({ feature }: { feature: Feature }) {
   const { Icon } = feature;
 
   return (
-    // Motion owns the `transform` here (blur-up entrance + hover lift), so the
-    // card itself must never CSS-transition `transform` — that fight caused a
-    // post-entrance drift. The hover lift goes through `whileHover` instead.
+    // Motion owns `transform` (blur-up entrance + hover lift), so the card must
+    // never CSS-transition it — that fight caused a post-entrance drift.
     <RevealItem
       onMouseEnter={
         reduce ? undefined : () => iconRef.current?.startAnimation()
@@ -116,7 +115,6 @@ function FeatureCard({ feature }: { feature: Feature }) {
       className="group rounded-2xl relative h-full overflow-hidden p-6 bg-background border"
     >
       <div className="">
-        {/* hover wash */}
         <div
           aria-hidden
           className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"

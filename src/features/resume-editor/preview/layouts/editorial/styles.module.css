@@ -63,12 +63,9 @@
   min-width: 0;
 }
 
-/* Short rule above every entry but the first, standing in for the gap that a
-   heading would otherwise have to provide.
-   Taken out of flow: as a block inside `.item-lead` it pushed only the left
-   column down, so from the second entry on the prose sat level with the rule
-   instead of with the title beside it. Positioned, it costs no height and both
-   columns still start on the same line. */
+/* Short rule above every entry but the first, standing in for the heading gap.
+   Taken out of flow: as a block it pushed only the left column down, so the
+   prose sat level with the rule; positioned, both columns start on the same line. */
 .layout :global(.item-list > *:not(:first-child) .item)::before,
 .layout :global(.item-list > *:not(:first-child).item)::before {
   content: "";

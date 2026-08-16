@@ -25,10 +25,8 @@ export function AcademicHeader({ context }: LayoutHeaderProps) {
           <p className="headline">{draft.profile.headline}</p>
         ) : null}
       </div>
-      {/* No icons: contacts render in small-caps here, where a glyph looks
-          alien and the academic convention is plain text. Shortening the links
-          is what this layout actually needed — a small-caps raw URL read as
-          HTTPS://WWW.LINKEDIN.COM/IN/OMARRAHMAN. */}
+      {/* No icons: contacts render in small-caps, where a glyph looks alien and a
+          raw URL is illegible — shorten instead. */}
       <PreviewContactLine
         context={context}
         presentation={{ variant: "inline", icons: false }}

@@ -30,7 +30,6 @@ type EditorTopBarProps = {
   canRedo: boolean;
   onUndo: () => void;
   onRedo: () => void;
-  /** The primary output action — renders the Download PDF button. */
   onExportPdf: () => void;
   isExportingPdf: boolean;
   onExportJson: () => void;
@@ -98,8 +97,7 @@ export function EditorTopBar({
           ) : (
             <DownloadIcon className="size-4" />
           )}
-          {/* Label yields under 360px, where it'd push the menu off-screen.
-              `sr-only`, not `hidden`, so the button keeps its name there. */}
+          {/* Label yields under 360px; `sr-only`, not `hidden`, keeps the button's name. */}
           <span className="sr-only min-[360px]:not-sr-only">
             {isExportingPdf ? "Generating PDF…" : "Download PDF"}
           </span>

@@ -13,8 +13,8 @@ function MastheadLayout({ context, slots }: LayoutComponentProps) {
     <div className={styles.layout}>
       {slots.header}
       <div className="layout-body">
-        {/* Contacts lead the body under their own badge — the plate above carries
-            the name alone, so this is the first thing the page actually tells you. */}
+        {/* Contacts lead the body under their own badge — the plate above
+            carries the name alone. */}
         {context.contactItems.length > 0 ? (
           <div className="detail-block">
             <h2 className="section-heading">Details</h2>

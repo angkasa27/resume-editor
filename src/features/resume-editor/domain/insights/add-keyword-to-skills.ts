@@ -3,16 +3,8 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 type SkillsSection = ResumeDraft["sections"]["skills"];
 
 /**
- * Appends a job-description term to a skills category.
- *
- * Most missing keywords are hard skills or tools, and putting one on the resume
- * is a list append — no model required. Only weaving a term into an
- * accomplishment bullet actually needs generation.
- *
- * Returns the section unchanged when the term is already present (compared
- * case- and whitespace-insensitively across every category, so "Node.js" isn't
- * added a second time next to "node.js"), which keeps the caller's commit a
- * no-op rather than pushing an empty entry onto the undo stack.
+ * Appends a job-description term to a skills category — a list append, no model needed.
+ * Returns the section unchanged when the term is already present (case/whitespace-insensitive).
  */
 export function addKeywordToSkills(
   section: SkillsSection,
@@ -28,8 +20,7 @@ export function addKeywordToSkills(
   );
   if (alreadyPresent) return section;
 
-  // Fall back to the first category when the requested one is gone (or none was
-  // asked for) — every collection section is guaranteed at least one row.
+  // Fall back to the first category when the requested one is gone or unspecified.
   const targetIndex = categoryId
     ? section.items.findIndex((item) => item.id === categoryId)
     : 0;

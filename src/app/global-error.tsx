@@ -4,10 +4,8 @@ import { useEffect } from "react";
 
 import "./globals.css";
 
-// Fallback for errors thrown in the root layout/template, which the segment
-// `error.tsx` cannot catch. It replaces the root layout, so it must render its
-// own <html>/<body> and import global styles. Metadata exports are unsupported
-// here (see the React <title> below).
+// Root-layout error fallback (segment `error.tsx` can't catch it); it replaces
+// the root layout, so it renders its own <html>/<body> and uses <title>.
 export default function GlobalError({
   error,
   unstable_retry,

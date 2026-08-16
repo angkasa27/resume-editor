@@ -50,11 +50,8 @@ type SectionListProps = {
   className?: string;
 };
 
-/**
- * The editor's section index: the pinned Profile/Summary rows and the
- * drag-sortable collection rows. Shared by the desktop sidebar and the mobile
- * Edit tab.
- */
+/** The section index: pinned Profile/Summary rows plus drag-sortable collection
+ * rows. Shared by the desktop sidebar and the mobile Edit tab. */
 export function SectionList({
   draft,
   activeSection,

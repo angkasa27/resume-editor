@@ -7,11 +7,8 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
 /**
- * Form spacing lives here, not at call sites. Scale is 4/8/12/16 (DESIGN.md):
- * 4px inside a field (control→error), 8px legend→fields (FieldSet), 12px
- * between fields (FieldGroup), 16px between groups (surface's own gap).
- * 12px is the floor — safe now that the old floated label, which needed a
- * 16px floor to clear its 16.5px overhang, is gone.
+ * Form spacing lives here, not at call sites (4/8/12/16 — DESIGN.md). 12px is
+ * the floor now that the old floated label (16px floor) is gone.
  */
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
   return (
@@ -27,9 +24,8 @@ function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {
 }
 
 /**
- * Defaults to `legend` (16px semibold), one step above FieldLabel (14px medium)
- * in size AND weight — weight alone (tried) reads as two labels, not hierarchy.
- * `label` variant (14px semibold) is for a nested subgroup; unused so far.
+ * Legend (16px semibold) steps up from FieldLabel in size AND weight — weight
+ * alone (tried) read as two labels. `label` variant is for nested subgroups.
  */
 function FieldLegend({
   className,
@@ -56,10 +52,8 @@ const fieldGroupVariants = cva(
     variants: {
       layout: {
         stack: "flex flex-col",
-        // One gap on both axes — see the scale note above. Splits to two
-        // columns against the nearest `@container/fields`, so each surface
-        // measures the box its fields actually sit in (an item card's body is
-        // inset further than the panel's scroll box).
+        // One gap on both axes; the grid splits to two columns against the
+        // nearest `@container/fields`, so each surface measures its own box.
         grid: "grid grid-cols-1 @field-2col/fields:grid-cols-2",
       },
     },

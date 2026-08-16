@@ -2,8 +2,8 @@ import type { ReactNode } from "react";
 
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 
-// Primitives for a custom layout Component/renderSection. Must emit the same class/data-*/data-testid
-// contract as the shared LayoutSection scaffold, so layouts built from these stay CSS-consistent.
+// Primitives for a custom layout Component/renderSection, emitting the same
+// class/data-*/data-testid contract as the shared LayoutSection scaffold.
 
 /** `<section>` wrapper with the standard heading; caller supplies the body. */
 export function SectionShell({

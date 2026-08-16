@@ -35,10 +35,7 @@ type PhotoCropDialogProps = {
   onCancel: () => void;
 };
 
-/**
- * Square crop + zoom editor for the profile photo. The cropped region is
- * downscaled and JPEG-encoded by `cropImageToDataUrl`.
- */
+/** Square crop + zoom editor for the profile photo; the region is downscaled and JPEG-encoded by `cropImageToDataUrl`. */
 export function PhotoCropDialog({
   open,
   imageUrl,

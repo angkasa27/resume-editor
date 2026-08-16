@@ -6,9 +6,8 @@ import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { ResumeDocument } from "@/features/resume-editor/preview/resume-document";
 
-// Characterization / byte-identity guard substituting for a screenshot byte-diff. If a layout
-// legitimately changes, update the snapshot deliberately and review the diff.
-// Every section is forced visible (default hides publications/awards) so every itemView is exercised.
+// Byte-identity guard substituting for a screenshot diff; every section is
+// forced visible so each itemView is exercised.
 function buildFixtureDraft(layoutId: ResumeDraft["pdfPresentation"]["layoutId"]): ResumeDraft {
   const draft = createDefaultResumeDraft();
   draft.updatedAt = "2026-01-01T00:00:00.000Z"; // deterministic, not rendered

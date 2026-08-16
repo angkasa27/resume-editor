@@ -28,10 +28,9 @@ export function PreviewSheet({ draft, presentation }: PreviewSheetProps) {
     [draft, presentation],
   );
 
-  // The sheet is scaled with `transform`, which leaves layout alone but does
-  // scale the rects the pass reads — the same calibration that covers the
-  // desktop canvas's `zoom` covers it. The shell resizes to the taller paper
-  // on its own: `usePreviewScale` watches the sheet with a ResizeObserver.
+  // `transform` scale leaves layout alone but scales the rects the pass reads —
+  // the same calibration that covers the canvas's `zoom`. The shell resizes on
+  // its own via `usePreviewScale`'s ResizeObserver.
   const [pageCount, setPageCount] = useState(1);
   useDocumentPagination(
     previewSheetRef,

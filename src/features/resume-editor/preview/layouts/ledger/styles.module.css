@@ -1,12 +1,11 @@
-/* Monochrome by construction: nothing here paints a fill, so the accent is spent
-   on one thing only — the short rule under each section heading. Everything else
-   takes the text colour, which is what makes it read as a printed document. */
+/* Monochrome by construction: nothing paints a fill, so the accent is spent on
+   the one short rule under each heading; everything else takes the text colour. */
 .layout {
   display: flex;
   flex-direction: column;
-  /* No gap: the spine has to start exactly where the header rule ends. The
-     columns below carry the air as their own padding-top instead, so the
-     border-right spans it and the two rules meet at a corner. */
+  /* No gap: the spine starts exactly where the header rule ends; the columns
+     carry the air as their own padding-top, so the border-right spans it and
+     the two rules meet at a corner. */
   gap: 0;
   --resume-heading-color: var(--resume-text);
   --resume-name-color: var(--resume-text);

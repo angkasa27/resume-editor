@@ -103,9 +103,8 @@ function normalizeUrl(value: string) {
   return sanitizeRichTextHref(withProtocol) ?? "";
 }
 
-// monthMap has two keys per month (full name + abbreviation), so
-// Object.values(monthMap) repeats each abbreviation; dedupe once here to get
-// a calendar-ordered lookup from month number (1-12) to abbreviation.
+// monthMap has two keys per month, so Object.values repeats abbreviations;
+// dedupe once to get a calendar-ordered lookup from month number (1-12).
 const orderedMonthAbbreviations = [...new Set(Object.values(monthMap))];
 
 function monthNumberToAbbreviation(monthNumber: number) {

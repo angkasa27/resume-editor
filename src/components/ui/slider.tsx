@@ -5,8 +5,8 @@ import { Slider as SliderPrimitive } from "@base-ui/react/slider";
 import { cn } from "@/lib/utils";
 
 /**
- * Single-thumb slider built on base-ui. Thin wrapper exposing Root + Control +
- * Track + Indicator + Thumb as one component (used for the photo-crop zoom).
+ * Single-thumb slider (base-ui Root/Control/Track/Indicator/Thumb as one
+ * component) used for the photo-crop zoom.
  */
 function Slider({ className, ...props }: SliderPrimitive.Root.Props<number>) {
   return (

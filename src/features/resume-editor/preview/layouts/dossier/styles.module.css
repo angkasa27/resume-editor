@@ -1,6 +1,5 @@
-/* Full-bleed: the rail paints to the right/top/bottom paper edges while the main
-   column keeps the page margin. Mirror of split — the colour supports the page
-   from the outside edge instead of leading it. */
+/* Full-bleed: the rail paints the right/top/bottom edges while the main column
+   keeps the page margin. Mirror of split — colour supports from the outside. */
 .layout {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 0.34fr);

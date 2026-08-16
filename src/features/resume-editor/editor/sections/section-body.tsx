@@ -25,10 +25,7 @@ type SectionBodyProps = {
   idPrefix?: string;
 };
 
-/**
- * Renders the active section's headerless auto-save form body. The surrounding
- * drill-in header supplies the title.
- */
+/** The active section's headerless auto-save form body — the drill-in header supplies the title. */
 export function SectionBody({
   draft,
   activeSection,

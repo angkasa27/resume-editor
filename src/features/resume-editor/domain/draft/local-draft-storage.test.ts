@@ -112,9 +112,8 @@ describe("LocalDraftStorage", () => {
   });
 
   it("reports an error status when the draft fails validation, and still throws", () => {
-    // Why: `save` marks the edit persisted only once it returns, so this has to
-    // keep throwing — but the header indicator used to stay on "saved" while
-    // nothing was written. A section emptied to zero items is the way in.
+    // `save` marks the edit persisted only on return, so it must keep throwing; the
+    // header used to show "saved" while nothing was written. Empty the section to provoke it.
     const draft = createDefaultResumeDraft();
     draft.sections.workExperience.items = [];
     storage.save(createDefaultResumeDraft());

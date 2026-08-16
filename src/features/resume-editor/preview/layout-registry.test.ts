@@ -71,10 +71,8 @@ describe("preview layout registry", () => {
   });
 
   it("marks only the layouts that re-title the summary as hiding its heading", () => {
-    // Classic renders its own Summary heading, split runs the name straight
-    // into the summary, atlas labels it with the headline, and editorial sets
-    // it as an untitled pull quote; suppressing the shared <h2> anywhere else
-    // loses the section its title.
+    // A few layouts render the summary themselves (classic, split, atlas,
+    // editorial); suppressing the shared <h2> anywhere else loses the title.
     const hiding = previewLayoutDefinitions
       .filter((layout) => layout.hideSummaryHeading === true)
       .map((layout) => layout.id);

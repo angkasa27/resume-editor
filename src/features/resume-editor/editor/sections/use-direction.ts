@@ -2,10 +2,7 @@
 
 import { useState } from "react";
 
-/**
- * Shared +1/-1 slide-direction state for the drill-in `AnimatePresence` blocks.
- * +1 = navigating forward (into a form), -1 = back (out to the list).
- */
+/** Shared +1/-1 slide direction for the drill-in `AnimatePresence` blocks. */
 export function useDirection(initial = 1) {
   const [direction, setDirection] = useState(initial);
   return {

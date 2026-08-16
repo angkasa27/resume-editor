@@ -40,8 +40,7 @@ function escapeHtmlAttribute(value: string) {
     .replace(/>/g, "&gt;");
 }
 
-// Cache the per-attribute-name regex so it isn't recompiled on every lookup
-// (called up to 3x per matched tag during sanitization).
+// Cache per-attribute regexes so they aren't recompiled on every lookup.
 const attributeRegexCache = new Map<string, RegExp>();
 
 function getAttributeRegex(name: string) {

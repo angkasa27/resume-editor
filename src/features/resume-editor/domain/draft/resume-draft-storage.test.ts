@@ -11,8 +11,7 @@ describe("importResumeDraft", () => {
     expect(importResumeDraft(exportResumeDraft(draft))).toEqual(draft);
   });
 
-  // The PDF-import response ships `{ draft }`; users re-import those files, and
-  // the whole envelope used to reach the schema and blow up.
+  // PDF-import ships `{ draft }`; the envelope used to reach the schema and blow up.
   it("unwraps a { draft } envelope", () => {
     const draft = createDefaultResumeDraft();
     expect(importResumeDraft(JSON.stringify({ draft }))).toEqual(draft);

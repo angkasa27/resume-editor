@@ -38,10 +38,8 @@ export class LocalDraftStorage {
   }
 
   save(draft: ResumeDraft): ResumeDraft {
-    // The persisted schema is lenient, so this rejects only structural breakage
-    // (a section emptied to zero items). Status first — the header claimed
-    // "Saved" while nothing was written — but it must still throw: callers mark
-    // the edit persisted only once this returns.
+    // Lenient schema rejects only structural breakage (a section emptied to zero items).
+    // Status is set first, but it must still throw: callers mark persisted only once this returns.
     let validatedDraft: ResumeDraft;
     try {
       validatedDraft = parseResumeDraft(draft);
@@ -62,8 +60,7 @@ export class LocalDraftStorage {
       );
       this.setStatus("saved");
     } catch (error) {
-      // Quota exceeded, private-mode, blocked storage — surface it instead of
-      // silently dropping the write (the old behaviour looked "saved" forever).
+      // Quota exceeded / blocked storage — surface it instead of silently dropping the write.
       warn("Failed to persist resume draft to localStorage:", error);
       this.setStatus("error");
     }

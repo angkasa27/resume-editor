@@ -21,9 +21,8 @@ export class ProfilePhotoError extends Error {
 export type CropArea = { x: number; y: number; width: number; height: number };
 
 /**
- * Validate (type + size) and decode an image file into an `HTMLImageElement`.
- * The caller owns `objectUrl` and must `URL.revokeObjectURL` it once done (e.g.
- * after the crop dialog closes). Throws `ProfilePhotoError` on bad input.
+ * Validate (type + size) and decode an image file. Caller owns `objectUrl` and
+ * must `URL.revokeObjectURL` it. Throws `ProfilePhotoError` on bad input.
  */
 export async function loadImageFile(
   file: File,
@@ -52,8 +51,8 @@ export async function loadImageFile(
 }
 
 /**
- * Draw a crop region of `image` onto a canvas, downscaled to fit within
- * `maxDimension`, and return a JPEG data URL.
+ * Draw a crop region onto a canvas, downscale to `maxDimension`, and return a
+ * JPEG data URL.
  */
 export function cropImageToDataUrl(
   image: HTMLImageElement,
@@ -104,8 +103,8 @@ function loadHtmlImage(src: string): Promise<HTMLImageElement> {
 }
 
 /**
- * Scale a (width, height) down so neither side exceeds `max`, preserving aspect
- * ratio. Pure — unit-tested. Returns the input unchanged when already within.
+ * Scale (width, height) so neither side exceeds `max`, preserving aspect ratio.
+ * Pure — unit-tested. Returns the input unchanged when already within.
  */
 export function fitWithin(width: number, height: number, max: number) {
   if (width <= max && height <= max) {

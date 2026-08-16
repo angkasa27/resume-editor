@@ -19,11 +19,9 @@ type SidebarResizeHandleProps = {
 const KEY_STEP = 16;
 const KEY_STEP_LARGE = 64;
 
-/**
- * pointermove writes `style.width` straight to the aside; only pointerup commits state —
- * re-rendering per move would re-render every mounted form and TipTap instance in the sidebar.
- * Field grid still reflows live because it's driven by container queries, not a width prop.
- */
+/** pointermove writes `style.width` straight to the aside; only pointerup commits —
+ * per-move re-renders would re-render every mounted form. The field grid still
+ * reflows live via container queries, not a width prop. */
 export function SidebarResizeHandle({
   targetRef,
   width,
@@ -37,8 +35,7 @@ export function SidebarResizeHandle({
     event.preventDefault();
     dragRef.current = { startX: event.clientX, startWidth: width };
     event.currentTarget.setPointerCapture(event.pointerId);
-    // Without these, dragging across the canvas selects the resume text and
-    // the cursor flickers back to default over the paper.
+    // Without these, dragging selects resume text and the cursor flickers over the paper.
     document.body.style.cursor = "col-resize";
     document.body.style.userSelect = "none";
   }

@@ -6,10 +6,9 @@ import {
   type KeyboardShortcutMap,
 } from "@/hooks/use-keyboard-shortcuts";
 
-// NOTE: jsdom reports navigator.platform === "", so IS_MAC is false and the
-// "mod" token resolves to `ctrlKey`. Every test here presses ctrl for "mod".
-// If this hook ever hard-coded metaKey instead of the platform lookup, these
-// ctrl-based tests would fail — which is the point.
+// NOTE: jsdom reports navigator.platform === "", so IS_MAC is false and "mod"
+// resolves to `ctrlKey` — every test presses ctrl for "mod". A hard-coded
+// metaKey lookup would break these ctrl-based tests, which is the point.
 
 const focusables: HTMLElement[] = [];
 
@@ -41,8 +40,8 @@ function focusTextarea() {
 }
 
 function focusContentEditable() {
-  // jsdom does not implement isContentEditable, so we simulate it. The element
-  // still needs a tabindex to become the real activeElement in jsdom.
+  // jsdom does not implement isContentEditable, so simulate it; a tabindex makes
+  // it the real activeElement.
   const el = document.createElement("div");
   el.setAttribute("tabindex", "-1");
   Object.defineProperty(el, "isContentEditable", {
@@ -134,9 +133,8 @@ describe("useKeyboardShortcuts", () => {
     });
 
     it("allows shift for shift-produced symbol keys without shift in the combo", () => {
-      // Why: "?" / "/" / "+" are typed WITH shift on many layouts, so the combo
-      // author writes just "?" but the event still arrives with shiftKey=true.
-      // The guard must whitelist these so the help shortcut still fires.
+      // Why: "?" / "/" / "+" arrive with shiftKey=true on many layouts, so the
+      // whitelist lets the bare-symbol combo still fire.
       const help = vi.fn();
       const zoom = vi.fn();
       mount({ "?": help, "+": zoom });
@@ -222,10 +220,8 @@ describe("useKeyboardShortcuts", () => {
     });
 
     it("keeps scanning past a focus-blocked combo to a later ignoreInputFocus combo", () => {
-      // Why: locks the `continue` (not `return`) behavior when a matching combo
-      // is blocked by focus — a focus-guarded and a focus-ignoring handler for
-      // the same chord must not shadow each other. A refactor to `return` here
-      // would silently swallow the second handler.
+      // Why: a focus-blocked combo must `continue` (not `return`) so a later
+      // ignoreInputFocus handler for the same chord still fires.
       const guarded = vi.fn();
       const global = vi.fn();
       mount({
@@ -291,9 +287,8 @@ describe("useKeyboardShortcuts", () => {
     });
 
     it("uses the latest handler after the shortcut map changes", () => {
-      // Why: the hook stores shortcuts in a ref updated every render so callers
-      // can pass fresh closures without re-subscribing the listener. A stale
-      // handler here would fire outdated actions (e.g. save the wrong draft).
+      // Why: the shortcuts ref is updated each render so fresh closures work
+      // without re-subscribing the listener; a stale handler fires outdated actions.
       const first = vi.fn();
       const second = vi.fn();
       const { rerender } = mount({ "mod+s": first });

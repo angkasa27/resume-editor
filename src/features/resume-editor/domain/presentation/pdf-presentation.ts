@@ -58,12 +58,8 @@ export type PdfPaperSize = (typeof pdfPaperSizes)[number];
 export const pdfPhotoShapeIds = ["square", "rectangle", "circle"] as const;
 export type PdfPhotoShapeId = (typeof pdfPhotoShapeIds)[number];
 
-/**
- * Layouts whose native photo is a circle. Every other layout already declares a
- * flat radius of its own, so a square/rectangle pick can just leave the radius
- * var unset; these four would stay round, so they need a corner value to take
- * instead. Keep in sync with `border-radius: …, 50%` in the layout CSS modules.
- */
+/** Layouts whose native photo is a circle: a square/rectangle pick leaves the radius var
+ *  unset for other layouts, but these would stay round. Keep in sync with the layout CSS. */
 const roundPhotoLayoutFlatRadius: Partial<Record<PdfLayoutId, string>> = {
   split: "12px",
   "modern-centered": "12px",
@@ -224,12 +220,8 @@ export function getPageMarginMm(layoutId: PdfLayoutId, spacing: PdfSpacingId) {
   );
 }
 
-/**
- * Nominal margin for content-length estimates only. Deliberately a constant
- * rather than the layout's own margin: the length score advises on how much
- * content you have written, so it must not move when you try a different
- * layout without touching a word.
- */
+/** Nominal margin for length estimates only — a constant on purpose so the length
+ *  score doesn't move when you switch layouts without touching content. */
 export const NOMINAL_LENGTH_MARGIN_MM = 14;
 
 export function createDefaultPdfPresentation(): PdfPresentation {
@@ -332,10 +324,8 @@ export function resolvePdfPresentation(
   if (p.photoShape) {
     vars["--resume-photo-aspect"] =
       p.photoShape === "rectangle" ? "3 / 4" : "1 / 1";
-    // Shape swaps the aspect ratio only: square/rectangle leave the radius var
-    // unset so each layout keeps its own corners (0 on atlas, 6px on classic…).
-    // Circle owns the radius, and the layouts that are natively round need an
-    // explicit non-round radius to fall back to when a flat shape is picked.
+    // Shape swaps aspect only; natively round layouts need an explicit flat radius
+    // so a square/rectangle pick doesn't stay round.
     if (p.photoShape === "circle") {
       vars["--resume-photo-radius"] = "50%";
     } else if (roundPhotoLayoutFlatRadius[p.layoutId]) {

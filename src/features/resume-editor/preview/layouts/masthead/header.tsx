@@ -4,12 +4,9 @@ import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-
 import styles from "./styles.module.css";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
-/**
- * Two blocks that bleed off the top corners with a hairline gap between them: the
- * photo, square and uncropped by any frame, and the accent plate carrying the name.
- * With no photo the plate takes the whole width (see `grid-column` in the stylesheet)
- * rather than leaving a hole where the picture would have been.
- */
+/** Two blocks bleeding off the top corners with a hairline gap between them:
+ * the square uncropped photo and the accent plate carrying the name. With no
+ * photo the plate takes the whole width rather than leaving a hole. */
 export function MastheadHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;
   return (

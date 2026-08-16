@@ -185,9 +185,8 @@ function TailorBody({
     options.find((option) => option.value === value)?.label ?? "";
 
   function handleAddToSkills() {
-    // No model involved: putting a term on a skills list is a list append.
-    // Track what actually landed — a term already present is skipped, and the
-    // toast must not claim credit for it.
+    // No model involved — a list append. Track what landed: a term already present
+    // is skipped, and the toast must not claim credit for it.
     const added: string[] = [];
     const next = terms.reduce((section, term) => {
       const updated = addKeywordToSkills(section, term, categoryId);
@@ -211,8 +210,7 @@ function TailorBody({
 
   async function handleTailorRole() {
     const role = roles.find((item) => item.id === target);
-    // The route rejects empty content, and its message is written for a
-    // developer — never let a bullet-less role reach it.
+    // The route rejects empty content with a developer-facing message — never send a bullet-less role.
     if (!role || !stripRichText(role.description).trim()) return;
 
     setPhase({ kind: "loading" });
@@ -238,9 +236,8 @@ function TailorBody({
   }
 
   function acceptRewrite(improved: string, roleId: string) {
-    // Safe to write a section from here: the sidebar only mounts the section
-    // forms when the "edit" rail is active, so no form is holding a pending
-    // edit that this could clobber (SAVE-FLOW invariants 5 and 6).
+    // Safe to write a section here: no form is mounted outside the "edit" rail, so
+    // nothing holds a pending edit this could clobber (SAVE-FLOW invariants 5 and 6).
     onSaveSection("workExperience", {
       ...draft.sections.workExperience,
       items: roles.map((item) =>
@@ -275,8 +272,7 @@ function TailorBody({
           aria-label="Terms to add"
           value={terms}
           onValueChange={(next) => {
-            // Hard cap rather than a silent truncation downstream: past this
-            // many, the request would quietly drop whatever came last.
+            // Hard cap: past this many, the request would silently drop the last terms.
             const picked = next as string[];
             if (picked.length > ALIGNMENT_KEYWORD_LIMIT) return;
             setSelectedTerms(new Set(picked));

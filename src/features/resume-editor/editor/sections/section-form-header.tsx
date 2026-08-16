@@ -93,13 +93,9 @@ type SectionFormHeaderProps = {
   ) => void;
 };
 
-/**
- * Contextual header for a drill-in section form. Which actions apply is derived here so desktop and
- * mobile can't disagree — Profile/Summary are pinned (no remove), only dated sections can sort.
- *
- * The heading is also the rename field: every section but Profile prints its own
- * title on the paper, so the one place you read it is the one place you edit it.
- */
+/** Contextual header for a drill-in section form. Which actions apply is derived here
+ * so desktop and mobile can't disagree. The heading is also the rename field — every
+ * section but Profile prints its title on the paper. */
 export function SectionFormHeader({
   sectionKey,
   draft,

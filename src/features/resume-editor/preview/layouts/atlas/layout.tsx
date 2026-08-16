@@ -10,28 +10,16 @@ import styles from "./styles.module.css";
 
 /**
  * Sections pair off into rows of two cells: a wide cell spanning two of the
- * page's three tracks, and a narrow cell taking the third.
+ * page's three tracks, and a narrow cell taking the third. Position decides the
+ * shape — even-indexed sections are wide, odd ones narrow — so reordering
+ * reshapes the page.
  *
- *     row 0:  [ section 0 — items in 2 columns ] [ section 1 — 1 column ]
- *     row 1:  [ section 2 — items in 2 columns ] [ section 3 — 1 column ]
- *
- * So position decides the shape: even-indexed sections are wide and lay their
- * items out side by side, odd-indexed ones are narrow and stack. Reordering
- * therefore reshapes the page, which is the point — a section has one position
- * in the draft and no column field, so anything richer could not be expressed
- * by dragging.
- *
- * Rows are real block-level siblings rather than implicit grid rows, because
- * the pagination pass moves a block by inserting a spacer before it: inside a
- * grid that spacer becomes another grid item and reflows the whole tiling. Each
- * row is marked `data-page-unit`, so the pass moves it whole and never descends
- * into the two-column item grid inside the wide cell.
- *
- * ponytail: a row taller than one page still spills into the next page's margin
- * band — nothing can move within it without reflowing the grid. Real résumés
- * pair a long section with a short one and stay under that, but if it starts
- * showing up, the fix is to paginate the wide cell's two columns as two separate
- * flows rather than one item grid.
+ * Rows are real block-level siblings, not implicit grid rows, and each is marked
+ * `data-page-unit`: the pagination pass moves a row whole (a spacer inside a
+ * grid would reflow the whole tiling) and never descends into the two-column
+ * item grid. Known limit: a row taller than a page still spills into the next
+ * page's margin band; the fix would be paginating the wide cell's columns
+ * as two separate flows.
  */
 function AtlasLayout({ context, slots }: LayoutComponentProps) {
   const hasLinks = context.contactItems.some((item) => item.kind === "link");
@@ -43,9 +31,8 @@ function AtlasLayout({ context, slots }: LayoutComponentProps) {
   return (
     <div className={`${styles.layout} page-inset`}>
       {slots.header}
-      {/* The headline labels the summary instead of sitting under the name: the
-          name is set large enough that a subtitle beneath it would read as a
-          second line of the same block. Its own <h2> is suppressed here. */}
+      {/* The headline labels the summary — beneath the large name it would read
+          as a second line of the same block. Its own <h2> is suppressed. */}
       <div className="atlas-lede">
         <div className="atlas-profile">
           {context.draft.profile.headline ? (

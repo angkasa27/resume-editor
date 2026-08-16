@@ -5,11 +5,8 @@ import {
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
-/**
- * The photo-left header shared by classic/inset/timeline/sidebar:
- * optional photo frame, then name + contact line. Each layout passes its own
- * `styles` module and `data-layout` value, and may tune how its contacts read.
- */
+/** The photo-left header shared by several layouts: optional photo frame, then
+ * name + contact line. Layouts pass their own `styles` and `data-layout`. */
 export function createPhotoHeader({
   dataLayout,
   styles,

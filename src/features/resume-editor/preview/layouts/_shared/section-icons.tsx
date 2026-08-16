@@ -33,12 +33,8 @@ const ICON_BY_SECTION: Record<
   organizationVolunteering: HandHeartIcon,
 };
 
-/**
- * Renamed sections keep their icon: the key is stable, the title is not. Passed to
- * the layout definition as `renderSectionHeading`, which also feeds the summary.
- * Shared by studio (badged) and compass (bare glyph in the margin) — same markup,
- * different CSS, so the two can never drift on which section gets which glyph.
- */
+/** Renamed sections keep their icon: the key is stable, the title is not.
+ * Shared by studio and compass — same markup, different CSS. */
 export function renderIconSectionHeading(
   sectionKey: CollectionSectionKey | "summary",
   heading: ReactNode,

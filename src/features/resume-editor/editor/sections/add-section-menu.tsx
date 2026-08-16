@@ -22,10 +22,8 @@ type AddSectionMenuProps = {
   triggerVariant?: ComponentProps<typeof Button>["variant"];
 };
 
-/**
- * "Add section" dropdown listing the hidden collection sections. Renders nothing
- * when every section is already visible. Shared by both editor surfaces.
- */
+/** "Add section" dropdown listing the hidden collection sections; renders nothing
+ * when every section is visible. Shared by both editor surfaces. */
 export function AddSectionMenu({
   hiddenKeys,
   onAdd,

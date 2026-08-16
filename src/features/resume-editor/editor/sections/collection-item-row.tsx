@@ -23,13 +23,8 @@ type CollectionItemRowProps = {
   children: ReactNode;
 };
 
-/**
- * One item inside a collection section: a row identical to a section row when
- * collapsed, expanding to reveal its fields.
- *
- * The border only appears while open — collapsed, this is pixel-identical to a
- * section row (that's the point); open, the border marks where a long form ends.
- */
+/** One item in a collection: a row identical to a section row when collapsed,
+ * expanding to reveal its fields. The border appears only while open. */
 export function CollectionItemRow({
   itemId,
   summary,

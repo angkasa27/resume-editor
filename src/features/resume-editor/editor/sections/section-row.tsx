@@ -26,10 +26,7 @@ type SectionRowProps = {
   className?: string;
 };
 
-/**
- * A section row in the editor's section list. Same `EditorRow` the collection
- * item rows use — only the slots differ.
- */
+/** A section row in the list — the same `EditorRow` the item rows use, different slots. */
 export function SectionRow({
   sectionKey,
   label,

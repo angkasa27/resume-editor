@@ -34,10 +34,8 @@ export function tintHex(hex: string, whiteRatio: number): string {
   return mixHex(hex, "#ffffff", whiteRatio);
 }
 
-/**
- * Picks a readable text color for content rendered on a solid `hex` fill.
- * Uses WCAG relative luminance; light fills get dark text and vice versa.
- */
+/** Readable text color for a solid `hex` fill via WCAG relative luminance —
+ *  light fills get dark text and vice versa. */
 export function readableTextOn(hex: string): string {
   const [r, g, b] = parseHex(hex);
   const linear = (value: number) => {

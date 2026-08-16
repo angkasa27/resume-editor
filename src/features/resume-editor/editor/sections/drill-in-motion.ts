@@ -1,8 +1,7 @@
 import { motionTokens } from "@/lib/motion-tokens";
 
-// Direction-aware "filmstrip" slide: both panels translate the full width in
-// lockstep (no overlay/parallax), like a native push or a presentation deck.
-// `dir` > 0 = forward (new in from the right), < 0 = back (new in from the left).
+// Direction-aware "filmstrip" slide: both panels translate in lockstep (no parallax).
+// `dir` > 0 = forward (in from the right), < 0 = back (in from the left).
 export const slideVariants = {
   enter: (dir: number) => ({ x: dir >= 0 ? "100%" : "-100%" }),
   center: { x: "0%" },

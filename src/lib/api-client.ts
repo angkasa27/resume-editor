@@ -1,5 +1,4 @@
-/** The server's error message for a failed response, or `fallback` if it didn't
- *  send one (or didn't answer with JSON at all). */
+/** The server's error message for a failed response, or `fallback`. */
 export async function responseErrorMessage(
   response: Response,
   fallback: string,
@@ -11,9 +10,9 @@ export async function responseErrorMessage(
 }
 
 /**
- * POSTs a JSON body and returns the parsed payload, throwing the server's
- * `message` (or `fallback`) on failure. Fields are optional because a failed
- * route answers with `{ message }` alone — callers check the one they need.
+ * POSTs JSON and returns the parsed payload, throwing the server's `message`
+ * (or `fallback`) on failure. Fields are optional — failed routes answer with
+ * `{ message }` alone.
  */
 export async function postJson<T extends object>(
   url: string,

@@ -3,8 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * For container-driven layout that reacts to the element's own width, not the
- * viewport (e.g. a resizable pane's toolbar). Returns `0` until first
+ * Tracks the element's own width (not the viewport). Returns `0` until first
  * measurement so callers can treat "unmeasured" as the default state.
  */
 export function useElementWidth<T extends HTMLElement>() {

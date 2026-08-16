@@ -16,10 +16,8 @@ export type LayoutSectionItemMap = {
   }) => ReactNode;
 };
 
-/**
- * Distributed over CollectionSectionKey so `entry.key === "skills"` narrows `entry.section` type-safely, no cast needed.
- * `section` is optional: canvas renders a slot for every section including empty ones, so guard before reading it.
- */
+/** Distributed over CollectionSectionKey so `entry.key === "skills"` narrows
+ * `entry.section` type-safely. `section` is optional — guard before reading. */
 export type LayoutSectionEntry = {
   [K in CollectionSectionKey]: {
     key: K;
@@ -47,21 +45,15 @@ export type PreviewLayoutDefinition = {
   id: PdfLayoutId;
   label: string;
   description: string;
-  /**
-   * True when the layout renders its own Summary heading, so the shared SummaryView suppresses its <h2>.
-   * Single source of truth for `shouldHideSummaryHeading` — no separate hardcoded id list.
-   * Hide only where the summary reads as a lede paragraph under the header (classic, split);
-   * keep it shown elsewhere, since a visible heading is also the safer default for ATS parsers.
-   */
+  /** True when the layout renders its own Summary heading, so SummaryView
+   * suppresses its <h2>. Hide only where the summary reads as a lede under the
+   * header; elsewhere a visible heading is the safer ATS default. */
   hideSummaryHeading?: boolean;
   Component: (props: LayoutComponentProps) => ReactNode;
   Header: (props: LayoutHeaderProps) => ReactNode;
   itemViews: LayoutSectionItemMap;
-  /**
-   * Decorates the shared section <h2> (e.g. with an icon). Layouts cannot do this themselves:
-   * the section node they receive is already wrapped for click-to-edit, so rebuilding it
-   * would drop editor targeting.
-   */
+  /** Decorates the shared section <h2> (e.g. with an icon). Layouts can't do it
+   * themselves: the node they receive is already wrapped for click-to-edit. */
   renderSectionHeading?: (
     sectionKey: CollectionSectionKey | "summary",
     heading: ReactNode,

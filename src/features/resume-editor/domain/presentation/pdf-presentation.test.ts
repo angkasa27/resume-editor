@@ -60,8 +60,7 @@ describe("getPaperDimensionsMm", () => {
 
 describe("getPageMarginMm", () => {
   it("gives rail layouts a tighter margin than typographic ones", () => {
-    // The whole reason the margin moved from a user knob onto the layout: a
-    // 0.36fr rail and a whitespace-led page cannot share one value.
+    // The reason margins live on the layout: a 0.36fr rail and a whitespace-led page can't share one value.
     expect(getPageMarginMm("split", "standard")).toBeLessThan(
       getPageMarginMm("academic", "standard"),
     );
@@ -90,9 +89,7 @@ describe("normalizePdfPresentation", () => {
   });
 
   it("remaps a retired layout id to its successor rather than the default", () => {
-    // A draft saved on `tinted` must land on split, not fall through to the
-    // classic default — the user picked a tinted surface and split's rail
-    // still has one.
+    // A `tinted` draft must land on split, not the classic default — split's rail keeps the tinted feel.
     expect(normalizePdfPresentation({ layoutId: "tinted" }).layoutId).toBe(
       "split",
     );
@@ -183,8 +180,7 @@ describe("resolvePdfPresentation", () => {
   });
 
   it("ties the gutter to half the page margin so inner air tracks the edge", () => {
-    // A tight-margin rail layout with a wide gutter reads as unbalanced; the
-    // gutter is deliberately derived from the margin, not set per layout.
+    // Gutter is derived from the margin, not set per layout, or tight-margin rails read unbalanced.
     const base = createDefaultPdfPresentation();
     const split = resolvePdfPresentation({ ...base, layoutId: "split" });
     const academicMargin = resolvePdfPresentation({ ...base, layoutId: "academic" });
@@ -272,8 +268,7 @@ describe("resolvePdfPresentation", () => {
       expect(result.vars["--resume-photo-radius"]).toBeUndefined();
     });
 
-    // Without this the flat shapes inherit the layout's own 50% and still
-    // render round — the one thing switching shape must never do.
+    // Without this, flat shapes inherit the layout's 50% and render round — the one thing not allowed.
     it("un-rounds a natively circular layout for the flat shapes", () => {
       const result = resolvePdfPresentation({
         ...base,

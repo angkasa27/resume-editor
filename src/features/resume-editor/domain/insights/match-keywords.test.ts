@@ -40,8 +40,7 @@ describe("matchKeywords", () => {
     expect(result.coverage).toBe(0.25);
   });
 
-  // Real ATS keyword screens compare literal strings, so an acronym is a partial
-  // match at best — the resume should carry both forms.
+  // ATS screens compare literal strings, so an acronym is only a partial match — carry both forms.
   it("counts an alias-only hit as partial, not matched", () => {
     const draft = draftWithSkills("K8s");
     const result = matchKeywords(draft, "...", [
@@ -69,8 +68,7 @@ describe("matchKeywords", () => {
   });
 
   it("uses word boundaries (does not match substrings)", () => {
-    // Use a synthetic probe ("solidipotent") so the default lorem-ipsum
-    // resume content can't accidentally satisfy the substring.
+    // Synthetic probe so the default resume content can't accidentally satisfy the substring.
     const draft = draftWithSkills("Solidipotent");
     const result = matchKeywords(draft, "...", [
       { term: "Solid", category: "hard-skill", weight: 1 },

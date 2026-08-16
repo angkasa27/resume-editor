@@ -7,10 +7,8 @@ import {
   Roboto,
 } from "next/font/google";
 
-// These fonts are only used inside the editor's resume preview (selected per
-// template at runtime). `preload: false` keeps them off the critical path on
-// every route — most importantly the landing page, which never uses them. They
-// still load on demand (display: swap) when a template actually selects them.
+// Editor-preview-only fonts; `preload: false` keeps them off every route's
+// critical path (the landing page never uses them), loading on demand instead.
 export const fontLato = Lato({
   subsets: ["latin"],
   weight: ["400", "700"],

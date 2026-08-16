@@ -14,12 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
   ]),
   {
-    // Design-system guards. Both of these codify a regression that already
-    // happened once: form spacing drifted to ten different gap values because
-    // every call site overrode the primitive, and the type scale grew a tail of
-    // one-off pixel sizes.
-    // The editor's surfaces + the primitives they share. The landing page is
-    // marketing with its own display treatments and is deliberately exempt.
+    // Design-system guards: each rule codifies a regression that already happened.
+    // Scope is the editor surfaces + shared primitives; the landing page is exempt.
     files: [
       "src/features/**/*.{ts,tsx}",
       "src/components/ui/**/*.{ts,tsx}",

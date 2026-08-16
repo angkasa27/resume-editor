@@ -429,9 +429,8 @@ describe("resume editor store", () => {
       expect(store.getState().redoStack).toHaveLength(1);
     });
 
-    // History entries predate the analysis, so restoring one naively would drop
-    // the saved job description — recoverable only until the next edit cleared
-    // the redo stack, at which point it was gone for good.
+    // History entries predate the analysis, so restoring one naively would drop the
+    // job description — gone for good once a later edit clears the redo stack.
     it("survives undo onto a draft saved before it existed", () => {
       const store = createResumeEditorStore({ storage: createMockStorage() });
 

@@ -9,14 +9,8 @@ import {
 } from "@dnd-kit/core";
 import { sortableKeyboardCoordinates } from "@dnd-kit/sortable";
 
-/**
- * Shared dnd-kit wiring for a sortable list: pointer + keyboard sensors and a
- * drag-end handler that maps the dragged id onto the id it was dropped over.
- *
- * Used by both the section list (ids = section keys) and the item list inside a
- * section (ids = react-hook-form field keys), so the two levels of the editor
- * reorder with identical feel and identical keyboard support.
- */
+/** Shared dnd-kit wiring for a sortable list: pointer + keyboard sensors and a
+ * drag-end mapping onto the id dropped over. Used by both levels of the editor. */
 export function useDndReorder<TId extends string>(
   onReorder: (activeId: TId, overId: TId) => void,
 ) {

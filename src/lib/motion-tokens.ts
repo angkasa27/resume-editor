@@ -1,6 +1,6 @@
 /**
- * Shared motion tokens. Every animated component pulls its duration, easing and
- * distance from here — no hardcoded numbers in component files.
+ * Shared motion tokens — every animated component pulls its duration, easing
+ * and distance from here, no hardcoded numbers in component files.
  */
 
 /** Cubic-bezier easing tuple, as motion's `Easing` bezier definition expects. */
@@ -33,8 +33,8 @@ export const springs = {
   pill: { type: "spring", stiffness: 360, damping: 30 },
 } as const;
 
-/** Render an easing tuple as a CSS `cubic-bezier(...)` string for CSS-driven
- *  transitions (e.g. the grid-rows `Collapse`), so they track the same tokens. */
+/** Render an easing tuple as a CSS `cubic-bezier(...)` string so CSS-driven
+ *  transitions (e.g. the grid-rows `Collapse`) track the same tokens. */
 export function cssBezier(easing: Bezier): string {
   return `cubic-bezier(${easing.join(", ")})`;
 }

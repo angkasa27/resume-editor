@@ -1,8 +1,7 @@
 /**
- * Ad-hoc verification: exports PDFs through the running dev server for the
- * full-bleed layouts (1-page and multi-page variants). Not part of the build.
- *
- *   pnpm exec tsx scripts/verify-pdf-export.ts <outDir> [baseUrl]
+ * Ad-hoc check: exports PDFs through the running dev server for the full-bleed
+ * layouts (1-page and multi-page variants). Not part of the build.
+ * Usage: pnpm exec tsx scripts/verify-pdf-export.ts <outDir> [baseUrl]
  */
 import { mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";

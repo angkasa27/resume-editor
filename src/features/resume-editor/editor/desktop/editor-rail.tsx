@@ -23,8 +23,7 @@ type RailItem = {
   icon: LucideIcon;
 };
 
-// Mirrors the mobile bottom nav's icon choices so both surfaces read as one
-// family; Preview has no rail entry because the desktop canvas is always shown.
+// Mirrors the mobile bottom nav's icons; Preview has no entry — the canvas is always shown.
 const ITEMS: RailItem[] = [
   { key: "edit", label: "Edit", icon: SquarePenIcon },
   { key: "design", label: "Design", icon: SwatchBookIcon },
@@ -39,10 +38,7 @@ type EditorRailProps = {
   onSelect: (key: RailKey) => void;
 };
 
-/**
- * The compact icon rail: picks which panel the sidebar shows. Clicking the
- * active icon collapses the sidebar, giving the canvas the full width.
- */
+/** The compact icon rail picking the sidebar's panel; re-selecting collapses it. */
 export function EditorRail({ value, collapsed, onSelect }: EditorRailProps) {
   return (
     <nav

@@ -14,9 +14,8 @@ const DEFAULT_PILL = "bg-background shadow-sm dark:bg-input/30";
 const TabsValueContext = createContext<string>("");
 
 /** Per-list pill config. The active trigger renders the pill as its own
- *  `inset-0` background; a list-unique `layoutId` makes motion slide it between
- *  triggers via transforms (no width/height animation, no measurement). The
- *  unique id also keeps sibling Tabs instances from sharing one pill. */
+ *  `inset-0` background; a list-unique `layoutId` slides it via transforms
+ *  (no measurement) and keeps sibling Tabs instances from sharing one pill. */
 type PillContextValue = {
   pillClassName: string;
   showPill: boolean;
@@ -32,8 +31,8 @@ function Tabs({
   onValueChange,
   ...props
 }: TabsPrimitive.Root.Props) {
-  // Mirror base-ui's value so triggers can read the active tab during render.
-  // Controlled lists pass `value`; uncontrolled lists track it here.
+  // Mirror base-ui's value so triggers can read the active tab during render
+  // (controlled lists pass `value`; uncontrolled lists track it here).
   const [internalValue, setInternalValue] = useState<string>(
     typeof defaultValue === "string" ? defaultValue : "",
   );
@@ -128,8 +127,7 @@ function TabsTrigger({
       {...props}
     >
       {/* Sliding pill — only the active trigger hosts it; the shared `layoutId`
-          animates it across triggers via transforms. Reduced motion snaps it
-          in place (Rule 3). */}
+          animates it across triggers. Reduced motion snaps it in place. */}
       {isActive && pill ? (
         <motion.span
           aria-hidden
@@ -152,7 +150,7 @@ function TabsContent({
   ...props
 }: TabsPrimitive.Panel.Props) {
   // No enter animation — base-ui unmounts the inactive panel, so it would
-  // re-fire on every tab change. The pill carries the transition.
+  // re-fire on every tab change; the pill carries the transition.
   return (
     <TabsPrimitive.Panel
       data-slot="tabs-content"

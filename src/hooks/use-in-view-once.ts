@@ -3,10 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 
 /**
- * For deferring expensive children until their container nears the viewport.
- * Latches on first intersection — unmounting on scroll-out would trade a
- * one-off cost for a permanent one. Returns `true` where
- * `IntersectionObserver` is missing (jsdom, old browsers).
+ * Latch-once in-view hook for deferring expensive children. Returns `true`
+ * where `IntersectionObserver` is missing (jsdom, old browsers).
  */
 export function useInViewOnce<T extends HTMLElement>(rootMargin = "200px") {
   const ref = useRef<T>(null);

@@ -31,10 +31,8 @@ describe("useAutoSave", () => {
   });
 
   it("keeps saving nested edits after the first save (the aliasing regression)", async () => {
-    // `getValues()` hands back nested objects by reference and RHF mutates them
-    // in place. Snapshotting the object itself made every edit after the first
-    // save compare equal to the snapshot — collection item forms stopped
-    // persisting entirely while profile/summary (flat values) kept working.
+    // `getValues()` returns nested objects by reference and RHF mutates them in
+    // place, so snapshotting the object made every later edit compare equal.
     const onSave = vi.fn();
     const seed = { items: [{ description: "a" }] };
     const { result } = renderHook(() => {
@@ -63,10 +61,8 @@ describe("useAutoSave", () => {
   });
 
   it("flushOpenForms persists the pending edit now, and only once", async () => {
-    // Auto-sort reads the *stored* items and then bumps the revision, so an
-    // edit still sitting in the debounce would be both ignored by the sort and
-    // discarded by the re-seed. The flush has to land it first — and must not
-    // leave the debounce armed to commit the same values again afterwards.
+    // Auto-sort reads stored items then bumps the revision, so a debounced edit is
+    // both ignored by the sort and discarded by the re-seed unless flushed first.
     const onSave = vi.fn();
     const { result } = renderHook(() => {
       const form = useForm<{ name: string }>({ defaultValues: { name: "" } });
@@ -124,9 +120,8 @@ describe("useAutoSave", () => {
   });
 
   it("re-seeds the form on a revision change without saving (external replace)", async () => {
-    // undo/redo/import bump the revision: the open form must re-seed to the new
-    // values and NOT write its old value back (which would clobber the replace
-    // and corrupt undo history).
+    // undo/redo/import bump the revision: the form must re-seed without writing its
+    // old value back, which would clobber the replace and corrupt undo history.
     const onSave = vi.fn();
 
     function Field({
@@ -161,10 +156,8 @@ describe("useAutoSave", () => {
     await new Promise((resolve) => setTimeout(resolve, 700));
     expect(onSave).not.toHaveBeenCalled();
 
-    // Every later replace must re-seed too, and stay silent. A re-seed applies
-    // its values field by field, and those half-applied states arm the debounce
-    // — if that fires it commits values identical to the ones just seeded,
-    // which clears the redo stack (undo, then redo, and redo was dead).
+    // Every later replace must re-seed too, and stay silent: half-applied states
+    // arm the debounce, and firing it clears the redo stack.
     rerender(<App revision={2} values={{ name: "c" }} />);
     expect((screen.getByLabelText("name") as HTMLInputElement).value).toBe("c");
 

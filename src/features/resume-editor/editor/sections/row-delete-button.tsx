@@ -18,14 +18,8 @@ type RowDeleteButtonProps = {
   disabled?: boolean;
 };
 
-/**
- * The trailing delete on an editor row. One direct button rather than a menu:
- * delete is the only row-level action, and burying a single action behind "⋯"
- * costs a click for nothing. Section-level actions (auto-sort, remove) live in
- * the form header instead, so the row's shape stays identical at both levels.
- *
- * Still routed through a confirm dialog by the caller — this only requests it.
- */
+/** The trailing delete on an editor row. Direct button, not a menu — delete is the only
+ * row-level action. Still routed through a confirm dialog by the caller; this only requests it. */
 export function RowDeleteButton({
   label,
   onDelete,

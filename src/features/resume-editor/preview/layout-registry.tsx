@@ -42,10 +42,8 @@ export const previewLayoutDefinitions = [
   editorialLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
-// Compile-time guard: the registry must cover `pdfLayoutIds` (the domain
-// SSOT that feeds the zod enum) exactly — same id set, no missing/extra/renamed
-// entries. Drift on either side is a type error, which keeps future culling
-// lockstep-safe. (Ordering is asserted by layout-registry.test.ts.)
+// Compile-time guard: the registry must cover `pdfLayoutIds` (the domain SSOT)
+// exactly — drift on either side is a type error.
 type RegistryId = (typeof previewLayoutDefinitions)[number]["id"];
 type AssertEqual<A, B> = [A] extends [B]
   ? [B] extends [A]

@@ -17,10 +17,7 @@ type DesignPanelProps = {
   scrollPaddingClassName?: string;
 };
 
-/**
- * The Design surface: Template / Style over the shared control tabs.
- * Identical on the desktop sidebar and the mobile Design tab.
- */
+/** The Design surface: Template / Style tabs, shared by the desktop sidebar and mobile. */
 export function DesignPanel({
   presentation,
   draft,

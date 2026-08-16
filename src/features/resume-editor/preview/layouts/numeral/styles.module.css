@@ -2,10 +2,9 @@
   display: flex;
   flex-direction: column;
   gap: var(--resume-gap-section);
-  /* The index is a CSS counter, not data. Numbering in the markup would need the
-     layout to rebuild each already-wrapped section node just to prefix a digit,
-     and the count would then have to be kept in step with reordering by hand.
-     Document order is the order, so the counter is always right. */
+  /* The index is a CSS counter, not data: numbering in the markup would need the
+     layout to rebuild each section node, and document order is the order, so
+     the counter is always right. */
   counter-reset: resume-section;
 }
 
@@ -40,9 +39,8 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* Same three tracks for every item, so dates line up down the page whatever
-   section they belong to. The right track is capped: sized purely to content it
-   takes whatever a long place name needs and leaves the body column starved. */
+/* Same three tracks for every item, so dates line up down the page. The right
+   track is capped, or a long place name starves the body column. */
 .layout :global(.item) {
   display: grid;
   grid-template-columns: 150px minmax(0, 1fr) minmax(0, max-content);
@@ -50,9 +48,8 @@
   align-items: start;
 }
 
-/* Each cell names its own column. Auto-placement put whichever child came first
-   into the date gutter, so an entry with no date — the date element is dropped
-   rather than rendered empty — slid its title and body one track left. */
+/* Each cell names its own column: auto-placement put the first child in the
+   date gutter, sliding a no-date entry's title and body one track left. */
 .layout :global(.item-date) {
   grid-column: 1;
 }

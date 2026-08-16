@@ -1,7 +1,5 @@
-/* No --resume-font here: pinning a serif silently overrode whatever the user
-   picked in the Style tab, which made the font control a no-op on this layout
-   and made any preset naming a different serif dead data. The serif is the
-   preset's job (academic-oxford/burgundy/journal all name one). */
+/* No --resume-font here: pinning a serif would override the user's Style-tab
+   choice. The serif is the preset's job. */
 .layout {
   display: flex;
   flex-direction: column;

@@ -54,12 +54,8 @@ describe("resumeTemplatePresets", () => {
   });
 
   it("curates secondary only for the layouts that render it", () => {
-    // Only modern-centered (rule under the name), split (rail fill), aurora
-    // (header gradient), dossier (right rail fill), masthead (heading badges)
-    // and editorial (opening band tint) read
-    // --resume-secondary. Setting it anywhere else is data the page cannot
-    // show, yet getActiveTemplatePresetId still matches on it — so an invisible
-    // field would silently decide whether a template looks active.
+    // Only the six layouts that render it read --resume-secondary; anywhere else it's data the
+    // page can't show, yet the active-template match still compares it.
     const RENDERS_SECONDARY = new Set([
       "modern-centered",
       "split",
@@ -79,9 +75,8 @@ describe("resumeTemplatePresets", () => {
   });
 
   it("keeps bold-type's accent vivid, since it is the highlighter", () => {
-    // bold-type spends accent on the marker highlight behind each heading
-    // (at 30% alpha) and on the dates — not on heading text. A near-black
-    // accent there reads as a grey smudge rather than a highlight.
+    // bold-type spends accent on the marker highlight and dates, not heading text;
+    // a near-black accent there reads as a grey smudge.
     const luminance = (hex: string) => {
       const [r, g, b] = [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
       return (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
@@ -181,8 +176,7 @@ describe("getActiveTemplatePresetId", () => {
 
   it("returns null for the stock default presentation unless a preset matches it", () => {
     const active = getActiveTemplatePresetId(createDefaultPdfPresentation());
-    // The default (classic/inter/md) may legitimately match a curated preset;
-    // assert the derivation is consistent rather than hardcoding null.
+    // The default may legitimately match a curated preset; assert consistency, not null.
     if (active) {
       const preset = resumeTemplatePresets.find((p) => p.id === active)!;
       expect(preset.layoutId).toBe("classic");

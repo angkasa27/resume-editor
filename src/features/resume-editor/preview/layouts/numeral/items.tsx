@@ -7,18 +7,11 @@ import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layo
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 import { ItemDate } from "@/features/resume-editor/preview/layouts/_shared/items/item-date";
 
-/**
- * Three columns per item: date in the left gutter, title and body in the middle,
- * place italic on the right. The date gutter lines up with the section number
- * above it, so the left edge of the page is a single column of dates and indices
- * and the middle is the only place prose appears.
- *
- * `side` is for *place only* — a short, categorical value. Anything that can run
- * long (a publisher, a conference name, an issuing body, a proficiency phrase)
- * goes in `subtitle` instead. The right track sizes to its content, so a long
- * value there starves the middle column: a conference title once squeezed the
- * body down to one word per line while the right column ran the full width.
- */
+/** Three columns per item: date in the left gutter, title and body in the
+ * middle, place italic on the right — the left edge is a column of dates and
+ * indices. `side` is for place only; anything that can run long goes in
+ * `subtitle`, since the right track sizes to its content and would starve the
+ * middle column. */
 function NumeralItem({
   date,
   title,

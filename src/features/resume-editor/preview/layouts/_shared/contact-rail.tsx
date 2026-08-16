@@ -1,14 +1,9 @@
 import { PreviewContactLine } from "@/features/resume-editor/preview/kit/contact-line";
 import type { PreviewRenderContext } from "@/features/resume-editor/preview/types";
 
-/**
- * Contacts split into two headed rail blocks ("Details" / "Links"), the way ledger
- * and dossier's rails read. Each block is dropped when it would be empty — a heading
- * with nothing under it is worse than no heading.
- *
- * Plain `<h2 className="section-heading">` on purpose: these are profile fields, not
- * sections, so they must not carry the section heading test id or a `data-section`.
- */
+/** Contacts split into two headed rail blocks ("Details" / "Links"), each
+ * dropped when empty. Plain `<h2 className="section-heading">`: these are
+ * profile fields, not sections, so no test id or `data-section`. */
 export function ContactRailBlocks({
   context,
   detailVariant,

@@ -38,11 +38,8 @@ type CollectionSectionBodyProps = {
   onSave: (sectionValue: ResumeDraft["sections"][CollectionSectionKey]) => void;
 };
 
-/**
- * Headerless collection editor: drag-sortable item rows that expand to their
- * fields, plus add and auto-save. The section's own actions (auto-sort, remove)
- * live on its row in the section list, not in here.
- */
+/** Headerless collection editor: drag-sortable rows expanding to their fields,
+ * plus add and auto-save. Auto-sort/remove live on the section list row. */
 export function CollectionSectionBody({
   draft,
   sectionKey,
@@ -98,10 +95,8 @@ export function CollectionSectionBody({
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
-          // Rows animate collapsed on drag start, so the rects cached at lift are stale
-          // for the whole drop. `ignoreTransform` is what makes remeasuring safe: without
-          // it a displaced row measures at its displaced position and feeds its own
-          // transform back in.
+          // Rows collapse on drag start, so cached rects are stale; `ignoreTransform`
+          // makes remeasuring safe — else a displaced row measures at its displaced spot.
           measuring={{
             droppable: {
               strategy: MeasuringStrategy.Always,
@@ -109,9 +104,8 @@ export function CollectionSectionBody({
                 getClientRect(element, { ignoreTransform: true }),
             },
           }}
-          // Collapse everything, not just the dragged row: mixed heights make the swap
-          // preview unreadable — a short row has to travel a tall card's full height
-          // before the two trade places.
+          // Collapse everything: mixed heights make the swap preview unreadable — a
+          // short row travels a tall card's full height before trading places.
           onDragStart={(event) => {
             setActiveId(String(event.active.id));
             collapseAll();

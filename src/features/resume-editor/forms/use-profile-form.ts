@@ -18,12 +18,7 @@ type CropState = {
 
 const CLOSED_CROP: CropState = { open: false, imageUrl: null, image: null };
 
-/**
- * Owns all profile-form state shared between the classic and canvas editors:
- * the RHF form, the links field-array, the photo upload→crop flow, and the
- * delete-link confirmation. The presentational `ProfileFields` renders from it;
- * each editor supplies its own shell + save lifecycle (auto-save vs submit).
- */
+/** Owns all profile-form state shared between the classic and canvas editors; each editor supplies its own shell + save lifecycle (auto-save vs submit). */
 export function useProfileForm(draft: ResumeDraft) {
   const form = useForm<Profile>({
     resolver: createFormSchemaResolver<Profile>(profileFormSchema),

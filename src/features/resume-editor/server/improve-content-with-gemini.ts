@@ -14,9 +14,8 @@ export type ImproveContentInput = {
   keywords?: string[];
 };
 
-// Server-controlled mapping from chip label → instruction text.
-// Keeps the Gemini prompt authoritative and prevents clients from
-// injecting arbitrary instructions through chip values.
+// Server-controlled chip label → instruction mapping keeps the prompt
+// authoritative and stops clients injecting arbitrary instructions.
 const CHIP_INSTRUCTIONS: Record<string, string> = {
   "Add a metric":
     "Add a specific number, percentage, or scale to quantify the impact (e.g. '30%', '1M users', 'team of 8'). If no reasonable metric can be inferred, leave a placeholder like '[X%]'.",
@@ -30,12 +29,7 @@ const CHIP_INSTRUCTIONS: Record<string, string> = {
     "Correct grammar and punctuation only. Keep the original meaning and language intact.",
 };
 
-/**
- * Wraps job-description terms in a fixed instruction. The anti-fabrication
- * clause is the load-bearing part: asked to work a term in, a model will
- * happily invent the experience that justifies it, and a resume that lies is
- * worse than one that scores badly.
- */
+/** Wraps JD terms in a fixed instruction. The anti-fabrication clause is load-bearing: told to work a term in, a model will invent the experience that justifies it. */
 export function buildKeywordInstruction(keywords: string[]): string {
   return `Work these terms from the target job description into the content, but only where the existing content already supports them: ${keywords.join(", ")}. Only use a term if what is already written genuinely demonstrates it. Reword to surface skills that are already implied. If a term is not supported, leave it out entirely. Omitting a term is always correct. Inventing experience to justify one is never acceptable. Use each term at most once. Write it in lower case unless it is a proper noun such as a product, company, or technology name: write "leadership", not "Leadership", and "mentorship", not "Mentorship". Capitalising an ordinary word mid-sentence is the clearest sign of keyword stuffing and gets a resume discarded. The result must read as ordinary prose, not as a keyword list.`;
 }

@@ -1,9 +1,8 @@
 import { cn } from "@/lib/utils";
 
 /**
- * Per-letter kinetic heading: bold + indigo stroke by default, the hovered
- * letter (and its neighbours) thin out and shed the stroke. Pure CSS — no JS,
- * safe to render in a server component. Reused by the landing hero.
+ * Per-letter kinetic heading: hovered letter (and neighbours) thin out and shed
+ * the indigo stroke. Pure CSS, SSR-safe; reused by the landing hero.
  */
 export function KineticText({
   text,

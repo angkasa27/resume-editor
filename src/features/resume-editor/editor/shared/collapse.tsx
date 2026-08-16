@@ -60,14 +60,9 @@ function runCloseTransition(
   };
 }
 
-/**
- * Height reveal that animates smoothly for content of *any* (even dynamic)
- * height, using the CSS `grid-template-rows: 0fr → 1fr` technique — unlike a
- * measured `height: auto` animation, it never snaps when the body is tall or
- * mounts asynchronously (rich-text editors, large sections). Children mount on
- * open and unmount after the close animation. Reused by the section accordion
- * and the collection item cards so disclosure feels identical everywhere.
- */
+/** Height reveal for content of any height via `grid-template-rows: 0fr → 1fr` —
+ * never snaps like a measured `height: auto`. Children mount on open, unmount after
+ * close. Reused by the accordion and item cards so disclosure feels identical. */
 export function Collapse({
   open,
   children,

@@ -69,10 +69,8 @@ function EducationItem({ item }: { item: SectionItem<"education"> }) {
 }
 
 function PublicationsItem({ item }: { item: SectionItem<"publications"> }) {
-  // Same shape as every other academic entry: title, italic organisation on its
-  // own line, date in the right column. It used to be a run-on bibliography line
-  // ("*Title* — Publisher (date).") which, with a real conference name, set the
-  // whole entry as one justified paragraph and looked like a different document.
+  // Same shape as every other academic entry; a run-on bibliography line read
+  // as one justified paragraph with a real conference name.
   return (
     <div className="item">
       <div className="item-header">

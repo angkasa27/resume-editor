@@ -22,9 +22,7 @@ type CollectionSectionConfig<TItem> = {
   emptyTitle: string;
   emptyDescription: string;
   createItem: () => TItem;
-  /** Set only on sections whose items carry a date range, for auto-sort and
-   * the header's "sort" action — the field components themselves render the
-   * range unconditionally via `MonthYearRangeField`. */
+  /** Set only on date-range sections, for auto-sort and the header's "sort" action. */
   dateRange?: { startName: string; endName: string };
 };
 

@@ -9,9 +9,7 @@ describe("buildKeywordInstruction", () => {
     expect(instruction).toContain("GraphQL");
   });
 
-  // The whole feature turns on this. Told to work a term in, a model will
-  // happily invent the experience that justifies it — and a resume that lies
-  // is far worse than one that scores badly.
+  // The whole feature turns on this: told to work a term in, a model will invent the experience that justifies it.
   it("forbids inventing experience to justify a term", () => {
     const instruction = buildKeywordInstruction(["Kubernetes"]).toLowerCase();
 

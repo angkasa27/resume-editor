@@ -10,12 +10,8 @@ import {
 const PX_PER_MM = 96 / 25.4;
 const mm = (value: number) => value * PX_PER_MM;
 
-/**
- * jsdom has no layout, so give each element a rect that flows: its base top
- * plus every page spacer inserted above it. That is the one thing the real
- * engine does that this pass depends on — shift a block and everything under it
- * follows.
- */
+/** jsdom has no layout, so give each element a rect that flows: base top plus
+ * every spacer inserted above it — the one thing the pass depends on. */
 function place(
   article: HTMLElement,
   element: HTMLElement,
@@ -82,18 +78,17 @@ describe("computeBlockShift", () => {
 
   it("still corrects a too-tall block sitting in a top margin", () => {
     // 970 tall, so it can never fit the 800 between margins — but the
-    // correction only moves it down its own page, crossing no break, so it
-    // takes the top margin like anything else. What it must NOT do is stay in
-    // the band; the caller lifts `break-inside: avoid` off it separately.
+    // correction only moves it down its own page, so it takes the top margin
+    // like anything else; the caller lifts `break-inside: avoid` separately.
     const oversizedInBand = { top: 1020, unitBottom: 1990, ...page };
     expect(exceedsUsableHeight(oversizedInBand)).toBe(true);
     expect(computeBlockShift(oversizedInBand)).toBe(80);
   });
 
   it("flags every block that can't fit between the margins", () => {
-    // The flag drives `break-inside: auto`, and it has to be independent of the
-    // shift: a too-tall block that also earns a top-margin correction returns a
-    // non-zero shift, and gating the flag on `shift === 0` would miss it.
+    // The flag drives `break-inside: auto` and must be independent of the shift:
+    // gating it on `shift === 0` would miss a too-tall block that also earns a
+    // top-margin correction.
     expect(exceedsUsableHeight({ top: 300, unitBottom: 500, ...page })).toBe(
       false,
     );
@@ -156,9 +151,9 @@ describe("paginateResumeDocument", () => {
   });
 
   it("pins the paper to a definite, clipped height", () => {
-    // A `min-height` leaves the box free to grow, and the stretched first child
-    // then spills a sub-pixel fragment past the last page edge — a blank sheet
-    // in the PDF. Only a definite height plus the clip makes the count printable.
+    // A `min-height` lets the stretched first child spill a sub-pixel fragment
+    // past the last page edge — a blank sheet in the PDF. Only a definite height
+    // plus the clip makes the count printable.
     for (const [contentHeight, expectedPages] of [
       [600, 1],
       [1500, 2],
@@ -204,10 +199,9 @@ describe("paginateResumeDocument", () => {
   });
 
   it("lifts break-inside off a child of a page unit without shifting it", () => {
-    // Atlas rows are data-page-unit: the row moves whole and the pass must not
-    // double-shift a child out of its grid cell. But a fragmentable child still
-    // has to stop honouring `.item { break-inside: avoid }` — print would shove
-    // it a whole page, a move the pass never measured.
+    // Atlas rows are data-page-unit: the row moves whole, so the pass must not
+    // double-shift a child out of its cell — but a fragmentable child still has
+    // to stop honouring `.item { break-inside: avoid }`.
     document.body.innerHTML = "";
     const article = document.createElement("article");
     article.style.setProperty("--resume-paper-height", "297mm");
@@ -221,9 +215,8 @@ describe("paginateResumeDocument", () => {
     article.append(row);
     document.body.append(article);
 
-    // Page two, clear of both bands; both blocks are fragmentable (taller than
-    // the fragment ratio) so the break-inside lift is what's under test, not a
-    // shift.
+    // Page two, clear of both bands; both blocks are fragmentable, so the
+    // break-inside lift is what's under test, not a shift.
     place(article, row, 1300, 600);
     place(article, item, 1310, 400);
     placeArticle(article, 1900);
@@ -236,9 +229,9 @@ describe("paginateResumeDocument", () => {
   });
 
   it("leaves the previous pass standing when the paper vars can't be read", () => {
-    // The guard has to bail *before* the reset. Stripping spacers and then
-    // reporting one page loses the page markers and the full-bleed rail, with
-    // no retry until the draft changes again.
+    // The guard must bail *before* the reset: stripping spacers and then
+    // reporting one page loses the page markers and the rail, with no retry
+    // until the draft changes again.
     const { article } = buildArticle({ withVars: false });
     const stale = document.createElement("div");
     stale.dataset.pageSpacer = "";

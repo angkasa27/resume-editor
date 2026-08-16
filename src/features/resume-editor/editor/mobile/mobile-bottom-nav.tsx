@@ -31,11 +31,8 @@ type MobileBottomNavProps = {
   onChange: (tab: EditorTab) => void;
 };
 
-/**
- * Floating pill bottom navigation — detached from the content and centered above
- * the bottom edge. Reuses the `Tabs` sliding-pill indicator (one primary pill
- * that springs between items).
- */
+/** Floating pill bottom nav, detached and centered above the bottom edge. Reuses
+ * the `Tabs` sliding-pill indicator. */
 export function MobileBottomNav({ value, onChange }: MobileBottomNavProps) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-30 flex justify-center pb-4">

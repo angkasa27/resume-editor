@@ -4,8 +4,7 @@ import { FileQuestion } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
 
-// Root not-found UI. Renders for `notFound()` calls and any unmatched URL
-// across the app, composed inside the root layout (Server Component).
+// Root not-found UI for `notFound()` and unmatched URLs, composed in the root layout.
 export default function NotFound() {
   return (
     <div className="flex min-h-dvh flex-1 flex-col items-center justify-center gap-6 bg-background px-6 text-center">

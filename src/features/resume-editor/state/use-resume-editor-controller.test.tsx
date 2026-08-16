@@ -5,10 +5,8 @@ import { useResumeEditorController } from "@/features/resume-editor/state/use-re
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
 
 describe("useResumeEditorController", () => {
-  // Why: the top bar's save indicator reads this and nothing else. The
-  // controller and the store have to share one storage instance — give the
-  // store its own and this subscription watches an object that never saves,
-  // leaving the indicator permanently on "idle" while saves succeed.
+  // Why: the top bar's save indicator reads this and nothing else — controller and
+  // store must share one storage instance, or the indicator stays "idle" while saves work.
   it("tracks the save status through a real save", () => {
     const { result } = renderHook(() =>
       useResumeEditorController({ initialDraft: createDefaultResumeDraft() }),
@@ -32,11 +30,9 @@ describe("useResumeEditorController", () => {
       vi.restoreAllMocks();
     });
 
-    // Why: there is no save button, so an export fired within the 500ms debounce
-    // used to serialize the pre-keystroke draft — the file silently lost the last
-    // thing the user typed. Both halves are load-bearing: the flush lands the
-    // pending edit, and the re-read picks it up (the captured `draft` binding
-    // does not refresh synchronously). SAVE-FLOW.md invariant 6.
+    // Why: no save button — an export inside the 500ms debounce used to serialize the
+    // pre-keystroke draft. Flush lands the edit; the re-read picks it up (the captured
+    // `draft` binding doesn't refresh synchronously). SAVE-FLOW.md invariant 6.
     it("flushes the open form and re-reads before serializing", async () => {
       const { result } = renderHook(() =>
         useResumeEditorController({ initialDraft: createDefaultResumeDraft() }),

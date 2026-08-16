@@ -6,12 +6,8 @@ import { shouldOpenHrefInNewTab } from "@/features/resume-editor/domain/rich-tex
 import { formatContactLink } from "./format-contact-link";
 import type { PreviewContactItem, PreviewRenderContext } from "../types";
 
-/**
- * `stacked` is the only variant that reads in a narrow rail. Icons are opt-in: they clash with
- * typographic layouts (academic) whose identity is unadorned text.
- * `labeled` stacks too, but names each field ("Phone" over the number) instead of glyphing it —
- * the directory look ledger needs, where the rail has no icons to lean on.
- */
+/** `stacked` is the only variant that reads in a narrow rail. Icons are opt-in
+ * (they clash with typographic layouts); `labeled` stacks and names each field. */
 type ContactVariant = "inline" | "stacked" | "labeled";
 
 export type ContactPresentation = {
@@ -24,8 +20,8 @@ const DEFAULT_CONTACT_PRESENTATION: ContactPresentation = {
   icons: true,
 };
 
-// Every link gets the same glyph: lucide dropped brand icons, and the shortened text
-// (e.g. `linkedin.com/in/x`) already names the brand better than a generic icon would.
+// One glyph per link kind: lucide dropped brand icons, and the shortened text
+// names the brand better than a generic icon would.
 const ICON_BY_KIND = {
   location: MapPin,
   phone: Phone,

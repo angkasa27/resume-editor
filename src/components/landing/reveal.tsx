@@ -9,8 +9,8 @@ import {
 
 import { motionTokens } from "@/lib/motion-tokens";
 
-/** Blur radius for the landing "blur-up" entrances — a deliberate landing-only
- *  effect (the token set covers transform/opacity, not filter blur). */
+/** Blur radius for the landing blur-up entrances — landing-only (the token set
+ *  covers transform/opacity, not filter blur). */
 const BLUR = 10;
 
 /** Creative entrance: rises and clears from a blur (not a plain fade). */

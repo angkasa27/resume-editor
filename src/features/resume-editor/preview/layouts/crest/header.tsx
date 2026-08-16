@@ -5,11 +5,8 @@ import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-
 import styles from "./styles.module.css";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 
-/**
- * One full-bleed band in two courses: the centered identity above, and the contact
- * strip below a rule that runs the full width of the paper. The rule is a border on
- * the strip, not a separate element, so it can never drift off the band's edges.
- */
+/** One full-bleed band in two courses: centered identity above, contact strip
+ * below. The rule is a border on the strip, so it can't drift off the band. */
 export function CrestHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;
   return (
@@ -28,8 +25,7 @@ export function CrestHeader({ context }: LayoutHeaderProps) {
             ) : null}
           </div>
         </div>
-        {/* Guarded: the rule belongs to the strip, so an empty strip would draw a
-            hairline across the band with nothing under it. */}
+        {/* Guarded: an empty strip would draw a hairline with nothing under it. */}
         {context.contactItems.length > 0 ? (
           <div className="crest-contacts">
             <PreviewContactLine context={context} />

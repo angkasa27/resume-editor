@@ -49,11 +49,8 @@ type EditorSidebarProps = {
   onBack: () => void;
 };
 
-/**
- * The second sidebar: whichever panel the rail selects. The paper keeps the rest.
- * Enter/exit animates width so the canvas reflows in step; the inner layer keeps a
- * fixed width and slides, since width alone would squash content and read as a wipe.
- */
+/** The panel the rail selects, beside the paper. Width animates so the canvas reflows;
+ * the inner layer keeps a fixed width and slides — width alone would squash content. */
 export function EditorSidebar({
   rail,
   draft,

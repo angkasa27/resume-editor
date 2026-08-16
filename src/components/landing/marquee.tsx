@@ -11,8 +11,8 @@ import {
 
 import { cn } from "@/lib/utils";
 
-/** Advance `current` by `delta`, wrapping into `(-copyWidth, 0]` so the
- *  second copy makes the loop seamless. */
+/** Advance `current` by `delta`, wrapping into `(-copyWidth, 0]` so the second
+ *  copy makes the loop seamless. */
 function wrapMarqueeOffset(
   current: number,
   delta: number,
@@ -34,9 +34,8 @@ type MarqueeProps = {
 };
 
 /**
- * Seamless infinite marquee. Renders the children twice; a per-frame ticker
- * translates the track and wraps at exactly one copy's width, so the loop has
- * no visible seam. Reduced-motion renders a static (non-scrolling) row.
+ * Seamless marquee: renders children twice and wraps the track at exactly one
+ * copy's width (no visible seam). Reduced-motion renders a static row.
  */
 export function Marquee({
   children,

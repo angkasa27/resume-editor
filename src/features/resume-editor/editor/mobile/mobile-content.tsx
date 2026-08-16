@@ -111,7 +111,6 @@ export function ResumeEditorMobileContent({
 
   return (
     <div className="relative flex h-full flex-col lg:hidden">
-      {/* Tab content — slides horizontally between tabs (direction by order). */}
       <div className="relative min-h-0 flex-1 overflow-hidden">
         <AnimatePresence initial={false} custom={tabs.direction}>
           <motion.div

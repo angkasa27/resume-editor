@@ -36,9 +36,8 @@ import { parseMonthYear } from "@/features/resume-editor/domain/month-year";
 // `className` is the only layout knob (merged onto the atom's root `Field`), so a section composing
 // these atoms decides span per field instead of deriving it from a "kind".
 
-// `UseFormReturn`'s generic is invariant enough that a bare reference rejects every concrete
-// `CollectionSectionFormValues` shape a section form has. `any` is the deliberate type-erasure seam
-// so one set of atoms serves all ten differently-shaped item forms.
+// `UseFormReturn`'s generic is invariant, so `any` is the deliberate type-erasure
+// seam that lets one set of atoms serve all ten differently-shaped item forms.
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type ItemForm = UseFormReturn<any>;
 

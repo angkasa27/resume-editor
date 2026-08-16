@@ -22,10 +22,9 @@
   min-width: 0;
 }
 
-/* Rows of two cells over three equal tracks: the wide cell takes two, the
-   narrow one takes the third. A flex column of rows, not one big grid — the
-   pagination pass inserts a spacer element before a block to move it, and in a
-   grid that spacer becomes another grid item and reflows the whole tiling. */
+/* Rows of two cells over three equal tracks, as a flex column of rows, not one
+   big grid: the pagination pass moves a block by inserting a spacer before it,
+   and in a grid that spacer would reflow the whole tiling. */
 .layout :global(.layout-body) {
   display: flex;
   flex-direction: column;

@@ -28,8 +28,8 @@ const defaultRenderSection = (
   entry: LayoutSlots["sections"][number],
 ): ReactNode => <div key={entry.key}>{entry.node}</div>;
 
-// Factory for single-column layouts whose Component body is otherwise byte-identical. A layout
-// needing a genuinely different structure writes its own Component instead (as sidebar/split do).
+// Factory for single-column layouts whose Component body is otherwise
+// byte-identical; a genuinely different structure writes its own Component.
 export function createSingleColumnLayout(
   config: SingleColumnConfig,
 ): PreviewLayoutDefinition {

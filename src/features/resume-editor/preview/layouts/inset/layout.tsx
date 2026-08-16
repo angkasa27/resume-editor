@@ -5,9 +5,8 @@ import { InsetHeader } from "./header";
 import { insetItemViews } from "./items";
 import styles from "./styles.module.css";
 
-// Inset merges the whole skills section into one inline "·"-joined line instead
-// of rendering per-item nodes. `entry.key === "skills"` narrows `entry.section`
-// to the skills section, so `.items` is typed — no cast needed.
+// Inset merges skills into one inline "·"-joined line. `entry.key === "skills"`
+// narrows `entry.section` to the skills section, so `.items` is typed.
 function renderInsetSection(entry: LayoutSectionEntry) {
   const { key, node } = entry;
   if (entry.key === "skills" && entry.section) {

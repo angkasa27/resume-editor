@@ -14,13 +14,9 @@ import {
 import { RailLanguagesItem } from "@/features/resume-editor/preview/layouts/_shared/items/rail-items";
 import { ItemDate } from "./item-date";
 
-/**
- * Item DOM for the layouts whose header reads as one sentence: role, employer and
- * place run together on the title line and the date drops underneath it, instead of
- * the canonical two-column `item-header` with the date parked on the right.
- * Shared by dossier/crest/masthead — the three differ in type, not structure.
- * `.item-date` is the only hook they restyle, so keep the class names as-is.
- */
+/** Item DOM for layouts whose header reads as one sentence: role, employer and
+ * place run together on the title line, the date underneath — not the canonical
+ * two-column `item-header`. Shared by dossier/crest/masthead. */
 function InlineTitle({ parts }: { parts: (string | undefined)[] }) {
   return (
     <h3 className="item-title">

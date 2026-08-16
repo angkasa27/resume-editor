@@ -44,10 +44,8 @@ type TemplateGalleryProps = {
   scrollPaddingClassName?: string;
 };
 
-/**
- * Applying a preset is one presentation commit (a single undo step) — unless the user
- * has hand-tweaked their style, in which case a dialog offers to keep it.
- */
+/** Applying a preset is one presentation commit — unless the style was hand-tweaked,
+ * in which case a dialog offers to keep it. */
 export function TemplateGallery({
   draft,
   presentation,
@@ -61,8 +59,7 @@ export function TemplateGallery({
   const [pending, setPending] = useState<ResumeTemplatePreset | null>(null);
   const [filter, setFilter] = useState<FilterValue>("all");
 
-  // Sorted by the name on the card, so the grid reads alphabetically rather
-  // than in the curation order of the preset list — and so a chip only ever
+  // Sort by the card name, so the grid reads alphabetically and a chip only
   // removes cards, never reshuffles the ones that stay.
   const visiblePresets = useMemo(
     () =>
@@ -84,8 +81,7 @@ export function TemplateGallery({
     (preset: ResumeTemplatePreset) => {
       const current = presentationRef.current;
       if (getActiveTemplatePresetId(current) === null) {
-        // User has custom style on top of a template — confirm before
-        // overwriting it.
+        // Hand-tweaked style on a template — confirm before overwriting.
         setPending(preset);
       } else {
         onApply(applyTemplatePreset(preset, current));
@@ -94,8 +90,7 @@ export function TemplateGallery({
     [onApply],
   );
 
-  // Preset previews only depend on the paper setup, not the current style —
-  // every other style field is overridden by the preset itself.
+  // Preset previews depend only on the paper setup; the preset overrides style.
   const paperKey = presentation.paperSize;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const basePresentation = useMemo(() => presentation, [paperKey]);

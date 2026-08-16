@@ -75,8 +75,7 @@ export function ResumeEditorMobile() {
     [draft.pdfPresentation],
   );
 
-  // Opening a section from Insights: ensure it's visible, then make it active
-  // so the mobile content opens its form.
+  // Opening a section from Insights: reveal it, then make it active so the form opens.
   function openSection(panel: EditorPanelKey) {
     if (needsSectionReveal(draft.sections, panel)) {
       setSectionVisibility(panel, true);
@@ -128,7 +127,6 @@ export function ResumeEditorMobile() {
         onChange={handleJsonImport}
       />
 
-      {/* AI PDF import — same highlighted flow as canvas. */}
       <ExtractCvDialog
         open={isExtractCvOpen}
         onOpenChange={setIsExtractCvOpen}

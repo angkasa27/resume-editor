@@ -8,7 +8,6 @@ type EditorHeaderState = {
   canRedo: boolean;
   onUndo: () => void;
   onRedo: () => void;
-  /** The top bar's primary output action. */
   onExportPdf: () => void;
   isExportingPdf: boolean;
   /** Behind the Download PDF split menu. */

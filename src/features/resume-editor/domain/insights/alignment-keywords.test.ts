@@ -61,9 +61,8 @@ describe("selectAlignmentKeywords", () => {
     ]);
   });
 
-  // The regression this exists for: extraction order has nothing to do with
-  // importance, so a blind truncation downstream could drop every term that
-  // mattered and keep a dozen that didn't.
+  // Regression: extraction order ≠ importance, so blind truncation could drop the
+  // terms that mattered and keep a dozen that didn't.
   it("keeps the heaviest terms when more exist than the cap allows", () => {
     const many = Array.from({ length: 40 }, (_, i) =>
       kw(`Zzterm${i}`, i / 40),

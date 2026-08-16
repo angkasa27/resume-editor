@@ -1,7 +1,6 @@
 import { Spinner } from "@/components/ui/spinner";
 
-// Streamed instant loading UI shown while a route segment renders. Mirrors the
-// editor's in-app loading spinner so navigation feels consistent.
+// Instant loading UI; mirrors the editor's in-app spinner so navigation feels consistent.
 export default function Loading() {
   return (
     <div className="flex min-h-dvh flex-1 items-center justify-center bg-background">

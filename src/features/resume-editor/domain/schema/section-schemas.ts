@@ -7,10 +7,8 @@ import {
   textField,
 } from "@/features/resume-editor/domain/schema/shared";
 
-// Persisted schema is lenient: dates, URLs, and other free-typed fields are
-// stored as plain strings so an in-progress edit is never rejected or lost.
-// Format validation (valid URL, MMM YYYY date) is advisory and lives in the
-// form resolver (forms/schemas), not here. See DESIGN/plan: lenient persistence.
+// Persisted schema is lenient: free-typed fields (dates, URLs) stay plain strings
+// so an in-progress edit is never rejected; format checks live in the form resolver.
 const datedRangeShape = {
   startDate: textField(),
   endDate: textField(),

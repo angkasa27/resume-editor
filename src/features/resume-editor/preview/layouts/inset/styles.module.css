@@ -18,11 +18,9 @@
   align-items: start;
 }
 
-/* Items sit off the rail's edge rather than butting straight against it, so
-   the label column reads as a margin note and not as a second text column.
-   `.skillsLine` is in here too: inset renders skills as one merged line rather
-   than an item list, so it misses the indent every other body gets and hangs a
-   notch left of the whole page. */
+/* Items sit off the rail's edge so the label column reads as a margin note.
+   `.skillsLine` is in here too: inset renders skills as one merged line and
+   would otherwise hang a notch left of every other body. */
 .layout :global(.item-list),
 .layout :global([data-section="summary"] .rich-text),
 .skillsLine {
@@ -42,12 +40,9 @@
   gap: 2px;
 }
 
-/* Inline flow, not a flex row. As flex items the title and its meta were atomic:
-   a meta too long for the remaining space moved to the next line whole, so the
-   break always landed before the `·` separator instead of at the word that
-   actually overflowed. Inline, the two run together as one paragraph and wrap
-   where the text does — the separator is bound to its first word by a no-break
-   space in items.tsx. */
+/* Inline flow, not a flex row: as flex items the title and meta were atomic,
+   so a long meta moved whole and the break landed before the `·`. Inline, they
+   wrap where the text does — the separator binds via a no-break space (items.tsx). */
 .itemRow1 {
   display: block;
 }
@@ -82,10 +77,9 @@
 }
 
 .header {
-  /* Same two tracks as `.section` (110px label rail + item gap), so the name,
-     headline and contacts start on the line the section content starts on and
-     the photo sits in the label rail. Columns are placed explicitly, so a
-     photo-less resume keeps the alignment instead of sliding left. */
+  /* Same two tracks as `.section`, so the name/headline/contacts line up with
+     the content and the photo sits in the label rail; explicit columns keep a
+     photo-less resume aligned. */
   display: grid;
   grid-template-columns: 110px minmax(0, 1fr);
   gap: var(--resume-gap-item);

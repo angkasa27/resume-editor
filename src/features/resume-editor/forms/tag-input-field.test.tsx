@@ -31,9 +31,8 @@ function renderTagField(seed: string[]) {
 
 describe("TagInputField", () => {
   it("keeps both removals when two tags are removed in one batch", () => {
-    // Each write used to rebuild the whole array from the `value` prop captured
-    // at render. Removing A then B before the Controller re-rendered made B's
-    // handler filter the pre-A array by position, putting A back.
+    // Each write used to rebuild from the `value` prop captured at render, so a
+    // second removal before re-render filtered the stale array and put A back.
     const skills = renderTagField(["React", "Vue", "Svelte"]);
 
     act(() => {

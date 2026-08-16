@@ -63,8 +63,8 @@ function validateImproveContentBody(body: unknown): ValidatedBody {
   const customInstructionText =
     typeof customInstruction === "string" ? customInstruction.trim() : "";
 
-  // Terms only — the instruction around them is built server-side. Capped so a
-  // crafted request can't stuff the prompt through this field.
+  // Terms only (instruction is built server-side), capped so a crafted request
+  // can't stuff the prompt through this field.
   const keywordList = (Array.isArray(keywords) ? keywords : [])
     .filter((term): term is string => typeof term === "string")
     .map((term) => term.trim())

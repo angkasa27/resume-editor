@@ -7,11 +7,7 @@ import { ResumeEditorMobile } from "./mobile/resume-editor-mobile";
 import { useClientReady } from "@/hooks/use-client-ready";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-/**
- * Responsive entry point for the editor: desktop (>=768px) gets the
- * drag-and-drop canvas editor, mobile (<768px) gets the guided-forms classic
- * editor.
- */
+/** Responsive entry: desktop (>=768px) gets the canvas editor, mobile the classic one. */
 export function ResumeEditor() {
   const ready = useClientReady();
   const isMobile = useIsMobile();

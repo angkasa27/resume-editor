@@ -23,11 +23,8 @@ function readStoredWidth() {
   }
 }
 
-/**
- * Persisted sidebar width. Safe to read localStorage in the initializer because
- * the desktop editor gates its whole tree behind `useClientReady()`, so this
- * never runs on the server.
- */
+/** Persisted sidebar width. Safe to read localStorage in the initializer — the
+ * desktop editor gates its tree behind `useClientReady()`, never on the server. */
 export function useSidebarWidth() {
   const [width, setWidth] = useState<number>(readStoredWidth);
 

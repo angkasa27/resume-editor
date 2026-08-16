@@ -31,8 +31,8 @@ type TagInputProps = {
   value: string[];
   /**
    * Takes an updater, not a finished array: two writes from one gesture (blur
-   * commit + ✕ click, or two rapid ✕ clicks) both derive from the render-time
-   * `value` otherwise, and the second silently undoes the first.
+   * commit + ✕ click) would otherwise both derive from the render-time `value`,
+   * and the second silently undoes the first.
    */
   onChange: (update: (current: string[]) => string[]) => void;
   placeholder?: string;

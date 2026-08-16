@@ -2,8 +2,7 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
 import { extractResumeText } from "./extract-text";
 
-// The keyword shape is defined with the persisted schema (it's saved on the
-// draft), and re-exported here so the matcher stays the one import site.
+// Keyword shape lives with the persisted schema; re-exported here so the matcher stays the one import site.
 export {
   KEYWORD_CATEGORIES,
   type ExtractedKeyword,
@@ -31,9 +30,8 @@ export type JobMatchResult = {
 /** Weight a partial (acronym-only) match carries relative to a literal one. */
 const PARTIAL_CREDIT = 0.5;
 
-/** Common acronym ↔ expansion pairs. A hit on the *other* form is a partial
- *  match, not a full one: real ATS keyword screens compare literal strings, so
- *  writing only "K8s" loses you a JD that asks for "Kubernetes". */
+/** Acronym ↔ expansion pairs. A hit on the other form is partial, not full: ATS
+ *  screens compare literal strings, so writing only "K8s" loses a JD that asks "Kubernetes". */
 const ALIASES: ReadonlyArray<[string, string]> = [
   ["javascript", "js"],
   ["typescript", "ts"],
@@ -66,8 +64,7 @@ function aliasOf(normalized: string): string | undefined {
   return ALIAS_BY_TERM.get(normalized);
 }
 
-// Matching runs per keyword on every commit while the Insights panel is open, so
-// the compiled patterns are cached instead of rebuilt each call.
+// Matching runs on every commit while the panel is open, so patterns are cached, not rebuilt.
 const termPatterns = new Map<string, RegExp>();
 
 function containsTerm(haystack: string, variant: string): boolean {

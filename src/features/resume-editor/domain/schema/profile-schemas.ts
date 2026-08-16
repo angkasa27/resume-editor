@@ -6,10 +6,8 @@ import {
   textField,
 } from "@/features/resume-editor/domain/schema/shared";
 
-// Lenient persisted schema (see section-schemas.ts): email and link URLs are
-// stored as plain strings so a mid-typed value is never rejected. The strict
-// email/URL format checks are advisory and live in the form resolver
-// (forms/schemas/profile-form-schema.ts).
+// Lenient persisted schema (see section-schemas.ts): email/URLs stored as plain
+// strings so mid-typed values are never rejected; strict checks live in profile-form-schema.ts.
 const extraLinkSchema = z
   .object({
     id: requiredText("Link ID"),

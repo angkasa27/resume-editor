@@ -7,14 +7,8 @@ import type { PreviewRenderContext } from "../types";
 
 /**
  * Where each sheet ends, drawn only in the editor. Positioned off
- * --resume-paper-height, so paper size and canvas zoom both take care of
- * themselves. The label sits in the next page's top margin band, which the
- * pagination pass keeps empty of content by definition.
- *
- * --preview-marker-scale counters a shrink-to-fit `transform: scale()` (the
- * mobile sheet). Without it the chrome shrinks with the paper, and at the ~0.45
- * a phone needs, a boundary the whole feature exists to advertise is a grey
- * smudge with unreadable text on it. Defaults to 1 where nothing sets it.
+ * --resume-paper-height; --preview-marker-scale counters a shrink-to-fit
+ * `transform: scale()` so the chrome doesn't shrink with the paper.
  */
 function PageBreakMarkers({ pageCount }: { pageCount: number }) {
   return (
@@ -56,9 +50,8 @@ export function PreviewDocumentRoot({
   pageCount?: number;
 }) {
   const { presentation, mode } = context;
-  // Full-bleed: the root spans the whole paper with no padding in BOTH modes
-  // (preview and pdf render identically). Layouts own their content insets via
-  // the shared `page-inset` utilities / --resume-page-margin.
+  // Full-bleed in both modes (preview and pdf render identically); layouts own
+  // their insets via the shared `page-inset` utilities / --resume-page-margin.
   const rootStyle: CSSProperties = {
     width: "var(--resume-paper-width)",
     padding: "0",
@@ -81,10 +74,8 @@ export function PreviewDocumentRoot({
       )}
     >
       {children}
-      {/* After the children: `.root > :first-child` is stretched to fill the
-          sheet, and an absolutely positioned marker taking that slot would
-          leave the layout unstretched. Neutral, not themed — the paper stays
-          white in dark mode, so `border-border` would go invisible on it. */}
+      {/* After the children, so the marker doesn't take the stretched first-child
+          slot. Neutral, not themed — the paper stays white in dark mode. */}
       {mode === "preview" && pageCount && pageCount > 1 ? (
         <PageBreakMarkers pageCount={pageCount} />
       ) : null}

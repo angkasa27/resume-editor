@@ -29,7 +29,7 @@ function isInputFocused(): boolean {
 
 const MODIFIER_TOKENS = new Set(["mod", "shift", "alt"]);
 // "?" / "/" / "+" are typed WITH shift on many layouts, so a combo author can
-// write just the symbol and the shortcut still fires when shiftKey is set.
+// write just the symbol and it still fires when shiftKey is set.
 const SHIFT_TOLERANT_KEYS = new Set(["?", "/", "+"]);
 
 type ParsedCombo = {
@@ -40,9 +40,8 @@ type ParsedCombo = {
 };
 
 function parseCombo(combo: string): ParsedCombo {
-  // Split on "+", but the key itself may *be* "+" (which the naive split
-  // would otherwise swallow as an empty separator) — only the leading
-  // recognized modifier tokens are consumed; everything else re-joins as key.
+  // Split on "+", but the key itself may *be* "+" (the naive split would swallow
+  // it as an empty separator) — only leading modifier tokens are consumed.
   const tokens = combo.toLowerCase().split("+");
   let modifierCount = 0;
   while (

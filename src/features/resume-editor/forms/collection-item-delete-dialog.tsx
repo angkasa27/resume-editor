@@ -9,8 +9,7 @@ type CollectionItemDeleteDialogProps = {
   itemTitle: string;
 };
 
-/** Shared "remove this item?" confirmation used by both the desktop and
- *  mobile collection-section editors. */
+/** Shared "remove this item?" confirmation for both the desktop and mobile collection-section editors. */
 export function CollectionItemDeleteDialog({
   pendingDeleteIndex,
   onOpenChange,

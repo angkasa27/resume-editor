@@ -125,13 +125,6 @@ export function MonthYearPicker({
         <span>{value || placeholder}</span>
       </PopoverTrigger>
       <PopoverContent align="start" className="w-[320px] gap-4 rounded-md">
-        {/* <PopoverHeader>
-          <PopoverTitle>Month and year</PopoverTitle>
-          <PopoverDescription>
-            Pick the month that should be saved to this CV field.
-          </PopoverDescription>
-        </PopoverHeader> */}
-
         <div className="flex items-center justify-between rounded-[10px] border bg-background px-3 py-2">
           <Button
             type="button"

@@ -2,10 +2,8 @@
 
 import { useEffect, useState } from "react";
 
-/**
- * Cycle through a list of strings on a timer. Picks the next message randomly
- * from the entries other than the current one so it visibly changes.
- */
+/** Cycle a message list on a timer, picking randomly from entries other than the
+ * current one so it visibly changes. */
 export function useRotatingMessage(
   messages: readonly string[],
   intervalMs: number,

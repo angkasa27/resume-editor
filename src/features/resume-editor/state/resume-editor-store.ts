@@ -87,10 +87,7 @@ function normalizeSectionValue<K extends ResumeSectionKey>(
   } as ResumeDraft["sections"][K];
 }
 
-/**
- * History entries predate the analysis, so restoring one would drop the saved
- * job description. Carry the live one across instead — see `saveInsights`.
- */
+/** History entries predate the analysis, so carry the live insights across — see `saveInsights`. */
 function carryInsights(
   currentDraft: ResumeDraft,
   restoredDraft: ResumeDraft,
@@ -119,9 +116,8 @@ export function createResumeEditorStore(config?: {
   const initialDraft = config?.initialDraft ?? storage.load();
 
   return createStore<ResumeEditorStoreState>()((set, get) => {
-    // Persist, snapshot the previous draft, clear redo. `bumpRevision` marks the
-    // commit as an external replace, so an open form re-seeds from it (invariant 5).
-    // Throws if the draft fails validation — deliberately, see SAVE-FLOW.md.
+    // Persist, snapshot the previous draft, clear redo. `bumpRevision` marks an
+    // external replace so an open form re-seeds (invariant 5); throws deliberately.
     const commit = (
       updater: (draft: ResumeDraft) => Partial<ResumeDraft>,
       bumpRevision = false,

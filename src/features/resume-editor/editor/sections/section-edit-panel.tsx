@@ -53,11 +53,8 @@ type SectionEditPanelProps = {
   scrollPaddingClassName?: string;
 };
 
-/**
- * The Edit surface: a horizontal drill-in between the section list and the
- * active section's auto-saving form. Shared by the desktop sidebar and the
- * mobile Edit tab; each supplies its own back header and scroll padding.
- */
+/** The Edit surface: a horizontal drill-in between the section list and the active
+ * section's auto-saving form. Shared by the desktop sidebar and the mobile Edit tab. */
 export function SectionEditPanel({
   draft,
   openSection,
@@ -99,8 +96,7 @@ export function SectionEditPanel({
               sectionKey={openSection}
               draft={draft}
               onBack={onBack}
-              // Built here rather than in the shells: this is the one layer that
-              // already holds both the draft and the save callback.
+              // Built here: the one layer that already holds the draft and the save callback.
               onRename={(title) => {
                 if (openSection === "profile") return;
                 onSaveSection(openSection, {

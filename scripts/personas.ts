@@ -18,11 +18,7 @@ export type Cert = { name: string; org: string; date: string };
 
 export type Persona = {
   layoutId: PdfLayoutId;
-  /**
-   * The curated template this shot advertises. Screenshots render real presets
-   * rather than one-off colours, so the gallery and the landing carousel show
-   * styles a user can actually pick.
-   */
+  /** Curated template this shot advertises — real presets, so gallery and carousel match. */
   presetId: string;
   photo: string;
   fullName: string;
@@ -46,11 +42,10 @@ export type Persona = {
   };
 };
 
-// One persona per template preset — the landing carousel is the preview of what
-// the gallery offers, so every preset needs its own screenshot. Filename equals
-// presetId: public/templates/<presetId>.webp.
+// One persona per preset — the carousel advertises the gallery, so every preset
+// needs its own shot (public/templates/<presetId>.webp).
 export const PERSONAS: Persona[] = [
-  // ── Row 1 ──────────────────────────────────────────────────────────────────
+  // Row 1
   {
     layoutId: "classic",
     presetId: "classic-modern",
@@ -687,7 +682,7 @@ export const PERSONAS: Persona[] = [
     },
   },
 
-  // ── Row 2: alt variants ────────────────────────────────────────────────────
+  // Row 2: alt variants
   {
     layoutId: "classic",
     presetId: "classic-executive",
@@ -2464,7 +2459,7 @@ export const PERSONAS: Persona[] = [
       note: "Major in interaction design; final-year exhibition on legibility of clinical interfaces under time pressure.",
     },
   },
-  // ── Ledger / Dossier / Crest / Masthead ────────────────────────────────────
+  // Ledger / Dossier / Crest / Masthead
   {
     layoutId: "ledger",
     presetId: "ledger-graphite",
@@ -3025,7 +3020,7 @@ export const PERSONAS: Persona[] = [
       note: "Thesis on energy profiling of background sync on mobile devices.",
     },
   },
-  // ── Compass / Numeral / Atlas / Editorial ──────────────────────────────────
+  // Compass / Numeral / Atlas / Editorial
   {
     layoutId: "compass",
     presetId: "compass-slate",

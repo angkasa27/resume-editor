@@ -177,9 +177,9 @@ function createPuppeteerPageAdapter(page: Page): PdfPageAdapter {
       }
     },
     async pdf({ format }) {
-      // Full-bleed: page margins are owned by the layouts themselves (via
-      // --resume-page-margin insets), so the physical PDF margin is zero and
-      // decorative surfaces can paint to the paper edge.
+      // Full-bleed: layouts own the page margins (via --resume-page-margin
+      // insets), so the physical PDF margin is zero and decorations can paint
+      // to the paper edge.
       return new Uint8Array(
         await page.pdf({
           format,

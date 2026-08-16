@@ -55,7 +55,6 @@ describe("resume schema", () => {
   });
 
   it("persists a chosen photoShape across a save/load round-trip", () => {
-    // The user's photo-shape choice must survive serialization to localStorage.
     const draft = createDefaultResumeDraft();
     draft.pdfPresentation = { ...draft.pdfPresentation, photoShape: "circle" };
 

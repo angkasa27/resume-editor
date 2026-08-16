@@ -1,19 +1,6 @@
 /**
- * Verifies the multi-page export: seeds a résumé long enough to spill over
- * several pages into /resume-pdf, once per layout and per content length, and
- * asserts that no block lands in a page's top or bottom margin band.
- *
- * Reads the DOM after `paginate-document.ts` has run. That is the cheap check —
- * the geometry it measures is the geometry Chrome prints, as long as gaps stay
- * inserted boxes (a margin would be truncated at the break and silently pass
- * here while printing flush against the edge).
- *
- * Requires the app to be running (dev or prod):
- *   pnpm dev                      # in one terminal
- *   pnpm tsx scripts/check-pagebreak.ts
- *   PDF=1 pnpm tsx scripts/...    # also writes /tmp/pagebreak/<layout>.pdf to eyeball
- *
- * Override the target with BASE_URL (default http://localhost:3000).
+ * Verifies the multi-page export — asserts no block lands in a page's margin band.
+ * Usage: pnpm tsx scripts/check-pagebreak.ts (PDF=1 also writes /tmp/pagebreak/<layout>.pdf)
  */
 import { pathToFileURL } from "node:url";
 
@@ -34,9 +21,8 @@ export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft
   const draft = createDefaultResumeDraft();
   const s = draft.sections;
 
-  // workCount 0 = the short-résumé case: one page of content, which must export
-  // as exactly one page (no blank trailing sheet). Sections are hidden rather
-  // than emptied — the schema requires at least one item in each.
+  // workCount 0: the short-résumé case — must export as exactly one page, no
+  // blank trailing sheet. Sections are hidden, not emptied (schema needs ≥1 item).
   if (workCount === 0) {
     s.projects = { ...s.projects, visible: false };
     s.certifications = { ...s.certifications, visible: false };
@@ -54,10 +40,8 @@ export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft
     return { ...draft, pdfPresentation: { ...draft.pdfPresentation, layoutId } };
   }
 
-  // workCount -1 = one item taller than a page's usable height: it must be
-  // allowed to fragment, since `break-inside: avoid` would otherwise move it at
-  // print time by an amount this pass never measured (44 bullets lands in that
-  // window; the count is load-bearing).
+  // workCount -1: one item taller than the usable page — allowed to fragment,
+  // else break-inside: avoid moves it at print time (44 bullets is load-bearing).
   if (workCount === -1) {
     const bullets = Array.from(
       { length: 44 },
@@ -75,9 +59,8 @@ export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft
     };
   }
 
-  // workCount -2 = a prose section (no `.item`) long enough to cross a page
-  // boundary. It must not move wholesale — only its heading and first lines
-  // need to stay together, so the largest gap should stay well under a page.
+  // workCount -2: a prose section (no .item) crossing a page — only the heading
+  // and first lines must stay together, so the largest gap stays under a page.
   if (workCount === -2) {
     const sentence =
       "Software engineer with a decade of experience building resilient, accessible interfaces for enterprise teams. ";
@@ -157,26 +140,20 @@ async function main() {
           const pageStart = Math.floor(top / pageHeight) * pageHeight;
           const pageEnd = pageStart + pageHeight;
           const label = (el.textContent ?? "").slice(0, 28).trim();
-          // Inside a page unit (atlas rows) the parent moves as one block and
-          // the pass deliberately corrects no child — a spacer would become
-          // another grid item and reflow the whole tiling. Those blocks can
-          // straddle a break by design, so no band assertion applies to them.
+          // data-page-unit children are exempt: the parent moves as one block
+          // and a spacer would become another grid item and reflow the tiling.
           if (el.closest("[data-page-unit]")) continue;
-          // Every block gets its top-margin correction, so the top band must
-          // stay clear even for blocks the pass let fragment.
+          // Every block gets its top-margin correction, so the top band must stay
+          // clear even for blocks the pass let fragment.
           if (pageStart > 0 && top < pageStart + margin - 1) {
             violations.push(
               `top band: "${label}" at +${(top - pageStart).toFixed(0)}px`,
             );
           }
-          // A block taller than a page can hold is let to break where it falls
-          // — its bottom may legitimately sit in the band, so no bottom
-          // assertion for it.
+          // Blocks taller than a page can hold break where they fall — no bottom assertion for them.
           if (rect.height > pageHeight - margin * 2) continue;
-          // A block the pass marked fragmentable spans the break on purpose:
-          // its bullets are checked individually above, and what has to clear
-          // the bottom band is its head (the title plus a couple of lines) —
-          // the same headBottom() the pass measures — not its whole box.
+          // Fragmentable blocks span the break on purpose; only the head
+          // (headBottom(), title + a couple of lines) must clear the band.
           let boundary = bottom;
           if (el.style.breakInside === "auto") {
             const head = el.querySelector<HTMLElement>(
@@ -200,8 +177,8 @@ async function main() {
           violations,
           margin: Math.round(margin),
           pages: Math.round(article.getBoundingClientRect().height / pageHeight),
-          // Largest gap opened. A gap near a full page means something moved
-          // wholesale that should have been allowed to flow.
+          // Largest gap — near a full page means something moved wholesale
+          // that should have been allowed to flow.
           maxGap: Math.round(
             Math.max(
               0,
@@ -211,18 +188,15 @@ async function main() {
               ),
             ),
           ),
-          // Content blocks the pass let fragment because they can't fit
-          // between the margins. Spacers carry the same style — exclude them,
-          // or this counts gaps and always looks non-zero.
+          // Blocks the pass let fragment (spacers share the style — excluding them avoids counting gaps).
           fragmented: article.querySelectorAll(
             '.section[style*="break-inside: auto"], .item[style*="break-inside: auto"]',
           ).length,
         };
       });
 
-      // `report.pages` is what the pass *thinks* it laid out. A sub-pixel spill
-      // past the last page edge prints as a blank sheet while the DOM still
-      // measures a whole number of pages, so only the real PDF can see it.
+      // report.pages is what the pass laid out; a sub-pixel spill prints as a blank
+      // sheet the DOM can't see, so only the real PDF catches it.
       let pdfPages: number | null = null;
       if (process.env.PDF) {
         const buffer = await page.pdf({
@@ -261,8 +235,7 @@ async function main() {
   process.exit(failures ? 1 : 0);
 }
 
-// Guarded so check-preview-pagination.ts can import `longDraft` without
-// launching this whole sweep as a side effect.
+// Guarded so check-preview-pagination.ts imports longDraft without running this sweep.
 if (
   process.argv[1] &&
   import.meta.url === pathToFileURL(process.argv[1]).href

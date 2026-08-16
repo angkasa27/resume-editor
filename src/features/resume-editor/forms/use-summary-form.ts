@@ -12,9 +12,8 @@ type SummaryFormValues = {
 };
 
 /**
- * Shared summary-form state. The presentational `SummaryFields` renders from it;
- * each editor supplies its own shell + save lifecycle. `sectionValue` is
- * exposed so callers can re-attach the edited content to the full section.
+ * Shared summary-form state. `sectionValue` is exposed so callers can re-attach
+ * the edited content to the full section.
  */
 export function useSummaryForm(draft: ResumeDraft) {
   const sectionValue = draft.sections.summary;

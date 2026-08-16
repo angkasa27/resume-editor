@@ -6,8 +6,7 @@ import { cn } from "@/lib/utils";
 import { FOCUS_RING_CLASS } from "@/features/resume-editor/forms/fields/field-control";
 
 type EditorRowProps = {
-  /** Drag grip. A fixed-width spacer takes its place when absent so every row
-   * in a list keeps the same left edge, grip or not. */
+  /** Drag grip; a fixed-width spacer keeps the left edge even when absent. */
   handle?: ReactNode;
   /** Section icon (section rows) or disclosure chevron (item rows). */
   leading?: ReactNode;
@@ -16,8 +15,7 @@ type EditorRowProps = {
   badge?: ReactNode;
   /** Affordance before the menu — the nav chevron on section rows. */
   indicator?: ReactNode;
-  /** The overflow menu. Same slot and geometry on every row kind, so delete
-   * always sits in one place. */
+  /** The overflow menu — same slot on every row kind, so delete always sits in one place. */
   menu?: ReactNode;
   active?: boolean;
   /** Section rows open the form; item rows toggle their accordion. */
@@ -25,10 +23,8 @@ type EditorRowProps = {
   className?: string;
 };
 
-/**
- * One row, both levels of the editor: sections in the list and items inside a section.
- * `div role="button"` rather than `<button>` because rows nest interactive controls (grip, menu).
- */
+/** One row at both levels: sections in the list and items in a section.
+ * `div role="button"` because rows nest interactive controls (grip, menu). */
 export function EditorRow({
   handle,
   leading,
@@ -41,8 +37,7 @@ export function EditorRow({
   className,
 }: EditorRowProps) {
   function handleKeyDown(event: KeyboardEvent<HTMLDivElement>) {
-    // Ignore keys bubbling from the nested grip/menu — dnd-kit lifts on Space there,
-    // and handling it here too would also toggle the row.
+    // Ignore keys bubbling from the grip/menu — dnd-kit lifts on Space there too.
     if (event.target !== event.currentTarget) return;
     if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();

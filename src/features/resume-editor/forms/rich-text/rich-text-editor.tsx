@@ -24,8 +24,7 @@ type RichTextEditorProps = {
   heightClassName?: string;
   invalid?: boolean;
   ariaLabel?: string;
-  /** Hint shown while the editor is empty. Carries the field's guidance, since
-   * rich-text fields render no visible label. */
+  /** Hint shown while the editor is empty, since rich-text fields render no visible label. */
   placeholder?: string;
   onImproveWithAi?: () => void;
 };

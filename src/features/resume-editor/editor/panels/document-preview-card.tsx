@@ -28,11 +28,8 @@ type DocumentPreviewCardProps = {
   onSelect: () => void;
 };
 
-/**
- * A selectable card rendering a live, scaled-down preview of the user's own
- * resume under a given presentation. Shared by the Layout tab (per-layout
- * variants) and the Template gallery (per-preset variants).
- */
+/** A selectable card rendering a scaled-down preview of the user's resume under a
+ * presentation. Shared by the Layout tab and the Template gallery. */
 export const DocumentPreviewCard = memo(function DocumentPreviewCard({
   draft,
   presentation,

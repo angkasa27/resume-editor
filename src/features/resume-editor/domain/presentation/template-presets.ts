@@ -26,11 +26,8 @@ export type ResumeTemplatePreset = {
 };
 
 export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
-  // Curation rules: `secondary` only set for the layouts that render it (modern-centered,
-  // split, aurora, dossier, masthead, editorial) — elsewhere it'd be dead data
-  // getActiveTemplatePresetId still has to match.
-  // `accent` usage varies per layout (band fill vs. highlighter vs. heading text). Density
-  // follows layout structure (rails run tight, whitespace-led run airy), not taste.
+  // Curation rules: `secondary` only for layouts that render it (else it's dead data the
+  // active-template match still compares); density follows layout structure, not taste.
 
   // classic — traditional single column. Plain, ATS-safest pick; matches the stock default.
   {
@@ -222,9 +219,8 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // bold-type — accent is the marker highlight under each heading and the date
-  // colour, NOT the heading text. It has to be vivid; a near-black accent here
-  // renders the highlight as a grey smudge.
+  // bold-type — accent is the marker highlight and date colour, not the heading text;
+  // it has to be vivid, or the highlight reads as a grey smudge.
   {
     id: "bold-citrus",
     label: "Citrus",
@@ -305,9 +301,8 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
-  // ledger — monochrome by construction: the accent only paints the short rule
-  // under each heading, so a near-black reads as intended rather than as a
-  // colour the layout forgot to use.
+  // ledger — monochrome by construction: accent only paints the heading rule,
+  // so near-black reads as intended, not a colour the layout forgot.
   {
     id: "ledger-graphite",
     label: "Graphite",
@@ -389,9 +384,8 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // masthead — the two colours do different jobs: accent is the name plate
-  // (large, so it can be bright), secondary fills the heading badges (small, so
-  // it has to be dark enough to read white text at caption size).
+  // masthead — accent is the name plate (large, can be bright); secondary fills
+  // heading badges (small, dark enough for white text at caption size).
   {
     id: "masthead-citrus",
     label: "Citrus",
@@ -532,11 +526,8 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
 export type TemplateCategoryId = (typeof templateCategoryIds)[number];
 
-/**
- * Categories hang off the layout, not the preset — all 36 presets share 17 layouts.
- * A layout carries every category it honestly reads as, so the chips overlap.
- * Keying on PdfLayoutId makes a new layout a type error here.
- */
+/** Categories hang off the layout, not the preset — a layout carries every category
+ *  it honestly reads as. Keying on PdfLayoutId makes a new layout a type error. */
 const layoutCategories: Record<
   PdfLayoutId,
   ReadonlyArray<TemplateCategoryId>
@@ -609,10 +600,8 @@ export function getActiveTemplatePresetId(
 ): string | null {
   for (const preset of resumeTemplatePresets) {
     const applied = applyTemplatePreset(preset, presentation);
-    // Compared over the keys `applyTemplatePreset` writes — so a new style key
-    // is only covered here once it's applied there too. `?? null` because the
-    // preset clears photoShape/secondary with `undefined` while a stored
-    // presentation may hold `null`.
+    // Compare only the keys `applyTemplatePreset` writes, so a new style key is covered
+    // once applied there too; `?? null` bridges undefined (preset) vs null (stored).
     const isActive = (
       Object.keys(applied) as Array<keyof typeof applied>
     ).every((key) => (applied[key] ?? null) === (presentation[key] ?? null));

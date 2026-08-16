@@ -13,9 +13,8 @@
   padding: 0 var(--resume-page-margin) var(--resume-page-margin);
 }
 
-/* The label gutter: heading parks in a fixed left column, content runs beside
-   it. The hairline sits under each section — including the last, which closes
-   the page — and stays faint: it separates, it should not stripe the page. */
+/* The label gutter: heading in a fixed left column, content beside it. The
+   hairline sits under each section and stays faint — it separates, not stripes. */
 .layout :global(.section) {
   display: grid;
   grid-template-columns: 128px minmax(0, 1fr);
@@ -103,16 +102,13 @@
   -webkit-print-color-adjust: exact;
 }
 
-/* Two soft colour circles near the top, not a flat sweep. Each fades out well
-   before its edge, so the falloff reads as blur without a filter (which would
-   smear the photo too). `secondary` falls back to `accent` when a preset leaves
-   it unset, which degrades to a one-hue wash rather than a broken band. */
+/* Two soft colour circles near the top, each fading out before its edge — blur
+   without a filter. `secondary` falls back to `accent` when a preset leaves it
+   unset, degrading to a one-hue wash rather than a broken band. */
 .header :global(.aurora-band) {
-  /* Same two tracks as `.section` below (128px label gutter + gutter gap), so the
-     name, headline and contact pills start on the very line the section content
-     starts on — the photo parks in the label column where the section names go.
-     Columns are placed explicitly, so a resume with no photo keeps the alignment
-     instead of sliding the identity block into the gutter. */
+  /* Same two tracks as `.section`, so the name/headline/pills start where the
+     content starts. Columns are explicit, so a resume with no photo keeps the
+     alignment instead of sliding the identity block into the gutter. */
   display: grid;
   grid-template-columns: 128px minmax(0, 1fr);
   align-items: center;

@@ -7,9 +7,8 @@ import { RotateCcw, TriangleAlert } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button, buttonVariants } from "@/components/ui/button";
 
-// Route-level error boundary. Wraps the segment below it and renders this
-// fallback when a render throws. `unstable_retry` re-fetches and re-renders the
-// boundary's children (preferred over `reset` since Next.js 16.2).
+// Route-level error boundary; `unstable_retry` re-fetches children (preferred
+// over `reset` since Next.js 16.2).
 export default function Error({
   error,
   unstable_retry,

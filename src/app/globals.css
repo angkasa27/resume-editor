@@ -5,12 +5,9 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  /* Width at which a collection item's fields split into two columns.
-     Container queries measure the *content* box of the nearest
-     `@container/fields` — for an item card that's the sidebar minus 67px (the
-     panel's p-4, the card's border, and the body's own p-4). Measured, not
-     derived: a 344px threshold flips at a ~411px sidebar, so the 432px default
-     lands in two columns and the 360px minimum stays in one. */
+  /* Width at which a collection item's fields split into two columns. Container
+     queries measure the content box — measured, not derived: a 344px threshold
+     flips at a ~411px sidebar (432px default = two cols, 360px min = one). */
   --container-field-2col: 21.5rem;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -71,8 +68,7 @@
   --destructive: oklch(0.577 0.245 27.325);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  /* Light primary — the focus ring is a soft blue, not the vivid --primary.
-     Selection uses --primary (vivid) instead, so the two never blur together. */
+  /* Light primary — a soft blue focus ring, distinct from the vivid selection --primary. */
   --ring: oklch(0.72 0.14 264);
   --chart-1: oklch(0.828 0.111 230.318);
   --chart-2: oklch(0.685 0.169 237.323);
@@ -165,9 +161,8 @@
   outline: none;
 }
 
-/* Tiptap's Placeholder extension only tags the empty node; the hint itself is
-   ours to draw. Rich-text fields render no visible label, so this is what tells
-   you what the field is for. */
+/* Tiptap's Placeholder extension only tags the empty node — the hint itself is
+   ours to draw (rich-text fields have no visible label). */
 .ProseMirror p.is-editor-empty:first-child::before {
   content: attr(data-placeholder);
   color: var(--muted-foreground);
