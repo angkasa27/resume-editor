@@ -4,6 +4,7 @@ import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 import { commaJoin } from "@/features/resume-editor/preview/helpers/string";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
+import { ItemDate } from "@/features/resume-editor/preview/layouts/_shared/items/item-date";
 
 function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
   return (
@@ -17,9 +18,7 @@ function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
           {item.location ? <span className="meta">{item.location}</span> : null}
         </div>
         <div className="item-header-side">
-          <div className="item-date">
-            {renderDateRange(item.startDate, item.endDate)}
-          </div>
+          <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
         </div>
       </div>
       <PreviewRichTextBlock content={item.description} />
@@ -43,9 +42,7 @@ function ProjectsItem({ item }: { item: SectionItem<"projects"> }) {
         <h3 className="item-title">
           <PreviewLinkedTitle title={item.projectName} link={item.projectLink} />
         </h3>
-        <span className="item-date">
-          {renderDateRange(item.startDate, item.endDate)}
-        </span>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>
@@ -64,9 +61,7 @@ function EducationItem({ item }: { item: SectionItem<"education"> }) {
           {item.location ? <span className="meta">{item.location}</span> : null}
           {item.gpa ? <span className="meta">GPA: {item.gpa}</span> : null}
         </div>
-        <span className="item-date">
-          {renderDateRange(item.startDate, item.endDate)}
-        </span>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>
@@ -74,17 +69,24 @@ function EducationItem({ item }: { item: SectionItem<"education"> }) {
 }
 
 function PublicationsItem({ item }: { item: SectionItem<"publications"> }) {
-  // Bibliography-style: Author/title. Publisher (date).
+  // Same shape as every other academic entry: title, italic organisation on its
+  // own line, date in the right column. It used to be a run-on bibliography line
+  // ("*Title* — Publisher (date).") which, with a real conference name, set the
+  // whole entry as one justified paragraph and looked like a different document.
   return (
     <div className="item">
-      <p className="rich-text" style={{ margin: 0 }}>
-        <em>
-          <PreviewLinkedTitle title={item.title} link={item.publicationUrl} />
-        </em>
-        {item.publisher ? ` — ${item.publisher}` : ""}
-        {item.publicationDate ? ` (${item.publicationDate}).` : "."}
-      </p>
-      {item.description ? <PreviewRichTextBlock content={item.description} /> : null}
+      <div className="item-header">
+        <div className="item-header-main">
+          <h3 className="item-title">
+            <PreviewLinkedTitle title={item.title} link={item.publicationUrl} />
+          </h3>
+          {item.publisher ? (
+            <em className="meta italic">{item.publisher}</em>
+          ) : null}
+        </div>
+        <ItemDate>{item.publicationDate}</ItemDate>
+      </div>
+      <PreviewRichTextBlock content={item.description} />
     </div>
   );
 }
@@ -111,7 +113,7 @@ function CertificationsItem({
             <span className="meta">Credential ID: {item.credentialId}</span>
           ) : null}
         </div>
-        <span className="item-date">{item.issuedDate}</span>
+        <ItemDate>{item.issuedDate}</ItemDate>
       </div>
     </div>
   );
@@ -125,7 +127,7 @@ function AwardsItem({ item }: { item: SectionItem<"awards"> }) {
           <h3 className="item-title">{item.title}</h3>
           {item.issuer ? <em className="meta italic">{item.issuer}</em> : null}
         </div>
-        <span className="item-date">{item.issuedDate}</span>
+        <ItemDate>{item.issuedDate}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>
@@ -170,9 +172,7 @@ function OrganizationVolunteeringItem({
           ) : null}
           {item.location ? <span className="meta">{item.location}</span> : null}
         </div>
-        <span className="item-date">
-          {renderDateRange(item.startDate, item.endDate)}
-        </span>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>

@@ -1,6 +1,7 @@
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
 import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
+import { ItemDate } from "./item-date";
 
 export function OrganizationVolunteeringItem({
   item,
@@ -15,9 +16,7 @@ export function OrganizationVolunteeringItem({
           <div className="meta">{item.organizationName}</div>
         </div>
         <div className="item-header-side">
-          <div className="item-date">
-            {renderDateRange(item.startDate, item.endDate)}
-          </div>
+          <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
           {item.location ? <div className="meta">{item.location}</div> : null}
         </div>
       </div>

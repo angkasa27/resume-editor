@@ -26,6 +26,7 @@ export function PaginatedPreview({
 }) {
   const hostRef = useRef<HTMLDivElement | null>(null);
   const [pageCount, setPageCount] = useState(1);
+  const { layoutId } = draft.pdfPresentation;
 
   useDocumentPagination(
     hostRef,
@@ -39,7 +40,14 @@ export function PaginatedPreview({
 
   return (
     <div ref={hostRef}>
+      {/* Keyed on the layout so switching one rebuilds the document instead of
+          reconciling into it. The pass's spacers are raw DOM nodes React does
+          not own: reconciling a *different* layout's component tree around them
+          leaves them stranded in containers they were never measured against,
+          which is why a layout change produced broken breaks that a reload
+          fixed. A remount throws the whole subtree — spacers included — away. */}
       <ResumeDocument
+        key={layoutId}
         draft={draft}
         onSelectSection={onSelectSection}
         activeSection={activeSection}

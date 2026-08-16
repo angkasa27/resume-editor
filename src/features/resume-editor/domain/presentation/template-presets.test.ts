@@ -55,8 +55,8 @@ describe("resumeTemplatePresets", () => {
 
   it("curates secondary only for the layouts that render it", () => {
     // Only modern-centered (rule under the name), split (rail fill), aurora
-    // (header gradient), dossier (right rail fill) and masthead (heading
-    // badges) read
+    // (header gradient), dossier (right rail fill), masthead (heading badges)
+    // and editorial (opening band tint) read
     // --resume-secondary. Setting it anywhere else is data the page cannot
     // show, yet getActiveTemplatePresetId still matches on it — so an invisible
     // field would silently decide whether a template looks active.
@@ -66,6 +66,7 @@ describe("resumeTemplatePresets", () => {
       "aurora",
       "dossier",
       "masthead",
+      "editorial",
     ]);
     for (const preset of resumeTemplatePresets) {
       if (preset.style.secondary) {

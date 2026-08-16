@@ -1,6 +1,7 @@
 import { PreviewLinkedTitle } from "@/features/resume-editor/preview/kit/linked-title";
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
+import { ItemDate } from "./item-date";
 
 export function PublicationsItem({
   item,
@@ -16,7 +17,7 @@ export function PublicationsItem({
           </h3>
           {item.publisher ? <div className="meta">{item.publisher}</div> : null}
         </div>
-        <div className="item-date">{item.publicationDate}</div>
+        <ItemDate>{item.publicationDate}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>

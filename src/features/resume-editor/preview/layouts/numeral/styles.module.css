@@ -1,0 +1,187 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  /* The index is a CSS counter, not data. Numbering in the markup would need the
+     layout to rebuild each already-wrapped section node just to prefix a digit,
+     and the count would then have to be kept in step with reordering by hand.
+     Document order is the order, so the counter is always right. */
+  counter-reset: resume-section;
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 1.6);
+}
+
+.layout :global(.section) {
+  counter-increment: resume-section;
+  gap: var(--resume-gap-section);
+}
+
+/* "01  PROFILE", underlined by a rule that stops at the text. */
+.layout :global(.section-heading) {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.75em;
+  align-self: flex-start;
+  padding-bottom: 4px;
+  border-bottom: 2px solid var(--resume-text);
+  font-size: var(--resume-h3);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--resume-text);
+}
+
+.layout :global(.section-heading)::before {
+  content: counter(resume-section, decimal-leading-zero);
+  color: var(--resume-accent);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Same three tracks for every item, so dates line up down the page whatever
+   section they belong to. The right track is capped: sized purely to content it
+   takes whatever a long place name needs and leaves the body column starved. */
+.layout :global(.item) {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr) minmax(0, max-content);
+  gap: var(--resume-gap-item);
+  align-items: start;
+}
+
+/* Each cell names its own column. Auto-placement put whichever child came first
+   into the date gutter, so an entry with no date — the date element is dropped
+   rather than rendered empty — slid its title and body one track left. */
+.layout :global(.item-date) {
+  grid-column: 1;
+}
+
+.layout :global(.item-main) {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-inner);
+  min-width: 0;
+}
+
+.layout :global(.item-place) {
+  grid-column: 3;
+}
+
+.layout :global(.item-date) {
+  font-size: calc(var(--resume-meta) * 0.9);
+  font-weight: 700;
+  color: var(--resume-text);
+  text-align: left;
+  white-space: normal;
+}
+
+.layout :global(.item-place) {
+  font-size: var(--resume-meta);
+  font-style: italic;
+  color: var(--resume-muted);
+  text-align: right;
+  /* Wraps rather than pushing the track wider, and never claims more than a
+     fifth of the measure. Only place names land here (see items.tsx). */
+  max-width: 20ch;
+}
+
+.layout :global(.item-title) {
+  font-weight: 700;
+}
+
+.layout :global(.rich-text) {
+  color: var(--resume-muted);
+}
+
+/* The summary has no items, so it needs the date gutter reproduced by hand or
+   its text would start at the page edge, out of line with every other body. */
+.layout :global([data-section="summary"] .rich-text) {
+  margin-left: calc(150px + var(--resume-gap-item));
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 1.5);
+}
+
+.header :global(.numeral-identity) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--resume-gutter);
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.4);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.headline) {
+  font-size: var(--resume-h3);
+  font-weight: 700;
+  margin-top: var(--resume-gap-item);
+  --resume-headline-color: var(--resume-text);
+}
+
+.header :global(.header-photo) {
+  width: 84px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 0);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Stands in for the photo. Sized off the type, not a fixed pixel box, so it
+   holds its proportion to the name at every font scale. */
+.header :global(.numeral-mark) {
+  display: block;
+  width: calc(var(--resume-h1) * 0.5);
+  height: calc(var(--resume-h1) * 0.5);
+  flex-shrink: 0;
+  background: var(--resume-text);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Contacts as a table: two pairs per row, each named. */
+.header :global(.numeral-contacts) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--resume-gap-inner) var(--resume-gutter);
+  align-items: start;
+}
+
+.header :global(.contact-line-labeled) {
+  display: contents;
+}
+
+.header :global(.contact-line-labeled .contact-item),
+.header :global(.numeral-links) {
+  display: grid;
+  grid-template-columns: 90px minmax(0, 1fr);
+  gap: var(--resume-gap-item);
+  align-items: baseline;
+  font-size: var(--resume-meta);
+  color: var(--resume-muted);
+}
+
+.header :global(.contact-label) {
+  font-size: calc(var(--resume-meta) * 0.9);
+  color: var(--resume-text);
+}
+
+.header :global(.numeral-links .contact-line) {
+  gap: 0;
+}

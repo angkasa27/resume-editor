@@ -1,0 +1,173 @@
+/* Full-bleed: the opening band paints to the top/left/right paper edges; the
+   spreads below keep the page margin. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 2);
+}
+
+/* The tinted opening. A wash rather than a solid: the summary is set on it at
+   display size and has to stay comfortable to read across six or seven lines. */
+.layout :global(.editorial-opening) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 1.75);
+  background: var(--resume-secondary-tint);
+  padding: var(--resume-page-margin);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* The pull quote, running the full width of the band. It was held to a 34ch
+   measure, which on A4 left most of the band empty to the right of it. */
+.layout :global(.editorial-opening .rich-text) {
+  font-size: calc(var(--resume-h1) * 0.66);
+  line-height: 1.4;
+  text-align: left;
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 1.5);
+  flex: 1;
+}
+
+/* A quiet label, deliberately smaller than the item titles under it: the entries
+   are the content and the section name is only a filing marker. */
+.layout :global(.section-heading) {
+  font-size: calc(var(--resume-meta) * 0.95);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--resume-text);
+}
+
+.layout :global(.item-list) {
+  gap: calc(var(--resume-gap-item) * 2);
+}
+
+/* The spread: title column left, prose right. */
+.layout :global(.item) {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: var(--resume-gutter);
+  align-items: start;
+}
+
+.layout :global(.item-lead) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+/* Short rule above every entry but the first, standing in for the gap that a
+   heading would otherwise have to provide.
+   Taken out of flow: as a block inside `.item-lead` it pushed only the left
+   column down, so from the second entry on the prose sat level with the rule
+   instead of with the title beside it. Positioned, it costs no height and both
+   columns still start on the same line. */
+.layout :global(.item-list > *:not(:first-child) .item)::before,
+.layout :global(.item-list > *:not(:first-child).item)::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(var(--resume-gap-item) * -1);
+  width: 18px;
+  height: 2px;
+  background: var(--resume-text);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.item-title) {
+  font-size: calc(var(--resume-h3) * 1.25);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.layout :global(.item-date) {
+  text-align: left;
+  font-size: var(--resume-meta);
+}
+
+.layout :global(.item-body) {
+  min-width: 0;
+  font-size: var(--resume-meta);
+  color: var(--resume-text);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-inner);
+}
+
+.header :global(.editorial-masthead) {
+  display: flex;
+  align-items: center;
+  gap: var(--resume-gap-section);
+  padding-bottom: var(--resume-gap-item);
+  border-bottom: 2px solid var(--resume-text);
+}
+
+.header :global(.header-photo) {
+  width: 76px;
+  aspect-ratio: var(--resume-photo-aspect, 3 / 4);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 0);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.name-block) {
+  flex: 1;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.78);
+  font-weight: 700;
+  line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.headline) {
+  font-size: var(--resume-h3);
+  font-weight: 700;
+  margin-top: var(--resume-gap-inner);
+  --resume-headline-color: var(--resume-text);
+}
+
+.header :global(.editorial-reach) {
+  font-size: calc(var(--resume-meta) * 1.05);
+}
+
+/* Contacts set flush right against the name, so the rule under them closes a
+   block with a clean edge at both ends. */
+.header :global(.editorial-reach) {
+  align-items: flex-end;
+  text-align: right;
+  font-size: var(--resume-meta);
+  font-weight: 700;
+  gap: 0;
+}
+
+.header :global(.contact-block) {
+  gap: 0;
+}
+
+.header :global(.editorial-place) {
+  margin: 0;
+  font-size: calc(var(--resume-meta) * 0.92);
+  color: var(--resume-muted);
+}

@@ -3025,4 +3025,556 @@ export const PERSONAS: Persona[] = [
       note: "Thesis on energy profiling of background sync on mobile devices.",
     },
   },
+  // ── Compass / Numeral / Atlas / Editorial ──────────────────────────────────
+  {
+    layoutId: "compass",
+    presetId: "compass-slate",
+    photo: "https://i.pravatar.cc/320?img=36",
+    fullName: "Clara Mensah",
+    location: "Accra, Ghana",
+    phone: "+233 24 118 7740",
+    email: "clara.mensah@proton.me",
+    links: ["https://www.linkedin.com/in/claramensah", "https://mensah.health"],
+    summary:
+      "<p>Public health programme manager running immunisation and maternal health services across three regions. I plan around what the last cold-chain failure actually taught us, not around what the protocol assumed.</p>",
+    work: [
+      {
+        company: "Volta Health Partnership",
+        position: "Programme Manager",
+        location: "Accra, Ghana",
+        start: "Mar 2020",
+        end: "current",
+        bullets: [
+          "Raised full-course immunisation coverage from 71% to 89% across 140 facilities in three regions.",
+          "Rebuilt the cold-chain monitoring process around SMS reporting, cutting spoilage incidents by two thirds.",
+          "Managed a $4.2M multi-donor budget across four funders with clean audits in every cycle.",
+        ],
+      },
+      {
+        company: "Ministry of Health",
+        position: "District Health Officer",
+        location: "Ho, Ghana",
+        start: "Aug 2015",
+        end: "Feb 2020",
+        bullets: [
+          "Ran maternal health services for a district of 240,000, cutting facility delivery wait times by half.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Public Health",
+      items: [
+        "Programme Management",
+        "M&E",
+        "Cold Chain",
+        "Donor Reporting",
+        "Health Informatics",
+        "Stata",
+      ],
+    },
+    projects: [
+      {
+        name: "SMS Cold-Chain Reporting",
+        start: "Jun 2021",
+        end: "Feb 2022",
+        bullets: [
+          "Daily fridge-temperature reporting from 140 facilities over basic handsets, with an escalation path that closes the loop.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Field Epidemiology Training", org: "Ghana FELTP", date: "Nov 2019" },
+    ],
+    education: {
+      name: "University of Ghana",
+      location: "Legon, Ghana",
+      start: "Sep 2010",
+      end: "Jul 2015",
+      degree: "MPH in Public Health",
+      gpa: "First Class",
+      note: "Dissertation on referral delays in rural maternal care.",
+    },
+  },
+  {
+    layoutId: "compass",
+    presetId: "compass-cerulean",
+    photo: "https://i.pravatar.cc/320?img=17",
+    fullName: "Ethan Whitcombe",
+    location: "Manchester, United Kingdom",
+    phone: "+44 7700 118 442",
+    email: "ethan.whitcombe@fastmail.com",
+    links: ["https://www.linkedin.com/in/ethanwhitcombe"],
+    summary:
+      "<p>Site reliability engineer for payment systems. I would rather delete an alert than add a dashboard, and I judge a runbook by whether someone half-awake can follow it.</p>",
+    work: [
+      {
+        company: "Ledgerline Payments",
+        position: "Staff Site Reliability Engineer",
+        location: "Manchester, United Kingdom",
+        start: "Jan 2021",
+        end: "current",
+        bullets: [
+          "Took the settlement service from 99.5% to 99.98% availability without adding headcount to the on-call rota.",
+          "Cut alert volume 78% by deleting everything that had never once been actioned, then rewriting what remained around symptoms.",
+          "Led incident review for 40+ incidents; the top three recurring causes are now structurally impossible.",
+        ],
+      },
+      {
+        company: "Northgate Digital",
+        position: "Infrastructure Engineer",
+        location: "Leeds, United Kingdom",
+        start: "Jun 2017",
+        end: "Dec 2020",
+        bullets: [
+          "Migrated 60 services to Kubernetes over 18 months with no customer-visible downtime.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Reliability",
+      items: [
+        "Kubernetes",
+        "Terraform",
+        "Go",
+        "Prometheus",
+        "Incident Command",
+        "PostgreSQL",
+      ],
+    },
+    projects: [
+      {
+        name: "Settlement Failover",
+        start: "Apr 2022",
+        end: "Nov 2022",
+        bullets: [
+          "Active-active across two regions with a tested failover drill every quarter, cutting recovery time from 40 minutes to under 3.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Certified Kubernetes Administrator", org: "CNCF", date: "Mar 2021" },
+    ],
+    education: {
+      name: "University of Manchester",
+      location: "Manchester, United Kingdom",
+      start: "Sep 2013",
+      end: "Jun 2017",
+      degree: "MEng in Computer Systems Engineering",
+      gpa: "First Class Honours",
+      note: "Final project on consensus behaviour under partial network partition.",
+    },
+  },
+  {
+    layoutId: "numeral",
+    presetId: "numeral-mono",
+    photo: "https://i.pravatar.cc/320?img=23",
+    fullName: "Ingrid Halvorsen",
+    location: "Oslo, Norway",
+    phone: "+47 941 20 663",
+    email: "ingrid.halvorsen@posteo.net",
+    links: ["https://www.linkedin.com/in/ingridhalvorsen", "https://halvorsen.legal"],
+    summary:
+      "<p>Commercial lawyer working on technology and data agreements. I write contracts the business side can actually read, on the theory that a term nobody understands is a term nobody follows.</p>",
+    work: [
+      {
+        company: "Bjørnstad & Co",
+        position: "Senior Associate",
+        location: "Oslo, Norway",
+        start: "Sep 2019",
+        end: "current",
+        bullets: [
+          "Lead counsel on 60+ SaaS and data-processing agreements a year, including three nine-figure framework deals.",
+          "Rewrote the firm's technology contract templates in plain Norwegian and English, cutting average negotiation time by a third.",
+          "Advised on GDPR transfer mechanics for eleven clients through the Schrems II fallout.",
+        ],
+      },
+      {
+        company: "Nordlys Advokatfirma",
+        position: "Associate",
+        location: "Bergen, Norway",
+        start: "Aug 2015",
+        end: "Aug 2019",
+        bullets: [
+          "Ran commercial contract review for a portfolio of 30 mid-market clients.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Legal",
+      items: [
+        "Commercial Contracts",
+        "GDPR",
+        "Licensing",
+        "Negotiation",
+        "Procurement",
+        "Plain-Language Drafting",
+      ],
+    },
+    projects: [
+      {
+        name: "Plain-Language Template Set",
+        start: "Jan 2021",
+        end: "Sep 2021",
+        bullets: [
+          "Twelve rewritten templates with drafting notes, adopted firm-wide and now the default for all technology work.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Advokatbevilling (Bar Admission)", org: "Tilsynsrådet", date: "Jun 2018" },
+    ],
+    education: {
+      name: "Universitetet i Oslo",
+      location: "Oslo, Norway",
+      start: "Aug 2010",
+      end: "Jun 2015",
+      degree: "Master of Laws (Cand.jur.)",
+      gpa: "B+",
+      note: "Thesis on liability allocation in cloud service agreements.",
+    },
+  },
+  {
+    layoutId: "numeral",
+    presetId: "numeral-signal",
+    photo: "https://i.pravatar.cc/320?img=59",
+    fullName: "Andre Botha",
+    location: "Cape Town, South Africa",
+    phone: "+27 82 447 1180",
+    email: "andre.botha@hey.com",
+    links: ["https://www.linkedin.com/in/andrebotha"],
+    summary:
+      "<p>Supply chain analyst turned planning lead for grocery retail. Forecasts are cheap; the useful work is deciding what the business does when the forecast is wrong, and writing that down before it is.</p>",
+    work: [
+      {
+        company: "Tafel Retail Group",
+        position: "Head of Demand Planning",
+        location: "Cape Town, South Africa",
+        start: "Feb 2021",
+        end: "current",
+        bullets: [
+          "Cut out-of-stocks on the top 500 lines from 6.1% to 2.4% while holding total inventory flat.",
+          "Built the exception-based planning process the team still runs, replacing a weekly full review of 12,000 SKUs.",
+          "Ran the planning side of two store-format launches, both stocked correctly from day one.",
+        ],
+      },
+      {
+        company: "Kaap Distributors",
+        position: "Supply Chain Analyst",
+        location: "Stellenbosch, South Africa",
+        start: "Mar 2017",
+        end: "Jan 2021",
+        bullets: [
+          "Automated the weekly replenishment run, saving two analyst-days a week and removing a recurring manual error.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Planning",
+      items: [
+        "Demand Planning",
+        "SQL",
+        "Python",
+        "Power BI",
+        "S&OP",
+        "Inventory Optimisation",
+      ],
+    },
+    projects: [
+      {
+        name: "Exception-Based Planning",
+        start: "May 2021",
+        end: "Dec 2021",
+        bullets: [
+          "Reduced the weekly planning review from 12,000 SKUs to the ~300 that had actually moved outside tolerance.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "APICS CSCP", org: "ASCM", date: "Aug 2020" },
+    ],
+    education: {
+      name: "Stellenbosch University",
+      location: "Stellenbosch, South Africa",
+      start: "Feb 2013",
+      end: "Dec 2016",
+      degree: "BCom in Logistics Management",
+      gpa: "Cum Laude",
+      note: "Final-year project on safety-stock policy under unreliable lead times.",
+    },
+  },
+  {
+    layoutId: "atlas",
+    presetId: "atlas-onyx",
+    photo: "https://i.pravatar.cc/320?img=47",
+    fullName: "Mei Lin Tan",
+    location: "Singapore",
+    phone: "+65 8114 2260",
+    email: "meilin.tan@fastmail.com",
+    links: ["https://meilintan.studio", "https://www.linkedin.com/in/meilintan"],
+    summary:
+      "<p>Industrial designer working on consumer hardware from sketch to tooling. I spend my time with the people who have to manufacture the thing, because that is where a nice render meets its actual cost.</p>",
+    work: [
+      {
+        company: "Halcyon Devices",
+        position: "Lead Industrial Designer",
+        location: "Singapore",
+        start: "Jul 2020",
+        end: "current",
+        bullets: [
+          "Designed three products from concept to mass production, together shipping over 900,000 units.",
+          "Cut the flagship's part count from 41 to 26, taking $6.40 off unit cost and a week off assembly line setup.",
+          "Set the material and finish standard now used across the whole range.",
+        ],
+      },
+      {
+        company: "Pallas Design Works",
+        position: "Industrial Designer",
+        location: "Taipei, Taiwan",
+        start: "Sep 2016",
+        end: "Jun 2020",
+        bullets: [
+          "Delivered enclosure design for 14 client products across audio, kitchen and medical categories.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Industrial Design",
+      items: [
+        "SolidWorks",
+        "Keyshot",
+        "DFM",
+        "Injection Moulding",
+        "Prototyping",
+        "CMF",
+      ],
+    },
+    projects: [
+      {
+        name: "Halcyon One Enclosure",
+        start: "Feb 2021",
+        end: "Mar 2022",
+        bullets: [
+          "Single-piece housing with an integrated hinge, removing eleven fasteners and a whole assembly station.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Design for Manufacture", org: "Singapore Polytechnic", date: "Jul 2019" },
+    ],
+    education: {
+      name: "National University of Singapore",
+      location: "Singapore",
+      start: "Aug 2012",
+      end: "May 2016",
+      degree: "B.A. in Industrial Design",
+      gpa: "3.9 / 4.0",
+      note: "Graduation project on repairable consumer electronics.",
+    },
+  },
+  {
+    layoutId: "atlas",
+    presetId: "atlas-marine",
+    photo: "https://i.pravatar.cc/320?img=60",
+    fullName: "Rafael Duarte",
+    location: "São Paulo, Brazil",
+    phone: "+55 11 96442 7013",
+    email: "rafael.duarte@proton.me",
+    links: ["https://www.linkedin.com/in/rafaelduarte", "https://duarte.dev"],
+    summary:
+      "<p>Platform engineer building the paved road other teams ship on. Success is measured in how rarely anyone has to talk to me, not in how many tools I have deployed.</p>",
+    work: [
+      {
+        company: "Marégrafo Tecnologia",
+        position: "Principal Platform Engineer",
+        location: "São Paulo, Brazil",
+        start: "Apr 2021",
+        end: "current",
+        bullets: [
+          "Cut median time from first commit to production for a new service from 9 days to under 4 hours.",
+          "Built the internal developer portal now used by 22 squads, replacing four competing sets of instructions.",
+          "Reduced cloud spend 31% by making cost visible per service and per team at deploy time.",
+        ],
+      },
+      {
+        company: "Praia Digital",
+        position: "Backend Engineer",
+        location: "Florianópolis, Brazil",
+        start: "Jan 2017",
+        end: "Mar 2021",
+        bullets: [
+          "Owned the billing service through a 12x growth in transaction volume.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Platform",
+      items: [
+        "Go",
+        "Kubernetes",
+        "Terraform",
+        "Backstage",
+        "GitHub Actions",
+        "OpenTelemetry",
+      ],
+    },
+    projects: [
+      {
+        name: "Paved Road Templates",
+        start: "Aug 2021",
+        end: "Apr 2022",
+        bullets: [
+          "Service templates with CI, observability and on-call wiring built in, adopted by 22 squads in two quarters.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "AWS Solutions Architect – Professional", org: "AWS", date: "Oct 2022" },
+    ],
+    education: {
+      name: "Universidade de São Paulo",
+      location: "São Paulo, Brazil",
+      start: "Feb 2012",
+      end: "Dec 2016",
+      degree: "BSc in Computer Engineering",
+      gpa: "8.6 / 10",
+      note: "Thesis on scheduling fairness in shared container clusters.",
+    },
+  },
+  {
+    layoutId: "editorial",
+    presetId: "editorial-sand",
+    photo: "https://i.pravatar.cc/320?img=27",
+    fullName: "Beatrix Almeida",
+    location: "Lisbon, Portugal",
+    phone: "+351 933 118 460",
+    email: "beatrix.almeida@hey.com",
+    links: ["https://almeida.press", "https://www.linkedin.com/in/beatrixalmeida"],
+    summary:
+      "<p>Editor and writer building long-form desks that survive contact with a budget. I commission fewer pieces than my predecessors did and finish all of them.</p>",
+    work: [
+      {
+        company: "Corrente Magazine",
+        position: "Editor-in-Chief",
+        location: "Lisbon, Portugal",
+        start: "Jan 2020",
+        end: "current",
+        bullets: [
+          "Took the title from quarterly to monthly and grew paid subscriptions from 4,000 to 31,000.",
+          "Commissioned two investigations that led to parliamentary hearings.",
+          "Built a freelance roster of 60 writers with rates published openly, which halved time-to-commission.",
+        ],
+      },
+      {
+        company: "Diário Atlântico",
+        position: "Features Editor",
+        location: "Porto, Portugal",
+        start: "Mar 2014",
+        end: "Dec 2019",
+        bullets: [
+          "Ran the weekend features desk, editing roughly 300 pieces a year.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Editorial",
+      items: [
+        "Commissioning",
+        "Long-Form Editing",
+        "Fact-Checking",
+        "Audience Strategy",
+        "Budgeting",
+      ],
+    },
+    projects: [
+      {
+        name: "The Water Series",
+        start: "Mar 2022",
+        end: "Nov 2022",
+        bullets: [
+          "Six-part investigation into drought policy, cited in two parliamentary sessions and syndicated in four countries.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Investigative Reporting Fellowship", org: "Reuters Institute", date: "Jun 2021" },
+    ],
+    education: {
+      name: "Universidade Nova de Lisboa",
+      location: "Lisbon, Portugal",
+      start: "Sep 2009",
+      end: "Jul 2013",
+      degree: "BA in Journalism",
+      gpa: "17 / 20",
+      note: "Final project on the economics of independent magazines.",
+    },
+  },
+  {
+    layoutId: "editorial",
+    presetId: "editorial-sage",
+    photo: "https://i.pravatar.cc/320?img=29",
+    fullName: "Noor Haddad",
+    location: "Amman, Jordan",
+    phone: "+962 7 9114 2280",
+    email: "noor.haddad@posteo.net",
+    links: ["https://www.linkedin.com/in/noorhaddad", "https://haddad.works"],
+    summary:
+      "<p>Architect working on public buildings and adaptive reuse. Most of my job is finding what a building already does well before proposing to change anything about it.</p>",
+    work: [
+      {
+        company: "Studio Rukn",
+        position: "Associate Architect",
+        location: "Amman, Jordan",
+        start: "Jun 2019",
+        end: "current",
+        bullets: [
+          "Led design on four public projects, including a 4,200 m² community library delivered on budget.",
+          "Ran the adaptive reuse of a 1930s customs house into a cultural centre, keeping 82% of the existing structure.",
+          "Set up the practice's daylight and thermal modelling workflow, now used on every project at concept stage.",
+        ],
+      },
+      {
+        company: "Bureau Qasr",
+        position: "Project Architect",
+        location: "Beirut, Lebanon",
+        start: "Sep 2014",
+        end: "May 2019",
+        bullets: [
+          "Delivered six residential and mixed-use projects from competition through construction administration.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Architecture",
+      items: [
+        "Rhino",
+        "Revit",
+        "Adaptive Reuse",
+        "Daylight Modelling",
+        "Construction Administration",
+        "Public Consultation",
+      ],
+    },
+    projects: [
+      {
+        name: "Customs House Reuse",
+        start: "Jan 2021",
+        end: "Oct 2023",
+        bullets: [
+          "Cultural centre inside a 1930s shell, retaining 82% of the existing structure and cutting embodied carbon by roughly 60% against a new build.",
+        ],
+      },
+    ],
+    certs: [
+      { name: "Licensed Architect", org: "Jordan Engineers Association", date: "Apr 2017" },
+    ],
+    education: {
+      name: "University of Jordan",
+      location: "Amman, Jordan",
+      start: "Sep 2009",
+      end: "Jun 2014",
+      degree: "B.Arch in Architecture",
+      gpa: "3.7 / 4.0",
+      note: "Thesis on courtyard typologies as passive cooling in hot-arid cities.",
+    },
+  },
 ];

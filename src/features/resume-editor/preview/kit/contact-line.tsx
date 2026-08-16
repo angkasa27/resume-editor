@@ -45,15 +45,20 @@ export function PreviewContactLine({
   className,
   presentation = DEFAULT_CONTACT_PRESENTATION,
   only,
+  exclude,
 }: {
   context: PreviewRenderContext;
   className?: string;
   presentation?: ContactPresentation;
   /** Splits the block so a layout can head the two halves separately ("Details" / "Links"). */
   only?: "details" | "links";
+  /** Drops one field, for a layout that sets it somewhere else on the page. */
+  exclude?: PreviewContactItem["kind"];
 }) {
-  const { contactItems } = context;
   const labeled = presentation.variant === "labeled";
+  const contactItems = exclude
+    ? context.contactItems.filter((item) => item.kind !== exclude)
+    : context.contactItems;
   const details =
     only === "links" ? [] : contactItems.filter((item) => item.kind !== "link");
   const links =

@@ -277,7 +277,12 @@
 
 :where(.root) :global(.item-header) {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  /* `fit-content(38%)` rather than `auto`: an `auto` track takes max-content, so
+     a long organisation name on the right held its full width and forced the
+     title — the only flexible track — to wrap one word per line. Short content
+     (a date) still takes exactly the width it needs; anything longer caps at
+     38% and wraps there, so both columns break instead of only the title. */
+  grid-template-columns: minmax(0, 1fr) fit-content(38%);
   align-items: start;
   gap: var(--resume-gap-item);
 }

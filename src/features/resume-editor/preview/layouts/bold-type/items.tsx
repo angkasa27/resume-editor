@@ -3,6 +3,7 @@ import type { SectionItem } from "@/features/resume-editor/preview/descriptors/t
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
 import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 import { defaultItemViews } from "@/features/resume-editor/preview/layouts/_shared/default-item-views";
+import { ItemDate } from "@/features/resume-editor/preview/layouts/_shared/items/item-date";
 
 /** Pipe instead of the shared middot, which reads too fussy at this weight. */
 function withLocation(name: string | undefined, location: string | undefined) {
@@ -45,9 +46,7 @@ function WorkExperienceItem({
       title={item.position}
       meta={withLocation(item.companyName, item.location)}
       side={
-        <div className="item-date">
-          {renderDateRange(item.startDate, item.endDate)}
-        </div>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       }
       description={item.description}
     />
@@ -64,9 +63,7 @@ function EducationItem({ item }: { item: SectionItem<"education"> }) {
       )}
       side={
         <>
-          <div className="item-date">
-            {renderDateRange(item.startDate, item.endDate)}
-          </div>
+          <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
           {item.gpa ? <div className="meta">GPA: {item.gpa}</div> : null}
         </>
       }
@@ -85,9 +82,7 @@ function OrganizationVolunteeringItem({
       title={item.position}
       meta={withLocation(item.organizationName, item.location)}
       side={
-        <div className="item-date">
-          {renderDateRange(item.startDate, item.endDate)}
-        </div>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       }
       description={item.description}
     />

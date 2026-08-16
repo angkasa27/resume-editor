@@ -3,15 +3,19 @@ import type { ReactNode } from "react";
 import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
 import { academicLayout } from "./layouts/academic/layout";
+import { atlasLayout } from "./layouts/atlas/layout";
 import { auroraLayout } from "./layouts/aurora/layout";
 import { boldTypeLayout } from "./layouts/bold-type/layout";
 import { classicLayout } from "./layouts/classic/layout";
+import { compassLayout } from "./layouts/compass/layout";
 import { crestLayout } from "./layouts/crest/layout";
 import { dossierLayout } from "./layouts/dossier/layout";
+import { editorialLayout } from "./layouts/editorial/layout";
 import { insetLayout } from "./layouts/inset/layout";
 import { ledgerLayout } from "./layouts/ledger/layout";
 import { mastheadLayout } from "./layouts/masthead/layout";
 import { modernCenteredLayout } from "./layouts/modern-centered/layout";
+import { numeralLayout } from "./layouts/numeral/layout";
 import { splitLayout } from "./layouts/split/layout";
 import { studioLayout } from "./layouts/studio/layout";
 import { timelineLayout } from "./layouts/timeline/layout";
@@ -32,6 +36,10 @@ export const previewLayoutDefinitions = [
   dossierLayout,
   crestLayout,
   mastheadLayout,
+  compassLayout,
+  numeralLayout,
+  atlasLayout,
+  editorialLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain

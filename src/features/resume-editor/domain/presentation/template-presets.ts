@@ -27,7 +27,7 @@ export type ResumeTemplatePreset = {
 
 export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
   // Curation rules: `secondary` only set for the layouts that render it (modern-centered,
-  // split, aurora, dossier, masthead) — elsewhere it'd be dead data
+  // split, aurora, dossier, masthead, editorial) — elsewhere it'd be dead data
   // getActiveTemplatePresetId still has to match.
   // `accent` usage varies per layout (band fill vs. highlighter vs. heading text). Density
   // follows layout structure (rails run tight, whitespace-led run airy), not taste.
@@ -418,13 +418,122 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+  // compass — accent is the marginal glyph and the rail links, nothing else.
+  // Mid-tone hues: at 1em a pale glyph disappears against paper.
+  {
+    id: "compass-slate",
+    label: "Slate",
+    layoutId: "compass",
+    style: {
+      accent: "#475569",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "compass-cerulean",
+    label: "Cerulean",
+    layoutId: "compass",
+    style: {
+      accent: "#0284c7",
+      fontFamilyId: "open-sans",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
+  // numeral — accent is the 01/02/03 index and nothing else, so it reads as a
+  // single spot colour on an otherwise black-and-white page.
+  {
+    id: "numeral-mono",
+    label: "Mono",
+    layoutId: "numeral",
+    style: {
+      accent: "#111827",
+      fontFamilyId: "arial",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "numeral-signal",
+    label: "Signal",
+    layoutId: "numeral",
+    style: {
+      accent: "#dc2626",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
+  // atlas — accent fills the numbered disc on every item, so it needs enough
+  // weight to carry white text at 0.7em.
+  {
+    id: "atlas-onyx",
+    label: "Onyx",
+    layoutId: "atlas",
+    style: {
+      accent: "#171717",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "atlas-marine",
+    label: "Marine",
+    layoutId: "atlas",
+    style: {
+      accent: "#075985",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+
+  // editorial — secondary tints the opening band behind display-size text, so
+  // it has to stay pale; accent is spent on headings and links only.
+  {
+    id: "editorial-sand",
+    label: "Sand",
+    layoutId: "editorial",
+    style: {
+      accent: "#44403c",
+      secondary: "#d6c3a5",
+      fontFamilyId: "lora",
+      fontScale: "sm",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
+  {
+    id: "editorial-sage",
+    label: "Sage",
+    layoutId: "editorial",
+    style: {
+      accent: "#334155",
+      secondary: "#a7c4b5",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
 export type TemplateCategoryId = (typeof templateCategoryIds)[number];
 
 /**
- * Categories hang off the layout, not the preset — all 28 presets share 13 layouts.
+ * Categories hang off the layout, not the preset — all 36 presets share 17 layouts.
  * A layout carries every category it honestly reads as, so the chips overlap.
  * Keying on PdfLayoutId makes a new layout a type error here.
  */
@@ -440,6 +549,10 @@ const layoutCategories: Record<
   dossier: ["professional"],
   crest: ["professional", "creative"],
   masthead: ["creative"],
+  compass: ["professional"],
+  numeral: ["ats", "professional"],
+  atlas: ["creative"],
+  editorial: ["creative"],
   "modern-centered": ["ats", "professional"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],

@@ -2,7 +2,7 @@ import { createPhotoHeader } from "@/features/resume-editor/preview/layouts/_sha
 import { createSingleColumnLayout } from "@/features/resume-editor/preview/layouts/_shared/create-single-column-layout";
 
 import { studioItemViews } from "./items";
-import { renderStudioSectionHeading } from "./section-icons";
+import { renderIconSectionHeading } from "../_shared/section-icons";
 import styles from "./styles.module.css";
 
 export const studioLayout = createSingleColumnLayout({
@@ -13,5 +13,5 @@ export const studioLayout = createSingleColumnLayout({
   styles,
   Header: createPhotoHeader({ dataLayout: "studio", styles }),
   itemViews: studioItemViews,
-  renderSectionHeading: renderStudioSectionHeading,
+  renderSectionHeading: renderIconSectionHeading,
 });

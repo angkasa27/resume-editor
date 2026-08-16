@@ -21,6 +21,8 @@ function TimelineItem({
 }) {
   return (
     <div className="item timeline-item">
+      {/* Already guarded, and the inner span is timeline's own dot anchor, so
+          this one keeps its markup rather than routing through <ItemDate>. */}
       <div className="timeline-date">
         {date ? (
           <span className="item-date">

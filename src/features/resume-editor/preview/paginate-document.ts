@@ -32,7 +32,38 @@ export const PAGE_SLACK_PX = 1;
  * section moves, not just its heading, because the label-column layouts put the
  * two in one grid row and shifting the heading alone would slide it out of line.
  */
-const BLOCK_SELECTOR = ".section, .item";
+const BLOCK_SELECTOR = [
+  ".section",
+  ".item",
+  // Lines inside a long entry. Making the bullet a unit is what lets a tall
+  // entry span a page break without either leaving a third of a page blank
+  // (moving it whole) or dropping its continuation flush against the next
+  // page's top edge (letting it fragment freely): the entry's head stays put,
+  // and each bullet that would land in an edge band takes its own correction.
+  ".rich-text > ul > li",
+  ".rich-text > ol > li",
+  ".rich-text > p",
+].join(", ");
+
+/**
+ * A subtree the pass must treat as one block and not descend into. Grid-based
+ * layouts set it: a spacer inserted before a grid child becomes another grid
+ * item and reflows the whole tiling, so the row moves as a unit instead.
+ */
+const PAGE_UNIT_ATTR = "data-page-unit";
+
+/**
+ * Fraction of a page's usable height above which a block is allowed to break
+ * across the page edge instead of moving to the next page whole.
+ *
+ * Moving is right for a short entry — a three-line award split over two sheets
+ * reads as a mistake. It is wrong for a long one: a work entry with nine bullets
+ * is a third of a page, so moving it wholesale leaves a third of a page blank
+ * and it still has to break somewhere. Above this threshold only the entry's
+ * *head* (its title plus a couple of lines) is kept out of the edge band, and
+ * the rest flows across, which is what every word processor does.
+ */
+const FRAGMENT_RATIO = 0.32;
 
 type BlockGeometry = {
   /** Block top, relative to the document's first page. */
@@ -42,6 +73,16 @@ type BlockGeometry = {
   pageHeight: number;
   margin: number;
 };
+
+/** Height of the head that must not be stranded at a page foot: a title and ~2 lines. */
+function headBottom(block: HTMLElement, rect: DOMRect): number {
+  const head = block.querySelector<HTMLElement>(
+    ".item-title, .section-heading",
+  );
+  if (!head) return rect.bottom;
+  const headRect = head.getBoundingClientRect();
+  return Math.min(rect.bottom, headRect.bottom + headRect.height * 2);
+}
 
 /**
  * True when a block can't fit between the margins of any page, so no amount of
@@ -123,11 +164,29 @@ function insertSpacerBefore(
  * a page of text wholesale to keep a heading company, so only the heading plus
  * a couple of lines travels and the paragraph flows across the break.
  */
-function measureUnitBottom(block: HTMLElement, rect: DOMRect): number {
-  if (!block.classList.contains("section")) return rect.bottom;
+function measureUnitBottom(
+  block: HTMLElement,
+  rect: DOMRect,
+  usableHeight: number,
+): number {
+  const fragmentAbove = usableHeight * FRAGMENT_RATIO;
+
+  if (!block.classList.contains("section")) {
+    // Short enough to move whole; anything taller only has to keep its head off
+    // the page foot and may break below it.
+    if (rect.height <= fragmentAbove) return rect.bottom;
+    return headBottom(block, rect);
+  }
 
   const firstItem = block.querySelector<HTMLElement>(".item");
-  if (firstItem) return firstItem.getBoundingClientRect().bottom;
+  if (firstItem) {
+    const itemRect = firstItem.getBoundingClientRect();
+    // The heading has to keep company with the start of its first entry, but
+    // not with all of a long one — that is what moved whole sections a page
+    // early and left the previous one two-thirds empty.
+    if (itemRect.height <= fragmentAbove) return itemRect.bottom;
+    return headBottom(firstItem, itemRect);
+  }
 
   const heading = block
     .querySelector<HTMLElement>(".section-heading")
@@ -148,7 +207,9 @@ function resetPagination(article: HTMLElement): void {
     spacer.remove();
   }
   for (const block of Array.from(
-    article.querySelectorAll<HTMLElement>(BLOCK_SELECTOR),
+    article.querySelectorAll<HTMLElement>(
+      `[${PAGE_UNIT_ATTR}], ${BLOCK_SELECTOR}`,
+    ),
   )) {
     block.style.removeProperty("break-inside");
   }
@@ -181,14 +242,35 @@ export function paginateResumeDocument(article: HTMLElement): number {
   const scale = measuredScale > 0 ? measuredScale : 1;
   const cssPx = (value: number) => value / scale;
 
+  const usableHeight = pageHeight - margin * 2;
+
   for (const block of Array.from(
-    article.querySelectorAll<HTMLElement>(BLOCK_SELECTOR),
+    article.querySelectorAll<HTMLElement>(
+      `[${PAGE_UNIT_ATTR}], ${BLOCK_SELECTOR}`,
+    ),
   )) {
+    // Inside a page unit the parent already moved as a whole; correcting a
+    // child as well would double-shift it out of the row it belongs to.
+    if (
+      !block.hasAttribute(PAGE_UNIT_ATTR) &&
+      block.closest(`[${PAGE_UNIT_ATTR}]`)
+    ) {
+      continue;
+    }
     const rect = block.getBoundingClientRect();
     const top = cssPx(rect.top - articleTop);
 
-    const unitBottom = cssPx(measureUnitBottom(block, rect) - articleTop);
+    const unitBottom = cssPx(
+      measureUnitBottom(block, rect, usableHeight * scale) - articleTop,
+    );
     const geometry = { top, unitBottom, pageHeight, margin };
+
+    // A block allowed to fragment must actually be allowed to: `break-inside:
+    // avoid` would otherwise have print move it a whole page, a move this pass
+    // never measured, throwing off every spacer after it.
+    if (cssPx(rect.height) > usableHeight * FRAGMENT_RATIO) {
+      block.style.breakInside = "auto";
+    }
 
     // A block that can't fit between the margins keeps whatever top-margin
     // correction it earns, but it must also stop honouring

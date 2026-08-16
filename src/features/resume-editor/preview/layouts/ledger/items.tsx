@@ -9,6 +9,7 @@ import {
   RailLanguagesItem,
   RailSkillsItem,
 } from "@/features/resume-editor/preview/layouts/_shared/items/rail-items";
+import { ItemDate } from "@/features/resume-editor/preview/layouts/_shared/items/item-date";
 
 /**
  * Ledger's item: role and employer on the title line, the place alone on the right,
@@ -40,9 +41,7 @@ function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
         title={commaJoin([item.position, item.companyName])}
         side={item.location}
       />
-      <div className="item-date">
-        {renderDateRange(item.startDate, item.endDate)}
-      </div>
+      <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );
@@ -55,10 +54,8 @@ function EducationItem({ item }: { item: SectionItem<"education"> }) {
         title={commaJoin([item.degree || item.name, item.degree ? item.name : undefined])}
         side={item.location}
       />
-      <div className="item-date">
-        {renderDateRange(item.startDate, item.endDate)}
-        {item.gpa ? ` · GPA: ${item.gpa}` : ""}
-      </div>
+      <ItemDate>{renderDateRange(item.startDate, item.endDate)}
+        {item.gpa ? ` · GPA: ${item.gpa}` : ""}</ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );
@@ -75,9 +72,7 @@ function OrganizationVolunteeringItem({
         title={commaJoin([item.position, item.organizationName])}
         side={item.location}
       />
-      <div className="item-date">
-        {renderDateRange(item.startDate, item.endDate)}
-      </div>
+      <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );
@@ -94,9 +89,7 @@ function ProjectsItem({ item }: { item: SectionItem<"projects"> }) {
           />
         }
       />
-      <div className="item-date">
-        {renderDateRange(item.startDate, item.endDate)}
-      </div>
+      <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );
@@ -111,7 +104,7 @@ function PublicationsItem({ item }: { item: SectionItem<"publications"> }) {
         }
         side={item.publisher}
       />
-      <div className="item-date">{item.publicationDate}</div>
+      <ItemDate>{item.publicationDate}</ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );
@@ -129,10 +122,8 @@ function CertificationsItem({ item }: { item: SectionItem<"certifications"> }) {
         }
         side={item.issuingOrganization}
       />
-      <div className="item-date">
-        {item.issuedDate}
-        {item.credentialId ? ` · ID ${item.credentialId}` : ""}
-      </div>
+      <ItemDate>{item.issuedDate}
+        {item.credentialId ? ` · ID ${item.credentialId}` : ""}</ItemDate>
     </div>
   );
 }
@@ -141,7 +132,7 @@ function AwardsItem({ item }: { item: SectionItem<"awards"> }) {
   return (
     <div className="item">
       <TitleRow title={item.title} side={item.issuer} />
-      <div className="item-date">{item.issuedDate}</div>
+      <ItemDate>{item.issuedDate}</ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );

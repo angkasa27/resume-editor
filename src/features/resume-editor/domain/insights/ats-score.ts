@@ -281,6 +281,18 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   },
   crest: { status: "pass" },
   masthead: { status: "pass" },
+  numeral: { status: "pass" },
+  editorial: { status: "pass" },
+  compass: {
+    status: "fail",
+    message:
+      "Parsers read two columns straight across, so the rail ends up mixed into your experience. Switch to a single-column layout.",
+  },
+  atlas: {
+    status: "fail",
+    message:
+      "Sections tile across three columns here, which a parser reads straight across as one jumbled block. Switch to a single-column layout.",
+  },
   ledger: {
     status: "fail",
     message:

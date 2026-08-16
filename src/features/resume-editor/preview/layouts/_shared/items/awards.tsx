@@ -1,5 +1,6 @@
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
+import { ItemDate } from "./item-date";
 
 export function AwardsItem({ item }: { item: SectionItem<"awards"> }) {
   return (
@@ -9,7 +10,7 @@ export function AwardsItem({ item }: { item: SectionItem<"awards"> }) {
           <h3 className="item-title">{item.title}</h3>
           {item.issuer ? <div className="meta">{item.issuer}</div> : null}
         </div>
-        <div className="item-date">{item.issuedDate}</div>
+        <ItemDate>{item.issuedDate}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>

@@ -1,5 +1,6 @@
 import { PreviewLinkedTitle } from "@/features/resume-editor/preview/kit/linked-title";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
+import { ItemDate } from "./item-date";
 
 export function CertificationsItem({
   item,
@@ -23,7 +24,7 @@ export function CertificationsItem({
             <div className="meta">Credential ID: {item.credentialId}</div>
           ) : null}
         </div>
-        <div className="item-date">{item.issuedDate}</div>
+        <ItemDate>{item.issuedDate}</ItemDate>
       </div>
     </div>
   );

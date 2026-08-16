@@ -42,11 +42,23 @@
   gap: 2px;
 }
 
+/* Inline flow, not a flex row. As flex items the title and its meta were atomic:
+   a meta too long for the remaining space moved to the next line whole, so the
+   break always landed before the `·` separator instead of at the word that
+   actually overflowed. Inline, the two run together as one paragraph and wrap
+   where the text does — the separator is bound to its first word by a no-break
+   space in items.tsx. */
 .itemRow1 {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 4px;
+  display: block;
+}
+
+.itemRow1 :global(.item-title) {
+  display: inline;
+}
+
+.itemRow1 :global(.meta) {
+  display: inline;
+  margin-left: 4px;
 }
 
 .itemRow2 {

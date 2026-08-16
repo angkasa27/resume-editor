@@ -10,6 +10,16 @@ import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layo
 
 import styles from "./styles.module.css";
 
+/**
+ * The `·` separator is glued to the word after it with a no-break space, so a
+ * line can never start with a stranded dot. Everything after that first word
+ * wraps normally — which it did not before: the meta was one flex item, so it
+ * moved to the next line whole, taking the separator with it.
+ */
+function dotted(value?: string) {
+  return value ? `\u00B7\u00A0${value}` : undefined;
+}
+
 function InsetItemFrame({
   title,
   titleMeta,
@@ -34,7 +44,7 @@ function InsetItemFrame({
 }
 
 function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
-  const titleMeta = item.companyName ? `· ${item.companyName}` : undefined;
+  const titleMeta = dotted(item.companyName);
   const row2 = joinParts([
     item.location,
     renderDateRange(item.startDate, item.endDate),
@@ -51,7 +61,7 @@ function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
 
 function EducationItem({ item }: { item: SectionItem<"education"> }) {
   const title = item.degree || item.name;
-  const titleMeta = item.degree && item.name ? `· ${item.name}` : undefined;
+  const titleMeta = item.degree ? dotted(item.name) : undefined;
   const row2 = joinParts([
     item.location,
     renderDateRange(item.startDate, item.endDate),
@@ -85,7 +95,7 @@ function SkillsItem({ item }: { item: SectionItem<"skills"> }) {
   return (
     <InsetItemFrame
       title={item.categoryName}
-      titleMeta={skills ? `· ${skills}` : undefined}
+      titleMeta={dotted(skills)}
     />
   );
 }
@@ -96,7 +106,7 @@ function PublicationsItem({ item }: { item: SectionItem<"publications"> }) {
       title={
         <PreviewLinkedTitle title={item.title} link={item.publicationUrl} />
       }
-      titleMeta={item.publisher ? `· ${item.publisher}` : undefined}
+      titleMeta={dotted(item.publisher)}
       row2={item.publicationDate}
       description={item.description}
     />
@@ -104,9 +114,7 @@ function PublicationsItem({ item }: { item: SectionItem<"publications"> }) {
 }
 
 function CertificationsItem({ item }: { item: SectionItem<"certifications"> }) {
-  const titleMeta = item.issuingOrganization
-    ? `· ${item.issuingOrganization}`
-    : undefined;
+  const titleMeta = dotted(item.issuingOrganization);
   const row2 = joinParts([
     item.issuedDate,
     item.credentialId ? `Credential ID: ${item.credentialId}` : undefined,
@@ -129,7 +137,7 @@ function AwardsItem({ item }: { item: SectionItem<"awards"> }) {
   return (
     <InsetItemFrame
       title={item.title}
-      titleMeta={item.issuer ? `· ${item.issuer}` : undefined}
+      titleMeta={dotted(item.issuer)}
       row2={item.issuedDate}
       description={item.description}
     />
@@ -140,7 +148,7 @@ function LanguagesItem({ item }: { item: SectionItem<"languages"> }) {
   return (
     <InsetItemFrame
       title={item.language}
-      titleMeta={item.proficiency ? `· ${item.proficiency}` : undefined}
+      titleMeta={dotted(item.proficiency)}
     />
   );
 }
@@ -149,7 +157,7 @@ function ReferencesItem({ item }: { item: SectionItem<"references"> }) {
   return (
     <InsetItemFrame
       title={item.name}
-      titleMeta={item.background ? `· ${item.background}` : undefined}
+      titleMeta={dotted(item.background)}
       row2={item.contactDetails}
     />
   );
@@ -160,9 +168,7 @@ function OrganizationVolunteeringItem({
 }: {
   item: SectionItem<"organizationVolunteering">;
 }) {
-  const titleMeta = item.organizationName
-    ? `· ${item.organizationName}`
-    : undefined;
+  const titleMeta = dotted(item.organizationName);
   const row2 = joinParts([
     item.location,
     renderDateRange(item.startDate, item.endDate),

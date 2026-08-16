@@ -7,7 +7,7 @@ import {
 } from "@/features/resume-editor/preview/layout-registry";
 
 describe("preview layout registry", () => {
-  it("exposes all thirteen built-in layouts", () => {
+  it("exposes all seventeen built-in layouts", () => {
     const ids = previewLayoutDefinitions.map((layout) => layout.id);
     expect(ids).toEqual([
       "classic",
@@ -23,6 +23,10 @@ describe("preview layout registry", () => {
       "dossier",
       "crest",
       "masthead",
+      "compass",
+      "numeral",
+      "atlas",
+      "editorial",
     ]);
   });
 
@@ -41,6 +45,10 @@ describe("preview layout registry", () => {
       "dossier",
       "crest",
       "masthead",
+      "compass",
+      "numeral",
+      "atlas",
+      "editorial",
     ] as const) {
       expect(getLayout(id).id).toBe(id);
     }
@@ -51,7 +59,7 @@ describe("preview layout registry", () => {
   });
 
   it("partitions sections into side and main columns in the sidebar and split layouts", () => {
-    for (const id of ["split", "ledger", "dossier"] as const) {
+    for (const id of ["split", "ledger", "dossier", "compass"] as const) {
       const layout = getLayout(id);
       expect(layout.getColumn?.("skills")).toBe("side");
       expect(layout.getColumn?.("languages")).toBe("side");
@@ -62,14 +70,20 @@ describe("preview layout registry", () => {
     }
   });
 
-  it("marks only classic and split as hiding the summary heading", () => {
+  it("marks only the layouts that re-title the summary as hiding its heading", () => {
     // Classic renders its own Summary heading, split runs the name straight
-    // into the summary; suppressing the shared <h2> anywhere else loses the
-    // section its title.
+    // into the summary, atlas labels it with the headline, and editorial sets
+    // it as an untitled pull quote; suppressing the shared <h2> anywhere else
+    // loses the section its title.
     const hiding = previewLayoutDefinitions
       .filter((layout) => layout.hideSummaryHeading === true)
       .map((layout) => layout.id);
-    expect(hiding.sort()).toEqual(["classic", "split"]);
+    expect(hiding.sort()).toEqual([
+      "atlas",
+      "classic",
+      "editorial",
+      "split",
+    ]);
   });
 
   it("shouldHideSummaryHeading derives from the layout definition", () => {
@@ -92,5 +106,8 @@ describe("preview layout registry", () => {
     expect(getLayout("aurora").getColumn).toBeUndefined();
     expect(getLayout("crest").getColumn).toBeUndefined();
     expect(getLayout("masthead").getColumn).toBeUndefined();
+    expect(getLayout("numeral").getColumn).toBeUndefined();
+    expect(getLayout("atlas").getColumn).toBeUndefined();
+    expect(getLayout("editorial").getColumn).toBeUndefined();
   });
 });

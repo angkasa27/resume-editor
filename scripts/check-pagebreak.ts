@@ -149,7 +149,7 @@ async function main() {
         const violations: string[] = [];
 
         for (const el of article.querySelectorAll<HTMLElement>(
-          ".item, .section-heading",
+          ".item, .section-heading, .rich-text > ul > li, .rich-text > ol > li",
         )) {
           const rect = el.getBoundingClientRect();
           const top = rect.top - articleTop;
@@ -158,6 +158,10 @@ async function main() {
           const pageEnd = pageStart + pageHeight;
           const label = (el.textContent ?? "").slice(0, 28).trim();
           if (rect.height > pageHeight - margin * 2) continue;
+          // A block the pass marked fragmentable spans the break on purpose:
+          // its bullets are checked individually above, and its head is what
+          // has to clear the bands, not its whole box.
+          if (el.style.breakInside === "auto") continue;
           if (pageStart > 0 && top < pageStart + margin - 1) {
             violations.push(
               `top band: "${label}" at +${(top - pageStart).toFixed(0)}px`,

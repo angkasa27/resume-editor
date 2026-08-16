@@ -25,6 +25,10 @@ export const pdfLayoutIds = [
   "dossier",
   "crest",
   "masthead",
+  "compass",
+  "numeral",
+  "atlas",
+  "editorial",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -153,6 +157,10 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   masthead: 12, // badge headings already indent the body optically
   crest: 14, // body matches classic; the band owns its own padding
   ledger: 16, // the divider rule needs air on both sides to read as a spine
+  atlas: 12, // three tracks; every millimetre of margin costs a track its measure
+  compass: 14, // the hanging glyphs already read as a margin of their own
+  numeral: 16, // a 150px date gutter inside a wide margin is the whole look
+  editorial: 20, // whitespace is the layout — the band and the spreads both need it
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */
