@@ -1,6 +1,6 @@
 import { PreviewLinkedTitle } from "@/features/resume-editor/preview/kit/linked-title";
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
-import { commaJoin } from "@/features/resume-editor/preview/helpers/string";
+import { commaJoin, joinParts } from "@/features/resume-editor/preview/helpers/string";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
@@ -54,8 +54,12 @@ function EducationItem({ item }: { item: SectionItem<"education"> }) {
         title={commaJoin([item.degree || item.name, item.degree ? item.name : undefined])}
         side={item.location}
       />
-      <ItemDate>{renderDateRange(item.startDate, item.endDate)}
-        {item.gpa ? ` · GPA: ${item.gpa}` : ""}</ItemDate>
+      <ItemDate>
+        {joinParts([
+          renderDateRange(item.startDate, item.endDate),
+          item.gpa ? `GPA: ${item.gpa}` : undefined,
+        ])}
+      </ItemDate>
       <PreviewRichTextBlock content={item.description} />
     </div>
   );
@@ -122,8 +126,12 @@ function CertificationsItem({ item }: { item: SectionItem<"certifications"> }) {
         }
         side={item.issuingOrganization}
       />
-      <ItemDate>{item.issuedDate}
-        {item.credentialId ? ` · ID ${item.credentialId}` : ""}</ItemDate>
+      <ItemDate>
+        {joinParts([
+          item.issuedDate,
+          item.credentialId ? `ID ${item.credentialId}` : undefined,
+        ])}
+      </ItemDate>
     </div>
   );
 }

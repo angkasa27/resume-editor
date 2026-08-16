@@ -249,14 +249,6 @@ export function paginateResumeDocument(article: HTMLElement): number {
       `[${PAGE_UNIT_ATTR}], ${BLOCK_SELECTOR}`,
     ),
   )) {
-    // Inside a page unit the parent already moved as a whole; correcting a
-    // child as well would double-shift it out of the row it belongs to.
-    if (
-      !block.hasAttribute(PAGE_UNIT_ATTR) &&
-      block.closest(`[${PAGE_UNIT_ATTR}]`)
-    ) {
-      continue;
-    }
     const rect = block.getBoundingClientRect();
     const top = cssPx(rect.top - articleTop);
 
@@ -277,6 +269,18 @@ export function paginateResumeDocument(article: HTMLElement): number {
     // `.item { break-inside: avoid }`: print would otherwise shunt it a whole
     // page, a move this pass never measured, throwing off every later spacer.
     if (exceedsUsableHeight(geometry)) block.style.breakInside = "auto";
+
+    // Inside a page unit the parent already moved as a whole; correcting a
+    // child as well would double-shift it out of the row it belongs to. The
+    // `break-inside` lift above still has to reach it: when the unit spans the
+    // break on purpose, an `avoid` child gets shunted a whole page by print, a
+    // move this pass never measured.
+    if (
+      !block.hasAttribute(PAGE_UNIT_ATTR) &&
+      block.closest(`[${PAGE_UNIT_ATTR}]`)
+    ) {
+      continue;
+    }
 
     const shift = computeBlockShift(geometry);
     // Sub-pixel shifts are rounding noise, and inserting one costs a reflow.

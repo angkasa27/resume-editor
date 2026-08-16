@@ -9,9 +9,11 @@ import type { ReactNode } from "react";
  * costs a row of `gap`. Emptiness is a property of the data, so it is handled
  * once here rather than guarded at every call site.
  *
- * Children are often several parts (`{date}{gpa ? ` · GPA ${gpa}` : ""}`), so
- * emptiness means *every* part is blank — a bare `··` separator with nothing
- * either side is exactly the artefact this exists to prevent.
+ * Children are often several parts (a date plus a `· GPA`/`· ID` suffix), so
+ * emptiness means *every* part is blank. Call sites join their parts with
+ * `joinParts`, which drops the blanks and can't leave a stray leading `·`, but
+ * a bare `··` with nothing between is still exactly the artefact this exists
+ * to prevent, so the per-part check stays.
  */
 export function ItemDate({ children }: { children?: ReactNode }) {
   const parts = Array.isArray(children) ? children : [children];

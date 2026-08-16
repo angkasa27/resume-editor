@@ -51,7 +51,7 @@ const FEATURES: Feature[] = [
     Icon: GalleryThumbnailsIcon,
     title: "Multiple templates",
     description:
-      "Switch between seven polished layouts like classic, sidebar, and timeline without retyping a thing.",
+      "Switch between seventeen polished layouts like classic, timeline, and atlas without retyping a thing.",
   },
   {
     Icon: FileCheckIcon,

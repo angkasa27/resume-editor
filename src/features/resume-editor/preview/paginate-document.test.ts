@@ -203,6 +203,38 @@ describe("paginateResumeDocument", () => {
     expect(article.querySelectorAll("[data-page-spacer]")).toHaveLength(0);
   });
 
+  it("lifts break-inside off a child of a page unit without shifting it", () => {
+    // Atlas rows are data-page-unit: the row moves whole and the pass must not
+    // double-shift a child out of its grid cell. But a fragmentable child still
+    // has to stop honouring `.item { break-inside: avoid }` — print would shove
+    // it a whole page, a move the pass never measured.
+    document.body.innerHTML = "";
+    const article = document.createElement("article");
+    article.style.setProperty("--resume-paper-height", "297mm");
+    article.style.setProperty("--resume-paper-width", "210mm");
+    article.style.setProperty("--resume-page-margin", "14mm");
+    const row = document.createElement("div");
+    row.setAttribute("data-page-unit", "");
+    const item = document.createElement("div");
+    item.className = "item";
+    row.append(item);
+    article.append(row);
+    document.body.append(article);
+
+    // Page two, clear of both bands; both blocks are fragmentable (taller than
+    // the fragment ratio) so the break-inside lift is what's under test, not a
+    // shift.
+    place(article, row, 1300, 600);
+    place(article, item, 1310, 400);
+    placeArticle(article, 1900);
+
+    expect(paginateResumeDocument(article)).toBe(2);
+    expect(row.style.breakInside).toBe("auto");
+    expect(item.style.breakInside).toBe("auto");
+    // The child is corrected by neither a spacer nor the row's own shift.
+    expect(article.querySelectorAll("[data-page-spacer]")).toHaveLength(0);
+  });
+
   it("leaves the previous pass standing when the paper vars can't be read", () => {
     // The guard has to bail *before* the reset. Stripping spacers and then
     // reporting one page loses the page markers and the full-bleed rail, with

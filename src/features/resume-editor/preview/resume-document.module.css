@@ -51,11 +51,13 @@
    one, so source order alone decided the winner — which let banner's name fall
    back to --resume-accent and vanish into its own accent band. Layouts now set
    --resume-name-color on an ancestor and inheritance settles it. */
-/* Emitted by <WrapOnSpace> around a hyphenated word, so a title breaks at its
-   spaces instead of mid-surname ("Hammam / Al-Hakim", not "Hammam Al- / Hakim").
-   CSS alone cannot express this: a hyphen is a UAX#14 break opportunity and
-   Chromium — which renders both the preview and the PDF — keeps breaking there
-   under `word-break: keep-all`. */
+/* Emitted by <WrapOnSpace> around a hyphen and the character after it, so a
+   title breaks at its spaces instead of mid-surname ("Maya / Dela-Cruz", not
+   "Maya Dela- / Cruz"). Only that run is pinned: pinning the whole word
+   would also swallow `overflow-wrap` and take away the emergency break for a
+   hyphenated compound too long for its column. CSS alone cannot express this:
+   a hyphen is a UAX#14 break opportunity and Chromium — which renders both the
+   preview and the PDF — keeps breaking there under `word-break: keep-all`. */
 :where(.root) :global(.keep-word) {
   white-space: nowrap;
 }
@@ -67,6 +69,10 @@
   letter-spacing: -0.02em;
   color: var(--resume-name-color, var(--resume-accent));
   margin: 0;
+  /* The name is the one field that must never be lost: a single token longer
+     than the line would otherwise run off the paper edge. Only overflow breaks
+     it — normal names wrap at spaces untouched. */
+  overflow-wrap: anywhere;
 }
 
 :where(.root) :global(.name-block) {

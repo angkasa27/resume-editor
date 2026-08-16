@@ -5,9 +5,9 @@ import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-
 import styles from "./styles.module.css";
 
 /**
- * Full width, above both columns: a small photo and the name on one line. The name
- * is held to a single line here (see the stylesheet) so the two columns below start
- * from a flat edge instead of one that moves with the length of the name.
+ * Full width, above both columns: a small photo and the name on one line. The
+ * name is allowed to wrap (see the stylesheet) rather than be cropped — a
+ * second line only drops the two columns below together.
  */
 export function CompassHeader({ context }: LayoutHeaderProps) {
   const { draft } = context;

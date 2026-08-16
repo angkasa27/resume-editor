@@ -157,19 +157,42 @@ async function main() {
           const pageStart = Math.floor(top / pageHeight) * pageHeight;
           const pageEnd = pageStart + pageHeight;
           const label = (el.textContent ?? "").slice(0, 28).trim();
-          if (rect.height > pageHeight - margin * 2) continue;
-          // A block the pass marked fragmentable spans the break on purpose:
-          // its bullets are checked individually above, and its head is what
-          // has to clear the bands, not its whole box.
-          if (el.style.breakInside === "auto") continue;
+          // Inside a page unit (atlas rows) the parent moves as one block and
+          // the pass deliberately corrects no child — a spacer would become
+          // another grid item and reflow the whole tiling. Those blocks can
+          // straddle a break by design, so no band assertion applies to them.
+          if (el.closest("[data-page-unit]")) continue;
+          // Every block gets its top-margin correction, so the top band must
+          // stay clear even for blocks the pass let fragment.
           if (pageStart > 0 && top < pageStart + margin - 1) {
             violations.push(
               `top band: "${label}" at +${(top - pageStart).toFixed(0)}px`,
             );
           }
-          if (bottom > pageEnd - margin + 1) {
+          // A block taller than a page can hold is let to break where it falls
+          // — its bottom may legitimately sit in the band, so no bottom
+          // assertion for it.
+          if (rect.height > pageHeight - margin * 2) continue;
+          // A block the pass marked fragmentable spans the break on purpose:
+          // its bullets are checked individually above, and what has to clear
+          // the bottom band is its head (the title plus a couple of lines) —
+          // the same headBottom() the pass measures — not its whole box.
+          let boundary = bottom;
+          if (el.style.breakInside === "auto") {
+            const head = el.querySelector<HTMLElement>(
+              ".item-title, .section-heading",
+            );
+            if (head) {
+              const headRect = head.getBoundingClientRect();
+              boundary = Math.min(
+                bottom,
+                headRect.bottom - articleTop + headRect.height * 2,
+              );
+            }
+          }
+          if (boundary > pageEnd - margin + 1) {
             violations.push(
-              `bottom band: "${label}" ${(pageEnd - bottom).toFixed(0)}px from edge`,
+              `bottom band: "${label}" ${(pageEnd - boundary).toFixed(0)}px from edge`,
             );
           }
         }

@@ -126,18 +126,15 @@
   object-fit: cover;
 }
 
-/* One line, always: the columns below start at a fixed edge, so a name that
-   wrapped would push them down by a whole line. It ellipsises instead.
-   `line-height` is raised off the shared 1.1: `overflow: hidden` clips to the
-   line box, and at 1.1 that box ends above the descenders — the tail of a `g`
-   in the name was being cut off. Truncation must not become cropping. */
+/* The columns below start at a fixed edge, so a name that wrapped would push
+   them down by a whole line. Cropping it is worse: the name is the one field
+   on the page that must never be lost, so it wraps instead and the extra line
+   simply drops both columns together. `line-height` is raised off the shared
+   1.1 so the last line's descenders — the tail of a `g` — aren't clipped. */
 .header :global(.name) {
   font-size: calc(var(--resume-h1) * 1.15);
   font-weight: 700;
   line-height: 1.3;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
   --resume-name-color: var(--resume-text);
 }
 
