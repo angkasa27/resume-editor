@@ -1,14 +1,3 @@
-/** The server's error message for a failed response, or `fallback`. */
-export async function responseErrorMessage(
-  response: Response,
-  fallback: string,
-): Promise<string> {
-  const payload = (await response.json().catch(() => null)) as {
-    message?: string;
-  } | null;
-  return payload?.message || fallback;
-}
-
 /**
  * POSTs JSON and returns the parsed payload, throwing the server's `message`
  * (or `fallback`) on failure. Fields are optional — failed routes answer with

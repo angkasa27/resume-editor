@@ -1,0 +1,17 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "ignoreExports": [
+    { "file": "**/*.module.css", "exports": ["*"] },
+    { "file": "src/components/ui/dropdown-menu.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/toast.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/sheet.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/empty.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/alert-dialog.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/dialog.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/input-group.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/popover.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/select.tsx", "exports": ["*"] },
+    { "file": "src/components/ui/button-group.tsx", "exports": ["*"] }
+  ],
+  "ignoreDependencies": ["react-dom", "tailwindcss"]
+}

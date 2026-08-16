@@ -3,7 +3,7 @@ import { z } from "zod";
 /** The job target a resume was last analyzed against — lives on the draft so each
  *  resume keeps its own; lenient `weight` (see section-schemas.ts) so a model
  *  response drifting out of 0..1 can never fail the draft parse. */
-export const KEYWORD_CATEGORIES = [
+const KEYWORD_CATEGORIES = [
   "hard-skill",
   "soft-skill",
   "title",
@@ -23,6 +23,5 @@ export const insightsSchema = z.object({
   analyzedAt: z.string(),
 });
 
-export type KeywordCategory = (typeof KEYWORD_CATEGORIES)[number];
 export type ExtractedKeyword = z.infer<typeof extractedKeywordSchema>;
 export type Insights = z.infer<typeof insightsSchema>;

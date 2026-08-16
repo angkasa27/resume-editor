@@ -4,7 +4,6 @@ import { extractResumeText } from "./extract-text";
 
 // Keyword shape lives with the persisted schema; re-exported here so the matcher stays the one import site.
 export {
-  KEYWORD_CATEGORIES,
   type ExtractedKeyword,
 } from "@/features/resume-editor/domain/schema/insights-schemas";
 
