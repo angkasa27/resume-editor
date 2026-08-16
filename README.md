@@ -36,7 +36,7 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **12 professional templates**: Switch between twelve polished layouts (Classic, Sidebar, Modern Centered, Timeline, Academic, Inset, Banner, Split, Bold Type, Studio, Spotlight, Aurora) without retyping a thing.
+- **17 professional templates**: Switch between seventeen polished layouts (Classic, Modern Centered, Timeline, Academic, Inset, Split, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial) without retyping a thing.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 
@@ -58,19 +58,15 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <br /><sub><b>Classic</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/sidebar-slate.webp" alt="Sidebar" width="180" />
-      <br /><sub><b>Sidebar</b></sub>
-    </td>
-    <td align="center">
       <img src="public/templates/centered-ocean.webp" alt="Modern Centered" width="180" />
       <br /><sub><b>Modern Centered</b></sub>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="public/templates/timeline-indigo.webp" alt="Timeline" width="180" />
       <br /><sub><b>Timeline</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="public/templates/academic-oxford.webp" alt="Academic" width="180" />
       <br /><sub><b>Academic</b></sub>
@@ -79,33 +75,61 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <img src="public/templates/inset-steel.webp" alt="Inset" width="180" />
       <br /><sub><b>Inset</b></sub>
     </td>
-  </tr>
-  <tr>
-    <td align="center">
-      <img src="public/templates/banner-royal.webp" alt="Banner" width="180" />
-      <br /><sub><b>Banner</b></sub>
-    </td>
     <td align="center">
       <img src="public/templates/split-midnight.webp" alt="Split" width="180" />
       <br /><sub><b>Split</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="public/templates/bold-citrus.webp" alt="Bold Type" width="180" />
       <br /><sub><b>Bold Type</b></sub>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="public/templates/studio-violet.webp" alt="Studio" width="180" />
       <br /><sub><b>Studio</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/spotlight-dusk.webp" alt="Spotlight" width="180" />
-      <br /><sub><b>Spotlight</b></sub>
-    </td>
-    <td align="center">
       <img src="public/templates/aurora-haze.webp" alt="Aurora" width="180" />
       <br /><sub><b>Aurora</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/ledger-graphite.webp" alt="Ledger" width="180" />
+      <br /><sub><b>Ledger</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/dossier-navy.webp" alt="Dossier" width="180" />
+      <br /><sub><b>Dossier</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/crest-charcoal.webp" alt="Crest" width="180" />
+      <br /><sub><b>Crest</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/masthead-citrus.webp" alt="Masthead" width="180" />
+      <br /><sub><b>Masthead</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/compass-slate.webp" alt="Compass" width="180" />
+      <br /><sub><b>Compass</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/numeral-mono.webp" alt="Numeral" width="180" />
+      <br /><sub><b>Numeral</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/atlas-onyx.webp" alt="Atlas" width="180" />
+      <br /><sub><b>Atlas</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/editorial-sand.webp" alt="Editorial" width="180" />
+      <br /><sub><b>Editorial</b></sub>
     </td>
   </tr>
 </table>
@@ -142,7 +166,10 @@ Open [http://localhost:3000](http://localhost:3000) to see the application.
 | UI Primitives | React 19, Base UI |
 | Rich Text | TipTap |
 | State Management | Zustand |
+| Drag & Drop | dnd-kit |
+| Motion | motion |
 | PDF Export | Puppeteer (local) / Cloudflare Browser Run (prod) |
+| PDF Text Extraction | pdf-parse |
 | AI | Google Gemini API (gemini-2.0-flash) |
 | Forms | React Hook Form + Zod |
 | Testing | Vitest + Testing Library |
@@ -156,7 +183,7 @@ pnpm start        # Start the production server
 pnpm lint         # Run ESLint
 pnpm test         # Run Vitest (single pass)
 pnpm test:watch   # Run Vitest in watch mode
-pnpm typecheck    # Type-check with tsc
+pnpm typecheck    # Generate Next.js route types, then type-check with tsc
 pnpm screenshots  # Regenerate template preview images in public/templates
 ```
 
@@ -227,12 +254,16 @@ src/
     editor/
       desktop/                 # Split-panel layout: sidebar + zoomable canvas preview
       mobile/                  # Full-screen guided-forms layout
-      panels/                  # Style tab, Insights tab, extract-CV dialog
+      panels/                  # Style tab, Design panel, template gallery, Insights tab, extract-CV dialog
       sections/                # Section list, drag-to-reorder, per-section forms
       shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
     forms/                     # react-hook-form field bindings, rich-text, schemas
     preview/
-      layouts/                 # classic | sidebar | modern-centered | timeline | academic | inset | banner | split | bold-type | studio | spotlight | aurora
+      layouts/                 # classic | modern-centered | timeline | academic | inset | split | bold-type | studio | aurora | ledger | dossier | crest | masthead | compass | numeral | atlas | editorial
+      engine.ts                # Layout descriptors + render pipeline
+      paginate-document.ts     # Multi-page break pass
+      resume-document.tsx      # The paper surface
+      resume-pdf-page.tsx      # The page Puppeteer captures
       components/, descriptors/, kit/, helpers/
     server/                    # Server-side PDF export & Gemini helpers
     state/                     # Zustand store
@@ -242,7 +273,7 @@ src/
 
 The homepage at / is just marketing; the editor itself lives at /editor. On desktop it's a split layout: sidebar form editor on the left, a live zoomable preview of the actual paper on the right, plus a Style/Insights panel. On mobile it's full-screen guided forms. There's no save button, since every keystroke autosaves.
 
-Downloading a PDF opens /resume-pdf, a plain page that Puppeteer (or Cloudflare Browser Run in production) loads and captures — the draft and presentation settings are passed in as base64-encoded query params, and the export API streams the resulting PDF back.
+Downloading a PDF opens /resume-pdf, a plain page that Puppeteer (or Cloudflare Browser Run in production) loads and captures. Before the page loads, the export API drops the draft into `sessionStorage` under `resume-editor:pdf-draft`, so the rendering page picks it up from there — no draft data ever touches a query string.
 
 The AI features are thin wrappers around Gemini: importing a PDF extracts its text and asks Gemini to map it into a structured draft, "Improve with AI" sends the current field's HTML plus instructions and gets sanitized HTML back, and the ATS job match endpoint asks Gemini for keywords from a job description and matches them against the current draft on the client.
 

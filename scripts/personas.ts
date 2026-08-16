@@ -1480,7 +1480,7 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "bold-type",
     presetId: "bold-citrus",
-    photo: "https://i.pravatar.cc/320?img=33",
+    photo: "https://i.pravatar.cc/320?img=57",
     fullName: "Calvin Hughes",
     location: "Chicago, IL",
     phone: "+1 (312) 555-0418",
@@ -2468,12 +2468,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "ledger",
     presetId: "ledger-graphite",
-    photo: "https://i.pravatar.cc/320?img=44",
-    fullName: "Anneke Visser",
+    photo: "https://i.pravatar.cc/320?img=18",
+    fullName: "Anton Visser",
     location: "Amsterdam, Netherlands",
     phone: "+31 6 2145 8890",
-    email: "anneke.visser@proton.me",
-    links: ["https://www.linkedin.com/in/annekevisser", "https://visser.works"],
+    email: "anton.visser@proton.me",
+    links: ["https://www.linkedin.com/in/antonvisser", "https://visser.works"],
     summary:
       "<p>Operations manager for high-growth logistics teams, with ten years turning improvised processes into ones that survive a tenfold increase in volume. I work close to the warehouse floor, measure before I change anything, and leave documentation behind.</p>",
     work: [
@@ -2609,14 +2609,14 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "dossier",
     presetId: "dossier-navy",
-    photo: "https://i.pravatar.cc/320?img=45",
-    fullName: "Priya Raghunathan",
+    photo: "https://i.pravatar.cc/320?img=59",
+    fullName: "Arjun Raghunathan",
     location: "Bengaluru, India",
     phone: "+91 98450 21766",
-    email: "priya.raghunathan@hey.com",
+    email: "arjun.raghunathan@hey.com",
     links: [
-      "https://www.linkedin.com/in/priyaraghunathan",
-      "https://priya.dev",
+      "https://www.linkedin.com/in/arjunraghunathan",
+      "https://arjun.dev",
     ],
     summary:
       "<p>Data scientist working on forecasting and pricing for retail. I care most about the boring half of the job — the evaluation harness, the drift monitoring, the rollback plan — because that is what decides whether a model survives contact with a business.</p>",
@@ -2822,12 +2822,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "crest",
     presetId: "crest-burgundy",
-    photo: "https://i.pravatar.cc/320?img=32",
-    fullName: "Sofia Marchetti",
+    photo: "https://i.pravatar.cc/320?img=55",
+    fullName: "Matteo Marchetti",
     location: "Milan, Italy",
     phone: "+39 340 118 7742",
-    email: "sofia.marchetti@proton.me",
-    links: ["https://www.linkedin.com/in/sofiamarchetti", "https://marchetti.art"],
+    email: "matteo.marchetti@proton.me",
+    links: ["https://www.linkedin.com/in/matteomarchetti", "https://marchetti.art"],
     summary:
       "<p>Curator of contemporary photography, working between institutions and artist estates. My exhibitions are built from primary research; my catalogues are written to still be useful in twenty years.</p>",
     work: [
@@ -2890,12 +2890,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "masthead",
     presetId: "masthead-citrus",
-    photo: "https://i.pravatar.cc/320?img=26",
-    fullName: "Riley Okafor",
+    photo: "https://i.pravatar.cc/320?img=51",
+    fullName: "Emeka Okafor",
     location: "Lagos, Nigeria",
     phone: "+234 803 552 7188",
-    email: "riley@okafor.studio",
-    links: ["https://okafor.studio", "https://www.linkedin.com/in/rileyokafor"],
+    email: "emeka@okafor.studio",
+    links: ["https://okafor.studio", "https://www.linkedin.com/in/emekaokafor"],
     summary:
       "<p>Brand designer building identities for consumer companies that have to work at billboard size and at 32 pixels. I hand over systems, not decks — type scales, motion rules, and the awkward cases nobody asked about.</p>",
     work: [
@@ -2959,12 +2959,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "masthead",
     presetId: "masthead-cobalt",
-    photo: "https://i.pravatar.cc/320?img=41",
-    fullName: "Nina Kovac",
+    photo: "https://i.pravatar.cc/320?img=3",
+    fullName: "Luka Kovac",
     location: "Ljubljana, Slovenia",
     phone: "+386 41 226 508",
-    email: "nina.kovac@fastmail.com",
-    links: ["https://www.linkedin.com/in/ninakovac", "https://ninakovac.dev"],
+    email: "luka.kovac@fastmail.com",
+    links: ["https://www.linkedin.com/in/lukakovac", "https://lukakovac.dev"],
     summary:
       "<p>Mobile engineer shipping iOS and Android from one codebase without pretending the two platforms are the same. I optimise for startup time, offline behaviour, and the review queue.</p>",
     work: [
@@ -3029,12 +3029,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "compass",
     presetId: "compass-slate",
-    photo: "https://i.pravatar.cc/320?img=36",
-    fullName: "Clara Mensah",
+    photo: "https://i.pravatar.cc/320?img=64",
+    fullName: "Kojo Mensah",
     location: "Accra, Ghana",
     phone: "+233 24 118 7740",
-    email: "clara.mensah@proton.me",
-    links: ["https://www.linkedin.com/in/claramensah", "https://mensah.health"],
+    email: "kojo.mensah@proton.me",
+    links: ["https://www.linkedin.com/in/kojomensah", "https://mensah.health"],
     summary:
       "<p>Public health programme manager running immunisation and maternal health services across three regions. I plan around what the last cold-chain failure actually taught us, not around what the protocol assumed.</p>",
     work: [
@@ -3167,12 +3167,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "numeral",
     presetId: "numeral-mono",
-    photo: "https://i.pravatar.cc/320?img=23",
-    fullName: "Ingrid Halvorsen",
+    photo: "https://i.pravatar.cc/320?img=8",
+    fullName: "Ingmar Halvorsen",
     location: "Oslo, Norway",
     phone: "+47 941 20 663",
-    email: "ingrid.halvorsen@posteo.net",
-    links: ["https://www.linkedin.com/in/ingridhalvorsen", "https://halvorsen.legal"],
+    email: "ingmar.halvorsen@posteo.net",
+    links: ["https://www.linkedin.com/in/ingmarhalvorsen", "https://halvorsen.legal"],
     summary:
       "<p>Commercial lawyer working on technology and data agreements. I write contracts the business side can actually read, on the theory that a term nobody understands is a term nobody follows.</p>",
     work: [
@@ -3305,12 +3305,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "atlas",
     presetId: "atlas-onyx",
-    photo: "https://i.pravatar.cc/320?img=47",
-    fullName: "Mei Lin Tan",
+    photo: "https://i.pravatar.cc/320?img=66",
+    fullName: "Daniel Ong",
     location: "Singapore",
     phone: "+65 8114 2260",
-    email: "meilin.tan@fastmail.com",
-    links: ["https://meilintan.studio", "https://www.linkedin.com/in/meilintan"],
+    email: "daniel.ong@fastmail.com",
+    links: ["https://danielong.studio", "https://www.linkedin.com/in/danielong"],
     summary:
       "<p>Industrial designer working on consumer hardware from sketch to tooling. I spend my time with the people who have to manufacture the thing, because that is where a nice render meets its actual cost.</p>",
     work: [
@@ -3443,12 +3443,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "editorial",
     presetId: "editorial-sand",
-    photo: "https://i.pravatar.cc/320?img=27",
-    fullName: "Beatrix Almeida",
+    photo: "https://i.pravatar.cc/320?img=12",
+    fullName: "Bento Almeida",
     location: "Lisbon, Portugal",
     phone: "+351 933 118 460",
-    email: "beatrix.almeida@hey.com",
-    links: ["https://almeida.press", "https://www.linkedin.com/in/beatrixalmeida"],
+    email: "bento.almeida@hey.com",
+    links: ["https://almeida.press", "https://www.linkedin.com/in/bentoalmeida"],
     summary:
       "<p>Editor and writer building long-form desks that survive contact with a budget. I commission fewer pieces than my predecessors did and finish all of them.</p>",
     work: [
@@ -3511,12 +3511,12 @@ export const PERSONAS: Persona[] = [
   {
     layoutId: "editorial",
     presetId: "editorial-sage",
-    photo: "https://i.pravatar.cc/320?img=29",
-    fullName: "Noor Haddad",
+    photo: "https://i.pravatar.cc/320?img=70",
+    fullName: "Nabil Haddad",
     location: "Amman, Jordan",
     phone: "+962 7 9114 2280",
-    email: "noor.haddad@posteo.net",
-    links: ["https://www.linkedin.com/in/noorhaddad", "https://haddad.works"],
+    email: "nabil.haddad@posteo.net",
+    links: ["https://www.linkedin.com/in/nabilhaddad", "https://haddad.works"],
     summary:
       "<p>Architect working on public buildings and adaptive reuse. Most of my job is finding what a building already does well before proposing to change anything about it.</p>",
     work: [
