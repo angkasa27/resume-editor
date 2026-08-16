@@ -2,10 +2,6 @@
   display: flex;
   flex-direction: column;
   gap: var(--resume-gap-section);
-  /* Item numbers run continuously down the whole page, not per section — they
-     index the résumé, so restarting at each heading would make two items share
-     a number. */
-  counter-reset: resume-item;
 }
 
 /* Headline + summary beside the links, under the identity rule. */
@@ -64,6 +60,9 @@
 }
 
 .layout :global(.section) {
+  /* Each section's items number from one again, so the counter resets at the
+     section boundary rather than running continuously down the page. */
+  counter-reset: resume-item;
   padding-top: var(--resume-gap-item);
   border-top: 1px solid var(--resume-text);
   gap: var(--resume-gap-item);
