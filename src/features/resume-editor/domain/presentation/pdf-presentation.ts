@@ -58,6 +58,19 @@ export type PdfPaperSize = (typeof pdfPaperSizes)[number];
 export const pdfPhotoShapeIds = ["square", "rectangle", "circle"] as const;
 export type PdfPhotoShapeId = (typeof pdfPhotoShapeIds)[number];
 
+/**
+ * Layouts whose native photo is a circle. Every other layout already declares a
+ * flat radius of its own, so a square/rectangle pick can just leave the radius
+ * var unset; these four would stay round, so they need a corner value to take
+ * instead. Keep in sync with `border-radius: …, 50%` in the layout CSS modules.
+ */
+const roundPhotoLayoutFlatRadius: Partial<Record<PdfLayoutId, string>> = {
+  split: "12px",
+  "modern-centered": "12px",
+  dossier: "12px",
+  crest: "12px",
+};
+
 export type PdfPresentation = {
   layoutId: PdfLayoutId;
   fontFamilyId: ResumeFontId;
@@ -319,7 +332,15 @@ export function resolvePdfPresentation(
   if (p.photoShape) {
     vars["--resume-photo-aspect"] =
       p.photoShape === "rectangle" ? "3 / 4" : "1 / 1";
-    vars["--resume-photo-radius"] = p.photoShape === "circle" ? "50%" : "6px";
+    // Shape swaps the aspect ratio only: square/rectangle leave the radius var
+    // unset so each layout keeps its own corners (0 on atlas, 6px on classic…).
+    // Circle owns the radius, and the layouts that are natively round need an
+    // explicit non-round radius to fall back to when a flat shape is picked.
+    if (p.photoShape === "circle") {
+      vars["--resume-photo-radius"] = "50%";
+    } else if (roundPhotoLayoutFlatRadius[p.layoutId]) {
+      vars["--resume-photo-radius"] = roundPhotoLayoutFlatRadius[p.layoutId]!;
+    }
   }
 
   return { layoutId: p.layoutId, vars };

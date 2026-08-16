@@ -255,21 +255,33 @@ describe("resolvePdfPresentation", () => {
       expect(result.vars["--resume-photo-radius"]).toBe("50%");
     });
 
-    it("square is 1:1 with a small sharp-cornered radius (not circular)", () => {
+    it("square is 1:1 and keeps the layout's own corners", () => {
       const result = resolvePdfPresentation({ ...base, photoShape: "square" });
 
       expect(result.vars["--resume-photo-aspect"]).toBe("1 / 1");
-      expect(result.vars["--resume-photo-radius"]).toBe("6px");
+      expect(result.vars["--resume-photo-radius"]).toBeUndefined();
     });
 
-    it("rectangle is portrait 3:4 with a small sharp-cornered radius", () => {
+    it("rectangle is portrait 3:4 and keeps the layout's own corners", () => {
       const result = resolvePdfPresentation({
         ...base,
         photoShape: "rectangle",
       });
 
       expect(result.vars["--resume-photo-aspect"]).toBe("3 / 4");
-      expect(result.vars["--resume-photo-radius"]).toBe("6px");
+      expect(result.vars["--resume-photo-radius"]).toBeUndefined();
+    });
+
+    // Without this the flat shapes inherit the layout's own 50% and still
+    // render round — the one thing switching shape must never do.
+    it("un-rounds a natively circular layout for the flat shapes", () => {
+      const result = resolvePdfPresentation({
+        ...base,
+        layoutId: "crest",
+        photoShape: "square",
+      });
+
+      expect(result.vars["--resume-photo-radius"]).toBe("12px");
     });
   });
 });
