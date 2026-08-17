@@ -7,7 +7,17 @@ import {
 } from "@/features/resume-editor/domain/sections/section-metadata";
 import {
   parseResumeDraft,
+  type AwardItem,
+  type CertificationItem,
+  type EducationItem,
+  type LanguageItem,
+  type OrganizationItem,
+  type ProjectItem,
+  type PublicationItem,
+  type ReferenceItem,
   type ResumeDraft,
+  type SkillCategoryItem,
+  type WorkExperienceItem,
 } from "@/features/resume-editor/domain/schema";
 import {
   sanitizeRichTextHtml,
@@ -182,6 +192,369 @@ function dedupe(values: string[]) {
   return [...new Set(values.filter(Boolean))];
 }
 
+function buildCollectionSection<K extends CollectionSectionKey, TItem>(
+  sectionKey: K,
+  items: TItem[],
+) {
+  return {
+    visible: true,
+    order: resumeSectionKeys.indexOf(sectionKey),
+    items,
+  };
+}
+
+function buildProfileSection(
+  profile: ImportedResume["profile"],
+): ResumeDraft["profile"] {
+  return {
+    fullName: cleanText(profile.fullName),
+    headline: cleanText(profile.headline),
+    location: cleanText(profile.location),
+    phone: cleanText(profile.phone),
+    email: cleanText(profile.email),
+    photo: "",
+    extraLinks: dedupe(
+      profile.extraLinks.map(normalizeUrl),
+    ).map((url) => ({
+      id: createLocalId("profile-link"),
+      url,
+    })),
+  };
+}
+
+function buildSummarySection(
+  summary: ImportedResume["summary"],
+): ResumeDraft["sections"]["summary"] {
+  return {
+    visible: summary.some((paragraph) => cleanText(paragraph)),
+    order: resumeSectionKeys.indexOf("summary"),
+    content: toRichTextParagraphs(summary),
+  };
+}
+
+function mapWorkExperienceItem(
+  item: ImportedResume["workExperience"][number],
+  warnings: string[],
+): WorkExperienceItem {
+  return {
+    id: createLocalId("work-experience"),
+    companyName: cleanText(item.companyName),
+    position: cleanText(item.position),
+    location: cleanText(item.location),
+    startDate: normalizeDateValue(
+      item.startDate,
+      `Work experience start date for ${item.companyName || item.position || "an entry"}`,
+      warnings,
+    ),
+    endDate: normalizeDateValue(
+      item.endDate,
+      `Work experience end date for ${item.companyName || item.position || "an entry"}`,
+      warnings,
+      true,
+    ),
+    description: toRichTextBullets(item.highlights),
+  };
+}
+
+function buildWorkExperienceSection(
+  items: ImportedResume["workExperience"],
+  warnings: string[],
+): ResumeDraft["sections"]["workExperience"] {
+  return items.length
+    ? buildCollectionSection(
+        "workExperience",
+        items.map((item) => mapWorkExperienceItem(item, warnings)),
+      )
+    : buildHiddenSection("workExperience");
+}
+
+function mapSkillCategoryItem(
+  item: ImportedResume["skills"][number],
+): SkillCategoryItem {
+  return {
+    id: createLocalId("skill-category"),
+    categoryName: cleanText(item.categoryName),
+    skills: dedupe(item.skills.map(cleanText)),
+  };
+}
+
+function buildSkillsSection(
+  items: ImportedResume["skills"],
+): ResumeDraft["sections"]["skills"] {
+  return items.length
+    ? buildCollectionSection(
+        "skills",
+        items.map(mapSkillCategoryItem),
+      )
+    : buildHiddenSection("skills");
+}
+
+function mapProjectItem(
+  item: ImportedResume["projects"][number],
+  warnings: string[],
+): ProjectItem {
+  return {
+    id: createLocalId("project"),
+    projectName: cleanText(item.projectName),
+    projectLink: normalizeUrl(item.projectLink),
+    startDate: normalizeDateValue(
+      item.startDate,
+      `Project start date for ${item.projectName || "an entry"}`,
+      warnings,
+    ),
+    endDate: normalizeDateValue(
+      item.endDate,
+      `Project end date for ${item.projectName || "an entry"}`,
+      warnings,
+      true,
+    ),
+    description: toRichTextBullets(item.highlights),
+  };
+}
+
+function buildProjectsSection(
+  items: ImportedResume["projects"],
+  warnings: string[],
+): ResumeDraft["sections"]["projects"] {
+  return items.length
+    ? buildCollectionSection(
+        "projects",
+        items.map((item) => mapProjectItem(item, warnings)),
+      )
+    : buildHiddenSection("projects");
+}
+
+function mapEducationItem(
+  item: ImportedResume["education"][number],
+  warnings: string[],
+): EducationItem {
+  return {
+    id: createLocalId("education"),
+    name: cleanText(item.name),
+    location: cleanText(item.location),
+    startDate: normalizeDateValue(
+      item.startDate,
+      `Education start date for ${item.name || "an entry"}`,
+      warnings,
+    ),
+    endDate: normalizeDateValue(
+      item.endDate,
+      `Education end date for ${item.name || "an entry"}`,
+      warnings,
+      true,
+    ),
+    degree: cleanText(item.degree),
+    gpa: cleanText(item.gpa),
+    description: toRichTextBullets(item.highlights),
+  };
+}
+
+function buildEducationSection(
+  items: ImportedResume["education"],
+  warnings: string[],
+): ResumeDraft["sections"]["education"] {
+  return items.length
+    ? buildCollectionSection(
+        "education",
+        items.map((item) => mapEducationItem(item, warnings)),
+      )
+    : buildHiddenSection("education");
+}
+
+function mapPublicationItem(
+  item: ImportedResume["publications"][number],
+  warnings: string[],
+): PublicationItem {
+  return {
+    id: createLocalId("publication"),
+    title: cleanText(item.title),
+    publisher: cleanText(item.publisher),
+    publicationUrl: normalizeUrl(item.publicationUrl),
+    publicationDate: normalizeDateValue(
+      item.publicationDate,
+      `Publication date for ${item.title || "an entry"}`,
+      warnings,
+    ),
+    description: toRichTextBullets(item.highlights),
+  };
+}
+
+function buildPublicationsSection(
+  items: ImportedResume["publications"],
+  warnings: string[],
+): ResumeDraft["sections"]["publications"] {
+  return items.length
+    ? buildCollectionSection(
+        "publications",
+        items.map((item) => mapPublicationItem(item, warnings)),
+      )
+    : buildHiddenSection("publications");
+}
+
+function mapCertificationItem(
+  item: ImportedResume["certifications"][number],
+  warnings: string[],
+): CertificationItem {
+  return {
+    id: createLocalId("certification"),
+    certificationName: cleanText(item.certificationName),
+    issuingOrganization: cleanText(item.issuingOrganization),
+    issuedDate: normalizeDateValue(
+      item.issuedDate,
+      `Certification date for ${item.certificationName || "an entry"}`,
+      warnings,
+    ),
+    certificationLink: normalizeUrl(item.certificationLink),
+    credentialId: cleanText(item.credentialId),
+  };
+}
+
+function buildCertificationsSection(
+  items: ImportedResume["certifications"],
+  warnings: string[],
+): ResumeDraft["sections"]["certifications"] {
+  return items.length
+    ? buildCollectionSection(
+        "certifications",
+        items.map((item) => mapCertificationItem(item, warnings)),
+      )
+    : buildHiddenSection("certifications");
+}
+
+function mapAwardItem(
+  item: ImportedResume["awards"][number],
+  warnings: string[],
+): AwardItem {
+  return {
+    id: createLocalId("award"),
+    title: cleanText(item.title),
+    issuer: cleanText(item.issuer),
+    issuedDate: normalizeDateValue(
+      item.issuedDate,
+      `Award date for ${item.title || "an entry"}`,
+      warnings,
+    ),
+    description: toRichTextBullets(item.highlights),
+  };
+}
+
+function buildAwardsSection(
+  items: ImportedResume["awards"],
+  warnings: string[],
+): ResumeDraft["sections"]["awards"] {
+  return items.length
+    ? buildCollectionSection(
+        "awards",
+        items.map((item) => mapAwardItem(item, warnings)),
+      )
+    : buildHiddenSection("awards");
+}
+
+function mapLanguageItem(item: ImportedResume["languages"][number]): LanguageItem {
+  const proficiency = cleanText(item.proficiency);
+  return {
+    id: createLocalId("language"),
+    language: cleanText(item.language),
+    proficiency: languageProficiencyOptions.includes(proficiency)
+      ? proficiency
+      : defaultLanguageProficiency,
+  };
+}
+
+function buildLanguagesSection(
+  items: ImportedResume["languages"],
+): ResumeDraft["sections"]["languages"] {
+  return items.length
+    ? buildCollectionSection("languages", items.map(mapLanguageItem))
+    : buildHiddenSection("languages");
+}
+
+function mapReferenceItem(
+  item: ImportedResume["references"][number],
+): ReferenceItem {
+  return {
+    id: createLocalId("reference"),
+    name: cleanText(item.name),
+    background: cleanText(item.background),
+    contactDetails: cleanText(item.contactDetails),
+  };
+}
+
+function buildReferencesSection(
+  items: ImportedResume["references"],
+): ResumeDraft["sections"]["references"] {
+  return items.length
+    ? buildCollectionSection("references", items.map(mapReferenceItem))
+    : buildHiddenSection("references");
+}
+
+function mapOrganizationItem(
+  item: ImportedResume["organizationVolunteering"][number],
+  warnings: string[],
+): OrganizationItem {
+  return {
+    id: createLocalId("organization"),
+    organizationName: cleanText(item.organizationName),
+    position: cleanText(item.position),
+    location: cleanText(item.location),
+    startDate: normalizeDateValue(
+      item.startDate,
+      `Organization start date for ${item.organizationName || "an entry"}`,
+      warnings,
+    ),
+    endDate: normalizeDateValue(
+      item.endDate,
+      `Organization end date for ${item.organizationName || "an entry"}`,
+      warnings,
+      true,
+    ),
+    description: toRichTextBullets(item.highlights),
+  };
+}
+
+function buildOrganizationVolunteeringSection(
+  items: ImportedResume["organizationVolunteering"],
+  warnings: string[],
+): ResumeDraft["sections"]["organizationVolunteering"] {
+  return items.length
+    ? buildCollectionSection(
+        "organizationVolunteering",
+        items.map((item) => mapOrganizationItem(item, warnings)),
+      )
+    : buildHiddenSection("organizationVolunteering");
+}
+
+function buildSections(
+  importedResume: ImportedResume,
+  warnings: string[],
+): ResumeDraft["sections"] {
+  return {
+    summary: buildSummarySection(importedResume.summary),
+    workExperience: buildWorkExperienceSection(
+      importedResume.workExperience,
+      warnings,
+    ),
+    skills: buildSkillsSection(importedResume.skills),
+    projects: buildProjectsSection(importedResume.projects, warnings),
+    education: buildEducationSection(importedResume.education, warnings),
+    publications: buildPublicationsSection(
+      importedResume.publications,
+      warnings,
+    ),
+    certifications: buildCertificationsSection(
+      importedResume.certifications,
+      warnings,
+    ),
+    awards: buildAwardsSection(importedResume.awards, warnings),
+    languages: buildLanguagesSection(importedResume.languages),
+    references: buildReferencesSection(importedResume.references),
+    organizationVolunteering: buildOrganizationVolunteeringSection(
+      importedResume.organizationVolunteering,
+      warnings,
+    ),
+  };
+}
+
 export function buildImportedResumeDraft(
   importedResume: ImportedResume,
 ): BuildImportedResumeDraftResult {
@@ -191,216 +564,8 @@ export function buildImportedResumeDraft(
   const draft: ResumeDraft = {
     ...baseDraft,
     updatedAt: new Date().toISOString(),
-    profile: {
-      fullName: cleanText(importedResume.profile.fullName),
-      headline: cleanText(importedResume.profile.headline),
-      location: cleanText(importedResume.profile.location),
-      phone: cleanText(importedResume.profile.phone),
-      email: cleanText(importedResume.profile.email),
-      photo: "",
-      extraLinks: dedupe(
-        importedResume.profile.extraLinks.map(normalizeUrl),
-      ).map((url) => ({
-        id: createLocalId("profile-link"),
-        url,
-      })),
-    },
-    sections: {
-      summary: {
-        visible: importedResume.summary.some((paragraph) =>
-          cleanText(paragraph),
-        ),
-        order: resumeSectionKeys.indexOf("summary"),
-        content: toRichTextParagraphs(importedResume.summary),
-      },
-      workExperience: importedResume.workExperience.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("workExperience"),
-            items: importedResume.workExperience.map((item) => ({
-              id: createLocalId("work-experience"),
-              companyName: cleanText(item.companyName),
-              position: cleanText(item.position),
-              location: cleanText(item.location),
-              startDate: normalizeDateValue(
-                item.startDate,
-                `Work experience start date for ${item.companyName || item.position || "an entry"}`,
-                warnings,
-              ),
-              endDate: normalizeDateValue(
-                item.endDate,
-                `Work experience end date for ${item.companyName || item.position || "an entry"}`,
-                warnings,
-                true,
-              ),
-              description: toRichTextBullets(item.highlights),
-            })),
-          }
-        : buildHiddenSection("workExperience"),
-      skills: importedResume.skills.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("skills"),
-            items: importedResume.skills.map((item) => ({
-              id: createLocalId("skill-category"),
-              categoryName: cleanText(item.categoryName),
-              skills: dedupe(item.skills.map(cleanText)),
-            })),
-          }
-        : buildHiddenSection("skills"),
-      projects: importedResume.projects.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("projects"),
-            items: importedResume.projects.map((item) => ({
-              id: createLocalId("project"),
-              projectName: cleanText(item.projectName),
-              projectLink: normalizeUrl(item.projectLink),
-              startDate: normalizeDateValue(
-                item.startDate,
-                `Project start date for ${item.projectName || "an entry"}`,
-                warnings,
-              ),
-              endDate: normalizeDateValue(
-                item.endDate,
-                `Project end date for ${item.projectName || "an entry"}`,
-                warnings,
-                true,
-              ),
-              description: toRichTextBullets(item.highlights),
-            })),
-          }
-        : buildHiddenSection("projects"),
-      education: importedResume.education.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("education"),
-            items: importedResume.education.map((item) => ({
-              id: createLocalId("education"),
-              name: cleanText(item.name),
-              location: cleanText(item.location),
-              startDate: normalizeDateValue(
-                item.startDate,
-                `Education start date for ${item.name || "an entry"}`,
-                warnings,
-              ),
-              endDate: normalizeDateValue(
-                item.endDate,
-                `Education end date for ${item.name || "an entry"}`,
-                warnings,
-                true,
-              ),
-              degree: cleanText(item.degree),
-              gpa: cleanText(item.gpa),
-              description: toRichTextBullets(item.highlights),
-            })),
-          }
-        : buildHiddenSection("education"),
-      publications: importedResume.publications.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("publications"),
-            items: importedResume.publications.map((item) => ({
-              id: createLocalId("publication"),
-              title: cleanText(item.title),
-              publisher: cleanText(item.publisher),
-              publicationUrl: normalizeUrl(item.publicationUrl),
-              publicationDate: normalizeDateValue(
-                item.publicationDate,
-                `Publication date for ${item.title || "an entry"}`,
-                warnings,
-              ),
-              description: toRichTextBullets(item.highlights),
-            })),
-          }
-        : buildHiddenSection("publications"),
-      certifications: importedResume.certifications.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("certifications"),
-            items: importedResume.certifications.map((item) => ({
-              id: createLocalId("certification"),
-              certificationName: cleanText(item.certificationName),
-              issuingOrganization: cleanText(item.issuingOrganization),
-              issuedDate: normalizeDateValue(
-                item.issuedDate,
-                `Certification date for ${item.certificationName || "an entry"}`,
-                warnings,
-              ),
-              certificationLink: normalizeUrl(item.certificationLink),
-              credentialId: cleanText(item.credentialId),
-            })),
-          }
-        : buildHiddenSection("certifications"),
-      awards: importedResume.awards.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("awards"),
-            items: importedResume.awards.map((item) => ({
-              id: createLocalId("award"),
-              title: cleanText(item.title),
-              issuer: cleanText(item.issuer),
-              issuedDate: normalizeDateValue(
-                item.issuedDate,
-                `Award date for ${item.title || "an entry"}`,
-                warnings,
-              ),
-              description: toRichTextBullets(item.highlights),
-            })),
-          }
-        : buildHiddenSection("awards"),
-      languages: importedResume.languages.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("languages"),
-            items: importedResume.languages.map((item) => ({
-              id: createLocalId("language"),
-              language: cleanText(item.language),
-              proficiency: languageProficiencyOptions.includes(
-                cleanText(item.proficiency),
-              )
-                ? cleanText(item.proficiency)
-                : defaultLanguageProficiency,
-            })),
-          }
-        : buildHiddenSection("languages"),
-      references: importedResume.references.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("references"),
-            items: importedResume.references.map((item) => ({
-              id: createLocalId("reference"),
-              name: cleanText(item.name),
-              background: cleanText(item.background),
-              contactDetails: cleanText(item.contactDetails),
-            })),
-          }
-        : buildHiddenSection("references"),
-      organizationVolunteering: importedResume.organizationVolunteering.length
-        ? {
-            visible: true,
-            order: resumeSectionKeys.indexOf("organizationVolunteering"),
-            items: importedResume.organizationVolunteering.map((item) => ({
-              id: createLocalId("organization"),
-              organizationName: cleanText(item.organizationName),
-              position: cleanText(item.position),
-              location: cleanText(item.location),
-              startDate: normalizeDateValue(
-                item.startDate,
-                `Organization start date for ${item.organizationName || "an entry"}`,
-                warnings,
-              ),
-              endDate: normalizeDateValue(
-                item.endDate,
-                `Organization end date for ${item.organizationName || "an entry"}`,
-                warnings,
-                true,
-              ),
-              description: toRichTextBullets(item.highlights),
-            })),
-          }
-        : buildHiddenSection("organizationVolunteering"),
-    },
+    profile: buildProfileSection(importedResume.profile),
+    sections: buildSections(importedResume, warnings),
   };
 
   return {

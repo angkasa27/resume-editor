@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type ComponentProps, type ReactNode } from "react";
 import { Controller, type FieldError as RhfFieldError } from "react-hook-form";
 import {
   BriefcaseBusinessIcon,
@@ -42,6 +42,9 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 
+type ProfileForm = ProfileFormContext["form"];
+type FieldPath = Parameters<ProfileForm["getFieldState"]>[0];
+
 type ProfileFieldsProps = {
   ctx: ProfileFormContext;
   /** Prefix for input ids so two mounts never collide. */
@@ -67,112 +70,73 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
           className="col-span-full"
         />
 
-        <Field data-invalid={invalid("fullName")} className="col-span-full">
-          <FieldLabel htmlFor={`${idPrefix}-full-name`} className="sr-only">
-            <FieldLabelText label="Full name" />
-          </FieldLabel>
-          <FieldContent>
-            <Input
-              id={`${idPrefix}-full-name`}
-              autoComplete="name"
-              placeholder="Full name"
-              aria-invalid={invalid("fullName")}
-              {...register("fullName")}
-            />
-            <FieldError errors={[error("fullName")]} />
-          </FieldContent>
-        </Field>
+        <ProfileTextField
+          register={register}
+          name="fullName"
+          id={`${idPrefix}-full-name`}
+          label="Full name"
+          placeholder="Full name"
+          autoComplete="name"
+          invalid={invalid("fullName")}
+          error={error("fullName")}
+          className="col-span-full"
+        />
 
-        <Field data-invalid={invalid("headline")} className="col-span-full">
-          <FieldLabel htmlFor={`${idPrefix}-headline`} className="sr-only">
-            <FieldLabelText label="Job title" />
-          </FieldLabel>
-          <FieldContent>
-            <InputGroup>
-              <InputGroupAddon>
-                <BriefcaseBusinessIcon />
-              </InputGroupAddon>
-              <InputGroupInput
-                id={`${idPrefix}-headline`}
-                autoComplete="organization-title"
-                placeholder="Job title"
-                aria-invalid={invalid("headline")}
-                {...register("headline")}
-              />
-            </InputGroup>
-            <FieldError errors={[error("headline")]} />
-          </FieldContent>
-        </Field>
+        <ProfileTextField
+          register={register}
+          name="headline"
+          id={`${idPrefix}-headline`}
+          label="Job title"
+          placeholder="Job title"
+          autoComplete="organization-title"
+          icon={<BriefcaseBusinessIcon />}
+          invalid={invalid("headline")}
+          error={error("headline")}
+          className="col-span-full"
+        />
 
-        <Field data-invalid={invalid("location")}>
-          <FieldLabel htmlFor={`${idPrefix}-location`} className="sr-only">
-            <FieldLabelText label="Location" />
-          </FieldLabel>
-          <FieldContent>
-            <InputGroup>
-              <InputGroupAddon>
-                <MapPin />
-              </InputGroupAddon>
-              <InputGroupInput
-                id={`${idPrefix}-location`}
-                autoComplete="address-level2"
-                placeholder="City, country"
-                aria-invalid={invalid("location")}
-                {...register("location")}
-              />
-            </InputGroup>
+        <ProfileTextField
+          register={register}
+          name="location"
+          id={`${idPrefix}-location`}
+          label="Location"
+          placeholder="City, country"
+          autoComplete="address-level2"
+          icon={<MapPin />}
+          invalid={invalid("location")}
+          error={error("location")}
+        />
 
-            <FieldError errors={[error("location")]} />
-          </FieldContent>
-        </Field>
+        <ProfileTextField
+          register={register}
+          name="phone"
+          id={`${idPrefix}-phone`}
+          label="Phone number"
+          placeholder="+62 822-3044-2367"
+          type="tel"
+          autoComplete="tel"
+          inputMode="tel"
+          spellCheck={false}
+          icon={<Phone />}
+          invalid={invalid("phone")}
+          error={error("phone")}
+        />
 
-        <Field data-invalid={invalid("phone")}>
-          <FieldLabel htmlFor={`${idPrefix}-phone`} className="sr-only">
-            <FieldLabelText label="Phone number" />
-          </FieldLabel>
-          <FieldContent>
-            <InputGroup>
-              <InputGroupAddon>
-                <Phone />
-              </InputGroupAddon>
-              <InputGroupInput
-                id={`${idPrefix}-phone`}
-                type="tel"
-                autoComplete="tel"
-                inputMode="tel"
-                spellCheck={false}
-                placeholder="+62 822-3044-2367"
-                aria-invalid={invalid("phone")}
-                {...register("phone")}
-              />
-            </InputGroup>
-            <FieldError errors={[error("phone")]} />
-          </FieldContent>
-        </Field>
-
-        <Field data-invalid={invalid("email")} className="col-span-full">
-          <FieldLabel htmlFor={`${idPrefix}-email`} className="sr-only">
-            <FieldLabelText label="Email address" />
-          </FieldLabel>
-          <FieldContent>
-            <InputGroup>
-              <InputGroupAddon>
-                <Mail />
-              </InputGroupAddon>
-              <InputGroupInput
-                id={`${idPrefix}-email`}
-                type="email"
-                autoComplete="email"
-                inputMode="email"
-                spellCheck={false}
-                placeholder="email.me@here.is"
-                aria-invalid={invalid("email")}
-                {...register("email")}
-              />
-            </InputGroup>
-            <FieldError errors={[error("email")]} />
-          </FieldContent>
-        </Field>
+        <ProfileTextField
+          register={register}
+          name="email"
+          id={`${idPrefix}-email`}
+          label="Email address"
+          placeholder="email.me@here.is"
+          type="email"
+          autoComplete="email"
+          inputMode="email"
+          spellCheck={false}
+          icon={<Mail />}
+          invalid={invalid("email")}
+          error={error("email")}
+          className="col-span-full"
+        />
       </FieldGroup>
 
       {/* Divider rule between groups: 16px above and below, the between-groups
@@ -275,6 +239,68 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
         onCancel={photo.cancelCrop}
       />
     </div>
+  );
+}
+
+type ProfileTextFieldProps = {
+  register: ProfileForm["register"];
+  name: FieldPath;
+  id: string;
+  label: string;
+  placeholder: string;
+  invalid: boolean | undefined;
+  error: RhfFieldError | undefined;
+  icon?: ReactNode;
+  className?: string;
+  type?: ComponentProps<"input">["type"];
+  autoComplete?: string;
+  inputMode?: ComponentProps<"input">["inputMode"];
+  spellCheck?: boolean;
+};
+
+function ProfileTextField({
+  register,
+  name,
+  id,
+  label,
+  placeholder,
+  invalid,
+  error,
+  icon,
+  className,
+  type,
+  autoComplete,
+  inputMode,
+  spellCheck,
+}: ProfileTextFieldProps) {
+  const sharedInputProps = {
+    id,
+    type,
+    autoComplete,
+    inputMode,
+    spellCheck,
+    placeholder,
+    "aria-invalid": invalid,
+    ...register(name),
+  };
+
+  return (
+    <Field data-invalid={invalid} className={className}>
+      <FieldLabel htmlFor={id} className="sr-only">
+        <FieldLabelText label={label} />
+      </FieldLabel>
+      <FieldContent>
+        {icon ? (
+          <InputGroup>
+            <InputGroupAddon>{icon}</InputGroupAddon>
+            <InputGroupInput {...sharedInputProps} />
+          </InputGroup>
+        ) : (
+          <Input {...sharedInputProps} />
+        )}
+        <FieldError errors={[error]} />
+      </FieldContent>
+    </Field>
   );
 }
 

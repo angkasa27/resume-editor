@@ -37,7 +37,10 @@ import { addKeywordToSkills } from "@/features/resume-editor/domain/insights/add
 import { ALIGNMENT_KEYWORD_LIMIT } from "@/features/resume-editor/domain/insights/alignment-keywords";
 import { stripRichText } from "@/features/resume-editor/domain/insights/extract-text";
 import type { ExtractedKeyword } from "@/features/resume-editor/domain/insights/match-keywords";
-import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
+import type {
+  ResumeDraft,
+  WorkExperienceItem,
+} from "@/features/resume-editor/domain/schema";
 import type { ResumeSectionKey } from "@/features/resume-editor/state/resume-editor-store";
 
 /** Categories whose terms belong on a skills list rather than in a bullet. */
@@ -157,9 +160,7 @@ function TailorBody({
   );
   // A tool or hard skill belongs on the skills list; anything else needs prose.
   const [target, setTarget] = useState<string>(() =>
-    clicked && SKILL_LIKE.has(clicked.category)
-      ? SKILLS_TARGET
-      : (firstWritableRole?.id ?? roles[0]?.id ?? SKILLS_TARGET),
+    defaultTargetFor(clicked, firstWritableRole, roles),
   );
   const [categoryId, setCategoryId] = useState<string>(
     skillCategories[0]?.id ?? "",
@@ -187,12 +188,11 @@ function TailorBody({
   function handleAddToSkills() {
     // No model involved — a list append. Track what landed: a term already present
     // is skipped, and the toast must not claim credit for it.
-    const added: string[] = [];
-    const next = terms.reduce((section, term) => {
-      const updated = addKeywordToSkills(section, term, categoryId);
-      if (updated !== section) added.push(term);
-      return updated;
-    }, draft.sections.skills);
+    const { next, added } = addTermsToSkills(
+      draft.sections.skills,
+      terms,
+      categoryId,
+    );
 
     if (added.length === 0) {
       toast.add({ title: "Already in your skills.", type: "info" });
@@ -238,12 +238,10 @@ function TailorBody({
   function acceptRewrite(improved: string, roleId: string) {
     // Safe to write a section here: no form is mounted outside the "edit" rail, so
     // nothing holds a pending edit this could clobber (SAVE-FLOW invariants 5 and 6).
-    onSaveSection("workExperience", {
-      ...draft.sections.workExperience,
-      items: roles.map((item) =>
-        item.id === roleId ? { ...item, description: improved } : item,
-      ),
-    });
+    onSaveSection(
+      "workExperience",
+      rewriteRole(draft.sections.workExperience, roleId, improved),
+    );
     toast.add({ title: "Role updated.", type: "success" });
     onDone();
   }
@@ -387,4 +385,43 @@ function TailorBody({
       </div>
     </div>
   );
+}
+
+/** The target a freshly-opened dialog should land on. */
+function defaultTargetFor(
+  clicked: ExtractedKeyword | undefined,
+  firstWritableRole: WorkExperienceItem | undefined,
+  roles: readonly WorkExperienceItem[],
+): string {
+  if (clicked && SKILL_LIKE.has(clicked.category)) return SKILLS_TARGET;
+  return firstWritableRole?.id ?? roles[0]?.id ?? SKILLS_TARGET;
+}
+
+/** Append `terms` to a skills category; reports which terms actually landed. */
+function addTermsToSkills(
+  section: ResumeDraft["sections"]["skills"],
+  terms: readonly string[],
+  categoryId: string,
+): { next: ResumeDraft["sections"]["skills"]; added: string[] } {
+  const added: string[] = [];
+  const next = terms.reduce((current, term) => {
+    const updated = addKeywordToSkills(current, term, categoryId);
+    if (updated !== current) added.push(term);
+    return updated;
+  }, section);
+  return { next, added };
+}
+
+/** Replace one role's description with the rewritten prose. */
+function rewriteRole(
+  section: ResumeDraft["sections"]["workExperience"],
+  roleId: string,
+  improved: string,
+): ResumeDraft["sections"]["workExperience"] {
+  return {
+    ...section,
+    items: section.items.map((item) =>
+      item.id === roleId ? { ...item, description: improved } : item,
+    ),
+  };
 }

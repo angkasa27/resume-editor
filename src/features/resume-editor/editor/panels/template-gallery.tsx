@@ -175,12 +175,7 @@ export function TemplateGallery({
               size="sm"
               onClick={() => {
                 if (!pending) return;
-                onApply(
-                  applyTemplatePresetLayoutOnly(
-                    pending,
-                    presentationRef.current,
-                  ),
-                );
+                onApply(applyTemplatePresetLayoutOnly(pending, presentation));
                 setPending(null);
               }}
             >
@@ -191,7 +186,7 @@ export function TemplateGallery({
               size="sm"
               onClick={() => {
                 if (!pending) return;
-                onApply(applyTemplatePreset(pending, presentationRef.current));
+                onApply(applyTemplatePreset(pending, presentation));
                 setPending(null);
               }}
             >
