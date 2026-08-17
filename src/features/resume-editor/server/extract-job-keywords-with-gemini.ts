@@ -57,7 +57,6 @@ export async function extractJobKeywordsWithGemini(
 
   const payload = await callGeminiApi(buildPrompt(trimmed), {
     responseMimeType: "application/json",
-    temperature: 0.1,
   });
 
   const responseText = extractResponseText(payload);

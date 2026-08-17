@@ -13,6 +13,29 @@ type GeminiResponse = {
   }>;
 };
 
+/** A cut-off candidate still carries text, so without this the JSON callers
+ *  parse half a document and the HTML caller writes half a sentence into the
+ *  resume behind a 200. Truncation has to fail, not degrade. */
+function assertCompleteResponse(payload: GeminiResponse): void {
+  const finishReason = payload.candidates?.[0]?.finishReason;
+
+  if (!finishReason || finishReason === "STOP") {
+    return;
+  }
+
+  if (finishReason === "MAX_TOKENS") {
+    throw new ResumeImportError(
+      "The response was cut off because the content is too long. Try a shorter section.",
+      502,
+    );
+  }
+
+  throw new ResumeImportError(
+    `Gemini stopped before finishing (${finishReason}).`,
+    502,
+  );
+}
+
 export function extractResponseText(payload: GeminiResponse): string | undefined {
   return payload.candidates
     ?.flatMap((candidate) => candidate.content?.parts ?? [])
@@ -55,7 +78,13 @@ export async function callGeminiApi(
   const models = splitList(process.env.GEMINI_MODEL);
   const body = JSON.stringify({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
-    ...(generationConfig ? { generationConfig } : {}),
+    generationConfig: {
+      // Gemini 3 thinks by default, and on these extraction and rewrite tasks
+      // it spent 8x more tokens reasoning than answering. Callers that benefit
+      // from reasoning raise this themselves.
+      thinkingConfig: { thinkingLevel: "minimal" },
+      ...generationConfig,
+    },
   });
 
   // Exhaust every key on a model before moving down the model list, so a
@@ -78,7 +107,9 @@ export async function callGeminiApi(
       }
 
       if (response.ok) {
-        return (await response.json()) as GeminiResponse;
+        const payload = (await response.json()) as GeminiResponse;
+        assertCompleteResponse(payload);
+        return payload;
       }
 
       // Not a key problem, so the remaining keys would fail identically.

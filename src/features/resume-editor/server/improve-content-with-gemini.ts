@@ -85,7 +85,9 @@ export async function improveContentWithGemini(
 ): Promise<string> {
   const payload = await callGeminiApi(buildPrompt(input), {
     responseMimeType: "text/plain",
-    temperature: 0.4,
+    // Rewriting prose is the one call here that gains from reasoning; Gemini 3
+    // wants its default temperature, so the knob is thinking, not sampling.
+    thinkingConfig: { thinkingLevel: "low" },
   });
 
   const responseText = extractResponseText(payload);

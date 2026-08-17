@@ -5,6 +5,8 @@ import { handleResumeImportError } from "@/features/resume-editor/server/http";
 
 export const runtime = "nodejs";
 
+const MAX_PDF_BYTES = 10 * 1024 * 1024;
+
 function isUploadedFile(value: FormDataEntryValue | null) {
   return (
     value !== null &&
@@ -57,6 +59,17 @@ export async function POST(request: Request) {
       },
       {
         status: 400,
+      },
+    );
+  }
+
+  if (uploadedFile.size > MAX_PDF_BYTES) {
+    return Response.json(
+      {
+        message: `PDF is too large (max ${MAX_PDF_BYTES / 1024 / 1024}MB).`,
+      },
+      {
+        status: 413,
       },
     );
   }

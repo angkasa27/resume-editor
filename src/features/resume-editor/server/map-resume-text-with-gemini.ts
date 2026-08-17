@@ -128,12 +128,22 @@ ${resumeText}
 `.trim();
 }
 
+// A resume is a handful of pages; anything past this is a document that was
+// never going to map cleanly, and it would be billed as prompt tokens.
+const RESUME_TEXT_CHAR_LIMIT = 60_000;
+
 export async function mapResumeTextWithGemini(
   resumeText: string,
 ): Promise<ImportedResume> {
+  if (resumeText.length > RESUME_TEXT_CHAR_LIMIT) {
+    throw new ResumeImportError(
+      "This PDF holds too much text to import. Upload a resume of a few pages.",
+      413,
+    );
+  }
+
   const payload = await callGeminiApi(buildPrompt(resumeText), {
     responseMimeType: "application/json",
-    temperature: 0.1,
   });
 
   const responseText = extractResponseText(payload);

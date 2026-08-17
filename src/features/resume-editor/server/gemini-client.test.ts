@@ -4,6 +4,45 @@ import { callGeminiApi } from "./gemini-client";
 
 type Attempt = { model: string; key: string };
 
+function mockCandidate(candidate: unknown) {
+  vi.stubGlobal(
+    "fetch",
+    vi.fn(() =>
+      Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({ candidates: [candidate] }),
+      } as Response),
+    ),
+  );
+}
+
+type SentBody = {
+  generationConfig: {
+    temperature?: number;
+    thinkingConfig?: { thinkingLevel?: string };
+  };
+};
+
+/** Records the request body of every attempt, so tests can assert what we sent. */
+function mockFetchCapturingBodies() {
+  const bodies: SentBody[] = [];
+
+  vi.stubGlobal(
+    "fetch",
+    vi.fn((_url: string, init: RequestInit) => {
+      bodies.push(JSON.parse(init.body as string));
+      return Promise.resolve({
+        ok: true,
+        status: 200,
+        json: () => Promise.resolve({ candidates: [] }),
+      } as Response);
+    }),
+  );
+
+  return bodies;
+}
+
 /** Records every attempt in order and replies with the queued status codes. */
 function mockFetch(statuses: number[]) {
   const attempts: Attempt[] = [];
@@ -104,6 +143,56 @@ describe("callGeminiApi fallback order", () => {
       "Gemini API request failed.",
     );
     expect(attempts).toHaveLength(4);
+  });
+
+  // A truncated candidate arrives with HTTP 200 and real text attached, so a
+  // missing check does not error: it writes half a sentence into the resume.
+  it("rejects a truncated response instead of returning its partial text", async () => {
+    mockCandidate({
+      content: { parts: [{ text: '{"langs":["Python","Java' }] },
+      finishReason: "MAX_TOKENS",
+    });
+
+    await expect(callGeminiApi("prompt")).rejects.toThrow("cut off");
+  });
+
+  it("rejects a response stopped for any other reason", async () => {
+    mockCandidate({ content: { parts: [] }, finishReason: "SAFETY" });
+
+    await expect(callGeminiApi("prompt")).rejects.toThrow("SAFETY");
+  });
+
+  it("accepts a completed response", async () => {
+    mockCandidate({
+      content: { parts: [{ text: "done" }] },
+      finishReason: "STOP",
+    });
+
+    await expect(callGeminiApi("prompt")).resolves.toBeTruthy();
+  });
+
+  // Gemini 3 reasons by default and billed 8x more thinking than answer tokens
+  // on these tasks, so the floor has to survive a caller passing its own config.
+  it("keeps thinking minimal while letting a caller override it", async () => {
+    const bodies = mockFetchCapturingBodies();
+
+    await callGeminiApi("prompt");
+    await callGeminiApi("prompt", { thinkingConfig: { thinkingLevel: "low" } });
+
+    const levels = bodies.map(
+      (body) => body.generationConfig.thinkingConfig?.thinkingLevel,
+    );
+    expect(levels).toEqual(["minimal", "low"]);
+  });
+
+  // Gemini 3 is optimised for its default temperature and degrades or loops
+  // when it is forced lower, so no caller may pin it.
+  it("never pins a sampling temperature", async () => {
+    const bodies = mockFetchCapturingBodies();
+
+    await callGeminiApi("prompt", { responseMimeType: "application/json" });
+
+    expect(bodies[0].generationConfig.temperature).toBeUndefined();
   });
 
   it("reports a missing key rather than calling the API", async () => {

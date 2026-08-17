@@ -11,6 +11,7 @@ import {
 export const runtime = "nodejs";
 
 const HTML_CHAR_LIMIT = 8_000;
+const CUSTOM_INSTRUCTION_CHAR_LIMIT = 500;
 const KEYWORD_LIMIT = 12;
 const KEYWORD_CHAR_LIMIT = 60;
 
@@ -60,8 +61,12 @@ function validateImproveContentBody(body: unknown): ValidatedBody {
     ? chips.filter((c): c is string => typeof c === "string")
     : [];
 
+  // One instruction line, capped like every other field that reaches the
+  // prompt: the chips are server-mapped and the keywords are already bounded.
   const customInstructionText =
-    typeof customInstruction === "string" ? customInstruction.trim() : "";
+    typeof customInstruction === "string"
+      ? customInstruction.trim().slice(0, CUSTOM_INSTRUCTION_CHAR_LIMIT)
+      : "";
 
   // Terms only (instruction is built server-side), capped so a crafted request
   // can't stuff the prompt through this field.
