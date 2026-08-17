@@ -201,7 +201,16 @@ Powers "Extract from PDF", "Improve with AI", and "Analyze job description".
 
 ```bash
 GEMINI_API_KEY=                  # https://aistudio.google.com/
-GEMINI_MODEL=gemini-2.0-flash    # Optional model override
+GEMINI_MODEL=gemini-3.5-flash    # Optional model override
+```
+
+Both accept a comma-separated list. Every key is tried on the first model before
+the next model is attempted, so a rate-limited key falls back to a sibling key
+rather than dropping straight to a weaker model:
+
+```bash
+GEMINI_API_KEY=key_one,key_two
+GEMINI_MODEL=gemini-2.5-flash,gemini-2.0-flash
 ```
 
 Without a key, the AI buttons are visible but calls will return a 503 error.
