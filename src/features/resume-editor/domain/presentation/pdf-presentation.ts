@@ -18,6 +18,7 @@ export const pdfLayoutIds = [
   "academic",
   "inset",
   "split",
+  "duet",
   "bold-type",
   "studio",
   "aurora",
@@ -62,6 +63,7 @@ export type PdfPhotoShapeId = (typeof pdfPhotoShapeIds)[number];
  *  unset for other layouts, but these would stay round. Keep in sync with the layout CSS. */
 const roundPhotoLayoutFlatRadius: Partial<Record<PdfLayoutId, string>> = {
   split: "12px",
+  duet: "12px",
   "modern-centered": "12px",
   dossier: "12px",
   crest: "12px",
@@ -154,6 +156,7 @@ const indentPx: Record<PdfSpacingId, number> = {
 /** Page margin is per-layout, not a user knob: a rail layout needs it tight, a typographic one needs it wide. */
 const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   split: 9, // 0.36fr solid full-height rail — tightest; the rail needs the width
+  duet: 10, // near-even columns; the tinted left column bleeds, so keep insets tight
   aurora: 14, // the label gutter needs the width back
   "bold-type": 12, // oversized type wants edge tension
   studio: 15, // chips and badges need room to sit apart

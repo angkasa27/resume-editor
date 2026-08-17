@@ -265,6 +265,11 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
     message:
       "Parsers read two columns straight across, so both sides end up jumbled into one block. Switch to a single-column layout.",
   },
+  duet: {
+    status: "fail",
+    message:
+      "Parsers read two columns straight across, so both sides end up jumbled into one block. Switch to a single-column layout.",
+  },
   crest: { status: "pass" },
   masthead: { status: "pass" },
   numeral: { status: "pass" },

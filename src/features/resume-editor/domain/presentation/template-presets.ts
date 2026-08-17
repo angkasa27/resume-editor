@@ -219,6 +219,34 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
+  // duet — accent is the pale left column, secondary inks the banded headings.
+  {
+    id: "duet-stone",
+    label: "Stone",
+    layoutId: "duet",
+    style: {
+      accent: "#e4e4e7",
+      secondary: "#3f3f46",
+      fontFamilyId: "lora",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "duet-harbor",
+    label: "Harbor",
+    layoutId: "duet",
+    style: {
+      accent: "#e0f2f1",
+      secondary: "#0f766e",
+      fontFamilyId: "inter",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
   // bold-type — accent is the marker highlight and date colour, not the heading text;
   // it has to be vivid, or the highlight reads as a grey smudge.
   {
@@ -548,6 +576,7 @@ const layoutCategories: Record<
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
   split: ["professional"],
+  duet: ["professional"],
   "bold-type": ["creative"],
   studio: ["creative"],
   aurora: ["creative"],

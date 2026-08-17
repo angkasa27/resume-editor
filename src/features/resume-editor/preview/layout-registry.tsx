@@ -10,6 +10,7 @@ import { classicLayout } from "./layouts/classic/layout";
 import { compassLayout } from "./layouts/compass/layout";
 import { crestLayout } from "./layouts/crest/layout";
 import { dossierLayout } from "./layouts/dossier/layout";
+import { duetLayout } from "./layouts/duet/layout";
 import { editorialLayout } from "./layouts/editorial/layout";
 import { insetLayout } from "./layouts/inset/layout";
 import { ledgerLayout } from "./layouts/ledger/layout";
@@ -29,6 +30,7 @@ export const previewLayoutDefinitions = [
   academicLayout,
   insetLayout,
   splitLayout,
+  duetLayout,
   boldTypeLayout,
   studioLayout,
   auroraLayout,

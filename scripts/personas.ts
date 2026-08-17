@@ -3572,4 +3572,219 @@ export const PERSONAS: Persona[] = [
       note: "Thesis on courtyard typologies as passive cooling in hot-arid cities.",
     },
   },
+  {
+    layoutId: "duet",
+    presetId: "duet-stone",
+    photo: "https://randomuser.me/api/portraits/men/83.jpg",
+    fullName: "Michael Nwosu",
+    location: "Birmingham, United Kingdom",
+    phone: "+44 7700 516 284",
+    email: "michael.nwosu@email.com",
+    links: [
+      "https://www.linkedin.com/in/michael-nwosu",
+      "https://michaelnwosu.co.uk",
+    ],
+    summary:
+      "<p>Commercial sales professional with over 8 years in B2B, account development, and client retention. Track record of growing revenue, strengthening customer relationships, and improving sales processes across competitive markets. Brings a proactive approach to pipeline management, cross-functional collaboration, and consistent quota delivery.</p>",
+    work: [
+      {
+        company: "Westford Commercial Services",
+        position: "Sales Manager",
+        location: "Birmingham, United Kingdom",
+        start: "Jan 2022",
+        end: "current",
+        bullets: [
+          "Managed the regional sales pipeline and exceeded annual revenue targets by 14%, closing £4.2m across logistics and professional services accounts.",
+          "Led account growth plans for 20 key clients, lifting average contract value by 22% through structured quarterly business reviews.",
+          "Improved close rates from 18% to 27% with stronger qualification criteria and a disciplined follow-up cadence.",
+          "Coached a team of 6 executives, taking three from below quota to consistent overperformance within two quarters.",
+        ],
+      },
+      {
+        company: "Brightlane Solutions",
+        position: "Senior Sales Executive",
+        location: "Nottingham, United Kingdom",
+        start: "May 2019",
+        end: "Dec 2021",
+        bullets: [
+          "Owned the full sales cycle from prospecting to negotiation and contract closure, delivering 118% of target across three consecutive years.",
+          "Built long-term client relationships that increased renewals by 31% and opened upsell opportunities worth £600k annually.",
+          "Partnered with marketing on campaign targeting, improving lead quality and doubling conversion from enquiry to qualified opportunity.",
+        ],
+      },
+      {
+        company: "Hartwell Systems",
+        position: "Sales Coordinator",
+        location: "Leicester, United Kingdom",
+        start: "Jul 2017",
+        end: "Apr 2019",
+        bullets: [
+          "Supported sales reporting, CRM hygiene, and weekly pipeline coordination for a team of 12.",
+          "Contributed to outreach campaigns that expanded the qualified prospect pipeline by 45% year on year.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Commercial Sales",
+      items: [
+        "Account Management",
+        "B2B Sales",
+        "Lead Generation",
+        "CRM Systems",
+        "Negotiation",
+        "Sales Forecasting",
+        "Pipeline Management",
+      ],
+    },
+    projects: [
+      {
+        name: "Regional Pipeline Overhaul",
+        start: "Feb 2023",
+        end: "Nov 2023",
+        bullets: [
+          "Rebuilt the qualification framework and stage definitions in HubSpot, cutting stalled opportunities by 40%.",
+          "Introduced weekly forecast reviews that brought quarterly forecast accuracy from 71% to 94%.",
+        ],
+      },
+      {
+        name: "Key Account Growth Programme",
+        start: "Mar 2022",
+        end: "Dec 2022",
+        bullets: [
+          "Designed a tiered account plan for the top 20 clients, generating £1.1m of incremental revenue in its first year.",
+        ],
+      },
+    ],
+    certs: [
+      {
+        name: "HubSpot Sales Software Certification",
+        org: "HubSpot Academy",
+        date: "Feb 2023",
+      },
+      {
+        name: "Salesforce Certified Associate",
+        org: "Salesforce",
+        date: "Jun 2022",
+      },
+      {
+        name: "Level 4 Certificate in Sales Management",
+        org: "Institute of Sales Professionals",
+        date: "Sep 2021",
+      },
+    ],
+    education: {
+      name: "Aston University",
+      location: "Birmingham, United Kingdom",
+      start: "Sep 2014",
+      end: "Jun 2017",
+      degree: "BA (Hons) Business Management",
+      gpa: "First Class Honours",
+      note: "Placement year in commercial operations; dissertation on retention economics in B2B service contracts.",
+    },
+  },
+  {
+    layoutId: "duet",
+    presetId: "duet-harbor",
+    photo: "https://randomuser.me/api/portraits/men/9.jpg",
+    fullName: "Julian Mercado",
+    location: "Rotterdam, Netherlands",
+    phone: "+31 6 2145 8890",
+    email: "julian.mercado@outlook.com",
+    links: [
+      "https://www.linkedin.com/in/julianmercado",
+      "https://julianmercado.nl",
+    ],
+    summary:
+      "<p>Operations manager with 9 years running supply chain and fulfilment for cross-border e-commerce. I turn messy logistics into measurable systems: clearer forecasting, tighter carrier contracts, and warehouse processes teams can actually follow. Comfortable owning both the spreadsheet and the shop floor.</p>",
+    work: [
+      {
+        company: "Nordkust Logistics",
+        position: "Operations Manager",
+        location: "Rotterdam, Netherlands",
+        start: "Apr 2021",
+        end: "current",
+        bullets: [
+          "Own fulfilment for 2.4m annual shipments across three European hubs, holding on-time delivery above 98% through peak season.",
+          "Renegotiated carrier contracts covering 60% of volume, cutting freight cost per parcel by 17% without slowing transit times.",
+          "Rolled out a demand forecasting model that reduced stockouts by 34% and dead stock by €780k in the first year.",
+          "Lead a team of 28 across warehouse, planning, and customer logistics, halving voluntary turnover in two years.",
+        ],
+      },
+      {
+        company: "Meridian Trade Group",
+        position: "Supply Chain Analyst",
+        location: "Antwerp, Belgium",
+        start: "Feb 2018",
+        end: "Mar 2021",
+        bullets: [
+          "Modelled inventory policy for 4,000 SKUs, freeing €2.1m of working capital while holding service levels flat.",
+          "Automated weekly carrier performance reporting, replacing two days of manual work with a self-serve dashboard.",
+          "Ran the warehouse management system migration for two sites with no interruption to outbound volume.",
+        ],
+      },
+      {
+        company: "Vanreusel Distribution",
+        position: "Logistics Coordinator",
+        location: "Eindhoven, Netherlands",
+        start: "Aug 2016",
+        end: "Jan 2018",
+        bullets: [
+          "Coordinated inbound freight and customs documentation for 40+ suppliers across the EU and Asia.",
+          "Cut inbound receiving errors by 28% by standardising ASN checks and dock scheduling.",
+        ],
+      },
+    ],
+    skills: {
+      category: "Operations & Supply Chain",
+      items: [
+        "Demand Planning",
+        "Carrier Negotiation",
+        "WMS / ERP",
+        "Lean Process Design",
+        "SQL",
+        "Power BI",
+        "Customs Compliance",
+      ],
+    },
+    projects: [
+      {
+        name: "Three-Hub Network Redesign",
+        start: "Jan 2023",
+        end: "Oct 2023",
+        bullets: [
+          "Re-zoned inventory across three hubs using order-density modelling, cutting average delivery distance by 22%.",
+          "Delivered the cutover across a peak-adjacent window with zero missed SLA days.",
+        ],
+      },
+      {
+        name: "Returns Automation",
+        start: "May 2022",
+        end: "Dec 2022",
+        bullets: [
+          "Built an automated returns triage flow that halved processing time and recovered 19% more resaleable stock.",
+        ],
+      },
+    ],
+    certs: [
+      {
+        name: "APICS CPIM (Certified in Planning and Inventory Management)",
+        org: "ASCM",
+        date: "May 2022",
+      },
+      {
+        name: "Lean Six Sigma Green Belt",
+        org: "ASQ",
+        date: "Mar 2020",
+      },
+    ],
+    education: {
+      name: "Erasmus University Rotterdam",
+      location: "Rotterdam, Netherlands",
+      start: "Sep 2012",
+      end: "Jun 2016",
+      degree: "BSc in Economics and Business Economics",
+      gpa: "3.6 / 4.0",
+      note: "Specialisation in transport economics; thesis on last-mile cost drivers in dense urban networks.",
+    },
+  },
 ];

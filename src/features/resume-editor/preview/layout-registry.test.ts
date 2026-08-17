@@ -7,7 +7,7 @@ import {
 } from "@/features/resume-editor/preview/layout-registry";
 
 describe("preview layout registry", () => {
-  it("exposes all seventeen built-in layouts", () => {
+  it("exposes all eighteen built-in layouts", () => {
     const ids = previewLayoutDefinitions.map((layout) => layout.id);
     expect(ids).toEqual([
       "classic",
@@ -16,6 +16,7 @@ describe("preview layout registry", () => {
       "academic",
       "inset",
       "split",
+      "duet",
       "bold-type",
       "studio",
       "aurora",
@@ -38,6 +39,7 @@ describe("preview layout registry", () => {
       "academic",
       "inset",
       "split",
+      "duet",
       "bold-type",
       "studio",
       "aurora",
@@ -59,7 +61,7 @@ describe("preview layout registry", () => {
   });
 
   it("partitions sections into side and main columns in the sidebar and split layouts", () => {
-    for (const id of ["split", "ledger", "dossier", "compass"] as const) {
+    for (const id of ["split", "duet", "ledger", "dossier", "compass"] as const) {
       const layout = getLayout(id);
       expect(layout.getColumn?.("skills")).toBe("side");
       expect(layout.getColumn?.("languages")).toBe("side");
