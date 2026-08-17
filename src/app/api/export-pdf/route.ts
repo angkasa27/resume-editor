@@ -60,13 +60,12 @@ export async function POST(request: Request) {
       );
     }
 
+    // The cause is logged, never returned: these messages come from Puppeteer
+    // and the Cloudflare API and carry internal detail the client cannot act on.
     console.error("PDF export failed", error);
     return Response.json(
       {
-        message:
-          error instanceof Error
-            ? error.message
-            : "Unable to generate PDF.",
+        message: "Unable to generate PDF.",
       },
       {
         status: 500,

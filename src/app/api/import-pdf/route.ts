@@ -4,6 +4,8 @@ import { mapResumeTextWithGemini } from "@/features/resume-editor/server/map-res
 import { handleResumeImportError } from "@/features/resume-editor/server/http";
 
 export const runtime = "nodejs";
+// The Gemini fallback chain is sequential; it budgets 50s, so give it room.
+export const maxDuration = 60;
 
 const MAX_PDF_BYTES = 10 * 1024 * 1024;
 

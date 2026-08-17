@@ -9,6 +9,8 @@ import {
 } from "@/features/resume-editor/server/http";
 
 export const runtime = "nodejs";
+// The Gemini fallback chain is sequential; it budgets 50s, so give it room.
+export const maxDuration = 60;
 
 const HTML_CHAR_LIMIT = 8_000;
 const CUSTOM_INSTRUCTION_CHAR_LIMIT = 500;

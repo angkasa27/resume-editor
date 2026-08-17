@@ -2,6 +2,10 @@ import { ResumeImportError } from "@/features/resume-editor/server/resume-import
 
 const DEFAULT_GEMINI_MODEL = "gemini-3.5-flash";
 
+const ATTEMPT_TIMEOUT_MS = 20_000;
+/** Kept under the routes' `maxDuration` so our own 504 wins the race. */
+const TOTAL_BUDGET_MS = 50_000;
+
 type GeminiResponse = {
   candidates?: Array<{
     content?: {
@@ -76,6 +80,10 @@ export async function callGeminiApi(
   }
 
   const models = splitList(process.env.GEMINI_MODEL);
+  // The fallback chain is sequential, so without a deadline a full model x key
+  // sweep of hung connections outlives the route's own timeout and the caller
+  // gets a platform error instead of ours.
+  const deadline = Date.now() + TOTAL_BUDGET_MS;
   const body = JSON.stringify({
     contents: [{ role: "user", parts: [{ text: prompt }] }],
     generationConfig: {
@@ -91,6 +99,10 @@ export async function callGeminiApi(
   // rate-limited key falls back to a sibling key rather than a weaker model.
   for (const model of models.length > 0 ? models : [DEFAULT_GEMINI_MODEL]) {
     for (const apiKey of apiKeys) {
+      if (Date.now() >= deadline) {
+        throw new ResumeImportError("Gemini API request timed out.", 504);
+      }
+
       let response: Response;
 
       try {
@@ -100,6 +112,11 @@ export async function callGeminiApi(
             method: "POST",
             headers: { "content-type": "application/json" },
             body,
+            // A hung attempt is a key fault like any other: time it out and let
+            // the loop fall through to the next key.
+            signal: AbortSignal.timeout(
+              Math.min(ATTEMPT_TIMEOUT_MS, deadline - Date.now()),
+            ),
           },
         );
       } catch {

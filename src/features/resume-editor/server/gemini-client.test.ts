@@ -195,6 +195,27 @@ describe("callGeminiApi fallback order", () => {
     expect(bodies[0].generationConfig.temperature).toBeUndefined();
   });
 
+  // Each attempt is sequential, so an unbounded one lets the chain outlive the
+  // route and the client gets a platform error instead of ours.
+  it("gives every attempt an abort signal", async () => {
+    const signals: Array<AbortSignal | null | undefined> = [];
+    vi.stubGlobal(
+      "fetch",
+      vi.fn((_url: string, init: RequestInit) => {
+        signals.push(init.signal);
+        return Promise.resolve({
+          ok: true,
+          status: 200,
+          json: () => Promise.resolve({ candidates: [] }),
+        } as Response);
+      }),
+    );
+
+    await callGeminiApi("prompt");
+
+    expect(signals[0]).toBeInstanceOf(AbortSignal);
+  });
+
   it("reports a missing key rather than calling the API", async () => {
     delete process.env.GEMINI_API_KEY;
     const attempts = mockFetch([200]);
