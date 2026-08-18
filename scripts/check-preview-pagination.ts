@@ -14,7 +14,7 @@ import {
 } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import { pdfLayoutIds } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
-const ORIGIN = process.env.BASE_URL ?? "http://localhost:3000";
+const ORIGIN = process.env.BASE_URL ?? "http://localhost:4000";
 const ZOOM_CLICKS = 3;
 
 /** Same geometry the export check asserts, re-derived in the zoomed frame. */

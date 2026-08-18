@@ -15,7 +15,7 @@ import {
   type PdfLayoutId,
 } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
-const ORIGIN = process.env.BASE_URL ?? "http://localhost:3000";
+const ORIGIN = process.env.BASE_URL ?? "http://localhost:4000";
 
 export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft {
   const draft = createDefaultResumeDraft();

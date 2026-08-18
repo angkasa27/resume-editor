@@ -18,7 +18,7 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { RESUME_PDF_SESSION_STORAGE_KEY } from "@/features/resume-editor/server/resume-pdf-session";
 import { PERSONAS, type Persona } from "./personas";
 
-const BASE_URL = process.env.SCREENSHOT_BASE_URL ?? "http://localhost:3000";
+const BASE_URL = process.env.SCREENSHOT_BASE_URL ?? "http://localhost:4000";
 const PUBLIC_DIR = path.join(process.cwd(), "public");
 const TEMPLATES_DIR = path.join(PUBLIC_DIR, "templates");
 const TIMEOUT = 30_000;
