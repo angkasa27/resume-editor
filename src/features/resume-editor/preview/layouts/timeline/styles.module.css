@@ -101,3 +101,9 @@
 .header :global(.headline) {
   font-weight: 400;
 }
+
+/* Link cue: Accent is already spent on the dots, dates and headings — colouring links would muddy the spine. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.16em;
+}

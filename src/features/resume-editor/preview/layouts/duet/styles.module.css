@@ -103,3 +103,9 @@
 .header :global(.headline) {
   font-weight: 400;
 }
+
+/* Link cue: Softened: the banded headings are already the strongest element on both grounds. */
+.layout {
+  --resume-link-decoration: underline color-mix(in srgb, currentColor 45%, transparent);
+  --resume-link-offset: 0.16em;
+}

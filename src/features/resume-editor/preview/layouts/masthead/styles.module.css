@@ -118,3 +118,9 @@
   margin-top: var(--resume-gap-item);
   --resume-headline-color: var(--resume-on-accent);
 }
+
+/* Link cue: The headings are filled badges — nothing a 1px rule can rival. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.18em;
+}

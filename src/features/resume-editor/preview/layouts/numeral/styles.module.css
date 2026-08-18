@@ -182,3 +182,9 @@
 .header :global(.numeral-links .contact-line) {
   gap: 0;
 }
+
+/* Link cue: Hairline only, against a 2px heading border and a precision grid. */
+.layout {
+  --resume-link-decoration: underline 0.5px;
+  --resume-link-offset: 0.22em;
+}

@@ -125,3 +125,9 @@
   letter-spacing: 0.18em;
   --resume-headline-color: var(--resume-muted);
 }
+
+/* Link cue: Softened for the navy rail; the weight-800 headings stay dominant. */
+.layout {
+  --resume-link-decoration: underline color-mix(in srgb, currentColor 45%, transparent);
+  --resume-link-offset: 0.16em;
+}

@@ -97,3 +97,9 @@
   font-weight: 400;
   --resume-headline-color: var(--resume-text);
 }
+
+/* Link cue: A solid rule reads as heavy as the heading border at small-caps size. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.2em;
+}

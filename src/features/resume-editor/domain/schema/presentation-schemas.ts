@@ -24,5 +24,6 @@ export const pdfPresentationSchema = z.preprocess(
     secondary: z.string().regex(hexColorPattern).optional(),
     paperSize: z.enum(pdfPaperSizes),
     photoShape: z.enum(pdfPhotoShapeIds).optional(),
+    linkHighlight: z.boolean(),
   }),
 );

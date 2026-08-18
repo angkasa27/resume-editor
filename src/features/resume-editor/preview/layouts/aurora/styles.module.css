@@ -211,3 +211,18 @@
   font-weight: 400;
   --resume-headline-color: var(--resume-text);
 }
+
+/* Link cue: only the link pills opt out — an underline inside a pill is a double
+   affordance. The details row is a plain icon line, so its mailto:/tel: keep a rule. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.18em;
+}
+
+.layout :global(.contact-links a) {
+  text-decoration: none;
+}
+
+:global([data-link-highlight="on"]) .layout :global(.item-title .link-marker) {
+  display: inline-block;
+}

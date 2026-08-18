@@ -125,3 +125,9 @@
   gap: var(--resume-gap-inner) var(--resume-gap-item);
   width: 100%;
 }
+
+/* Link cue: Contacts sit inside the dark band, where a full rule fights the band's edge. */
+.layout {
+  --resume-link-decoration: underline color-mix(in srgb, currentColor 50%, transparent);
+  --resume-link-offset: 0.2em;
+}

@@ -121,3 +121,9 @@
   font-weight: 700;
   --resume-headline-color: var(--resume-text);
 }
+
+/* Link cue: Echoes the highlighter at 1px while the heading keeps the filled marker block. */
+.layout {
+  --resume-link-decoration: underline var(--resume-accent);
+  --resume-link-offset: 0.18em;
+}

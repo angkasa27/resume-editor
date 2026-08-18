@@ -60,6 +60,7 @@ export function PreviewDocumentRoot({
   return (
     <article
       data-layout={presentation.layoutId}
+      data-link-highlight={presentation.linkHighlight ? "on" : "off"}
       style={{
         ...(presentation.vars as CSSProperties),
         ...rootStyle,

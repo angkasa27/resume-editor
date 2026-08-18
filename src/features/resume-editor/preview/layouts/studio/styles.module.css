@@ -130,3 +130,13 @@
   --resume-headline-color: var(--resume-accent);
   font-weight: 600;
 }
+
+/* Link cue: Chips and badges are this layout's language, so an arrow reads native; dotted keeps the inline rule below the icon-chip heading. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.18em;
+}
+
+:global([data-link-highlight="on"]) .layout :global(.item-title .link-marker) {
+  display: inline-block;
+}

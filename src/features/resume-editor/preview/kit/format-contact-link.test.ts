@@ -1,6 +1,9 @@
 import { describe, expect, it } from "vitest";
 
-import { formatContactLink } from "@/features/resume-editor/preview/kit/format-contact-link";
+import {
+  contactHref,
+  formatContactLink,
+} from "@/features/resume-editor/preview/kit/format-contact-link";
 
 describe("formatContactLink", () => {
   it("strips protocol, www, and a trailing slash", () => {
@@ -27,5 +30,31 @@ describe("formatContactLink", () => {
     expect(formatContactLink("https://www.linkedin.com/in/x")).toContain(
       "linkedin.com",
     );
+  });
+});
+
+describe("contactHref", () => {
+  it("dials a phone number without its formatting", () => {
+    expect(contactHref({ kind: "phone", value: "+44 7700 516 284" })).toBe(
+      "tel:+447700516284",
+    );
+  });
+
+  it("mails an email address", () => {
+    expect(contactHref({ kind: "email", value: "michael@email.com" })).toBe(
+      "mailto:michael@email.com",
+    );
+  });
+
+  it("leaves a half-typed contact as plain text rather than a dead link", () => {
+    expect(contactHref({ kind: "email", value: "michael" })).toBeNull();
+    // Mid-typing: an "@" with no domain behind it would send mail nowhere.
+    expect(contactHref({ kind: "email", value: "michael@" })).toBeNull();
+    expect(contactHref({ kind: "email", value: "michael@email" })).toBeNull();
+    expect(contactHref({ kind: "phone", value: "n/a" })).toBeNull();
+  });
+
+  it("never links a location, which has nowhere to go", () => {
+    expect(contactHref({ kind: "location", value: "Birmingham" })).toBeNull();
   });
 });

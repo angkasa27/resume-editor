@@ -1,3 +1,5 @@
+import { ArrowUpRight } from "lucide-react";
+
 import {
   sanitizeRichTextHref,
   shouldOpenHrefInNewTab,
@@ -23,6 +25,9 @@ export function PreviewLinkedTitle({
       rel={shouldOpenHrefInNewTab(safeHref) ? "noopener noreferrer" : undefined}
     >
       {title}
+      {/* Always emitted, hidden by CSS: item views only receive `{ item }`, so the
+          layout's choice can't reach here as a prop. */}
+      <ArrowUpRight className="link-marker" aria-hidden={true} />
     </a>
   );
 }

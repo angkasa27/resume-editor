@@ -25,6 +25,34 @@ describe("layout theming contract", () => {
     }
   });
 
+  it("configures its own link cue, since one blunt underline cannot suit eighteen designs", () => {
+    for (const layoutId of pdfLayoutIds) {
+      expect(
+        layoutCss(layoutId),
+        `${layoutId} never sets --resume-link-decoration, so it silently inherits the default underline`,
+      ).toContain("--resume-link-decoration");
+    }
+  });
+
+  it("spends none of the heading's own emphasis on the link cue", () => {
+    // Proxy for "weaker than the section heading", which CSS text can't compare
+    // directly: a link may take a rule, a colour or the arrow marker — never
+    // weight, a fill, or capitals, which are what the headings use to dominate.
+    for (const layoutId of pdfLayoutIds) {
+      const css = layoutCss(layoutId);
+      // Just the declaration block that holds the cue — slicing to EOF would
+      // silently police every rule appended after it.
+      const start = css.indexOf("--resume-link-decoration");
+      const cue = css.slice(start, css.indexOf("}", start));
+      for (const forbidden of ["font-weight", "background", "text-transform"]) {
+        expect(
+          cue,
+          `${layoutId} gives its links ${forbidden}, which competes with its section headings`,
+        ).not.toContain(forbidden);
+      }
+    }
+  });
+
   it("never pins a font, which would override the user's choice", () => {
     // academic hardcoded --resume-font: Georgia, silently making the Style tab's
     // font control a no-op there and any preset naming another serif dead data.

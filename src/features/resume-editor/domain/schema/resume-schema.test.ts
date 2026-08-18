@@ -51,6 +51,7 @@ describe("resume schema", () => {
       lineHeight: "standard",
       accent: "#2563eb",
       paperSize: "a4",
+      linkHighlight: true,
     });
   });
 
@@ -61,6 +62,15 @@ describe("resume schema", () => {
     const parsed = parseResumeDraft(JSON.parse(JSON.stringify(draft)));
 
     expect(parsed.pdfPresentation.photoShape).toBe("circle");
+  });
+
+  it("persists plain links across a save/load round-trip", () => {
+    const draft = createDefaultResumeDraft();
+    draft.pdfPresentation = { ...draft.pdfPresentation, linkHighlight: false };
+
+    const parsed = parseResumeDraft(JSON.parse(JSON.stringify(draft)));
+
+    expect(parsed.pdfPresentation.linkHighlight).toBe(false);
   });
 
   it("drops an invalid photoShape instead of failing to load", () => {

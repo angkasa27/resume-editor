@@ -38,8 +38,29 @@
 
 :where(.root) :global(a) {
   color: inherit;
-  text-decoration: underline;
   overflow-wrap: anywhere;
+}
+
+/* The cue itself is per-layout: each stylesheet sets these two properties to
+   something that stays weaker than its own section heading. */
+:where(.root)[data-link-highlight="on"] :global(a) {
+  text-decoration: var(--resume-link-decoration, underline);
+  text-underline-offset: var(--resume-link-offset, 0.15em);
+}
+
+:where(.root)[data-link-highlight="off"] :global(a) {
+  text-decoration: none;
+}
+
+/* Hidden everywhere; the three layouts whose language is iconic switch it on. */
+:where(.root) :global(.link-marker) {
+  display: none;
+  width: 0.72em;
+  height: 0.72em;
+  margin-left: 0.18em;
+  color: var(--resume-muted);
+  stroke-width: 2;
+  flex-shrink: 0;
 }
 
 /* Colour arrives via an inheriting custom property: a layout override has the
@@ -98,7 +119,10 @@
   overflow-wrap: break-word;
 }
 
-:where(.root) :global(.item-title a) {
+/* Deliberate, and it outranks the highlight rule rather than tying with it on
+   source order: a bold h3 carrying a rule reads as a section heading. A linked
+   title is marked by `.link-marker` or not at all. */
+:where(.root)[data-link-highlight] :global(.item-title a) {
   text-decoration: none;
   color: inherit;
 }

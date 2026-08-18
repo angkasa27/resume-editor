@@ -81,11 +81,16 @@ export type PdfPresentation = {
   paperSize: PdfPaperSize;
   /** Optional photo-shape override; unset keeps each layout's native aspect/radius. */
   photoShape?: PdfPhotoShapeId;
+  /** Whether links carry their layout's visual cue. Required, not optional: off is a
+   *  real choice, so `undefined` would be a third state with no meaning. */
+  linkHighlight: boolean;
 };
 
 export type ResolvedPdfPresentation = {
   layoutId: PdfLayoutId;
   vars: Record<string, string>;
+  /** Drives a root data attribute rather than a var: layouts branch on it, not read it. */
+  linkHighlight: boolean;
 };
 
 export const pdfPhotoShapeLabels: Record<PdfPhotoShapeId, string> = {
@@ -236,6 +241,7 @@ export function createDefaultPdfPresentation(): PdfPresentation {
     lineHeight: "standard",
     accent: DEFAULT_ACCENT,
     paperSize: "a4",
+    linkHighlight: true,
   };
 }
 
@@ -284,6 +290,12 @@ export function normalizePdfPresentation(input: unknown): PdfPresentation {
     photoShape: isMember(pdfPhotoShapeIds, source.photoShape)
       ? source.photoShape
       : undefined,
+    // Drafts saved before the control existed have no value; they keep the
+    // underlines they were written with.
+    linkHighlight:
+      typeof source.linkHighlight === "boolean"
+        ? source.linkHighlight
+        : defaults.linkHighlight,
   };
 }
 
@@ -336,5 +348,5 @@ export function resolvePdfPresentation(
     }
   }
 
-  return { layoutId: p.layoutId, vars };
+  return { layoutId: p.layoutId, vars, linkHighlight: p.linkHighlight };
 }

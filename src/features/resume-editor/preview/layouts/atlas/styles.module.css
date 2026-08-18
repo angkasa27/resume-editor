@@ -155,3 +155,9 @@
   height: 100%;
   object-fit: cover;
 }
+
+/* Link cue: The flat 400-weight headings are quiet, so the link cue has to be quieter still. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.18em;
+}

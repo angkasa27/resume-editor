@@ -139,3 +139,13 @@
   font-weight: 400;
   --resume-headline-color: var(--resume-muted);
 }
+
+/* Link cue: Finishes the accent cue the rail links already carry, and the hanging glyphs make the arrow native. */
+.layout {
+  --resume-link-decoration: underline var(--resume-accent);
+  --resume-link-offset: 0.18em;
+}
+
+:global([data-link-highlight="on"]) .layout :global(.item-title .link-marker) {
+  display: inline-block;
+}

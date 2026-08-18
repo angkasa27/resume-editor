@@ -103,6 +103,14 @@ describe("applyTemplatePreset", () => {
     expect(applyTemplatePreset(preset, current).paperSize).toBe("letter");
   });
 
+  it("preserves the user's link highlighting, which no template curates", () => {
+    const current = {
+      ...createDefaultPdfPresentation(),
+      linkHighlight: false,
+    };
+    expect(applyTemplatePreset(preset, current).linkHighlight).toBe(false);
+  });
+
   it("clears photoShape so the layout's native look applies", () => {
     const current = {
       ...createDefaultPdfPresentation(),

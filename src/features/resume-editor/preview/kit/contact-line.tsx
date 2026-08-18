@@ -3,7 +3,7 @@ import { Link, Mail, MapPin, Phone } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { shouldOpenHrefInNewTab } from "@/features/resume-editor/domain/rich-text/sanitize-rich-text";
 
-import { formatContactLink } from "./format-contact-link";
+import { contactHref, formatContactLink } from "./format-contact-link";
 import type { PreviewContactItem, PreviewRenderContext } from "../types";
 
 /** `stacked` is the only variant that reads in a narrow rail. Icons are opt-in
@@ -117,26 +117,32 @@ function PreviewContactItemText({
     <Icon className="contact-icon" aria-hidden={true} />
   ) : null;
 
-  if (item.kind === "link") {
+  const text =
+    item.kind === "link" ? formatContactLink(item.value) : item.value;
+  // mailto:/tel: make the exported PDF's contacts dialable; only http links
+  // leave the document, so only they take a target.
+  const href = contactHref(item);
+
+  if (href) {
     return (
       <a
-        href={item.value}
+        href={href}
         aria-label={label}
-        target={shouldOpenHrefInNewTab(item.value) ? "_blank" : undefined}
-        rel={
-          shouldOpenHrefInNewTab(item.value) ? "noopener noreferrer" : undefined
-        }
+        target={shouldOpenHrefInNewTab(href) ? "_blank" : undefined}
+        rel={shouldOpenHrefInNewTab(href) ? "noopener noreferrer" : undefined}
       >
         {icon}
-        <span>{formatContactLink(item.value)}</span>
+        <span>{text}</span>
       </a>
     );
   }
 
+  // No aria-label: it is ignored on a role-less span, so the text has to carry
+  // itself. Only the anchor branch above can name itself.
   return (
-    <span aria-label={label}>
+    <span>
       {icon}
-      <span aria-hidden="true">{item.value}</span>
+      {text}
     </span>
   );
 }

@@ -78,10 +78,14 @@ function SelectField({
             onChange(next);
           }}
         >
-          <SelectTrigger id={id} size="sm" aria-label={label} className="w-full">
+          <SelectTrigger
+            id={id}
+            size="sm"
+            aria-label={label}
+            className="w-full"
+          >
             <SelectValue>
-              {options.find((option) => option.value === value)?.label ??
-                value}
+              {options.find((option) => option.value === value)?.label ?? value}
             </SelectValue>
           </SelectTrigger>
           <SelectContent align="start">
@@ -130,7 +134,11 @@ function ToggleField({
           size="sm"
           className={cn(
             "grid w-full",
-            options.length === 4 ? "grid-cols-4" : "grid-cols-3",
+            options.length === 4
+              ? "grid-cols-4"
+              : options.length === 2
+                ? "grid-cols-2"
+                : "grid-cols-3",
           )}
           onValueChange={(nextValue) => {
             const next = nextValue.at(-1);
@@ -317,6 +325,31 @@ const spacingOptions = pdfSpacingIds.map((value) => ({
         : listSpacingGlyph({ gap: 3 }),
 }));
 
+/** Underlined vs plain word: the toggle previews the two states literally. */
+function linkHighlightGlyph(on: boolean) {
+  return (
+    <span
+      aria-hidden="true"
+      className={on ? "underline underline-offset-4" : undefined}
+    >
+      {on ? "Highlighted" : "Plain"}
+    </span>
+  );
+}
+
+const linkHighlightOptions = [
+  {
+    value: "on",
+    label: "Highlighted",
+    renderOption: () => linkHighlightGlyph(true),
+  },
+  {
+    value: "off",
+    label: "Plain",
+    renderOption: () => linkHighlightGlyph(false),
+  },
+];
+
 const photoShapeOptions = [
   {
     value: PHOTO_SHAPE_DEFAULT,
@@ -396,6 +429,15 @@ export function StyleTab({ presentation, onChange }: StyleTabProps) {
                   ? undefined
                   : (value as PdfPresentation["photoShape"]),
             })
+          }
+        />
+        <ToggleField
+          span={2}
+          label="Links"
+          value={presentation.linkHighlight ? "on" : "off"}
+          options={linkHighlightOptions}
+          onChange={(value) =>
+            onChange({ ...presentation, linkHighlight: value === "on" })
           }
         />
         <ColorControl

@@ -612,6 +612,8 @@ export function applyTemplatePreset(
     lineHeight: preset.style.lineHeight,
     paperSize: current.paperSize,
     photoShape: undefined,
+    // A user preference, not part of a curated style — preserved like paperSize.
+    linkHighlight: current.linkHighlight,
   };
 }
 

@@ -143,6 +143,25 @@ describe("normalizePdfPresentation", () => {
     ).toBeUndefined();
     expect(normalizePdfPresentation({}).photoShape).toBeUndefined();
   });
+
+  it("keeps link highlighting on for a draft saved before the control existed", () => {
+    // The alternative silently restyles every resume already in storage.
+    expect(normalizePdfPresentation({}).linkHighlight).toBe(true);
+    expect(normalizePdfPresentation({ linkHighlight: "yes" }).linkHighlight).toBe(
+      true,
+    );
+    expect(normalizePdfPresentation({ linkHighlight: false }).linkHighlight).toBe(
+      false,
+    );
+  });
+
+  it("resolves linkHighlight for the root attribute the layouts branch on", () => {
+    const base = createDefaultPdfPresentation();
+    expect(resolvePdfPresentation(base).linkHighlight).toBe(true);
+    expect(
+      resolvePdfPresentation({ ...base, linkHighlight: false }).linkHighlight,
+    ).toBe(false);
+  });
 });
 
 describe("getEffectiveSecondary", () => {

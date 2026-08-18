@@ -48,3 +48,9 @@
 .header :global(.headline) {
   font-weight: 400;
 }
+
+/* Link cue: Plain rule under an accent uppercase heading with its own border — the ATS-safe baseline. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.16em;
+}

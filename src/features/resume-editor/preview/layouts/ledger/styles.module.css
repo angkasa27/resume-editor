@@ -139,3 +139,9 @@
   --resume-headline-color: var(--resume-muted);
   margin-top: var(--resume-gap-item);
 }
+
+/* Link cue: The 2px accent rule under each heading is the signature line; links must be visibly thinner. */
+.layout {
+  --resume-link-decoration: underline 0.5px;
+  --resume-link-offset: 0.2em;
+}

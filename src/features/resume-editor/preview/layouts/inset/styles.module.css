@@ -122,3 +122,9 @@
   font-weight: 600;
   --resume-headline-color: var(--resume-text);
 }
+
+/* Link cue: The accent gutter labels carry the hierarchy; the body column stays plain. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.16em;
+}

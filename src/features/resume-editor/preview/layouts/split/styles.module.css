@@ -111,3 +111,9 @@
 .header :global(.headline) {
   font-weight: 400;
 }
+
+/* Link cue: Softened: a full-strength rule buzzes on the coloured rail, and the heading's top hairline must stay the stronger line. */
+.layout {
+  --resume-link-decoration: underline color-mix(in srgb, currentColor 45%, transparent);
+  --resume-link-offset: 0.16em;
+}
