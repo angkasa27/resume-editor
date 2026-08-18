@@ -183,12 +183,10 @@ describe("getActiveTemplatePresetId", () => {
     ).toBeNull();
   });
 
-  it("returns null for the stock default presentation unless a preset matches it", () => {
-    const active = getActiveTemplatePresetId(createDefaultPdfPresentation());
-    // The default may legitimately match a curated preset; assert consistency, not null.
-    if (active) {
-      const preset = resumeTemplatePresets.find((p) => p.id === active)!;
-      expect(preset.layoutId).toBe("classic");
-    }
+  it("matches the stock default presentation to aurora-haze", () => {
+    // The template gallery must highlight the default template on first load.
+    expect(getActiveTemplatePresetId(createDefaultPdfPresentation())).toBe(
+      "aurora-haze",
+    );
   });
 });

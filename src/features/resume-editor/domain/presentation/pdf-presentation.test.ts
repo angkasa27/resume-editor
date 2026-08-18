@@ -12,14 +12,15 @@ import {
 } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 
 describe("createDefaultPdfPresentation", () => {
-  it("returns classic layout with standard sizing", () => {
+  it("returns the aurora layout with haze styling", () => {
     const result = createDefaultPdfPresentation();
 
-    expect(result.layoutId).toBe("classic");
-    expect(result.fontScale).toBe("md");
+    expect(result.layoutId).toBe("aurora");
+    expect(result.fontScale).toBe("sm");
     expect(result.spacing).toBe("standard");
     expect(result.lineHeight).toBe("standard");
     expect(result.accent).toBe(DEFAULT_ACCENT);
+    expect(result.secondary).toBe("#a5f3fc");
     expect(result.paperSize).toBe("a4");
   });
 });
@@ -75,12 +76,12 @@ describe("getPageMarginMm", () => {
 
 describe("normalizePdfPresentation", () => {
   it("returns defaults for null/undefined input", () => {
-    expect(normalizePdfPresentation(null).layoutId).toBe("classic");
-    expect(normalizePdfPresentation(undefined).layoutId).toBe("classic");
+    expect(normalizePdfPresentation(null).layoutId).toBe("aurora");
+    expect(normalizePdfPresentation(undefined).layoutId).toBe("aurora");
   });
 
   it("returns defaults for non-object input", () => {
-    expect(normalizePdfPresentation("bad").layoutId).toBe("classic");
+    expect(normalizePdfPresentation("bad").layoutId).toBe("aurora");
   });
 
   it("passes through valid values", () => {
@@ -111,8 +112,8 @@ describe("normalizePdfPresentation", () => {
       fontScale: "xxl",
       paperSize: "tabloid",
     });
-    expect(result.layoutId).toBe("classic");
-    expect(result.fontScale).toBe("md");
+    expect(result.layoutId).toBe("aurora");
+    expect(result.fontScale).toBe("sm");
     expect(result.paperSize).toBe("a4");
   });
 
@@ -167,7 +168,9 @@ describe("normalizePdfPresentation", () => {
 describe("getEffectiveSecondary", () => {
   it("falls back to the accent when secondary is unset", () => {
     const base = createDefaultPdfPresentation();
-    expect(getEffectiveSecondary(base)).toBe(base.accent);
+    expect(getEffectiveSecondary({ ...base, secondary: undefined })).toBe(
+      base.accent,
+    );
     expect(
       getEffectiveSecondary({ ...base, secondary: "#10b981" }),
     ).toBe("#10b981");
@@ -178,7 +181,7 @@ describe("resolvePdfPresentation", () => {
   it("returns a layout ID and CSS variables", () => {
     const result = resolvePdfPresentation();
 
-    expect(result.layoutId).toBe("classic");
+    expect(result.layoutId).toBe("aurora");
     expect(result.vars).toBeDefined();
     expect(result.vars["--resume-font"]).toBeDefined();
     expect(result.vars["--resume-body"]).toBeDefined();
@@ -248,7 +251,12 @@ describe("resolvePdfPresentation", () => {
   });
 
   it("defaults the secondary variable to the accent", () => {
-    const result = resolvePdfPresentation();
+    // The stock default now curates an explicit secondary, so pin the fallback
+    // with a presentation that has none.
+    const result = resolvePdfPresentation({
+      ...createDefaultPdfPresentation(),
+      secondary: undefined,
+    });
 
     expect(result.vars["--resume-secondary"]).toBe(DEFAULT_ACCENT);
   });

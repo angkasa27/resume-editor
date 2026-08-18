@@ -13,6 +13,7 @@ import { exportResumeDraft } from "@/features/resume-editor/domain/draft/resume-
 import {
   applyTemplatePreset,
   resumeTemplatePresets,
+  type ResumeTemplatePreset,
 } from "@/features/resume-editor/domain/presentation/template-presets";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { RESUME_PDF_SESSION_STORAGE_KEY } from "@/features/resume-editor/server/resume-pdf-session";
@@ -26,35 +27,42 @@ const TIMEOUT = 30_000;
 const ul = (bullets: string[]) =>
   `<ul>${bullets.map((b) => `<li>${b}</li>`).join("")}</ul>`;
 
-/**
- * The landing carousel derives from the preset list, so a preset with no persona
- * renders a broken image there — fail here instead, where it can be fixed.
- */
-function assertEveryPresetHasAPersona() {
-  const covered = new Set(PERSONAS.map((p) => p.presetId));
-  const missing = resumeTemplatePresets
-    .filter((preset) => !covered.has(preset.id))
-    .map((preset) => preset.id);
-  if (missing.length > 0) {
-    throw new Error(
-      `No persona for ${missing.join(", ")} — add one to scripts/personas.ts`,
-    );
-  }
+/** Deterministic PRNG so the persona→preset mapping is stable between runs. */
+function seededRandom(seed: number): () => number {
+  let state = seed >>> 0;
+  return () => {
+    state = (state + 0x6d2b79f5) | 0;
+    let t = Math.imul(state ^ (state >>> 15), 1 | state);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
 }
 
-function buildDraft(p: Persona): ResumeDraft {
+/** Fisher–Yates shuffle backed by a seeded PRNG (reproducible "random" order). */
+function seededShuffle<T>(items: ReadonlyArray<T>, seed: number): T[] {
+  const copy = [...items];
+  const random = seededRandom(seed);
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+/**
+ * The landing carousel derives from the preset list, so every preset needs a
+ * shot. Ten shared personas are shuffled once and mapped round-robin onto the
+ * presets — same seed, same screenshot, so re-runs don't churn the webps.
+ */
+const PERSONA_BY_PRESET_ID: ReadonlyMap<string, Persona> = new Map(
+  seededShuffle(resumeTemplatePresets, 42).map((preset, i) => [
+    preset.id,
+    PERSONAS[i % PERSONAS.length],
+  ]),
+);
+
+function buildDraft(p: Persona, preset: ResumeTemplatePreset): ResumeDraft {
   const draft = createDefaultResumeDraft();
-  const preset = resumeTemplatePresets.find((t) => t.id === p.presetId);
-  if (!preset) {
-    throw new Error(
-      `Persona ${p.presetId} references unknown preset ${p.presetId}`,
-    );
-  }
-  if (preset.layoutId !== p.layoutId) {
-    throw new Error(
-      `Persona ${p.presetId} is layout ${p.layoutId} but preset ${p.presetId} is ${preset.layoutId}`,
-    );
-  }
   draft.pdfPresentation = applyTemplatePreset(preset, draft.pdfPresentation);
   draft.profile = {
     ...draft.profile,
@@ -64,7 +72,7 @@ function buildDraft(p: Persona): ResumeDraft {
     email: p.email,
     photo: p.photo,
     extraLinks: p.links.map((url, i) => ({
-      id: `link-${p.presetId}-${i}`,
+      id: `link-${preset.id}-${i}`,
       url,
     })),
   };
@@ -79,7 +87,7 @@ function buildDraft(p: Persona): ResumeDraft {
     ...s.workExperience,
     items: p.work.map((w, i) => ({
       ...workBase,
-      id: `work-${p.presetId}-${i}`,
+      id: `work-${preset.id}-${i}`,
       companyName: w.company,
       position: w.position,
       location: w.location,
@@ -102,7 +110,7 @@ function buildDraft(p: Persona): ResumeDraft {
     ...s.projects,
     items: p.projects.map((pr, i) => ({
       ...projectBase,
-      id: `project-${p.presetId}-${i}`,
+      id: `project-${preset.id}-${i}`,
       projectName: pr.name,
       startDate: pr.start,
       endDate: pr.end,
@@ -114,7 +122,7 @@ function buildDraft(p: Persona): ResumeDraft {
     visible: true,
     items: p.certs.map((c, i) => ({
       ...certBase,
-      id: `cert-${p.presetId}-${i}`,
+      id: `cert-${preset.id}-${i}`,
       certificationName: c.name,
       issuingOrganization: c.org,
       issuedDate: c.date,
@@ -156,14 +164,16 @@ function shapeAsA4Page() {
 }
 
 /** SCREENSHOT_ONLY=id1,id2 re-shoots just those presets — otherwise adding one template rewrites all ~36 webps. */
-function selectedPersonas() {
+function selectedPresets() {
   const only = process.env.SCREENSHOT_ONLY?.split(",")
     .map((id) => id.trim())
     .filter(Boolean);
-  if (!only?.length) return PERSONAS;
-  const selected = PERSONAS.filter((p) => only.includes(p.presetId));
+  if (!only?.length) return resumeTemplatePresets;
+  const selected = resumeTemplatePresets.filter((preset) =>
+    only.includes(preset.id),
+  );
   const unknown = only.filter(
-    (id) => !PERSONAS.some((p) => p.presetId === id),
+    (id) => !resumeTemplatePresets.some((preset) => preset.id === id),
   );
   if (unknown.length > 0) {
     throw new Error(`SCREENSHOT_ONLY names no such preset: ${unknown.join(", ")}`);
@@ -172,8 +182,11 @@ function selectedPersonas() {
 }
 
 async function captureTemplates(browser: Browser) {
-  for (const persona of selectedPersonas()) {
-    const serialized = exportResumeDraft(buildDraft(persona));
+  for (const preset of selectedPresets()) {
+    const persona = PERSONA_BY_PRESET_ID.get(preset.id);
+    if (!persona)
+      throw new Error(`No persona mapped for preset ${preset.id}`);
+    const serialized = exportResumeDraft(buildDraft(persona, preset));
 
     const page = await browser.newPage();
     await page.setViewport({ width: 900, height: 1800, deviceScaleFactor: 2 });
@@ -191,19 +204,15 @@ async function captureTemplates(browser: Browser) {
 
     const article = await page.$(".resume-document");
     if (!article)
-      throw new Error(
-        `No .resume-document rendered for ${persona.presetId}`,
-      );
+      throw new Error(`No .resume-document rendered for ${preset.id}`);
 
-    const out = path.join(TEMPLATES_DIR, `${persona.presetId}.webp`);
+    const out = path.join(TEMPLATES_DIR, `${preset.id}.webp`);
     await article.screenshot({
       path: out as `${string}.webp`,
       type: "webp",
       quality: 90,
     });
-    console.log(
-      `✓ template  ${persona.presetId.padEnd(16)} ${persona.fullName}`,
-    );
+    console.log(`✓ template  ${preset.id.padEnd(16)} ${persona.fullName}`);
     await page.close();
   }
 }
@@ -243,7 +252,6 @@ async function assertServerUp() {
 }
 
 async function main() {
-  assertEveryPresetHasAPersona();
   await assertServerUp();
   await mkdir(TEMPLATES_DIR, { recursive: true });
 

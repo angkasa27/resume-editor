@@ -10,8 +10,8 @@ describe("resume schema", () => {
     const parsed = parseResumeDraft(draft);
 
     expect(parsed.schemaVersion).toBe(3);
-    expect(parsed.pdfPresentation.layoutId).toBe("classic");
-    expect(parsed.pdfPresentation.fontScale).toBe("md");
+    expect(parsed.pdfPresentation.layoutId).toBe("aurora");
+    expect(parsed.pdfPresentation.fontScale).toBe("sm");
     expect(parsed.profile.fullName).toBeTruthy();
   });
 
@@ -44,12 +44,12 @@ describe("resume schema", () => {
     });
 
     expect(parsed.pdfPresentation).toEqual({
-      layoutId: "classic",
+      layoutId: "aurora",
       fontFamilyId: "inter",
-      fontScale: "md",
+      fontScale: "sm",
       spacing: "standard",
       lineHeight: "standard",
-      accent: "#2563eb",
+      accent: "#a78bfa",
       paperSize: "a4",
       linkHighlight: true,
     });

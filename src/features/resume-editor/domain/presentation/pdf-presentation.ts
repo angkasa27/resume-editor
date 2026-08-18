@@ -203,7 +203,8 @@ export function getPaperWidthPx(paperSize: PdfPaperSize): number {
   return paperDimensions[paperSize].widthMm * PX_PER_MM;
 }
 
-export const DEFAULT_ACCENT = "#2563eb";
+/** The stock presentation's accent — aurora-haze's haze violet. */
+export const DEFAULT_ACCENT = "#a78bfa";
 
 const hexColorPattern = /^#[0-9a-fA-F]{6}$/;
 
@@ -233,13 +234,16 @@ export function getPageMarginMm(layoutId: PdfLayoutId, spacing: PdfSpacingId) {
 export const NOMINAL_LENGTH_MARGIN_MM = 14;
 
 export function createDefaultPdfPresentation(): PdfPresentation {
+  // The stock default is the aurora-haze preset; keep these in sync with it so
+  // the template gallery highlights the default template on first load.
   return {
-    layoutId: "classic",
+    layoutId: "aurora",
     fontFamilyId: DEFAULT_FONT_ID,
-    fontScale: "md",
+    fontScale: "sm",
     spacing: "standard",
     lineHeight: "standard",
     accent: DEFAULT_ACCENT,
+    secondary: "#a5f3fc",
     paperSize: "a4",
     linkHighlight: true,
   };

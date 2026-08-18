@@ -103,3 +103,9 @@ If you genuinely think a convention is harmful, surface it. Don't fork silently.
 "Completed" is wrong if anything was skipped silently.
 "Tests pass" is wrong if any were skipped.
 Default to surfacing uncertainty, not hiding it.
+
+## Rule 10 - Don't write spam comments
+
+Only add comments if other agent's or person need to know if they want to continue development on that part.
+Don't write comments that explain why you do something.
+Write a clear, short, to the points comment, like 1-2 lines only

@@ -56,7 +56,7 @@ Templates live in `src/features/resume-editor/preview/templates/<name>/`. Each t
 Registering the template:
 1. Add the template ID to `pdfTemplateIds` in [pdf-presentation.ts](src/features/resume-editor/domain/presentation/pdf-presentation.ts).
 2. Register the template definition and map its header in [template-registry.tsx](src/features/resume-editor/preview/template-registry.tsx).
-3. (Optional) Define a template persona in `scripts/personas.ts` so that screenshots can be generated for it.
+3. (Optional) Reuse or extend a shared persona in `scripts/personas.ts` so the new template gets screenshot content (personas are mapped onto presets by `pnpm screenshots`).
 
 ## Adding a Font
 
