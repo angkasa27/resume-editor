@@ -7,7 +7,7 @@ import {
 } from "@/features/resume-editor/preview/layout-registry";
 
 describe("preview layout registry", () => {
-  it("exposes all eighteen built-in layouts", () => {
+  it("exposes all nineteen built-in layouts", () => {
     const ids = previewLayoutDefinitions.map((layout) => layout.id);
     expect(ids).toEqual([
       "classic",
@@ -28,6 +28,7 @@ describe("preview layout registry", () => {
       "numeral",
       "atlas",
       "editorial",
+      "harvard",
     ]);
   });
 
@@ -51,6 +52,7 @@ describe("preview layout registry", () => {
       "numeral",
       "atlas",
       "editorial",
+      "harvard",
     ] as const) {
       expect(getLayout(id).id).toBe(id);
     }
@@ -109,5 +111,6 @@ describe("preview layout registry", () => {
     expect(getLayout("numeral").getColumn).toBeUndefined();
     expect(getLayout("atlas").getColumn).toBeUndefined();
     expect(getLayout("editorial").getColumn).toBeUndefined();
+    expect(getLayout("harvard").getColumn).toBeUndefined();
   });
 });

@@ -1,0 +1,138 @@
+/* The Harvard MCS resume format: a centered name over a rule, centered
+   title-case section headings, and every entry a pair of left/right lines. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+/* Centered label, no rule and no capitals: in this format the only emphasis
+   available anywhere on the page is bold. */
+.layout :global(.section-heading) {
+  text-align: center;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: var(--resume-body);
+  font-weight: 700;
+}
+
+/* One type size for the whole document — dates and places are body text set
+   flush right, not secondary metadata. */
+.layout :global(.item-title),
+.layout :global(.item-line-lead),
+.layout :global(.item-line-side),
+.layout :global(.meta) {
+  font-size: var(--resume-body);
+  color: var(--resume-text);
+}
+
+.layout :global(.item-title),
+.layout :global(.item-line-lead) {
+  font-weight: 700;
+}
+
+.layout :global(.item-header) {
+  align-items: baseline;
+  gap: var(--resume-gap-item);
+}
+
+.layout :global(.item-line-side) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* The two entry lines belong together; only the bullets below get air. */
+.layout :global(.item) {
+  gap: 0;
+}
+
+.layout :global(.rich-text) {
+  text-align: left;
+  margin-top: var(--resume-gap-inner);
+}
+
+.layout :global(.rich-text ul) {
+  padding-left: 1.6em;
+}
+
+/* "Technical: Python, SQL" — a bold label running into its list on one line. */
+.layout :global(.inline-entry) {
+  display: block;
+}
+
+.layout :global(.inline-entry .item-title) {
+  display: inline;
+  margin-right: 0.35em;
+}
+
+/* Header — name centered over a full-width rule, contacts dotted underneath. */
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--resume-gap-header);
+  text-align: center;
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.header-photo) {
+  width: 64px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 4px);
+  overflow: hidden;
+  margin-bottom: var(--resume-gap-item);
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.header-body) {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--resume-gap-header);
+}
+
+.header :global(.name-block) {
+  width: 100%;
+  align-items: center;
+  border-bottom: 1px solid var(--resume-text);
+  padding-bottom: var(--resume-gap-inner);
+}
+
+/* Barely larger than the body: the name is a label on the page, not a masthead. */
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.6);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.header :global(.headline) {
+  font-size: var(--resume-body);
+  font-weight: 400;
+}
+
+.header :global(.contact-block) {
+  align-items: center;
+}
+
+.header :global(.contact-line) {
+  font-size: var(--resume-body);
+}
+
+/* Link cue: a plain underline, the only decoration a format with no colour has left. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.15em;
+}

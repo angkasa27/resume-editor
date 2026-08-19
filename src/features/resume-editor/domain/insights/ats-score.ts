@@ -274,6 +274,7 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   masthead: { status: "pass" },
   numeral: { status: "pass" },
   editorial: { status: "pass" },
+  harvard: { status: "pass" },
   compass: {
     status: "fail",
     message:

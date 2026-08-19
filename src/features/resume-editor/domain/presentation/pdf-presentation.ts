@@ -30,6 +30,7 @@ export const pdfLayoutIds = [
   "numeral",
   "atlas",
   "editorial",
+  "harvard",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -178,6 +179,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   compass: 14, // the hanging glyphs already read as a margin of their own
   numeral: 16, // a 150px date gutter inside a wide margin is the whole look
   editorial: 20, // whitespace is the layout — the band and the spreads both need it
+  harvard: 18, // the format is a Word document with wide margins; keep them
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */

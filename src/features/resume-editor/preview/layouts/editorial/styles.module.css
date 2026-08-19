@@ -169,7 +169,7 @@
   color: var(--resume-muted);
 }
 
-/* Link cue: Its headings are the smallest of all eighteen; only a hairline stays under them. */
+/* Link cue: Its headings are the smallest of all nineteen; only a hairline stays under them. */
 .layout {
   --resume-link-decoration: underline 0.5px;
   --resume-link-offset: 0.18em;

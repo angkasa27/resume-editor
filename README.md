@@ -36,7 +36,7 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **18 professional templates**: Switch between eighteen polished layouts (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial) without retyping a thing.
+- **19 professional templates**: Switch between nineteen polished layouts (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard) without retyping a thing.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 

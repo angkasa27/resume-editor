@@ -549,6 +549,32 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "relaxed",
     },
   },
+  // harvard — the MCS format is monochrome by construction: the accent only inks
+  // the centered headings, so it stays near-black or it stops being the format.
+  {
+    id: "harvard-serif",
+    label: "Serif",
+    layoutId: "harvard",
+    style: {
+      accent: "#111827",
+      fontFamilyId: "times-new-roman",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "harvard-sans",
+    label: "Sans",
+    layoutId: "harvard",
+    style: {
+      accent: "#111827",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
@@ -572,6 +598,7 @@ const layoutCategories: Record<
   numeral: ["ats", "professional"],
   atlas: ["creative"],
   editorial: ["creative"],
+  harvard: ["ats", "professional"],
   "modern-centered": ["ats", "professional"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
