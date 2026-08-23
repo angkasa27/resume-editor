@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
 
-import { formatMonthYear, parseMonthYear } from "@/features/resume-editor/domain/month-year";
+import {
+  formatDayMonthYear,
+  formatMonthYear,
+  parseDayMonthYear,
+  parseMonthYear,
+} from "@/features/resume-editor/domain/month-year";
 
 describe("parseMonthYear", () => {
   it("parses a valid month-year string", () => {
@@ -42,5 +47,28 @@ describe("formatMonthYear", () => {
   it("normalizes to start of month", () => {
     const result = formatMonthYear(new Date(2024, 2, 20));
     expect(result).toBe("Mar 2024");
+  });
+});
+
+/** Day precision exists for the 履歴書's 生年月日, which prints the day. It is a
+ *  separate format on purpose: a month-only value must not silently read as the
+ *  first of that month, and vice versa. */
+describe("day precision", () => {
+  it("round-trips a date through the picker's format", () => {
+    const value = formatDayMonthYear(new Date(1994, 5, 12));
+    expect(value).toBe("12 Jun 1994");
+    expect(parseDayMonthYear(value)!.getDate()).toBe(12);
+  });
+
+  it("keeps the day, where the month parser would flatten it", () => {
+    expect(parseDayMonthYear("12 Jun 1994")!.getDate()).toBe(12);
+    expect(parseMonthYear("Jun 1994")!.getDate()).toBe(1);
+  });
+
+  it("rejects a month-only value and other malformed input", () => {
+    expect(parseDayMonthYear("Jun 1994")).toBeUndefined();
+    expect(parseDayMonthYear("1994-06-12")).toBeUndefined();
+    expect(parseDayMonthYear("")).toBeUndefined();
+    expect(parseDayMonthYear(undefined)).toBeUndefined();
   });
 });

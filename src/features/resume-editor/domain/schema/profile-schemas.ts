@@ -24,9 +24,11 @@ export const profileSchema = z.object({
    * Identity fields only some layouts print — the 履歴書's ふりがな, 生年月日,
    * 性別 and 〒 today. A free map, not named columns: which keys exist is the
    * layout's business (`layout-section-rules.ts` declares them), and a new
-   * locale must not cost a schema version. Optional, so older drafts parse.
+   * locale must not cost a schema version. Optional, so older drafts parse —
+   * and so are its values: a registered field the user has not filled in comes
+   * back from the form as `undefined`, which must never abort the save.
    */
-  extras: z.record(z.string(), z.string()).optional(),
+  extras: z.record(z.string(), z.string().optional()).optional(),
   phone: textField(),
   email: textField(),
   photo: textField(),

@@ -1,6 +1,7 @@
 import { differenceInYears, isValid, parseISO } from "date-fns";
 import type { ReactNode } from "react";
 
+import { parseDayMonthYear } from "@/features/resume-editor/domain/month-year";
 import { compactJoin } from "@/features/resume-editor/preview/helpers/string";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
@@ -17,10 +18,20 @@ const JAPANESE_DATE = new Intl.DateTimeFormat("ja-JP-u-ca-japanese", {
   day: "numeric",
 });
 
+/** The date field stores what its picker writes — "12 Jun 1994" — while
+ * `updatedAt` and any draft written before that picker existed are ISO. Both
+ * parse; anything else prints as typed. */
+function parseFormDate(value: string | undefined) {
+  if (!value) return undefined;
+  const dayMonthYear = parseDayMonthYear(value);
+  if (dayMonthYear) return dayMonthYear;
+  const iso = parseISO(value);
+  return isValid(iso) ? iso : undefined;
+}
+
 function japaneseDate(value: string | undefined) {
-  if (!value) return "";
-  const parsed = parseISO(value);
-  return isValid(parsed) ? JAPANESE_DATE.format(parsed) : value;
+  const parsed = parseFormDate(value);
+  return parsed ? JAPANESE_DATE.format(parsed) : (value ?? "");
 }
 
 /** "平成6年6月12日生（満32歳）". The age counts to the document's own as-of date,
@@ -28,8 +39,8 @@ function japaneseDate(value: string | undefined) {
 function birthLine(birthDate: string | undefined, asOf: Date) {
   const born = japaneseDate(birthDate);
   if (!born) return "";
-  const parsed = parseISO(birthDate as string);
-  if (!isValid(parsed) || !isValid(asOf)) return `${born}生`;
+  const parsed = parseFormDate(birthDate);
+  if (!parsed || !isValid(asOf)) return `${born}生`;
   const age = differenceInYears(asOf, parsed);
   return age >= 0 ? `${born}生（満${age}歳）` : `${born}生`;
 }
@@ -109,38 +120,49 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
 
   return (
     <header className={`${styles.header} layout-header`} data-layout="rirekisho">
-      <div className="rirekisho-title">
-        <span className="rirekisho-title-text">履歴書</span>
-        <span className="rirekisho-title-date">
-          {japaneseDate(updatedAt)}現在
-        </span>
-      </div>
+      {/* The photo hangs from the very top of the sheet, so the title and the
+          as-of date sit beside it rather than above it. */}
+      <div className="rirekisho-head">
+        <div className="rirekisho-head-main">
+          <div className="rirekisho-title">
+            <span className="rirekisho-title-text">履歴書</span>
+            <span className="rirekisho-title-date">
+              {japaneseDate(updatedAt)}現在
+            </span>
+          </div>
 
-      <div className="rirekisho-identity">
-        <div className="rirekisho-identity-main">
-          <Line label="ふりがな" className="rirekisho-line-dashed">
-            {extras.nameReading}
-          </Line>
-          <Line label="氏 名" className="rirekisho-name-line">
-            <h1 className="name" data-testid="resume-preview-full-name">
-              <WrapOnSpace text={profile.fullName} />
-            </h1>
-          </Line>
-          <div className="rirekisho-line rirekisho-birth-line">
-            <span className="rirekisho-label">生年月日</span>
-            <span className="rirekisho-value">
-              {birthLine(extras.birthDate, asOf)}
-            </span>
-            <span className="rirekisho-label rirekisho-label-inner">性別</span>
-            <span className="rirekisho-value rirekisho-gender">
-              <Gender value={extras.gender} />
-            </span>
+          <div className="rirekisho-identity-main">
+            <Line label="ふりがな" className="rirekisho-line-dashed">
+              {extras.nameReading}
+            </Line>
+            <Line label="氏 名" className="rirekisho-name-line">
+              <h1 className="name" data-testid="resume-preview-full-name">
+                <WrapOnSpace text={profile.fullName} />
+              </h1>
+            </Line>
+            <div className="rirekisho-line rirekisho-birth-line">
+              <span className="rirekisho-label">生年月日</span>
+              <span className="rirekisho-value">
+                {birthLine(extras.birthDate, asOf)}
+              </span>
+              <span className="rirekisho-label rirekisho-label-inner">
+                性別
+              </span>
+              <span className="rirekisho-value rirekisho-gender">
+                <Gender value={extras.gender} />
+              </span>
+            </div>
           </div>
         </div>
 
-        {/* Part of the form whether or not a photo was uploaded — an empty box
-            carries the same instructions the printed sheet does. */}
-        <div className="rirekisho-photo" data-slot="photo-frame">
+        {/* Part of the form whether or not a photo was uploaded: empty, it is
+            the printed sheet's dashed placeholder and carries its instructions;
+            filled, the photo is simply pasted on, with no frame. */}
+        <div
+          className="rirekisho-photo"
+          data-slot="photo-frame"
+          data-empty={profile.photo ? undefined : ""}
+        >
           {profile.photo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={profile.photo} alt={profile.fullName} />

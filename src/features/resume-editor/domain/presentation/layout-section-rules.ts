@@ -12,12 +12,29 @@ import type { ResumeSectionPanelKey } from "@/features/resume-editor/domain/sect
  * Most layouts need none of this: a layout absent from the table below prints
  * every visible section under whatever title the user gave it.
  */
+/** What the field *is*, not which glyph to draw — the form maps these to icons,
+ *  so the domain stays free of components. */
+export type LayoutExtraFieldIcon =
+  | "reading"
+  | "gender"
+  | "postal"
+  | "phone"
+  | "address"
+  | "time"
+  | "people"
+  | "spouse";
+
 export type LayoutExtraField = {
   /** Key under `profile.extras`. */
   key: string;
+  /** Carries the placeholder too, so every field reads "English (日本語)" — a
+   *  sample value in one box and a label in the next is what made the pair of
+   *  有 / 無 fields indistinguishable. */
   label: string;
-  placeholder?: string;
   type?: "text" | "date" | "textarea";
+  /** A leading glyph, where one reinforces scanning; the date picker draws its
+   *  own calendar. */
+  icon?: LayoutExtraFieldIcon;
   autoComplete?: string;
   /** Spans both columns of the form grid. */
   fullWidth?: boolean;
@@ -65,11 +82,12 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
     extraFields: {
       label: "Rirekisho details",
       description:
-        "The boxes the 履歴書 form prints that a résumé has no field for. Every one is optional; blank prints an empty box, exactly like the paper form.",
+        "The boxes the 履歴書 form prints that a resume has no field for. Every one is optional; blank prints an empty box, exactly like the paper form.",
       fields: [
         {
           key: "nameReading",
           label: "Name reading (ふりがな)",
+          icon: "reading",
           fullWidth: true,
         },
         {
@@ -78,46 +96,43 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
           type: "date",
           autoComplete: "bday",
         },
-        { key: "gender", label: "Gender (性別)", placeholder: "男 / 女" },
+        { key: "gender", label: "Gender (性別)", icon: "gender" },
         {
           key: "postalCode",
           label: "Postal code (郵便番号)",
-          placeholder: "123-4567",
+          icon: "postal",
           autoComplete: "postal-code",
         },
-        { key: "homePhone", label: "Home phone (自宅電話)" },
+        { key: "homePhone", label: "Home phone (自宅電話)", icon: "phone" },
         {
           key: "addressReading",
           label: "Address reading (ふりがな)",
+          icon: "reading",
           fullWidth: true,
         },
         {
           key: "contactAddress",
           label: "Second address (連絡先)",
-          placeholder: "同上",
+          icon: "address",
           fullWidth: true,
         },
         {
           key: "contactAddressReading",
           label: "Second address reading (ふりがな)",
+          icon: "reading",
         },
-        { key: "contactPhone", label: "Second phone (連絡先電話)" },
-        { key: "commuteTime", label: "Commute (通勤時間)", placeholder: "約45分" },
-        {
-          key: "dependents",
-          label: "Dependents (扶養家族数)",
-          placeholder: "0",
-        },
-        { key: "spouse", label: "Spouse (配偶者)", placeholder: "有 / 無" },
+        { key: "contactPhone", label: "Second phone (連絡先電話)", icon: "phone" },
+        { key: "commuteTime", label: "Commute (通勤時間)", icon: "time" },
+        { key: "dependents", label: "Dependents (扶養家族数)", icon: "people" },
+        { key: "spouse", label: "Spouse (配偶者)", icon: "spouse" },
         {
           key: "spouseSupport",
           label: "Supporting a spouse (配偶者の扶養義務)",
-          placeholder: "有 / 無",
+          icon: "spouse",
         },
         {
           key: "requests",
           label: "Requests to the employer (本人希望記入欄)",
-          placeholder: "貴社規定に従います。",
           type: "textarea",
           fullWidth: true,
         },

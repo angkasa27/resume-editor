@@ -127,6 +127,21 @@ describe("resume schema", () => {
     ).not.toThrow();
   });
 
+  it("keeps an extras field the user has not filled in", () => {
+    // A layout's extra field registers with the form the moment its panel opens;
+    // until it is typed into, the form hands back `undefined` for it. A record
+    // of plain strings rejected that, and since parsing happens inside
+    // `storage.save()`, the whole save aborted — every later edit lost with it.
+    const draft = createDefaultResumeDraft();
+
+    expect(() =>
+      profileSchema.parse({
+        ...draft.profile,
+        extras: { birthDate: undefined, gender: "男" },
+      }),
+    ).not.toThrow();
+  });
+
   it("stores a not-yet-valid email leniently (format is advisory)", () => {
     const draft = createDefaultResumeDraft();
 

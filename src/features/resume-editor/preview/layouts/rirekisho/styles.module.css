@@ -18,6 +18,7 @@
   --rirekisho-year-w: 15mm;
   --rirekisho-month-w: 12mm;
   --rirekisho-label-w: 24mm;
+  --rirekisho-photo-gap: 3mm;
   --rirekisho-pad: 0 2.5mm;
   font-size: var(--resume-body);
   line-height: var(--rirekisho-row);
@@ -63,16 +64,30 @@
   flex-direction: column;
 }
 
-.header :global(.rirekisho-identity) {
+/* Title, identity block and photo share one row: the photo starts at the very
+   top of the sheet, which puts the as-of date beside it instead of above it. */
+.header :global(.rirekisho-head) {
   display: flex;
   align-items: stretch;
-  gap: 3mm;
+  gap: var(--rirekisho-photo-gap);
+}
+
+.header :global(.rirekisho-head-main) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .header :global(.rirekisho-identity-main) {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
   border: var(--rirekisho-line);
+  /* The contact block below draws this edge, so it is never a doubled rule —
+     and it spans the full width, under the photo too, as the form's does. */
+  border-bottom: 0;
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -81,15 +96,12 @@
   display: flex;
   align-items: stretch;
   border: var(--rirekisho-line);
-  border-top: 0;
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
 
-/* The identity block owns the sheet's top rule; the contact blocks stack under
-   it sharing one rule each. */
-.header :global(.rirekisho-identity + .rirekisho-contact) {
-  border-top: var(--rirekisho-line);
+.header :global(.rirekisho-contact + .rirekisho-contact) {
+  border-top: 0;
 }
 
 .header :global(.rirekisho-contact-main) {
@@ -121,6 +133,12 @@
   border-bottom: var(--rirekisho-line);
 }
 
+/* The name row absorbs whatever the photo makes the block taller by, so the
+   birth row sits on the bottom edge and its 性別 divider reaches it. */
+.header :global(.rirekisho-name-line) {
+  flex: 1;
+}
+
 .header :global(.rirekisho-address-line) {
   border-bottom: 0;
 }
@@ -128,6 +146,7 @@
 .header :global(.rirekisho-birth-line) {
   display: flex;
   align-items: stretch;
+  min-height: calc(var(--rirekisho-row) * 1.5);
 }
 
 .header :global(.rirekisho-label) {
@@ -208,14 +227,22 @@
 
 .header :global(.rirekisho-photo) {
   flex: 0 0 auto;
+  align-self: flex-start;
   width: 30mm;
+  /* Same air under the photo as beside it, so it reads as pasted onto the sheet
+     rather than wedged between two rules. */
+  margin-bottom: var(--rirekisho-photo-gap);
   aspect-ratio: var(--resume-photo-aspect, 3 / 4);
-  border: var(--rirekisho-dash);
   border-radius: var(--resume-photo-radius, 0);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+/* The dashes are the placeholder, not the photo: a pasted print has no frame. */
+.header :global(.rirekisho-photo[data-empty]) {
+  border: var(--rirekisho-dash);
   padding: 1.5mm;
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;

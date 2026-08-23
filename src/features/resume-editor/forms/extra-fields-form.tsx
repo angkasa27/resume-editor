@@ -1,18 +1,49 @@
 "use client";
 
-import { CalendarIcon } from "lucide-react";
+import { Controller } from "react-hook-form";
+import {
+  ClockIcon,
+  HeartIcon,
+  MailboxIcon,
+  MapPinIcon,
+  PhoneIcon,
+  SpellCheckIcon,
+  UsersIcon,
+  UsersRoundIcon,
+  type LucideIcon,
+} from "lucide-react";
 
-import { FieldGroup } from "@/components/ui/field";
+import {
+  Field,
+  FieldContent,
+  FieldError,
+  FieldGroup,
+  FieldLabel,
+} from "@/components/ui/field";
 import {
   getLayoutExtraFields,
   type LayoutExtraField,
+  type LayoutExtraFieldIcon,
 } from "@/features/resume-editor/domain/presentation/layout-section-rules";
 import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
-import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
 import { Textarea } from "@/components/ui/textarea";
 import { FieldLabelText } from "@/features/resume-editor/forms/fields/field-label-text";
+import { MonthYearPicker } from "@/features/resume-editor/forms/fields/month-year-picker";
 import { ProfileTextField } from "@/features/resume-editor/forms/profile-fields";
 import type { ProfileFormContext } from "@/features/resume-editor/forms/use-profile-form";
+
+/** The spec names what a field is; the glyph is this layer's choice, the same
+ * way Profile picks a pin for its location. */
+const ICONS: Record<LayoutExtraFieldIcon, LucideIcon> = {
+  reading: SpellCheckIcon,
+  gender: UsersRoundIcon,
+  postal: MailboxIcon,
+  phone: PhoneIcon,
+  address: MapPinIcon,
+  time: ClockIcon,
+  people: UsersIcon,
+  spouse: HeartIcon,
+};
 
 /** The identity fields one layout prints and the others ignore — kana readings,
  * a birth date, a postal code. Declared per layout in `layout-section-rules.ts`
@@ -27,7 +58,7 @@ export function ExtraFieldsForm({
   layoutId: PdfLayoutId;
 }) {
   const group = getLayoutExtraFields(layoutId);
-  const { register, formState, getFieldState } = ctx.form;
+  const { control, register, setValue, formState, getFieldState } = ctx.form;
 
   // Reachable: the panel stays open while the user switches to a layout that
   // declares nothing, and the row it was opened from is already gone.
@@ -49,6 +80,46 @@ export function ExtraFieldsForm({
           const name = path(field);
           const state = getFieldState(name, formState);
           const id = `${idPrefix}-${field.key}`;
+          const Icon = field.icon ? ICONS[field.icon] : null;
+
+          if (field.type === "date") {
+            return (
+              <Field
+                key={field.key}
+                data-invalid={state.invalid || undefined}
+                className={field.fullWidth ? "col-span-full" : undefined}
+              >
+                {/* The picker's trigger is a plain button with no placeholder of
+                    its own, so an sr-only label carries the accessible name —
+                    the same wiring every dated section field uses. */}
+                <FieldLabel htmlFor={id} className="sr-only">
+                  <FieldLabelText label={field.label} />
+                </FieldLabel>
+                <FieldContent>
+                  <Controller
+                    control={control}
+                    name={name}
+                    render={({ field: bound }: { field: { value?: string } }) => (
+                      <MonthYearPicker
+                        id={id}
+                        precision="day"
+                        value={bound.value}
+                        placeholder={field.label}
+                        ariaInvalid={state.invalid}
+                        onChange={(next) =>
+                          setValue(name, next, {
+                            shouldDirty: true,
+                            shouldValidate: formState.isSubmitted,
+                          })
+                        }
+                      />
+                    )}
+                  />
+                  <FieldError errors={[state.error]} />
+                </FieldContent>
+              </Field>
+            );
+          }
 
           if (field.type === "textarea") {
             return (
@@ -64,7 +135,7 @@ export function ExtraFieldsForm({
                   <Textarea
                     id={id}
                     rows={3}
-                    placeholder={field.placeholder ?? field.label}
+                    placeholder={field.label}
                     aria-invalid={state.invalid || undefined}
                     {...register(name)}
                   />
@@ -81,12 +152,10 @@ export function ExtraFieldsForm({
               name={name}
               id={id}
               label={field.label}
-              placeholder={field.placeholder ?? field.label}
+              placeholder={field.label}
               type={field.type}
               autoComplete={field.autoComplete}
-              // A native date input paints its own format mask, so the
-              // placeholder that carries every other field's name never shows.
-              icon={field.type === "date" ? <CalendarIcon /> : undefined}
+              icon={Icon ? <Icon /> : undefined}
               invalid={state.invalid || undefined}
               error={state.error}
               className={field.fullWidth ? "col-span-full" : undefined}

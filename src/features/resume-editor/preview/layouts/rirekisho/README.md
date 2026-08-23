@@ -6,7 +6,7 @@
 | --- | --- |
 | ![Rirekisho Gothic template](../../../../../../public/templates/rirekisho-gothic.webp) | ![Rirekisho Mincho template](../../../../../../public/templates/rirekisho-mincho.webp) |
 
-The Japanese 履歴書, reproduced as a form rather than a résumé. Every block is a
+The Japanese 履歴書, reproduced as a form rather than a resume. Every block is a
 ruled box: an identity table with a 30×40mm photo cell, an address table under
 it, then the whole history in fixed 年 / 月 columns. The rules are not
 decoration — they are the format, so nothing here has gaps between sections.
@@ -15,9 +15,9 @@ decoration — they are the format, so nothing here has gaps between sections.
 
 - **Page shape** — one column, 12mm margins. The boxes reach almost to the paper edge: the form, not the whitespace, frames the page.
 - **The line grid** — the whole point. `--rirekisho-row` is the height of a printed line; every cell sets `line-height` to exactly that and takes no vertical padding, and each row paints a rule at the **top** of every line it occupies. A cell that wraps to three lines is therefore three rows tall with a rule under each — row heights stay equal down the page, like a spreadsheet, and long text never makes a half-height box. Top and not bottom because two rows share that edge: one rule is drawn there, never two stacked or one clipped. The pitch is `2 × --resume-body` so it is always a whole number of pixels; at a fractional pitch the browser drops rules.
-- **Title** — 履歴書 at `0.85 × h1` with `0.35em` tracking, and the draft's `updatedAt` on the right as 令和8年8月23日現在. `Intl` with the `ja-JP-u-ca-japanese` calendar owns the era table, so the next era needs no edit.
+- **Title row** — 履歴書 at `0.85 × h1` with `0.35em` tracking, and the draft's `updatedAt` at the right *of the table column*, beside the photo rather than above it: the photo hangs from the top edge of the sheet. Rendered 令和8年8月23日現在 — `Intl` with the `ja-JP-u-ca-japanese` calendar owns the era table, so the next era needs no edit.
 - **Identity box** — ふりがな over 氏名 (two rows tall), then 生年月日 and 性別 sharing a row. 生年月日 reads 平成6年6月12日生（満32歳）; the age counts to the document's own as-of date, never to `new Date()`, so a render is reproducible. 性別 prints 男・女 with the answer **ringed**, the way the paper form is filled in.
-- **Photo box** — 30mm at `var(--resume-photo-aspect, 3 / 4)` = 30×40mm, dashed, beside the identity box. With no photo it carries the printed sheet's own instructions (写真をはる位置 …).
+- **Photo box** — 30mm at `var(--resume-photo-aspect, 3 / 4)` = 30×40mm, hanging from the top of the sheet with the same air below it as beside it. The dashes are the **placeholder**: an empty box is dashed and carries the printed sheet's instructions (写真をはる位置 …), a filled one is just the photo, unframed.
 - **Contact boxes** — ふりがな / 現住所 with 〒 on the left, 電話 and メールアドレス stacked on the right; then the same shape for 連絡先. Profile links print in the 連絡先 box — the form has no row for a URL, and that box is where a second point of contact belongs.
 - **学歴・職歴 table** — one table captioned 年 / 月 / 学歴・職歴（各別にまとめて書く）, with 学歴 and 職歴 as centred label rows over their runs. Work rows read `会社名 入社`, the role, the description, then `一身上の都合により退職` or a dateless `現在に至る`. Education rows read `入学` / `卒業`. Closed by a right-aligned 以上.
 - **年 / 月** — split from the stored `MMM yyyy` via `parseMonthYear`; a date the picker never produced (`current`, free text) leaves both cells blank rather than guessing. The rule between 年 and 月 is dashed, the one before the entry solid — the form's own hierarchy.
@@ -32,11 +32,13 @@ decoration — they are the format, so nothing here has gaps between sections.
 All three knobs in `domain/presentation/layout-section-rules.ts`, and this is the
 only layout that uses any of them:
 
-- **Extra fields** — the boxes a résumé has no field for: both ふりがな, 生年月日,
+- **Extra fields** — the boxes a resume has no field for: both ふりがな, 生年月日,
   性別, 〒, 自宅電話, the whole 連絡先 block, 通勤時間, 扶養家族, 配偶者,
   配偶者の扶養義務 and 本人希望記入欄. All read from the free `profile.extras`
   map and edited in the pinned **Rirekisho details** row, which appears only
-  while this layout is selected. Values survive a switch away.
+  while this layout is selected. Values survive a switch away. The date field
+  uses the same picker every dated section uses (`precision="day"`, storing
+  `"12 Jun 1994"`); the header also parses ISO, for drafts written before it.
 - **Fixed titles** — 学歴, 職歴, 免許・資格, 志望動機, 特技, 語学. A recruiter
   looks for these exact words, so they outrank a rename and the rename control
   steps aside. The sidebar reads 職歴 (Work Experience); the paper prints 職歴
