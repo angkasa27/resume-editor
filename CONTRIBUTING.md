@@ -64,6 +64,8 @@ Start from the `README.md` of the closest existing layout, then register it. Thr
 
 Then update `layout-registry.test.ts` (it asserts the exact id list), add a `README.md` to the layout folder, and optionally map a persona in [personas.ts](scripts/personas.ts) so `pnpm screenshots` has content to render.
 
+If the layout reproduces a *format* rather than a style — a Japanese 履歴書, a German Lebenslauf — it can also fix section headings, hide sections the format has no place for, and ask for identity fields no other layout prints (a birth date, a kana reading). All three are optional entries in [layout-section-rules.ts](src/features/resume-editor/domain/presentation/layout-section-rules.ts), keyed by layout id; `preview/layouts/AGENTS.md` explains what each does.
+
 ### A new template
 
 Add an entry to `resumeTemplatePresets` in `template-presets.ts` pointing at an existing `layoutId`. Ids must be globally unique, and `secondary` is only set for layouts that actually render it — the curation rules are commented at the top of that array.

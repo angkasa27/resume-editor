@@ -36,10 +36,11 @@ only layout that uses any of them:
   this layout is selected. Values survive a switch away.
 - **Fixed titles** — 学歴, 職歴, 免許・資格, 志望の動機, 特技・スキル, 語学. A
   recruiter looks for these exact words, so they outrank a rename and the rename
-  control is hidden here.
+  control steps aside. The sidebar reads 職歴 (Work Experience); the paper prints
+  職歴 alone.
 - **Hidden sections** — projects, publications, awards, references and
   volunteering belong on the companion 職務経歴書. Their content is kept; the
-  sidebar row is chipped "Not on this template".
+  sidebar row is chipped "Not printed".
 
 ## Paper
 

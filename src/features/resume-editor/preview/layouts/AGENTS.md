@@ -142,19 +142,27 @@ line does. Each layout picks exactly one of:
 
 ## What a layout can demand of the document
 
-Structure is not the only thing a format fixes. `domain/presentation/layout-section-rules.ts`
-holds the three demands a layout may make, all optional and all keyed by layout id:
+A format fixes more than structure. `domain/presentation/layout-section-rules.ts`
+holds every demand a layout may make on the *document*, keyed by layout id — a
+table entry, never a branch, so the editor and the renderer stay generic:
 
 | rule | effect |
 | --- | --- |
-| `hiddenSections` | the section never prints, however the user has it configured; the sidebar marks the row "Not on this template" |
-| `sectionTitles` | fixed headings that outrank a rename (`sectionTitleFor` resolves them, and the rename control disappears) |
-| `extraFields` | identity fields stored in the free `profile.extras` map, edited in their own pinned sidebar row |
+| `hiddenSections` | those sections never print, however the user has them configured. Content is kept; the sidebar row is chipped "Not printed". |
+| `sectionTitles` | headings the format fixes. They outrank a rename, the rename control steps aside, and the editor shows `職歴 (Work Experience)` while the paper prints `職歴` alone. |
+| `extraFields` | identity fields the layout prints and no other reads — kana readings, a birth date. Stored in the free `profile.extras` map, edited in their own pinned sidebar row that appears with the layout. |
 
-It lives in the domain, not on `PreviewLayoutDefinition`, because the editor
-sidebar and the title resolver read it and neither may import this registry.
-Only `rirekisho` uses any of it today — reach for it when a *format* forbids
-something, not when a design merely looks better without it.
+All three are optional, and `rirekisho` is the only layout using any today.
+Reach for them when a *format* forbids, fixes, or requires something — a design
+that merely looks better without a section still lets the user decide.
+
+Adding a locale is a data edit: one `extraFields` entry naming the keys and
+their labels, and the form renders itself. Keys live under `profile.extras`
+(`z.record`), so no schema version moves.
+
+The table sits in the domain rather than on `PreviewLayoutDefinition` because
+the sidebar and `sectionTitleFor` both read it, and neither may import this
+registry.
 
 ## Registering a new layout
 
@@ -168,9 +176,15 @@ Three edits, all load-bearing:
    with no preset is unreachable from the gallery and fails
    `template-presets.test.ts`.
 
+Two more tables are keyed by `PdfLayoutId` and fail to compile without an entry:
+the page margin in `pdf-presentation.ts`, and the parse verdict in
+`domain/insights/ats-score.ts` — answer both honestly, a form built for a human
+reader is a `warn`.
+
 Then update `layout-registry.test.ts` (it asserts the exact id list) and add a
-`README.md` here. Optionally map a persona in `scripts/personas.ts` so
-`pnpm screenshots` has content.
+`README.md` here. A layout whose content only reads in one language pins its own
+persona in `scripts/personas.ts` (`forLayoutIds`); the rest take their turn in
+the round-robin `pnpm screenshots` uses.
 
 > The `AssertEqual` guard in `layout-registry.tsx` claims registry/id drift is a
 > compile error. It is not: a layout annotated `: PreviewLayoutDefinition` widens

@@ -30,8 +30,8 @@ degree). The word is always "item" — never "entry", never "block".
 ## The editor
 
 **Panel** — an editor surface in the sidebar rail: the Profile panel, one panel
-per section, Insights, Design. A panel is UI, not document structure — "profile"
-is a panel but not a section.
+per section, the extras panel a format asks for, Insights, Design. A panel is
+UI, not document structure — "profile" is a panel but not a section.
 
 **Gallery** — the template browser in the Design tab.
 
@@ -49,8 +49,19 @@ template application overwrites.
 Several templates can share one layout. The word is reserved for this — never
 use "template" for a default-object used when creating an item.
 
+**Format** — a layout that reproduces a standard document (the Japanese
+履歴書), as opposed to one that is a design. A format may impose **layout
+section rules**: headings it fixes, sections it hides, and **extras** it needs.
+Those live in `domain/presentation/layout-section-rules.ts`.
+
+**Extras** — identity fields one format prints and the others ignore (kana
+reading, birth date, postal code). They belong to the **Profile**
+(`profile.extras`, a free string map) and are edited in their own panel, so the
+Profile panel stays the same for every layout.
+
 ## Decided usages
 
 - "item", not "entry" — including in user-facing copy.
 - "header" is a part of every layout, fed by the Profile — never a section.
 - "template" means only layout + presentation.
+- "extras" are Profile fields shown in their own panel — never a section.
