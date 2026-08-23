@@ -1300,6 +1300,13 @@ export const PINNED_PERSONAS: ReadonlyArray<Persona> = [{
     postalCode: "150-0041",
     birthDate: "1994-06-12",
     gender: "男",
+    homePhone: "03-1234-5678",
+    contactAddress: "同上",
+    commuteTime: "約45分",
+    dependents: "0",
+    spouse: "無",
+    spouseSupport: "無",
+    requests: "貴社規定に従います。",
   },
   summary:
     "<p>Webアプリケーション開発を8年間担当し、要件定義から運用までを一貫して経験してまいりました。前職では決済基盤の刷新を主導し、処理遅延を60%削減しております。貴社が進めるプロダクト開発において、これまでの経験を活かして貢献したく志望いたしました。</p>",

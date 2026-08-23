@@ -8,6 +8,9 @@ import {
   type LayoutExtraField,
 } from "@/features/resume-editor/domain/presentation/layout-section-rules";
 import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
+import { Textarea } from "@/components/ui/textarea";
+import { FieldLabelText } from "@/features/resume-editor/forms/fields/field-label-text";
 import { ProfileTextField } from "@/features/resume-editor/forms/profile-fields";
 import type { ProfileFormContext } from "@/features/resume-editor/forms/use-profile-form";
 
@@ -45,12 +48,38 @@ export function ExtraFieldsForm({
         {group.fields.map((field) => {
           const name = path(field);
           const state = getFieldState(name, formState);
+          const id = `${idPrefix}-${field.key}`;
+
+          if (field.type === "textarea") {
+            return (
+              <Field
+                key={field.key}
+                data-invalid={state.invalid || undefined}
+                className="col-span-full"
+              >
+                <FieldLabel htmlFor={id} className="sr-only">
+                  <FieldLabelText label={field.label} />
+                </FieldLabel>
+                <FieldContent>
+                  <Textarea
+                    id={id}
+                    rows={3}
+                    placeholder={field.placeholder ?? field.label}
+                    aria-invalid={state.invalid || undefined}
+                    {...register(name)}
+                  />
+                  <FieldError errors={[state.error]} />
+                </FieldContent>
+              </Field>
+            );
+          }
+
           return (
             <ProfileTextField
               key={field.key}
               register={register}
               name={name}
-              id={`${idPrefix}-${field.key}`}
+              id={id}
               label={field.label}
               placeholder={field.placeholder ?? field.label}
               type={field.type}

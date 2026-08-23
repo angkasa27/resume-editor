@@ -17,7 +17,7 @@ export type LayoutExtraField = {
   key: string;
   label: string;
   placeholder?: string;
-  type?: "text" | "date";
+  type?: "text" | "date" | "textarea";
   autoComplete?: string;
   /** Spans both columns of the form grid. */
   fullWidth?: boolean;
@@ -51,19 +51,21 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
       "references",
       "organizationVolunteering",
     ],
-    // The form's labels are standard: a recruiter looks for these exact words.
+    // The form's own words, and the regions the layout files them under:
+    // 学歴 and 職歴 head the history table, certifications and languages share
+    // the 免許・資格 table, summary and skills share the 特技・自己PR box.
     sectionTitles: {
-      summary: "志望の動機",
+      summary: "志望動機",
       education: "学歴",
       workExperience: "職歴",
       certifications: "免許・資格",
-      skills: "特技・スキル",
+      skills: "特技",
       languages: "語学",
     },
     extraFields: {
       label: "Rirekisho details",
       description:
-        "Printed in the identity block of the 履歴書 form. Every field is optional.",
+        "The boxes the 履歴書 form prints that a résumé has no field for. Every one is optional; blank prints an empty box, exactly like the paper form.",
       fields: [
         {
           key: "nameReading",
@@ -83,7 +85,42 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
           placeholder: "123-4567",
           autoComplete: "postal-code",
         },
-        { key: "addressReading", label: "Address reading (ふりがな)" },
+        { key: "homePhone", label: "Home phone (自宅電話)" },
+        {
+          key: "addressReading",
+          label: "Address reading (ふりがな)",
+          fullWidth: true,
+        },
+        {
+          key: "contactAddress",
+          label: "Second address (連絡先)",
+          placeholder: "同上",
+          fullWidth: true,
+        },
+        {
+          key: "contactAddressReading",
+          label: "Second address reading (ふりがな)",
+        },
+        { key: "contactPhone", label: "Second phone (連絡先電話)" },
+        { key: "commuteTime", label: "Commute (通勤時間)", placeholder: "約45分" },
+        {
+          key: "dependents",
+          label: "Dependents (扶養家族数)",
+          placeholder: "0",
+        },
+        { key: "spouse", label: "Spouse (配偶者)", placeholder: "有 / 無" },
+        {
+          key: "spouseSupport",
+          label: "Supporting a spouse (配偶者の扶養義務)",
+          placeholder: "有 / 無",
+        },
+        {
+          key: "requests",
+          label: "Requests to the employer (本人希望記入欄)",
+          placeholder: "貴社規定に従います。",
+          type: "textarea",
+          fullWidth: true,
+        },
       ],
     },
   },

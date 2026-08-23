@@ -78,7 +78,8 @@ describe("preview layout registry", () => {
 
   it("marks only the layouts that re-title the summary as hiding its heading", () => {
     // A few layouts render the summary themselves (classic, split, atlas,
-    // editorial); suppressing the shared <h2> anywhere else loses the title.
+    // editorial) or caption the box it sits in (rirekisho's 志望動機);
+    // suppressing the shared <h2> anywhere else loses the title.
     const hiding = previewLayoutDefinitions
       .filter((layout) => layout.hideSummaryHeading === true)
       .map((layout) => layout.id);
@@ -86,6 +87,7 @@ describe("preview layout registry", () => {
       "atlas",
       "classic",
       "editorial",
+      "rirekisho",
       "split",
     ]);
   });

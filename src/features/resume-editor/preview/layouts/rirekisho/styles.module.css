@@ -1,242 +1,222 @@
-/* The Japanese 履歴書 form: every block is a ruled box, and the history runs in
-   fixed 年 / 月 columns. Nothing here is decorative — the rules are the format. */
+/* The Japanese 履歴書, ruled like the printed sheet.
+ *
+ * Every box on the form sits on one line grid: `--rirekisho-row` is the height
+ * of a printed line, cells set `line-height` to exactly that, and the ruled
+ * background repeats at the same pitch. A cell that wraps to three lines is
+ * therefore three rows tall and carries a rule under each of them — the row
+ * heights stay equal down the whole page, and long text never produces a
+ * half-height box. */
 .layout {
   display: flex;
   flex-direction: column;
-  gap: var(--resume-gap-item);
+  gap: calc(var(--resume-body) * 0.9);
+  /* Twice the body size, so the pitch is always a whole number of pixels: at a
+     fractional pitch a rule lands on a half-pixel and the browser drops it. */
+  --rirekisho-row: calc(var(--resume-body) * 2);
   --rirekisho-line: 1px solid var(--resume-text);
-  --rirekisho-year-w: 3.6em;
-  --rirekisho-month-w: 2.4em;
-  --rirekisho-cell-pad: 3px 6px;
-}
-
-/* The table is continuous: no gaps between sections, items, or rows, or the
-   rules would break into stripes. */
-.layout :global(.layout-body),
-.layout :global(.section),
-.layout :global(.item-list),
-.layout :global(.item) {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-/* Each section heads its own table, so the shared <h2> is itself a ruled row:
-   年 | 月 | title. */
-.layout :global(.section-heading) {
-  display: flex;
-  align-items: stretch;
-  border-top: var(--rirekisho-line);
-  border-left: var(--rirekisho-line);
-  border-right: var(--rirekisho-line);
-  border-bottom: var(--rirekisho-line);
+  --rirekisho-dash: 1px dashed var(--resume-text);
+  --rirekisho-year-w: 15mm;
+  --rirekisho-month-w: 12mm;
+  --rirekisho-label-w: 24mm;
+  --rirekisho-pad: 0 2.5mm;
   font-size: var(--resume-body);
-  font-weight: 700;
-  text-transform: none;
-  letter-spacing: 0;
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
+  line-height: var(--rirekisho-row);
 }
 
-.layout :global(.section-heading .rirekisho-body) {
-  text-align: center;
+/* One printed line, everywhere: without this the document's own leading would
+   drift off the ruled grid and the rules would cut through text. */
+.layout :global(.rirekisho-row),
+.layout :global(.rirekisho-line),
+.layout :global(.rirekisho-stack),
+.layout :global(.rirekisho-small-box),
+.layout :global(.rirekisho-band-main),
+.layout :global(.rirekisho-requests) {
+  line-height: var(--rirekisho-row);
 }
 
-.layout :global(.rirekisho-row) {
-  display: flex;
-  align-items: stretch;
-  border-left: var(--rirekisho-line);
-  border-right: var(--rirekisho-line);
-  border-bottom: var(--rirekisho-line);
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
-}
-
-.layout :global(.rirekisho-year),
-.layout :global(.rirekisho-month) {
-  flex: 0 0 auto;
-  border-right: var(--rirekisho-line);
-  padding: var(--rirekisho-cell-pad);
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
-}
-
-.layout :global(.rirekisho-year) {
-  width: var(--rirekisho-year-w);
-}
-
-.layout :global(.rirekisho-month) {
-  width: var(--rirekisho-month-w);
-}
-
-.layout :global(.rirekisho-body) {
-  flex: 1;
-  min-width: 0;
-  padding: var(--rirekisho-cell-pad);
-  /* Every row is one printed line tall even when its cell is empty. */
-  min-height: calc(var(--resume-body) * var(--resume-leading));
-}
-
-/* A job title inside the history table, not a heading. */
-.layout :global(.rirekisho-role) {
-  font-weight: 600;
-}
-
-.layout :global(.rirekisho-close .rirekisho-body) {
-  text-align: right;
-}
-
-.layout :global(.rich-text) {
-  text-align: left;
-}
-
-.layout :global(.rich-text ul) {
-  padding-left: 1.4em;
-}
-
-/* 志望の動機 and any other prose block: a plain ruled box, no 年 / 月 columns. */
-.layout :global([data-section="summary"]) {
-  border: var(--rirekisho-line);
-  padding: var(--rirekisho-cell-pad);
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
-}
-
-.layout :global([data-section="summary"] .section-heading) {
-  display: block;
-  border: 0;
-  text-align: left;
-  padding-bottom: var(--resume-gap-inner);
-}
-
-/* Header — the identity form: name block beside the photo box, address below. */
-.header {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
+/* ---- Title ------------------------------------------------------------- */
 
 .header :global(.rirekisho-title) {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--resume-gap-item);
-  padding-bottom: var(--resume-gap-item);
+  padding-bottom: calc(var(--resume-body) * 0.6);
 }
 
 .header :global(.rirekisho-title-text) {
-  font-size: calc(var(--resume-h1) * 0.7);
+  font-size: calc(var(--resume-h1) * 0.85);
   font-weight: 700;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.35em;
+  line-height: 1.1;
 }
 
 .header :global(.rirekisho-title-date) {
   font-size: var(--resume-meta);
+  line-height: 1.1;
 }
 
-.header :global(.rirekisho-identity),
-.header :global(.rirekisho-contact) {
-  border: var(--rirekisho-line);
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
-}
+/* ---- Identity and contact blocks --------------------------------------- */
 
-/* One shared rule between the two boxes, not two stacked. */
-.header :global(.rirekisho-contact) {
-  border-top: 0;
+.header {
+  display: flex;
+  flex-direction: column;
 }
 
 .header :global(.rirekisho-identity) {
   display: flex;
   align-items: stretch;
+  gap: 3mm;
 }
 
-.header :global(.rirekisho-identity-fields) {
+.header :global(.rirekisho-identity-main) {
   flex: 1;
   min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-/* The name row takes the slack, so the block matches the photo's height and no
-   other row is stretched to fill it. */
-.header :global(.rirekisho-name-field) {
-  flex: 1;
-}
-
-.header :global(.rirekisho-field) {
-  display: flex;
-  align-items: stretch;
-  min-width: 0;
-}
-
-.header :global(.rirekisho-field:not(:last-child)),
-.header :global(.rirekisho-birth) {
-  border-bottom: var(--rirekisho-line);
-}
-
-.header :global(.rirekisho-birth) {
-  display: flex;
-  align-items: stretch;
-}
-
-.header :global(.rirekisho-birth > *:first-child) {
-  flex: 1;
-  min-width: 0;
-}
-
-.header :global(.rirekisho-gender) {
-  flex: 0 0 auto;
-  border-left: var(--rirekisho-line);
-}
-
-.header :global(.rirekisho-field-label) {
-  flex: 0 0 auto;
-  width: 5.5em;
-  border-right: var(--rirekisho-line);
-  padding: var(--rirekisho-cell-pad);
-  font-size: var(--resume-meta);
-  color: var(--resume-muted);
+  border: var(--rirekisho-line);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
 
-.header :global(.rirekisho-field-value) {
+.header :global(.rirekisho-contact) {
+  display: flex;
+  align-items: stretch;
+  border: var(--rirekisho-line);
+  border-top: 0;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* The identity block owns the sheet's top rule; the contact blocks stack under
+   it sharing one rule each. */
+.header :global(.rirekisho-identity + .rirekisho-contact) {
+  border-top: var(--rirekisho-line);
+}
+
+.header :global(.rirekisho-contact-main) {
   flex: 1;
   min-width: 0;
-  padding: var(--rirekisho-cell-pad);
+}
+
+.header :global(.rirekisho-contact-side) {
+  flex: 0 0 auto;
+  width: 52mm;
+  border-left: var(--rirekisho-line);
   display: flex;
-  align-items: center;
+  flex-direction: column;
+}
+
+.header :global(.rirekisho-line) {
+  display: flex;
+  align-items: stretch;
+  min-width: 0;
+}
+
+.header :global(.rirekisho-line-dashed) {
+  border-bottom: var(--rirekisho-dash);
+}
+
+.header :global(.rirekisho-name-line),
+.header :global(.rirekisho-address-line) {
+  min-height: calc(var(--rirekisho-row) * 2);
+  border-bottom: var(--rirekisho-line);
+}
+
+.header :global(.rirekisho-address-line) {
+  border-bottom: 0;
+}
+
+.header :global(.rirekisho-birth-line) {
+  display: flex;
+  align-items: stretch;
+}
+
+.header :global(.rirekisho-label) {
+  flex: 0 0 auto;
+  width: var(--rirekisho-label-w);
+  padding: var(--rirekisho-pad);
+  font-size: var(--resume-meta);
+  letter-spacing: 0.1em;
+}
+
+.header :global(.rirekisho-label-inner) {
+  width: auto;
+  border-left: var(--rirekisho-line);
+  padding-left: 3mm;
+}
+
+.header :global(.rirekisho-value) {
+  flex: 1;
+  min-width: 0;
+  padding: var(--rirekisho-pad);
   overflow-wrap: anywhere;
 }
 
-/* The name is the largest thing on the form, but it still sits in a cell. */
+.header :global(.rirekisho-gender) {
+  flex: 0 0 auto;
+  min-width: 22mm;
+}
+
+/* The answer is ringed rather than bolded: that is how the paper form is
+   filled in, and bold would compete with the name. */
+.header :global(.rirekisho-gender-option.is-answer) {
+  display: inline-block;
+  border: var(--rirekisho-line);
+  border-radius: 999px;
+  padding: 0 1.6mm;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.header :global(.rirekisho-gender-dot) {
+  padding: 0 0.6mm;
+}
+
 .header :global(.name) {
   font-size: calc(var(--resume-h1) * 0.62);
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
+  line-height: calc(var(--rirekisho-row) * 2);
   --resume-name-color: var(--resume-text);
 }
 
-.header :global(.headline) {
-  font-size: var(--resume-body);
-  font-weight: 400;
-  --resume-headline-color: var(--resume-text);
+.header :global(.rirekisho-stack) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--rirekisho-pad);
 }
 
-/* 30×40mm, the size a Japanese ID photo is printed at. */
+.header :global(.rirekisho-caption) {
+  font-size: var(--resume-meta);
+  line-height: calc(var(--rirekisho-row) * 0.72);
+}
+
+.header :global(.rirekisho-note) {
+  font-size: var(--resume-meta);
+  padding-right: 2mm;
+}
+
+/* One per line: a URL beside an address is unreadable at this size. */
+.header :global(.rirekisho-link) {
+  display: block;
+  font-size: var(--resume-meta);
+  overflow-wrap: anywhere;
+}
+
+/* ---- The photo box ------------------------------------------------------ */
+
 .header :global(.rirekisho-photo) {
   flex: 0 0 auto;
   width: 30mm;
   aspect-ratio: var(--resume-photo-aspect, 3 / 4);
-  border-left: var(--rirekisho-line);
+  border: var(--rirekisho-dash);
   border-radius: var(--resume-photo-radius, 0);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1.5mm;
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -248,12 +228,224 @@
 }
 
 .header :global(.rirekisho-photo-hint) {
-  font-size: var(--resume-meta);
+  font-size: calc(var(--resume-meta) * 0.8);
+  line-height: 1.5;
   color: var(--resume-muted);
 }
 
-/* Link cue: an underline. The headings here are boxed and bold, so a rule under
-   a URL cannot be mistaken for one. */
+/* ---- The ruled tables --------------------------------------------------- */
+
+.layout :global(.rirekisho-table) {
+  border: var(--rirekisho-line);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* The line grid: a rule at the *top* of every printed line, so a cell that wraps
+   to three lines is ruled like three rows. Top and not bottom because two
+   adjacent rows share that edge — one rule gets drawn there, never two stacked
+   and never one clipped off the box. Painted per row rather than behind the
+   whole table because pagination inserts spacers between rows, which would slide
+   a table-wide grid off the pitch. Cells take no vertical padding for the same
+   reason. The table's own border closes the last row. */
+.layout :global(.rirekisho-row) {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--rirekisho-row);
+  min-width: 0;
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--resume-text) 0,
+    var(--resume-text) 1px,
+    transparent 1px,
+    transparent var(--rirekisho-row)
+  );
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* No rule of its own: the first row under it draws that edge. */
+.layout :global(.rirekisho-caption-row) {
+  background-image: none;
+  text-align: center;
+}
+
+.layout :global(.rirekisho-caption-row .rirekisho-cell) {
+  text-align: center;
+}
+
+.layout :global(.rirekisho-year),
+.layout :global(.rirekisho-month) {
+  flex: 0 0 auto;
+  padding: var(--rirekisho-pad);
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+}
+
+.layout :global(.rirekisho-year) {
+  width: var(--rirekisho-year-w);
+  /* Dashed between 年 and 月, solid before the entry — the printed form's own
+     hierarchy: one field split in two, then a real column break. */
+  border-right: var(--rirekisho-dash);
+}
+
+.layout :global(.rirekisho-month) {
+  width: var(--rirekisho-month-w);
+  border-right: var(--rirekisho-line);
+}
+
+.layout :global(.rirekisho-cell) {
+  flex: 1;
+  min-width: 0;
+  padding: var(--rirekisho-pad);
+  overflow-wrap: anywhere;
+}
+
+/* 学歴 / 職歴 — centred over the run of rows they label, and ruled like one. */
+.layout :global(.rirekisho-table .section-heading) {
+  display: flex;
+  align-items: stretch;
+  min-height: var(--rirekisho-row);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    var(--resume-text) 0,
+    var(--resume-text) 1px,
+    transparent 1px,
+    transparent var(--rirekisho-row)
+  );
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+  font-size: var(--resume-body);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0.4em;
+  color: var(--resume-text);
+  text-align: center;
+  padding-left: calc(var(--rirekisho-year-w) + var(--rirekisho-month-w));
+  justify-content: center;
+}
+
+/* The table's own caption row already names these; a second heading inside
+   would print the same words twice. */
+.layout :global([data-section="certifications"] .section-heading),
+.layout :global([data-section="languages"] .section-heading),
+.layout :global([data-section="skills"] .section-heading) {
+  display: none;
+}
+
+.layout :global(.rirekisho-close .rirekisho-cell) {
+  text-align: right;
+}
+
+/* Sections, item lists and items are structure, not spacing: any gap here
+   would push the rows off the line grid. */
+.layout :global(.section),
+.layout :global(.item-list),
+.layout :global(.item) {
+  display: block;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/* A description is prose the form rules line by line, so it takes no bullets,
+   no indent and no paragraph spacing. */
+.layout :global(.rich-text) {
+  text-align: left;
+}
+
+.layout :global(.rich-text ul),
+.layout :global(.rich-text ol) {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.layout :global(.rich-text p + p) {
+  margin-top: 0;
+}
+
+/* ---- 志望動機 / 通勤時間 band and 本人希望記入欄 ------------------------- */
+
+.layout :global(.rirekisho-band) {
+  display: flex;
+  align-items: stretch;
+  border: var(--rirekisho-line);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.rirekisho-band-main) {
+  flex: 1;
+  min-width: 0;
+  padding: var(--rirekisho-pad);
+  padding-bottom: var(--rirekisho-row);
+  display: flex;
+  flex-direction: column;
+}
+
+.layout :global(.rirekisho-band-side) {
+  flex: 0 0 auto;
+  width: 62mm;
+  border-left: var(--rirekisho-line);
+  display: flex;
+  flex-direction: column;
+}
+
+.layout :global(.rirekisho-band-pair) {
+  display: flex;
+  align-items: stretch;
+  flex: 1;
+}
+
+.layout :global(.rirekisho-band-pair .rirekisho-small-box + .rirekisho-small-box) {
+  border-left: var(--rirekisho-line);
+}
+
+.layout :global(.rirekisho-small-box) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: var(--rirekisho-pad);
+  border-bottom: var(--rirekisho-line);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.rirekisho-band-pair .rirekisho-small-box) {
+  border-bottom: 0;
+}
+
+.layout :global(.rirekisho-caption) {
+  font-size: var(--resume-meta);
+  line-height: calc(var(--rirekisho-row) * 0.8);
+}
+
+/* Right-aligned like a filled-in form: the caption asks, the answer sits under
+   it at the end of the box. */
+.layout :global(.rirekisho-small-value) {
+  text-align: right;
+  padding-right: 3mm;
+}
+
+.layout :global(.rirekisho-requests) {
+  display: flex;
+  flex-direction: column;
+  border: var(--rirekisho-line);
+  padding: var(--rirekisho-pad);
+  min-height: calc(var(--rirekisho-row) * 5);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Typed newlines are the user's line breaks — the box is free text on paper. */
+.layout :global(.rirekisho-requests-body) {
+  white-space: pre-wrap;
+}
+
+/* Link cue: an underline. Every heading here is boxed and captioned, so a rule
+   under a URL cannot be read as one. */
 .layout {
   --resume-link-decoration: underline;
   --resume-link-offset: 0.15em;

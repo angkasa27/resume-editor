@@ -13,34 +13,49 @@ decoration — they are the format, so nothing here has gaps between sections.
 
 ## What you would see
 
-- **Page shape** — one column, 12mm margins. The boxes reach almost to the paper edge because the form, not the whitespace, frames the page.
-- **Title** — 履歴書 at `0.7 × h1` with `0.5em` tracking, and the draft's `updatedAt` on the right as `YYYY年M月D日現在`.
-- **Identity box** — ふりがな / 氏名 / 生年月日 + 性別 / 職種, each a labelled cell; the 氏名 row takes the slack so the block matches the photo's height.
-- **生年月日** — `1994年6月12日生（満32歳）`. The age counts to the document's own as-of date (`updatedAt`), never to `new Date()`, so a render is reproducible.
-- **Photo** — a 30mm box at `var(--resume-photo-aspect, 3 / 4)`, i.e. 30×40mm, square corners. Drawn whether or not a photo exists — an empty one reads 写真, exactly like a blank form.
-- **Address box** — ふりがな / 現住所 (with 〒 prefixed to the postal code) / 電話 / メール / URL.
-- **Section headings** — the shared `<h2>` becomes a ruled row of its own: `年 | 月 | title`, via `renderSectionHeading`. Summary is the exception; it renders as a plain prose box (志望の動機).
-- **History rows** — work: `会社名 入社` at the start date, the role, the description, then `退職` at the end date or a dateless `現在に至る`. Education: `入学` / `卒業`. Certifications, awards and publications take a single dated row.
-- **年 / 月** — split from the stored `MMM yyyy` via `parseMonthYear`. A date the month picker never produced (`current`, free text) leaves both cells blank rather than guessing.
-- **以上** — a final right-aligned row closing the history table, as the form requires.
-- **Link cue** — a plain underline at `0.15em`; the boxed bold headings can't be confused with it.
+- **Page shape** — one column, 12mm margins. The boxes reach almost to the paper edge: the form, not the whitespace, frames the page.
+- **The line grid** — the whole point. `--rirekisho-row` is the height of a printed line; every cell sets `line-height` to exactly that and takes no vertical padding, and each row paints a rule at the **top** of every line it occupies. A cell that wraps to three lines is therefore three rows tall with a rule under each — row heights stay equal down the page, like a spreadsheet, and long text never makes a half-height box. Top and not bottom because two rows share that edge: one rule is drawn there, never two stacked or one clipped. The pitch is `2 × --resume-body` so it is always a whole number of pixels; at a fractional pitch the browser drops rules.
+- **Title** — 履歴書 at `0.85 × h1` with `0.35em` tracking, and the draft's `updatedAt` on the right as 令和8年8月23日現在. `Intl` with the `ja-JP-u-ca-japanese` calendar owns the era table, so the next era needs no edit.
+- **Identity box** — ふりがな over 氏名 (two rows tall), then 生年月日 and 性別 sharing a row. 生年月日 reads 平成6年6月12日生（満32歳）; the age counts to the document's own as-of date, never to `new Date()`, so a render is reproducible. 性別 prints 男・女 with the answer **ringed**, the way the paper form is filled in.
+- **Photo box** — 30mm at `var(--resume-photo-aspect, 3 / 4)` = 30×40mm, dashed, beside the identity box. With no photo it carries the printed sheet's own instructions (写真をはる位置 …).
+- **Contact boxes** — ふりがな / 現住所 with 〒 on the left, 電話 and メールアドレス stacked on the right; then the same shape for 連絡先. Profile links print in the 連絡先 box — the form has no row for a URL, and that box is where a second point of contact belongs.
+- **学歴・職歴 table** — one table captioned 年 / 月 / 学歴・職歴（各別にまとめて書く）, with 学歴 and 職歴 as centred label rows over their runs. Work rows read `会社名 入社`, the role, the description, then `一身上の都合により退職` or a dateless `現在に至る`. Education rows read `入学` / `卒業`. Closed by a right-aligned 以上.
+- **年 / 月** — split from the stored `MMM yyyy` via `parseMonthYear`; a date the picker never produced (`current`, free text) leaves both cells blank rather than guessing. The rule between 年 and 月 is dashed, the one before the entry solid — the form's own hierarchy.
+- **免許・資格 table** — certifications and languages share it; the caption row names it, so their own headings are hidden.
+- **The band** — 志望動機、特技、自己PRなど holds the summary and skills as prose; 通勤時間 / 扶養家族 / 配偶者 / 配偶者の扶養義務 sit in boxes to its right.
+- **本人希望記入欄** — a free-text box, newlines preserved.
+- **Descriptions** — bullets are stripped to plain lines (`list-style: none`, no indent): the form rules prose line by line and has no bullets.
+- **Link cue** — a plain underline at `0.15em`; every heading here is boxed and captioned, so a rule under a URL cannot be read as one.
 
 ## What it demands of the document
 
 All three knobs in `domain/presentation/layout-section-rules.ts`, and this is the
 only layout that uses any of them:
 
-- **Extra fields** — `nameReading`, `addressReading`, `postalCode`, `birthDate`
-  and `gender`, read from the free `profile.extras` map. The editor shows them as
-  a pinned **Rirekisho details** row in the section list, which appears only while
-  this layout is selected. Values survive a switch away.
-- **Fixed titles** — 学歴, 職歴, 免許・資格, 志望の動機, 特技・スキル, 語学. A
-  recruiter looks for these exact words, so they outrank a rename and the rename
-  control steps aside. The sidebar reads 職歴 (Work Experience); the paper prints
-  職歴 alone.
+- **Extra fields** — the boxes a résumé has no field for: both ふりがな, 生年月日,
+  性別, 〒, 自宅電話, the whole 連絡先 block, 通勤時間, 扶養家族, 配偶者,
+  配偶者の扶養義務 and 本人希望記入欄. All read from the free `profile.extras`
+  map and edited in the pinned **Rirekisho details** row, which appears only
+  while this layout is selected. Values survive a switch away.
+- **Fixed titles** — 学歴, 職歴, 免許・資格, 志望動機, 特技, 語学. A recruiter
+  looks for these exact words, so they outrank a rename and the rename control
+  steps aside. The sidebar reads 職歴 (Work Experience); the paper prints 職歴
+  alone.
 - **Hidden sections** — projects, publications, awards, references and
   volunteering belong on the companion 職務経歴書. Their content is kept; the
   sidebar row is chipped "Not printed".
+
+## Regions, not order
+
+The form files sections into fixed regions, so `layout.tsx` looks them up by key
+instead of printing `slots.sections` in the sidebar's order: education and work
+into the history table (学歴 first, the form's order), certifications and
+languages into 免許・資格, skills into the 志望動機 box. A section the form never
+anticipated still prints, in a table of its own.
+
+Two things stay the user's: the order of *items* inside a section — the form's
+convention is oldest-first, and the Sort action only sorts newest-first — and
+whether a section is visible at all.
 
 ## Paper
 
@@ -57,8 +72,11 @@ own `header.tsx` · `renderSectionHeading` for the 年 / 月 heading row.
 
 ## Careful
 
-`.layout-body`, `.section`, `.item-list` and `.item` all run at `gap: 0` on
-purpose: one gap anywhere breaks the ruled table into stripes. Every box sets the
+`.section`, `.item-list` and `.item` all run at `gap: 0` and no padding on
+purpose: any spacing there pushes the text off the line grid and the rules cut
+through it. The band and the 本人希望記入欄 box carry `data-page-unit` so the
+paginator moves them whole — without it a page break lands between a caption and
+the prose under it. Every box sets the
 `print-color-adjust` pair — the borders are painted, and without it the exported
 PDF comes out blank. The ATS verdict is a deliberate `warn`: a 履歴書 is read by
 a person, and saying otherwise would be a lie about the format.
