@@ -427,7 +427,7 @@ const STRUCTURE_CHECKS: AtsCheck[] = [
     },
   },
   {
-    id: "structure/complete-entries",
+    id: "structure/complete-items",
     category: "structure",
     weight: 3,
     pass: "Every role has a title, an employer and a start date.",

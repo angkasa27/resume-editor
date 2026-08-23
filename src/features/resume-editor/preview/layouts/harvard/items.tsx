@@ -37,7 +37,7 @@ function EntryRow({
 function InlineEntry({ label, value }: { label: string; value: string }) {
   const trimmed = label.trim();
   return (
-    <div className="item inline-entry">
+    <div className="item inline-item">
       <h3 className="item-title">
         {trimmed.endsWith(":") ? trimmed : `${trimmed}:`}
       </h3>

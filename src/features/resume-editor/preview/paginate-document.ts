@@ -15,7 +15,7 @@ export const PAGE_SLACK_PX = 1;
 const BLOCK_SELECTOR = [
   ".section",
   ".item",
-  // Lines inside a long entry: each bullet is a unit, so the entry's head stays
+  // Lines inside a long item: each bullet is a unit, so the item's head stays
   // put and only bullets landing in an edge band take their own correction.
   ".rich-text > ul > li",
   ".rich-text > ol > li",
@@ -28,9 +28,9 @@ const PAGE_UNIT_ATTR = "data-page-unit";
 
 /**
  * Fraction of a page's usable height above which a block may break across the
- * page edge instead of moving whole. Short entries must not be split; long ones
+ * page edge instead of moving whole. Short items must not be split; long ones
  * (a third of a page) must, or moving them leaves a blank third of a page —
- * only the entry's *head* (title plus a couple of lines) is kept out of the band.
+ * only the item's *head* (title plus a couple of lines) is kept out of the band.
  */
 const FRAGMENT_RATIO = 0.32;
 
@@ -139,7 +139,7 @@ function measureUnitBottom(
   const firstItem = block.querySelector<HTMLElement>(".item");
   if (firstItem) {
     const itemRect = firstItem.getBoundingClientRect();
-    // The heading keeps company with the start of its first entry, not all of
+    // The heading keeps company with the start of its first item, not all of
     // a long one — moving whole sections left the previous page two-thirds empty.
     if (itemRect.height <= fragmentAbove) return itemRect.bottom;
     return headBottom(firstItem, itemRect);

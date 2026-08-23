@@ -62,11 +62,11 @@
 }
 
 /* "Technical: Python, SQL" — a bold label running into its list on one line. */
-.layout :global(.inline-entry) {
+.layout :global(.inline-item) {
   display: block;
 }
 
-.layout :global(.inline-entry .item-title) {
+.layout :global(.inline-item .item-title) {
   display: inline;
   margin-right: 0.35em;
 }

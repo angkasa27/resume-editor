@@ -99,7 +99,7 @@ export const collectionSectionConfigs: Record<
     description: "Degrees, institutions, and academic context.",
     addLabel: "Add education",
     itemTitle: "Education",
-    emptyTitle: "No education entries yet",
+    emptyTitle: "No education items yet",
     emptyDescription: "Add your school, degree, and relevant context.",
     createItem: () => ({
       id: createLocalId("education"),
@@ -201,7 +201,7 @@ export const collectionSectionConfigs: Record<
       "Community, leadership, or volunteering work outside paid roles.",
     addLabel: "Add organization experience",
     itemTitle: "Organization experience",
-    emptyTitle: "No organizational entries yet",
+    emptyTitle: "No organizational items yet",
     emptyDescription:
       "Add organizational or volunteering work when it supports your story.",
     createItem: () => ({

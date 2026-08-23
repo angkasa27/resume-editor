@@ -1,18 +1,18 @@
 export function normalizeCollectionItem<T extends Record<string, unknown>>(
   item: T,
-  template: T,
+  defaults: T,
 ): T {
-  const nextItem = { ...template, ...item } as Record<string, unknown>;
+  const nextItem = { ...defaults, ...item } as Record<string, unknown>;
 
   Object.keys(nextItem).forEach((key) => {
-    const templateValue = template[key];
+    const defaultValue = defaults[key];
     const currentValue = nextItem[key];
 
-    if (typeof templateValue === "string" && typeof currentValue !== "string") {
+    if (typeof defaultValue === "string" && typeof currentValue !== "string") {
       nextItem[key] = "";
     }
 
-    if (Array.isArray(templateValue) && !Array.isArray(currentValue)) {
+    if (Array.isArray(defaultValue) && !Array.isArray(currentValue)) {
       nextItem[key] = [];
     }
   });

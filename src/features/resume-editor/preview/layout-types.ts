@@ -16,9 +16,9 @@ export type LayoutSectionItemMap = {
   }) => ReactNode;
 };
 
-/** Distributed over CollectionSectionKey so `entry.key === "skills"` narrows
- * `entry.section` type-safely. `section` is optional — guard before reading. */
-export type LayoutSectionEntry = {
+/** Distributed over CollectionSectionKey so `slot.key === "skills"` narrows
+ * `slot.section` type-safely. `section` is optional — guard before reading. */
+export type LayoutSectionSlot = {
   [K in CollectionSectionKey]: {
     key: K;
     node: ReactNode;
@@ -29,7 +29,7 @@ export type LayoutSectionEntry = {
 export type LayoutSlots = {
   header: ReactNode;
   summary: ReactNode | null;
-  sections: LayoutSectionEntry[];
+  sections: LayoutSectionSlot[];
 };
 
 export type LayoutComponentProps = {

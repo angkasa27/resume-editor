@@ -87,7 +87,7 @@ export function CollectionSectionBody({
       {items.fields.length === 0 ? (
         <Empty className="rounded-md border px-4 py-6">
           <EmptyDescription>
-            No items added yet. Add the first entry to bring this section into
+            No items added yet. Add the first item to bring this section into
             the preview.
           </EmptyDescription>
         </Empty>

@@ -112,14 +112,14 @@ describe("scoring floors", () => {
     expect(computeAtsScore(emptyDraft()).breakdown.content?.pct).toBe(0);
   });
 
-  it("fails an empty resume on name, work entries and core sections", () => {
+  it("fails an empty resume on name, work items and core sections", () => {
     const failed = computeAtsScore(emptyDraft())
       .suggestions.filter((s) => s.severity === "fail")
       .map((s) => s.id);
 
     expect(failed).toContain("contact/full-name");
     expect(failed).toContain("contact/email");
-    expect(failed).toContain("structure/complete-entries");
+    expect(failed).toContain("structure/complete-items");
     expect(failed).toContain("structure/core-sections");
   });
 
@@ -282,7 +282,7 @@ describe("contact & date checks", () => {
 describe("structure checks", () => {
   it("flags a role missing its employer, and says which field", () => {
     const draft = withRole({ companyName: "" });
-    const result = find(draft, "structure/complete-entries");
+    const result = find(draft, "structure/complete-items");
     expect(result?.severity).toBe("fail");
     expect(result?.evidence?.[0]).toContain("missing employer");
   });
