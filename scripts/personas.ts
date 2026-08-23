@@ -1303,8 +1303,8 @@ export const PINNED_PERSONAS: ReadonlyArray<Persona> = [{
     homePhone: "03-1234-5678",
     commuteTime: "約45分",
     dependents: "0",
-    spouse: "無",
-    spouseSupport: "無",
+    spouse: "無し",
+    spouseSupport: "無し",
     requests: "貴社規定に従います。",
   },
   summary:

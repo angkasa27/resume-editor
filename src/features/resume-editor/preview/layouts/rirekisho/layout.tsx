@@ -97,13 +97,17 @@ function RirekishoLayout({ context, slots }: LayoutComponentProps) {
   const extras = context.draft.profile.extras ?? {};
   const byKey = new Map(slots.sections.map((entry) => [entry.key, entry]));
   const pick = (keys: ReadonlyArray<CollectionSectionKey>) =>
-    keys.map((key) => byKey.get(key)).filter(Boolean) as LayoutSlots["sections"];
+    keys
+      .map((key) => byKey.get(key))
+      .filter(Boolean) as LayoutSlots["sections"];
 
   const history = pick(HISTORY_KEYS);
   const licences = pick(LICENCE_KEYS);
   const prose = pick(PROSE_KEYS);
   // A section the form never anticipated still prints, in a table of its own.
-  const unplaced = slots.sections.filter((entry) => !PLACED_KEYS.has(entry.key));
+  const unplaced = slots.sections.filter(
+    (entry) => !PLACED_KEYS.has(entry.key),
+  );
 
   return (
     <div className={`${styles.layout} page-inset`}>
@@ -136,7 +140,7 @@ function RirekishoLayout({ context, slots }: LayoutComponentProps) {
       <div className="rirekisho-band" data-page-unit="">
         <div className="rirekisho-band-main">
           <span className="rirekisho-caption">
-            志望動機、特技、自己PRなど
+            志望動機、特技、好きな学科など
           </span>
           {slots.summary}
           {prose.map(({ key, node }) => (
@@ -157,7 +161,7 @@ function RirekishoLayout({ context, slots }: LayoutComponentProps) {
 
       <div className="rirekisho-requests" data-page-unit="">
         <span className="rirekisho-caption">
-          本人希望記入欄（特に給料・職種・勤務時間・勤務地・その他についての希望などがあれば記入）
+          本人希望記入欄（特に給料・職種・勤務時間・勤務地・その他について希望などがあれば記入）{" "}
         </span>
         <span className="rirekisho-requests-body">{extras.requests}</span>
       </div>

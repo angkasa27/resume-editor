@@ -6,7 +6,7 @@
 | --- | --- | --- |
 | ![Academic Oxford template](../../../../../../public/templates/academic-oxford.webp) | ![Academic Burgundy template](../../../../../../public/templates/academic-burgundy.webp) | ![Academic Journal template](../../../../../../public/templates/academic-journal.webp) |
 
-A CV, not a résumé. The name is centred and set in the text colour rather than the
+A CV, not a resume. The name is centred and set in the text colour rather than the
 accent, section headings are **small caps** with wide tracking over a hairline
 rule, dates are italic, and every section body is indented under its flush-left
 heading the way an academic CV does. Prose is justified.

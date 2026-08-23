@@ -29,7 +29,7 @@ export type LayoutExtraField = {
   key: string;
   /** Carries the placeholder too, so every field reads "English (日本語)" — a
    *  sample value in one box and a label in the next is what made the pair of
-   *  有 / 無 fields indistinguishable. */
+   *  有り / 無し fields indistinguishable. */
   label: string;
   type?: "text" | "date" | "select" | "textarea";
   /** The answers, for `type: "select"`. A blank option is added for clearing. */
@@ -147,14 +147,14 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
           key: "spouse",
           label: "Spouse (配偶者)",
           type: "select",
-          options: ["有", "無"],
+          options: ["有り", "無し"],
           icon: "spouse",
         },
         {
           key: "spouseSupport",
           label: "Spousal support (配偶者の扶養義務)",
           type: "select",
-          options: ["有", "無"],
+          options: ["有り", "無し"],
           icon: "spouse",
         },
         {

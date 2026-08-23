@@ -1,6 +1,6 @@
 # CONTEXT.md — domain glossary
 
-Canonical vocabulary for Resummme, a résumé editor. Use these terms in code,
+Canonical vocabulary for Resummme, a resume editor. Use these terms in code,
 UI copy, and docs. When a doc or identifier disagrees with this file, this file
 wins.
 
@@ -14,7 +14,7 @@ autosaved on every edit (there is no save button).
 by a layout's header. **Not a section** — it cannot be reordered, hidden,
 renamed, or emptied.
 
-**Section** — a titled block of the résumé that the user can reorder, hide, and
+**Section** — a titled block of the resume that the user can reorder, hide, and
 rename. Two kinds:
 - **Collection section** — holds **items** (work experience, projects,
   education, skills, publications, certifications, awards, languages,

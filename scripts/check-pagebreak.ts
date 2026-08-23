@@ -21,7 +21,7 @@ export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft
   const draft = createDefaultResumeDraft();
   const s = draft.sections;
 
-  // workCount 0: the short-résumé case — must export as exactly one page, no
+  // workCount 0: the short-resume case — must export as exactly one page, no
   // blank trailing sheet. Sections are hidden, not emptied (schema needs ≥1 item).
   if (workCount === 0) {
     s.projects = { ...s.projects, visible: false };

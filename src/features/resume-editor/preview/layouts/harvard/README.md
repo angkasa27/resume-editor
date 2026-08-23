@@ -6,7 +6,7 @@
 | --- | --- |
 | ![Harvard Serif template](../../../../../../public/templates/harvard-serif.webp) | ![Harvard Sans template](../../../../../../public/templates/harvard-sans.webp) |
 
-The Harvard MCS résumé format, reproduced. One type size for the entire document,
+The Harvard MCS resume format, reproduced. One type size for the entire document,
 no colour, no rules except the one under the name, and **bold as the only emphasis
 available anywhere on the page**. The name is centred and barely larger than the
 body; section headings are centred, title case, and body-sized. Every item is a

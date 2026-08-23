@@ -1,4 +1,4 @@
-# Layouts — how a résumé page gets drawn
+# Layouts — how a resume page gets drawn
 
 A **layout** is one rendering of the document: columns, header shape, where each
 section lands, what the headings look like. Twenty live in this folder, one per

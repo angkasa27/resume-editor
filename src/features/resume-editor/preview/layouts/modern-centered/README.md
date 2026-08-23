@@ -31,6 +31,6 @@ under each heading — are the layout's whole signature.
 ## Careful
 
 Both rules are `--resume-secondary`, which falls back to the accent when a preset
-leaves it unset — a one-hue résumé still reads correctly, just quieter. The
+leaves it unset — a one-hue resume still reads correctly, just quieter. The
 `::after` rules paint, so both `print-color-adjust` properties are required and
 already set; don't drop them when editing.

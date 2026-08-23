@@ -31,7 +31,7 @@ function rirekishoDraft(): ResumeDraft {
 
 describe("the layout-declared extras panel", () => {
   it("keeps its fields out of Profile, which every layout shares", () => {
-    // 生年月日 and 性別 are fields a US or EU résumé is advised not to carry;
+    // 生年月日 and 性別 are fields a US or EU resume is advised not to carry;
     // they belong to the one layout that prints them, not to everyone's Profile.
     renderPanel(rirekishoDraft(), "profile");
 

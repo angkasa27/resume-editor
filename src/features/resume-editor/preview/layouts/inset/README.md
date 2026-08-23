@@ -33,5 +33,5 @@ photo in the label rail and the name where the content starts.
 Row 1 is `display: block` with inline children for a reason: as flex items the
 title and meta were atomic, so a long meta moved as a unit and the line broke
 *before* the separator. The separator binds to its neighbour with a no-break space
-in `items.tsx`. Both grids declare their columns explicitly so a photo-less résumé
+in `items.tsx`. Both grids declare their columns explicitly so a photo-less resume
 keeps the alignment.

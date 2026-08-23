@@ -88,7 +88,7 @@ export function ResumePdfPage() {
       ref={hostRef}
       data-pdf-ready="loading"
       // `items-start` keeps the article at its content height: stretched to the
-      // viewport it measures taller than its content, rounding a one-page résumé
+      // viewport it measures taller than its content, rounding a one-page resume
       // up to two and leaving a blank sheet in the PDF.
       className="flex min-h-screen items-start justify-center bg-white p-0"
     >

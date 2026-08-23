@@ -20,7 +20,7 @@ Read `docs/design-system.md` before touching a form, a control surface, spacing,
 
 Read `docs/save-flow.md` before touching `forms/use-auto-save.ts`, the store's commit path, `revision`, or anything that renders a registered input. There is no save button — persistence is a side effect of typing, so a broken save looks like a working app until reload. The doc holds the six invariants that keep the form, the store, and the preview in agreement, including why `reactCompiler` means a re-seed has to write the DOM itself.
 
-# Résumé layouts
+# Resume layouts
 
 Read `src/features/resume-editor/preview/layouts/AGENTS.md` before adding, editing, or restyling any layout under `preview/layouts/` — including a header, a section heading, an item view, or a `styles.module.css` — and before making a layout demand anything of the *document*: a field the format needs (a birth date, a kana reading), a section it has no place for, or a heading it fixes. It holds the render contract a layout has to honour — the `slots` it is handed, the `--resume-*` variables it must consume instead of hard-coding, full-bleed insets, `data-page-unit` pagination, the `print-color-adjust` pair every painted surface needs, the link-cue rule — and the per-layout rules table those document demands are entries in, never branches. Each layout folder also has a `README.md` describing what that layout looks like on paper — read it when you cannot see the screenshot.
 

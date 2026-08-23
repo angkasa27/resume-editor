@@ -33,4 +33,4 @@ shared kit, which is the point of this layout.
 This is the ATS-safe reference. If you are tempted to add a fill, a badge, or a
 counter here, you probably want a different layout — the gallery has eighteen
 others. Changes here also ripple: `classic-modern` is the stock default preset,
-so a regression shows up on a fresh résumé before anything else.
+so a regression shows up on a fresh resume before anything else.
