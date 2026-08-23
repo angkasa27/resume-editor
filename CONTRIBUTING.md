@@ -31,32 +31,42 @@ pnpm dev
    ```bash
    pnpm typecheck   # must pass
    pnpm lint        # must pass
-   pnpm test        # must pass (218 tests)
+   pnpm test        # must pass
    ```
 4. Open a pull request against `master`. Fill in the PR template.
 
 ## Code Style
 
 - TypeScript strict mode — no `any`, no type assertions unless unavoidable.
-- No comments that describe _what_ the code does — only _why_ (hidden constraints, surprising invariants, workarounds).
-- No auto-save in canvas forms — Save/Cancel buttons only.
+- Comments explain _why_ (hidden constraints, surprising invariants, workarounds), never _what_.
+- Use the canonical vocabulary in [CONTEXT.md](CONTEXT.md): an **item** (never "entry") lives in a section; a **layout** is the rendering; a **template** is a layout plus a curated **presentation** — the gallery shows templates.
+- Every editor form auto-saves; there is no Save or Cancel button anywhere in the editor. Read [docs/save-flow.md](docs/save-flow.md) before you touch one — persistence is a side effect of typing, so a broken save looks like a working app until reload.
 - Prefer editing existing files to creating new ones. No premature abstractions.
 - React 19 rules: no component creation during render, no `setState` in `useEffect` for syncing external state (use `useSyncExternalStore` instead).
 - New client components that use `window` must handle SSR (`typeof window === "undefined"` guard or `useSyncExternalStore` `getServerSnapshot`).
 
-## Adding a Template
+## Adding a Layout or a Template
 
-Templates live in `src/features/resume-editor/preview/templates/<name>/`. Each template folder contains:
+Two different things, and the codebase keeps them apart:
 
-- `template.tsx` — exports the top-level layout component and template definition.
-- `header.tsx` — exports the header component (name, contact info, layout-specific header slots).
-- `items.ts` — maps section IDs (e.g., `workExperience`, `skills`) to their item-level view components (which can be imported from `../_shared/items` or custom-implemented).
-- `styles.module.css` — scoped CSS that defines layout spacing, columns, and styles, consuming the CSS variables configured by the presentation resolver.
+- A **layout** is the rendering — columns, header shape, section order. It lives in `src/features/resume-editor/preview/layouts/<layout-id>/`.
+- A **template** is what the gallery shows: a layout plus a curated presentation (accent, font, scale, spacing, line height). It is one entry in [template-presets.ts](src/features/resume-editor/domain/presentation/template-presets.ts). Several templates can share one layout.
 
-Registering the template:
-1. Add the template ID to `pdfTemplateIds` in [pdf-presentation.ts](src/features/resume-editor/domain/presentation/pdf-presentation.ts).
-2. Register the template definition and map its header in [template-registry.tsx](src/features/resume-editor/preview/template-registry.tsx).
-3. (Optional) Reuse or extend a shared persona in `scripts/personas.ts` so the new template gets screenshot content (personas are mapped onto presets by `pnpm screenshots`).
+> **Whether you are adding a layout or changing one, read [`preview/layouts/AGENTS.md`](src/features/resume-editor/preview/layouts/AGENTS.md) first** — human or agent. It is the authoring guide: the render path and the `slots` a layout is handed, the `--resume-*` CSS contract, insets and full-bleed, pagination, print colour, and the link-cue rule. Every layout folder also has a `README.md` describing what that layout looks like on paper; if you are an agent that cannot see the screenshots, that file is your view of the page.
+
+### A new layout
+
+Start from the `README.md` of the closest existing layout, then register it. Three edits, all load-bearing:
+
+1. Add the id to `pdfLayoutIds` in [pdf-presentation.ts](src/features/resume-editor/domain/presentation/pdf-presentation.ts) — the single source of truth for layout ids.
+2. Add the layout to `previewLayoutDefinitions` in [layout-registry.tsx](src/features/resume-editor/preview/layout-registry.tsx).
+3. Add at least one preset in `template-presets.ts`. A layout with no preset is unreachable from the gallery, and `template-presets.test.ts` fails on it.
+
+Then update `layout-registry.test.ts` (it asserts the exact id list), add a `README.md` to the layout folder, and optionally map a persona in [personas.ts](scripts/personas.ts) so `pnpm screenshots` has content to render.
+
+### A new template
+
+Add an entry to `resumeTemplatePresets` in `template-presets.ts` pointing at an existing `layoutId`. Ids must be globally unique, and `secondary` is only set for layouts that actually render it — the curation rules are commented at the top of that array.
 
 ## Adding a Font
 
@@ -67,16 +77,16 @@ Fonts are defined in [font-collection.ts](src/features/resume-editor/domain/pres
 
 ## Generating Screenshots
 
-We commit screenshots of the editor and templates to the repository (stored in `public/` and `public/templates/`). If you modify template styles or the canvas editor, you should regenerate the screenshots before committing:
-1. Start the app in development mode in one terminal:
-   ```bash
-   pnpm dev
-   ```
-2. Run the screenshot script in another terminal:
-   ```bash
-   pnpm screenshots
-   ```
-This will spin up headless Puppeteer to capture and overwrite the template and builder images.
+Screenshots of the editor and the templates are committed (`public/` and `public/templates/`). Regenerate them before committing any change to layout styles or the canvas editor.
+
+The script drives headless Puppeteer against a running app and refuses to start without one, so bring the app up first:
+
+```bash
+pnpm dev          # terminal 1 (or `pnpm build && pnpm start`)
+pnpm screenshots  # terminal 2
+```
+
+It captures against `http://localhost:4000` and overwrites the template and builder images in place. Point it elsewhere with `SCREENSHOT_BASE_URL`.
 
 ## Tests
 
@@ -86,7 +96,7 @@ Tests live next to the code they test (`*.test.ts` / `*.test.tsx`). The test sui
 - Server route smoke tests
 - UI component rendering
 
-Run `pnpm test:watch` during development. All 218 tests must pass before merging.
+Run `pnpm test:watch` during development. The suite must be green before merging.
 
 ## Questions
 

@@ -24,7 +24,7 @@ export function flushOpenForms() {
   window.dispatchEvent(new Event(FLUSH_EVENT));
 }
 
-/** A section form's persistence both ways: debounced save, and re-seed on external replace. See SAVE-FLOW.md. */
+/** A section form's persistence both ways: debounced save, and re-seed on external replace. See docs/save-flow.md. */
 export function useAutoSave<T extends FieldValues>(
   form: UseFormReturn<T>,
   values: T,

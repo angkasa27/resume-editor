@@ -28,23 +28,23 @@ const eslintConfig = defineConfig([
           selector:
             "JSXOpeningElement[name.name=/^(Field|FieldGroup|FieldSet|FieldContent)$/] > JSXAttribute[name.name='className'] Literal[value=/\\bgap(-[xy])?-\\d/]",
           message:
-            "Form spacing lives in src/components/ui/field.tsx (4/8/16/24). Don't override gap at the call site — fix the primitive or use `layout`.",
+            "Form spacing lives in src/components/ui/field.tsx (4/8/12/16). Don't override gap at the call site — fix the primitive or use `layout`.",
         },
         {
           selector: "Literal[value=/\\btext-\\[\\d+px\\]/]",
           message:
             "Use the type scale: text-2xl (display) | text-base (dialog title) | text-sm (default) | text-xs (meta).",
         },
-        // Interaction states — see DESIGN.md.
+        // Interaction states — see docs/design-system.md.
         {
           selector: "Literal[value=/ring-\\[\\d+px\\]/]",
           message:
-            "The focus ring is `ring-3`, never an arbitrary pixel spelling. See DESIGN.md.",
+            "The focus ring is `ring-3`, never an arbitrary pixel spelling. See docs/design-system.md.",
         },
         {
           selector: "Literal[value=/focus-visible:ring-ring\\/(?!40\\b)/]",
           message:
-            "The focus halo is `ring-ring/40`. Semantic states recolor (ring-destructive/20, ring-violet-400/40) but neutral focus does not. See DESIGN.md.",
+            "The focus halo is `ring-ring/40`. Semantic states recolor (ring-destructive/20, ring-violet-400/40) but neutral focus does not. See docs/design-system.md.",
         },
         {
           selector: "Literal[value=/ring-offset-background/]",

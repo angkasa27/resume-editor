@@ -30,13 +30,13 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 
 **Resume Building**
 - **Sidebar editor + live canvas preview**: Form fields on the left, an instant zoomable preview of the actual paper on the right, always in sync — no save button, autosave is a side effect of typing.
-- **Drag-to-reorder sections and entries**: Reorder sections and repeatable entries (jobs, projects, education) directly in the sidebar.
+- **Drag-to-reorder sections and items**: Reorder sections and repeatable items (jobs, projects, education) directly in the sidebar.
 - **Undo/redo**: Full history for every edit, not just the last one.
 - **Rich text editor**: Edit with formatting support powered by TipTap.
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **19 professional templates**: Switch between nineteen polished layouts (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard) without retyping a thing.
+- **19 templates on 19 layouts**: Switch between nineteen polished templates (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard) without retyping a thing — each pairs a layout with a curated presentation.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
 
@@ -174,7 +174,7 @@ Open [http://localhost:4000](http://localhost:4000) to see the application.
 | Motion | motion |
 | PDF Export | Puppeteer (local) / Cloudflare Browser Run (prod) |
 | PDF Text Extraction | pdf-parse |
-| AI | Google Gemini API (gemini-2.0-flash) |
+| AI | Google Gemini API |
 | Forms | React Hook Form + Zod |
 | Testing | Vitest + Testing Library |
 
@@ -189,6 +189,16 @@ pnpm test         # Run Vitest (single pass)
 pnpm test:watch   # Run Vitest in watch mode
 pnpm typecheck    # Generate Next.js route types, then type-check with tsc
 pnpm screenshots  # Regenerate template preview images in public/templates
+pnpm og:image     # Regenerate public/og-image.png
+```
+
+Diagnostics for the preview/PDF pipeline. These drive headless Puppeteer against a running app, so start `pnpm dev` first:
+
+```bash
+pnpm check:pagebreak    # Report where each layout breaks across pages
+pnpm check:pagination   # Compare preview pagination against the rendered document
+pnpm inspect:layout     # Dump computed geometry for one layout
+pnpm verify:pdf         # Round-trip the /api/export-pdf route
 ```
 
 ## Environment Variables
@@ -205,7 +215,7 @@ Powers "Extract from PDF", "Improve with AI", and "Analyze job description".
 
 ```bash
 GEMINI_API_KEY=                  # https://aistudio.google.com/
-GEMINI_MODEL=gemini-3.5-flash    # Optional model override
+GEMINI_MODEL=                    # Optional; defaults to gemini-3.5-flash
 ```
 
 Both accept a comma-separated list. Every key is tried on the first model before
@@ -214,7 +224,7 @@ rather than dropping straight to a weaker model:
 
 ```bash
 GEMINI_API_KEY=key_one,key_two
-GEMINI_MODEL=gemini-2.5-flash,gemini-2.0-flash
+GEMINI_MODEL=gemini-3.5-flash,gemini-3-flash-preview
 ```
 
 Without a key, the AI buttons are visible but calls will return a 503 error.
@@ -272,7 +282,8 @@ src/
       shared/, top-bar/        # Header (undo/redo, save indicator, Download PDF)
     forms/                     # react-hook-form field bindings, rich-text, schemas
     preview/
-      layouts/                 # classic | modern-centered | timeline | academic | inset | split | bold-type | studio | aurora | ledger | dossier | crest | masthead | compass | numeral | atlas | editorial
+      layouts/                 # One folder per layout; layout-registry.tsx holds the registered list
+      layout-registry.tsx      # layout id -> definition (the render half of a "template")
       engine.ts                # Layout descriptors + render pipeline
       paginate-document.ts     # Multi-page break pass
       resume-document.tsx      # The paper surface

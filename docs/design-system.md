@@ -37,6 +37,8 @@ Nothing else. No `gap-0.5`, `gap-1.5`, `gap-2.5`, `gap-5`, `gap-6`, `gap-7`, and
 
 **`text-[Npx]` is banned** (lint-enforced). There is no micro step: de-emphasis is `text-muted-foreground`'s job, not a 5th size. The panel scrolls, so vertical room is not scarce enough to justify 10px text.
 
+One site carries an `eslint-disable` for this rule: the mobile bottom nav's `text-[10px]` labels (`editor/mobile/mobile-bottom-nav.tsx`), where four labels share a phone-width pill. It is the only one — a second disable means the scale needs a real 5th step, not another escape hatch.
+
 **Uppercase + letter-spacing are gone.** No `uppercase`, no `tracking-wider`. Sentence case everywhere.
 
 ---
@@ -249,13 +251,15 @@ rtk tsc && rtk lint && rtk vitest run
 ```
 
 - **`preview/__snapshots__` must not move.** Nothing in this system touches `preview/`; if that snapshot changes, something is wrong.
-- 4 tests fail on `master` already (`pdf-presentation`, `layout-registry`) — pre-existing. Confirm the count stays 4, don't "fix" them.
-- Grep gates (all must return zero in `src/features` + `src/components/ui`):
+- The suite is green (415 tests as of this writing). A failure is yours — don't reach for "pre-existing".
+- Grep gates. Run each and compare against the count in the right-hand column — anything above it is drift you introduced:
 
 ```bash
-rtk grep -rn "text-\[[0-9]*px\]" src/features src/components/ui
-rtk grep -rn "uppercase tracking-wid" src/features
-rtk grep -rn "gap-6\|gap-y-5\|gap-x-3\|gap-7\|gap-2\.5\|gap-0\.5" src/features src/components/ui
-rtk grep -rn "ring-ring/10\|ring-ring/50" src/features src/components/ui
-rtk grep -rn "disabled:cursor-not-allowed" src/features src/components/ui
+rtk grep -rn "text-\[[0-9]*px\]" src/features src/components/ui              # 1 — mobile-bottom-nav, disabled inline
+rtk grep -rn "uppercase tracking-wid" src/features                            # 0
+rtk grep -rn "gap-6\|gap-y-5\|gap-x-3\|gap-7\|gap-2\.5\|gap-0\.5" src/features src/components/ui  # 3 — see below
+rtk grep -rn "ring-ring/10\|ring-ring/50" src/features src/components/ui      # 0
+rtk grep -rn "disabled:cursor-not-allowed" src/features src/components/ui      # 0
 ```
+
+The three gap hits are shadcn dialog shells (`ui/dialog.tsx`, `ui/alert-dialog.tsx` — `gap-6` on the modal box, outside the field scale) and one `gap-0.5` in `insights/suggestion-list.tsx`. Don't add a fourth; fold new work onto the scale.

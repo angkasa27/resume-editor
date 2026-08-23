@@ -10,7 +10,7 @@ import type { EditorPanelKey } from "@/features/resume-editor/domain/sections/se
 /**
  * The editor's copy of the paper, laid out by the same pass the export runs, so
  * a break seen here is the break in the PDF. No debounce of its own: the store
- * already commits on a 500ms debounce (SAVE-FLOW.md).
+ * already commits on a 500ms debounce (docs/save-flow.md).
  */
 export function PaginatedPreview({
   draft,

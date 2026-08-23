@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Label } from "@/components/ui/label";
 
 /**
- * Form spacing lives here, not at call sites (4/8/12/16 — DESIGN.md). 12px is
+ * Form spacing lives here, not at call sites (4/8/12/16 — docs/design-system.md). 12px is
  * the floor now that the old floated label (16px floor) is gone.
  */
 function FieldSet({ className, ...props }: React.ComponentProps<"fieldset">) {

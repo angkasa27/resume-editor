@@ -11,7 +11,7 @@ type DocumentActionsProps = {
   isImportingPdf?: boolean;
 };
 
-/** Both replace the draft. Exports live in the top bar — see DESIGN.md. */
+/** Both replace the draft. Exports live in the top bar — see docs/design-system.md. */
 export function DocumentActions({
   onExtractCv,
   onImportJson,

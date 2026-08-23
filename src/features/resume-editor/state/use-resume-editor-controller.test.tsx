@@ -32,7 +32,7 @@ describe("useResumeEditorController", () => {
 
     // Why: no save button — an export inside the 500ms debounce used to serialize the
     // pre-keystroke draft. Flush lands the edit; the re-read picks it up (the captured
-    // `draft` binding doesn't refresh synchronously). SAVE-FLOW.md invariant 6.
+    // `draft` binding doesn't refresh synchronously). docs/save-flow.md invariant 6.
     it("flushes the open form and re-reads before serializing", async () => {
       const { result } = renderHook(() =>
         useResumeEditorController({ initialDraft: createDefaultResumeDraft() }),

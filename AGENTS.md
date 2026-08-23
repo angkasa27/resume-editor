@@ -6,13 +6,25 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 <!-- END:nextjs-agent-rules -->
 
+# Vocabulary
+
+`CONTEXT.md` is the canonical glossary (Draft, Profile, Section, Item, Panel,
+Layout, Presentation, Template). Use those terms in code, UI copy, and docs;
+when something disagrees, the glossary wins.
+
 # Design system
 
-Read `DESIGN.md` before touching any form, control surface, or spacing/typography in `src/features` or `src/components/ui`. It defines the spacing scale (4/8/16/24), the type ramp, the label recipes, the button table, and the Field API — and two ESLint rules enforce parts of it. Landing page is exempt.
+Read `docs/design-system.md` before touching a form, a control surface, spacing, typography, a button, or an interaction state (hover / focus / selected / press) under `src/features` or `src/components/ui`. It owns the spacing scale (4/8/12/16), the type ramp, the placeholder-carries-the-label recipe, the button table, the ring-vs-fill rule, and the Field API; six ESLint rules enforce parts of it. The landing page is exempt.
 
 # Save flow
 
-Read `SAVE-FLOW.md` before touching `forms/use-auto-save.ts`, the store's commit path, or anything that renders a registered input. Editing has no save button — persistence is a side effect of typing, so a broken save looks like a working app until reload. The doc lists the six invariants that keep the form, the store, and the preview in agreement, including why `reactCompiler` means a re-seed has to write the DOM itself.
+Read `docs/save-flow.md` before touching `forms/use-auto-save.ts`, the store's commit path, `revision`, or anything that renders a registered input. There is no save button — persistence is a side effect of typing, so a broken save looks like a working app until reload. The doc holds the six invariants that keep the form, the store, and the preview in agreement, including why `reactCompiler` means a re-seed has to write the DOM itself.
+
+# Résumé layouts
+
+Read `src/features/resume-editor/preview/layouts/AGENTS.md` before adding, editing, or restyling any layout under `preview/layouts/` — including a header, a section heading, an item view, or a `styles.module.css`. It holds the render contract a layout has to honour: the `slots` it is handed, the `--resume-*` variables it must consume instead of hard-coding, full-bleed insets, `data-page-unit` pagination, the `print-color-adjust` pair every painted surface needs, and the link-cue rule. Each layout folder also has a `README.md` describing what that layout looks like on paper — read it when you cannot see the screenshot.
+
+Note the vocabulary: a **layout** is the rendering; a **template** is a layout plus a curated style preset. The gallery shows templates.
 
 <!-- rtk-instructions v2 -->
 
