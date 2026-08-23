@@ -242,7 +242,7 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
   );
 }
 
-type ProfileTextFieldProps = {
+export type ProfileTextFieldProps = {
   register: ProfileForm["register"];
   name: FieldPath;
   id: string;
@@ -258,7 +258,7 @@ type ProfileTextFieldProps = {
   spellCheck?: boolean;
 };
 
-function ProfileTextField({
+export function ProfileTextField({
   register,
   name,
   id,

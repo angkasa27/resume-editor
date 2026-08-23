@@ -19,27 +19,37 @@ import { cn } from "@/lib/utils";
 import { collectionSectionConfigs } from "@/features/resume-editor/domain/sections/collection-section-config";
 import { FOCUS_RING_CLASS } from "@/features/resume-editor/forms/fields/field-control";
 import {
+  getLayoutExtraFields,
+  layoutPinsSectionTitles,
+} from "@/features/resume-editor/domain/presentation/layout-section-rules";
+import {
   isCollectionSectionKey,
   sectionLabels,
+  sectionRowLabelFor,
   type CollectionSectionKey,
   type ResumeSectionPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { ResumeEditorPanelKey } from "@/features/resume-editor/state/resume-editor-store";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
-function sectionLabelFor(key: ResumeEditorPanelKey) {
-  return key === "profile"
-    ? "Profile"
-    : sectionLabels[key as ResumeSectionPanelKey];
+function sectionLabelFor(key: ResumeEditorPanelKey, draft: ResumeDraft) {
+  if (key === "profile") return "Profile";
+  if (key === "extras") {
+    return (
+      getLayoutExtraFields(draft.pdfPresentation.layoutId)?.label ?? "Details"
+    );
+  }
+  return sectionLabels[key as ResumeSectionPanelKey];
+}
+
+/** Profile and the extras block have no section of their own on the paper. */
+function isSectionPanel(key: ResumeEditorPanelKey): key is ResumeSectionPanelKey {
+  return key !== "profile" && key !== "extras";
 }
 
 /** Only sections whose items carry a date range can be sorted newest-first. */
 function canAutoSort(key: ResumeEditorPanelKey) {
-  if (
-    key === "profile" ||
-    !isCollectionSectionKey(key as ResumeSectionPanelKey)
-  )
-    return false;
+  if (!isSectionPanel(key) || !isCollectionSectionKey(key)) return false;
   return Boolean(
     collectionSectionConfigs[key as CollectionSectionKey].dateRange,
   );
@@ -108,15 +118,24 @@ export function SectionFormHeader({
   // The input only exists while renaming, so it mounts fresh from the draft each
   // time — no re-seeding needed when import/undo replaces the draft underneath.
   const [isRenaming, setIsRenaming] = useState(false);
-  const defaultLabel = sectionLabelFor(sectionKey);
-  const storedTitle =
-    sectionKey === "profile"
-      ? undefined
-      : draft.sections[sectionKey as ResumeSectionPanelKey].title;
-  const label = storedTitle?.trim() || defaultLabel;
+  const defaultLabel = sectionLabelFor(sectionKey, draft);
+  const storedTitle = isSectionPanel(sectionKey)
+    ? draft.sections[sectionKey].title
+    : undefined;
+  // A layout whose format fixes its headings (the 履歴書 form) owns the title;
+  // renaming there would show one word in the sidebar and another on the paper.
+  const titlePinnedByLayout =
+    isSectionPanel(sectionKey) &&
+    layoutPinsSectionTitles(draft.pdfPresentation.layoutId);
+  const label = titlePinnedByLayout
+    ? sectionRowLabelFor(
+        draft.sections,
+        sectionKey,
+        draft.pdfPresentation.layoutId,
+      )
+    : storedTitle?.trim() || defaultLabel;
   const isRemovable =
-    sectionKey !== "profile" &&
-    isCollectionSectionKey(sectionKey as ResumeSectionPanelKey);
+    isSectionPanel(sectionKey) && isCollectionSectionKey(sectionKey);
 
   function commitRename(value: string) {
     setIsRenaming(false);
@@ -162,7 +181,7 @@ export function SectionFormHeader({
       ) : (
         <div className="flex min-w-0 flex-1 items-center gap-1">
           <h2 className="min-w-0 truncate text-sm font-semibold">{label}</h2>
-          {sectionKey === "profile" ? null : (
+          {!isSectionPanel(sectionKey) || titlePinnedByLayout ? null : (
             <Tooltip>
               <TooltipTrigger
                 render={
@@ -208,7 +227,7 @@ export function SectionFormHeader({
         open={isRemoveOpen}
         onOpenChange={setIsRemoveOpen}
         onConfirm={() => {
-          onSetSectionVisibility(sectionKey as ResumeSectionPanelKey, false);
+            if (isSectionPanel(sectionKey)) onSetSectionVisibility(sectionKey, false);
           onBack();
         }}
         title={`Remove ${label} section?`}

@@ -35,4 +35,22 @@ describe("preview render context", () => {
       true
     );
   });
+
+  it("drops the sections a layout's format has no place for", () => {
+    // Projects belong on the companion 職務経歴書, not the 履歴書 — so the form
+    // must not print them even though the section is visible and filled. The
+    // editor marks those rows instead of quietly losing the content.
+    const draft = createDefaultResumeDraft();
+    draft.pdfPresentation = { ...draft.pdfPresentation, layoutId: "rirekisho" };
+
+    const context = createPreviewRenderContext(draft, "preview");
+
+    expect(draft.sections.projects.visible).toBe(true);
+    expect(context.sections.some((section) => section.key === "projects")).toBe(
+      false
+    );
+    expect(
+      context.sections.some((section) => section.key === "workExperience")
+    ).toBe(true);
+  });
 });

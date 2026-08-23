@@ -98,7 +98,9 @@ export function SectionEditPanel({
               onBack={onBack}
               // Built here: the one layer that already holds the draft and the save callback.
               onRename={(title) => {
-                if (openSection === "profile") return;
+                // Neither panel has a section of its own to rename.
+                if (openSection === "profile" || openSection === "extras")
+                  return;
                 onSaveSection(openSection, {
                   ...draft.sections[openSection],
                   title,

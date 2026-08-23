@@ -17,7 +17,7 @@ import {
 } from "@/features/resume-editor/domain/presentation/template-presets";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { RESUME_PDF_SESSION_STORAGE_KEY } from "@/features/resume-editor/server/resume-pdf-session";
-import { PERSONAS, type Persona } from "./personas";
+import { PERSONAS, PINNED_PERSONAS, type Persona } from "./personas";
 
 const BASE_URL = process.env.SCREENSHOT_BASE_URL ?? "http://localhost:4000";
 const PUBLIC_DIR = path.join(process.cwd(), "public");
@@ -54,10 +54,18 @@ function seededShuffle<T>(items: ReadonlyArray<T>, seed: number): T[] {
  * shot. Ten shared personas are shuffled once and mapped round-robin onto the
  * presets — same seed, same screenshot, so re-runs don't churn the webps.
  */
+const PERSONA_BY_LAYOUT_ID: ReadonlyMap<string, Persona> = new Map(
+  PINNED_PERSONAS.flatMap((persona) =>
+    (persona.forLayoutIds ?? []).map((layoutId) => [layoutId, persona] as const),
+  ),
+);
+
 const PERSONA_BY_PRESET_ID: ReadonlyMap<string, Persona> = new Map(
   seededShuffle(resumeTemplatePresets, 42).map((preset, i) => [
     preset.id,
-    PERSONAS[i % PERSONAS.length],
+    // A layout whose format needs particular content pins its own persona; the
+    // rest take their turn in the round-robin.
+    PERSONA_BY_LAYOUT_ID.get(preset.layoutId) ?? PERSONAS[i % PERSONAS.length],
   ]),
 );
 
@@ -71,6 +79,7 @@ function buildDraft(p: Persona, preset: ResumeTemplatePreset): ResumeDraft {
     phone: p.phone,
     email: p.email,
     photo: p.photo,
+    extras: p.extras,
     extraLinks: p.links.map((url, i) => ({
       id: `link-${preset.id}-${i}`,
       url,

@@ -16,7 +16,6 @@ import {
 import { SectionEditPanel } from "@/features/resume-editor/editor/sections/section-edit-panel";
 import type {
   CollectionSectionKey,
-  EditorPanelKey,
   ResumeSectionPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 import type {
@@ -45,7 +44,7 @@ type EditorSidebarProps = {
     visible: boolean,
   ) => void;
   onAutoSortSection: (sectionKey: CollectionSectionKey) => void;
-  onOpenSection: (panel: EditorPanelKey) => void;
+  onOpenSection: (panel: ResumeEditorPanelKey) => void;
   onBack: () => void;
 };
 

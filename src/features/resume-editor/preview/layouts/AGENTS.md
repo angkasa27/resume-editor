@@ -1,7 +1,7 @@
 # Layouts — how a résumé page gets drawn
 
 A **layout** is one rendering of the document: columns, header shape, where each
-section lands, what the headings look like. Nineteen live in this folder, one per
+section lands, what the headings look like. Twenty live in this folder, one per
 subdirectory, each with a `README.md` describing what it looks like on paper,
 with its gallery screenshots (`public/templates/<preset-id>.webp`) embedded at
 the top — read that before editing a layout, especially if you cannot see the
@@ -37,7 +37,7 @@ band reach the bottom paper edge.
 ## Two ways to build one
 
 **`createSingleColumnLayout(config)`** — header, then a `.layout-body` holding the
-summary and every section. Reach for this first; eleven of the nineteen use it.
+summary and every section. Reach for this first; eleven of the twenty use it.
 
 ```tsx
 export const classicLayout = createSingleColumnLayout({
@@ -80,7 +80,7 @@ gap — it consumes these:
 | `--resume-font` / `--resume-leading` | family and line height |
 | `--resume-gap-section` / `-item` / `-inner` / `--resume-indent` | the spacing ramp |
 | `--resume-page-margin` / `--resume-gutter` | page margin, and half of it |
-| `--resume-paper-width` / `-height` | A4 or Letter |
+| `--resume-paper-width` / `-height` | A4, Letter or JIS B5 |
 | `--resume-photo-aspect` / `-radius` | **only when the user picks a shape** — always `var(…, <your default>)` |
 
 Three properties exist for a layout to *hand a colour back*, because a layout
@@ -140,6 +140,22 @@ line does. Each layout picks exactly one of:
 
 `layout-theming.test.ts` fails a layout that sets neither.
 
+## What a layout can demand of the document
+
+Structure is not the only thing a format fixes. `domain/presentation/layout-section-rules.ts`
+holds the three demands a layout may make, all optional and all keyed by layout id:
+
+| rule | effect |
+| --- | --- |
+| `hiddenSections` | the section never prints, however the user has it configured; the sidebar marks the row "Not on this template" |
+| `sectionTitles` | fixed headings that outrank a rename (`sectionTitleFor` resolves them, and the rename control disappears) |
+| `extraFields` | identity fields stored in the free `profile.extras` map, edited in their own pinned sidebar row |
+
+It lives in the domain, not on `PreviewLayoutDefinition`, because the editor
+sidebar and the title resolver read it and neither may import this registry.
+Only `rirekisho` uses any of it today — reach for it when a *format* forbids
+something, not when a design merely looks better without it.
+
 ## Registering a new layout
 
 Three edits, all load-bearing:
@@ -169,7 +185,7 @@ Then update `layout-registry.test.ts` (it asserts the exact id list) and add a
 - [ ] Renders with **no photo**, **no headline**, and **no links** — grid columns declared explicitly so the identity block doesn't slide into a gutter.
 - [ ] Long name, long job title, and a 20-word section rename all still wrap.
 - [ ] `pnpm test` green (`render-snapshot`, `layout-registry`, `layout-theming`, `template-presets`).
-- [ ] Checked at both paper sizes and at the smallest and largest font scale.
+- [ ] Checked at every paper size and at the smallest and largest font scale.
 - [ ] `README.md` in the layout folder written or updated, with every preset's screenshot embedded in a `## Preview` table (relative path `../../../../../../public/templates/<preset-id>.webp`; regenerate with `pnpm screenshots`).
 
 ## Index
@@ -195,3 +211,4 @@ Then update `layout-registry.test.ts` (it asserts the exact id list) and add a
 | [Atlas](atlas/README.md) | `atlas` | Sections tile across three tracks, wide/narrow alternating; items numbered in discs. |
 | [Editorial](editorial/README.md) | `editorial` | Magazine opening: tinted band with the summary as a display pull quote. |
 | [Harvard](harvard/README.md) | `harvard` | The MCS format. One type size, bold as the only emphasis, no colour. |
+| [Rirekisho](rirekisho/README.md) | `rirekisho` | The Japanese 履歴書 form: ruled identity block, 30×40mm photo box, history in 年 / 月 columns. |

@@ -1,5 +1,6 @@
 import {
   BriefcaseBusinessIcon,
+  IdCardIcon,
   FileTextIcon,
   GlobeIcon,
   GraduationCapIcon,
@@ -16,8 +17,9 @@ import type {
   EditorPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
 
-const sectionIconMap: Record<EditorPanelKey, LucideIcon> = {
+const sectionIconMap: Record<EditorPanelKey | "extras", LucideIcon> = {
   profile: UserRoundIcon,
+  extras: IdCardIcon,
   summary: FileTextIcon,
   workExperience: BriefcaseBusinessIcon,
   skills: WrenchIcon,
@@ -34,7 +36,7 @@ const sectionIconMap: Record<EditorPanelKey, LucideIcon> = {
 export function SectionIcon({
   sectionKey,
 }: {
-  sectionKey: EditorPanelKey | CollectionSectionKey;
+  sectionKey: EditorPanelKey | CollectionSectionKey | "extras";
 }) {
   const Icon = sectionIconMap[sectionKey];
   return <Icon data-icon="inline-start" />;

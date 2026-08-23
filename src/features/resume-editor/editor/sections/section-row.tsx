@@ -1,6 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
+import { TriangleAlertIcon } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { EditorRow } from "@/features/resume-editor/editor/sections/editor-row";
@@ -11,7 +12,7 @@ import type {
 } from "@/features/resume-editor/domain/sections/section-metadata";
 
 type SectionRowProps = {
-  sectionKey: EditorPanelKey | CollectionSectionKey;
+  sectionKey: EditorPanelKey | CollectionSectionKey | "extras";
   label: string;
   active?: boolean;
   onClick: () => void;
@@ -23,6 +24,8 @@ type SectionRowProps = {
   trailing?: ReactNode;
   /** The row's "⋯" menu. */
   menu?: ReactNode;
+  /** Why this section will not print — e.g. the layout has no place for it. */
+  notice?: string;
   className?: string;
 };
 
@@ -36,6 +39,7 @@ export function SectionRow({
   count,
   trailing,
   menu,
+  notice,
   className,
 }: SectionRowProps) {
   return (
@@ -44,10 +48,23 @@ export function SectionRow({
       leading={<SectionIcon sectionKey={sectionKey} />}
       title={label}
       badge={
-        count !== undefined ? (
-          <Badge variant="outline" className="shrink-0 bg-background text-xs!">
-            {count} item{count === 1 ? "" : "s"}
-          </Badge>
+        count !== undefined || notice ? (
+          <>
+            {count !== undefined ? (
+              <Badge
+                variant="outline"
+                className="shrink-0 bg-background text-xs!"
+              >
+                {count} item{count === 1 ? "" : "s"}
+              </Badge>
+            ) : null}
+            {notice ? (
+              <Badge variant="warning" className="shrink-0 text-xs!">
+                <TriangleAlertIcon data-icon="inline-start" />
+                {notice}
+              </Badge>
+            ) : null}
+          </>
         ) : undefined
       }
       indicator={trailing}

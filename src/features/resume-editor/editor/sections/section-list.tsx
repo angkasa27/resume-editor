@@ -20,8 +20,12 @@ import {
   useSectionReorder,
 } from "@/features/resume-editor/editor/sections/sortable-section-row";
 import {
+  getLayoutExtraFields,
+  isSectionHiddenByLayout,
+} from "@/features/resume-editor/domain/presentation/layout-section-rules";
+import {
   partitionCollectionKeys,
-  sectionTitleFor,
+  sectionRowLabelFor,
   type CollectionSectionKey,
   type ResumeSectionPanelKey,
 } from "@/features/resume-editor/domain/sections/section-metadata";
@@ -65,6 +69,8 @@ export function SectionList({
 }: SectionListProps) {
   const { sensors, onDragEnd } = useSectionReorder(onReorderSection);
   const { sortableKeys, hiddenKeys } = partitionCollectionKeys(draft.sections);
+  const { layoutId } = draft.pdfPresentation;
+  const extraFields = getLayoutExtraFields(layoutId);
   const [pendingRemoveKey, setPendingRemoveKey] =
     useState<CollectionSectionKey | null>(null);
 
@@ -97,12 +103,24 @@ export function SectionList({
           />
           <SectionRow
             sectionKey="summary"
-            label={sectionTitleFor(draft.sections, "summary")}
+            label={sectionRowLabelFor(draft.sections, "summary", layoutId)}
             active={activeSection === "summary"}
             onClick={() => onOpen("summary")}
             trailing={navChevron}
             className="h-12.5 pl-3"
           />
+          {/* Only the layouts that print extra identity fields declare them, so
+              the row appears with the template rather than hiding in Profile. */}
+          {extraFields ? (
+            <SectionRow
+              sectionKey="extras"
+              label={extraFields.label}
+              active={activeSection === "extras"}
+              onClick={() => onOpen("extras")}
+              trailing={navChevron}
+              className="h-12.5 pl-3"
+            />
+          ) : null}
         </div>
 
         <Separator fullBleed />
@@ -123,14 +141,19 @@ export function SectionList({
                   <SortableSectionRow
                     key={key}
                     sectionKey={key}
-                    label={sectionTitleFor(draft.sections, key)}
+                    label={sectionRowLabelFor(draft.sections, key, layoutId)}
                     count={draft.sections[key].items.length}
+                    notice={
+                      isSectionHiddenByLayout(layoutId, key)
+                        ? "Not printed"
+                        : undefined
+                    }
                     active={activeSection === key}
                     onClick={() => onOpen(key)}
                     trailing={navChevron}
                     menu={
                       <RowDeleteButton
-                        label={`${sectionTitleFor(draft.sections, key)} section`}
+                        label={`${sectionRowLabelFor(draft.sections, key, layoutId)} section`}
                         onDelete={() => setPendingRemoveKey(key)}
                       />
                     }
@@ -158,7 +181,7 @@ export function SectionList({
         }}
         title={
           pendingRemoveKey
-            ? `Remove ${sectionTitleFor(draft.sections, pendingRemoveKey)} section?`
+            ? `Remove ${sectionRowLabelFor(draft.sections, pendingRemoveKey, layoutId)} section?`
             : "Remove section?"
         }
         description="Its content is kept — you can add the section back at any time."

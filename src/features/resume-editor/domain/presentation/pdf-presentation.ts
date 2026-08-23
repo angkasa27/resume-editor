@@ -31,6 +31,7 @@ export const pdfLayoutIds = [
   "atlas",
   "editorial",
   "harvard",
+  "rirekisho",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -54,7 +55,7 @@ export type PdfLineHeightId = (typeof pdfLineHeightIds)[number];
 export const pdfSpacingIds = ["compact", "standard", "airy"] as const;
 export type PdfSpacingId = (typeof pdfSpacingIds)[number];
 
-export const pdfPaperSizes = ["a4", "letter"] as const;
+export const pdfPaperSizes = ["a4", "letter", "b5"] as const;
 export type PdfPaperSize = (typeof pdfPaperSizes)[number];
 
 export const pdfPhotoShapeIds = ["square", "rectangle", "circle"] as const;
@@ -121,6 +122,7 @@ export const pdfSpacingLabels: Record<PdfSpacingId, string> = {
 export const pdfPaperSizeLabels: Record<PdfPaperSize, string> = {
   a4: "A4",
   letter: "Letter",
+  b5: "B5",
 };
 
 const fontBasePx: Record<PdfFontScaleId, number> = {
@@ -180,6 +182,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   numeral: 16, // a 150px date gutter inside a wide margin is the whole look
   editorial: 20, // whitespace is the layout — the band and the spreads both need it
   harvard: 18, // the format is a Word document with wide margins; keep them
+  rirekisho: 12, // the ruled boxes are the page; margin only frames them
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */
@@ -195,6 +198,9 @@ export const paperDimensions: Record<
 > = {
   a4: { widthMm: 210, heightMm: 297 },
   letter: { widthMm: 215.9, heightMm: 279.4 },
+  // JIS B5 (182×257), not ISO B5 (176×250) — the Japanese stationery size a
+  // printed 履歴書 is sold and filed at.
+  b5: { widthMm: 182, heightMm: 257 },
 };
 
 /** CSS px per millimetre at 96dpi — used to scale on-screen paper previews. */

@@ -177,7 +177,9 @@ describe("generateResumePdf", () => {
     );
     expect(mockLocalPuppeteerPage.pdf).toHaveBeenCalledWith(
       expect.objectContaining({
-        format: "a4",
+        // Millimetres, not puppeteer's `format`: it has no B-series size.
+        width: "210mm",
+        height: "297mm",
         printBackground: true,
         // Full-bleed: layouts own the page margin, the physical margin is zero.
         margin: { top: "0", right: "0", bottom: "0", left: "0" },
@@ -193,7 +195,7 @@ describe("generateResumePdf", () => {
       "@/features/resume-editor/server/generate-resume-pdf"
     );
     const draft = createDefaultResumeDraft();
-    draft.pdfPresentation.paperSize = "letter";
+    draft.pdfPresentation.paperSize = "b5";
 
     await generateResumePdf({
       draft,
@@ -202,7 +204,9 @@ describe("generateResumePdf", () => {
 
     expect(mockLocalPuppeteerPage.pdf).toHaveBeenCalledWith(
       expect.objectContaining({
-        format: "letter",
+        // JIS B5, the size a printed 履歴書 is filed at.
+        width: "182mm",
+        height: "257mm",
         margin: { top: "0", right: "0", bottom: "0", left: "0" },
       })
     );
@@ -236,7 +240,8 @@ describe("generateResumePdf", () => {
     );
     expect(mockCloudflarePage.pdf).toHaveBeenCalledWith(
       expect.objectContaining({
-        format: "a4",
+        width: "210mm",
+        height: "297mm",
         printBackground: true,
       })
     );

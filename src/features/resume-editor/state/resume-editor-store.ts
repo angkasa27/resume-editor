@@ -21,7 +21,9 @@ import type {
 } from "@/features/resume-editor/domain/schema";
 
 export type ResumeSectionKey = keyof ResumeDraft["sections"];
-export type ResumeEditorPanelKey = "profile" | ResumeSectionKey;
+/** `extras` is the layout-declared identity block — a panel with no section of
+ * its own, since its fields are stored on the profile. */
+export type ResumeEditorPanelKey = "profile" | "extras" | ResumeSectionKey;
 
 type ResumeEditorStoreState = {
   draft: ResumeDraft;

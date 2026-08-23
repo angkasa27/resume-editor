@@ -2,6 +2,7 @@ import type { Browser, Page } from "puppeteer-core";
 
 import { exportResumeDraft } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import {
+  getPaperDimensionsMm,
   normalizePdfPresentation,
   type PdfPaperSize,
 } from "@/features/resume-editor/domain/presentation/pdf-presentation";
@@ -9,7 +10,7 @@ import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 import { RESUME_PDF_SESSION_STORAGE_KEY } from "@/features/resume-editor/server/resume-pdf-session";
 
 type PdfRenderOptions = {
-  format: PdfPaperSize;
+  paperSize: PdfPaperSize;
 };
 
 type PdfExportProvider =
@@ -176,13 +177,17 @@ function createPuppeteerPageAdapter(page: Page): PdfPageAdapter {
         throw new Error(result.message || "PDF page reported an error state.");
       }
     },
-    async pdf({ format }) {
+    async pdf({ paperSize }) {
+      // Explicit millimetres rather than puppeteer's `format`: it has no
+      // B-series size, and one code path keeps every paper size exact.
+      const { widthMm, heightMm } = getPaperDimensionsMm(paperSize);
       // Full-bleed: layouts own the page margins (via --resume-page-margin
       // insets), so the physical PDF margin is zero and decorations can paint
       // to the paper edge.
       return new Uint8Array(
         await page.pdf({
-          format,
+          width: `${widthMm}mm`,
+          height: `${heightMm}mm`,
           margin: { top: "0", right: "0", bottom: "0", left: "0" },
           printBackground: true,
         }),
@@ -270,7 +275,7 @@ export async function generateResumePdf({
   const serializedDraft = exportResumeDraft(draft);
   const presentation = normalizePdfPresentation(draft.pdfPresentation);
   const renderOptions: PdfRenderOptions = {
-    format: presentation.paperSize,
+    paperSize: presentation.paperSize,
   };
   const session = await createPdfBrowserSession();
 

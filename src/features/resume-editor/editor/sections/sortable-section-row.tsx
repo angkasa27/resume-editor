@@ -27,6 +27,7 @@ type SortableSectionRowProps = {
   onClick: () => void;
   trailing?: ReactNode;
   menu?: ReactNode;
+  notice?: string;
 };
 
 /** A drag-sortable section row: grip + `SectionRow`. */
@@ -38,6 +39,7 @@ export function SortableSectionRow({
   onClick,
   trailing,
   menu,
+  notice,
 }: SortableSectionRowProps) {
   const { setNodeRef, isDragging, dragAttributes, listeners, motionProps } =
     useSortableRow(sectionKey);
@@ -62,6 +64,7 @@ export function SortableSectionRow({
         }
         trailing={trailing}
         menu={menu}
+        notice={notice}
       />
     </motion.div>
   );

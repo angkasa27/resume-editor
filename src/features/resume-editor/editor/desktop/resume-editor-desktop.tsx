@@ -20,10 +20,7 @@ import { ZOOM_DEFAULT } from "@/features/resume-editor/editor/desktop/zoom";
 import { useDirection } from "@/features/resume-editor/editor/sections/use-direction";
 import { PaginatedPreview } from "@/features/resume-editor/preview/components/paginated-preview";
 import { normalizePdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
-import {
-  needsSectionReveal,
-  type EditorPanelKey,
-} from "@/features/resume-editor/domain/sections/section-metadata";
+import { needsSectionReveal } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { ResumeEditorPanelKey } from "@/features/resume-editor/state/resume-editor-store";
 import { useEditorHeader } from "@/features/resume-editor/editor/top-bar/use-editor-header";
 import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
@@ -127,7 +124,7 @@ export function ResumeEditorDesktop() {
 
   /** The single way a section opens (paper click, list, or Insights). Hidden sections
    * are revealed first, else the form edits what the paper can't show. */
-  function focusSection(panel: EditorPanelKey) {
+  function focusSection(panel: ResumeEditorPanelKey) {
     if (needsSectionReveal(draft.sections, panel)) {
       setSectionVisibility(panel, true);
     }
@@ -198,7 +195,9 @@ export function ResumeEditorDesktop() {
         <PaginatedPreview
           draft={draft}
           onSelectSection={focusSection}
-          activeSection={openSection}
+          // The extras panel edits the identity block, which the paper draws
+          // inside the Profile target.
+          activeSection={openSection === "extras" ? "profile" : openSection}
         />
       </EditorCanvas>
     </div>

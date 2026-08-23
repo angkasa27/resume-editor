@@ -20,6 +20,13 @@ export const profileSchema = z.object({
   // Optional so drafts written before it existed still parse; blank renders nothing.
   headline: optionalText(),
   location: textField(),
+  /**
+   * Identity fields only some layouts print — the 履歴書's ふりがな, 生年月日,
+   * 性別 and 〒 today. A free map, not named columns: which keys exist is the
+   * layout's business (`layout-section-rules.ts` declares them), and a new
+   * locale must not cost a schema version. Optional, so older drafts parse.
+   */
+  extras: z.record(z.string(), z.string()).optional(),
   phone: textField(),
   email: textField(),
   photo: textField(),

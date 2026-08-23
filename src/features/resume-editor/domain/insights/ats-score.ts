@@ -275,6 +275,11 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   numeral: { status: "pass" },
   editorial: { status: "pass" },
   harvard: { status: "pass" },
+  rirekisho: {
+    status: "warn",
+    message:
+      "A 履歴書 is a form for a human reader, not a parser — the ruled table and Japanese labels are the point. Use a single-column layout if you also need to pass a Western ATS.",
+  },
   compass: {
     status: "fail",
     message:

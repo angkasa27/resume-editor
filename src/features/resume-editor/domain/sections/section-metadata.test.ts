@@ -79,4 +79,19 @@ describe("sectionTitleFor", () => {
 
     expect(sectionTitleFor(blank, "summary")).toBe(sectionLabels.summary);
   });
+
+  it("lets a layout that fixes its headings outrank a rename", () => {
+    // The 履歴書 form has standard labels a recruiter looks for; a rename there
+    // would put one word in the sidebar and another on the paper, so the layout
+    // wins and the rename control is disabled.
+    const renamed = {
+      ...sections,
+      workExperience: { ...sections.workExperience, title: "My Jobs" },
+    };
+
+    expect(sectionTitleFor(renamed, "workExperience", "rirekisho")).toBe("職歴");
+    expect(sectionTitleFor(renamed, "workExperience", "classic")).toBe(
+      "My Jobs",
+    );
+  });
 });

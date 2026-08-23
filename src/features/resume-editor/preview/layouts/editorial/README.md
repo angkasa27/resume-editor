@@ -22,7 +22,7 @@ right, separated by generous air.
 - **Section headings** — deliberately **tiny**: `0.95 × meta`, weight 700, sentence case, `--resume-text`. Smaller than the item titles beneath them, because the items are the content and the section name is only a filing marker.
 - **Items** — a spread: `0.42fr | 1fr`. Title and date in the left column, prose in the right. Item titles at `1.25 × h3`, weight 700.
 - **The item rule** — every item after the first is preceded by an 18px × 2px text-coloured rule, **absolutely positioned** above it. As a block it pushed only the left column down and the prose sat level with the rule; positioned, both columns start on the same line.
-- **Link cue** — a `0.5px` hairline. Its headings are the smallest of all nineteen layouts; only a hairline stays under them.
+- **Link cue** — a `0.5px` hairline. Its headings are the smallest of all twenty layouts; only a hairline stays under them.
 
 ## Wiring
 

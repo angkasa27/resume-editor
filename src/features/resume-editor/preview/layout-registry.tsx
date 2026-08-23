@@ -13,6 +13,7 @@ import { dossierLayout } from "./layouts/dossier/layout";
 import { duetLayout } from "./layouts/duet/layout";
 import { editorialLayout } from "./layouts/editorial/layout";
 import { harvardLayout } from "./layouts/harvard/layout";
+import { rirekishoLayout } from "./layouts/rirekisho/layout";
 import { insetLayout } from "./layouts/inset/layout";
 import { ledgerLayout } from "./layouts/ledger/layout";
 import { mastheadLayout } from "./layouts/masthead/layout";
@@ -44,6 +45,7 @@ export const previewLayoutDefinitions = [
   atlasLayout,
   editorialLayout,
   harvardLayout,
+  rirekishoLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain SSOT)

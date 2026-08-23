@@ -1,3 +1,5 @@
+import { layoutSectionTitle } from "@/features/resume-editor/domain/presentation/layout-section-rules";
+import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
 
 const editablePanelKeys = [
@@ -53,13 +55,32 @@ export const sectionLabels: Record<
   organizationVolunteering: "Organizations & Volunteering",
 };
 
-/** Single read path for a section heading: the user's title if set, else the built-in
- *  label — clearing the rename field resets to the default. */
+/** Single read path for a section heading: the layout's fixed title if it has one,
+ *  else the user's, else the built-in label — clearing the rename field resets to
+ *  the default. `layoutId` is optional only so a caller with no presentation in
+ *  hand still resolves; pass it wherever the paper's own title is what's wanted. */
 export function sectionTitleFor(
   sections: ResumeDraft["sections"],
   sectionKey: ResumeSectionPanelKey,
+  layoutId?: PdfLayoutId,
 ) {
-  return sections[sectionKey].title?.trim() || sectionLabels[sectionKey];
+  const pinned = layoutId ? layoutSectionTitle(layoutId, sectionKey) : undefined;
+  return pinned ?? (sections[sectionKey].title?.trim() || sectionLabels[sectionKey]);
+}
+
+/** What the editor's section rows and drill-in header show. Where a layout fixes
+ *  the heading, the fixed title leads and the section's own name follows in
+ *  parentheses — "学歴 (Education)" — so the list stays scannable to someone who
+ *  does not read the script the paper prints in. The paper itself gets
+ *  `sectionTitleFor`: only the fixed title belongs on the page. */
+export function sectionRowLabelFor(
+  sections: ResumeDraft["sections"],
+  sectionKey: ResumeSectionPanelKey,
+  layoutId?: PdfLayoutId,
+) {
+  const own = sections[sectionKey].title?.trim() || sectionLabels[sectionKey];
+  const pinned = layoutId ? layoutSectionTitle(layoutId, sectionKey) : undefined;
+  return pinned && pinned !== own ? `${pinned} (${own})` : own;
 }
 
 export const languageProficiencyOptions = [
@@ -80,12 +101,14 @@ export function isCollectionSectionKey(
  *  something the paper can't show. Shared by desktop and mobile panel entry points. */
 export function needsSectionReveal(
   sections: ResumeDraft["sections"],
-  panel: EditorPanelKey,
+  // Wider than `EditorPanelKey`: the editor has panels (the layout-declared
+  // extras block) that are not sections at all, and they simply answer false.
+  panel: EditorPanelKey | (string & {}),
 ): panel is CollectionSectionKey {
   return (
     panel !== "profile" &&
     isCollectionSectionKey(panel as ResumeSectionPanelKey) &&
-    !sections[panel].visible
+    !sections[panel as CollectionSectionKey].visible
   );
 }
 

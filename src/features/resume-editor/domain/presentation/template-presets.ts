@@ -575,6 +575,34 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // rirekisho — a printed form, so the accent only inks the section rows and
+  // stays near-black. Both fonts are system stacks: their generic fallback is
+  // what picks up a Japanese face (gothic for sans, mincho for serif).
+  {
+    id: "rirekisho-gothic",
+    label: "Gothic",
+    layoutId: "rirekisho",
+    style: {
+      accent: "#111827",
+      fontFamilyId: "arial",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "rirekisho-mincho",
+    label: "Mincho",
+    layoutId: "rirekisho",
+    style: {
+      accent: "#111827",
+      fontFamilyId: "times-new-roman",
+      fontScale: "sm",
+      spacing: "compact",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
@@ -599,6 +627,8 @@ const layoutCategories: Record<
   atlas: ["creative"],
   editorial: ["creative"],
   harvard: ["ats", "professional"],
+  // A Japanese form: it is read by a person, never fed to a Western parser.
+  rirekisho: ["professional"],
   "modern-centered": ["ats", "professional"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],

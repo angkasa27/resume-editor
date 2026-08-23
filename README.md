@@ -36,9 +36,9 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **19 templates on 19 layouts**: Switch between nineteen polished templates (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard) without retyping a thing — each pairs a layout with a curated presentation.
+- **20 templates on 20 layouts**: Switch between twenty polished templates (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard, Rirekisho) without retyping a thing — each pairs a layout with a curated presentation.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
-- **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter), and page margins.
+- **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter / JIS B5), and page margins.
 
 **AI Assistance**
 - **AI PDF extraction**: Upload an existing resume PDF and Gemini parses it directly into the editor fields.

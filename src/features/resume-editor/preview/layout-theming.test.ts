@@ -26,7 +26,7 @@ describe("layout theming contract", () => {
     }
   });
 
-  it("configures its own link cue, since one blunt underline cannot suit nineteen designs", () => {
+  it("configures its own link cue, since one blunt underline cannot suit twenty designs", () => {
     for (const layoutId of pdfLayoutIds) {
       expect(
         layoutCss(layoutId),

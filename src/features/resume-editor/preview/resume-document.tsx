@@ -43,7 +43,11 @@ export function ResumeDocument({
     context.presentation.layoutId,
   );
   // Summary isn't a descriptor-driven section, so it resolves its own title.
-  const summaryTitle = sectionTitleFor(draft.sections, "summary");
+  const summaryTitle = sectionTitleFor(
+    draft.sections,
+    "summary",
+    context.presentation.layoutId,
+  );
 
   // Read-only surfaces pass no handler and get the bare document back.
   function target(panel: EditorPanelKey, label: string, node: ReactNode) {

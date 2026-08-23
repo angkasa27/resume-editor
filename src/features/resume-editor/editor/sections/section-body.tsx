@@ -2,6 +2,7 @@
 
 import { isCollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import { CollectionSectionBody } from "@/features/resume-editor/editor/sections/collection-section-body";
+import { ExtraFieldsForm } from "@/features/resume-editor/forms/extra-fields-form";
 import { ProfileFields } from "@/features/resume-editor/forms/profile-fields";
 import { useProfileForm } from "@/features/resume-editor/forms/use-profile-form";
 import { SummaryFields } from "@/features/resume-editor/forms/summary-fields";
@@ -43,6 +44,16 @@ export function SectionBody({
     );
   }
 
+  if (activeSection === "extras") {
+    return (
+      <ExtrasBody
+        draft={draft}
+        onSave={onSaveProfile}
+        idPrefix={`${idPrefix}-extras`}
+      />
+    );
+  }
+
   if (activeSection === "summary") {
     return (
       <SummaryBody
@@ -77,6 +88,28 @@ function ProfileBody({
   const ctx = useProfileForm(draft);
   useAutoSave(ctx.form, ctx.formValues, onSave);
   return <ProfileFields ctx={ctx} idPrefix={idPrefix} />;
+}
+
+/** The layout-declared identity fields. They live on the profile and save through
+ * the same path, so this is the profile form with a different set of inputs. */
+function ExtrasBody({
+  draft,
+  onSave,
+  idPrefix,
+}: {
+  draft: ResumeDraft;
+  onSave: (profile: ResumeDraft["profile"]) => void;
+  idPrefix: string;
+}) {
+  const ctx = useProfileForm(draft);
+  useAutoSave(ctx.form, ctx.formValues, onSave);
+  return (
+    <ExtraFieldsForm
+      ctx={ctx}
+      idPrefix={idPrefix}
+      layoutId={draft.pdfPresentation.layoutId}
+    />
+  );
 }
 
 function SummaryBody({

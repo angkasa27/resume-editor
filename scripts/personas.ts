@@ -14,8 +14,16 @@ export type Project = {
 };
 export type Cert = { name: string; org: string; date: string };
 
+/** Identity fields only the 履歴書 form prints. Section titles are not here: that
+ * layout pins its own headings. */
 export type Persona = {
   photo: string;
+  /** Straight into `profile.extras`, for layouts that declare extra fields
+   * (`layout-section-rules.ts` names the keys). */
+  extras?: Record<string, string>;
+  /** Layouts this persona is pinned to, instead of taking its turn in the
+   * round-robin — for a format whose content has to be in a given language. */
+  forLayoutIds?: ReadonlyArray<string>;
   fullName: string;
   location: string;
   phone: string;
@@ -1274,3 +1282,93 @@ export const PERSONAS: Persona[] = [
     },
   }
 ];
+
+/** Kept out of `PERSONAS` on purpose: a format whose content has to be in one
+ * language names the layouts it serves in `forLayoutIds`, rather than being
+ * round-robined onto every other template. */
+export const PINNED_PERSONAS: ReadonlyArray<Persona> = [{
+  photo: "https://i.pravatar.cc/320?img=60",
+  fullName: "田中 健太",
+  location: "東京都渋谷区神南1-2-3 サンプルマンション101",
+  phone: "090-1234-5678",
+  email: "kenta.tanaka@example.jp",
+  links: ["https://www.linkedin.com/in/kentatanaka"],
+  forLayoutIds: ["rirekisho"],
+  extras: {
+    nameReading: "たなか けんた",
+    addressReading: "とうきょうとしぶやくじんなん",
+    postalCode: "150-0041",
+    birthDate: "1994-06-12",
+    gender: "男",
+  },
+  summary:
+    "<p>Webアプリケーション開発を8年間担当し、要件定義から運用までを一貫して経験してまいりました。前職では決済基盤の刷新を主導し、処理遅延を60%削減しております。貴社が進めるプロダクト開発において、これまでの経験を活かして貢献したく志望いたしました。</p>",
+  work: [
+    {
+      company: "株式会社サクラソフト",
+      position: "シニアソフトウェアエンジニア",
+      location: "東京都港区",
+      start: "Apr 2020",
+      end: "current",
+      bullets: [
+        "決済基盤のリアーキテクチャを主導し、平均応答時間を1.2秒から0.4秒へ短縮。",
+        "フロントエンド共通コンポーネント群を整備し、4チームの実装工数を約30%削減。",
+        "新卒・中途あわせて6名のメンターを担当し、コードレビュー体制を整備。",
+      ],
+    },
+    {
+      company: "みなとテクノロジー株式会社",
+      position: "ソフトウェアエンジニア",
+      location: "東京都千代田区",
+      start: "Apr 2017",
+      end: "Mar 2020",
+      bullets: [
+        "社内業務システムの刷新を担当し、月次締め作業を8時間から1時間へ短縮。",
+        "CI/CDパイプラインを構築し、リリース頻度を月1回から週1回へ改善。",
+      ],
+    },
+  ],
+  skills: {
+    category: "技術スキル",
+    items: [
+      "TypeScript",
+      "React",
+      "Node.js",
+      "Go",
+      "PostgreSQL",
+      "AWS",
+      "Docker",
+    ],
+  },
+  projects: [
+    {
+      name: "決済基盤リプレイス",
+      start: "Jan 2022",
+      end: "Dec 2022",
+      bullets: [
+        "旧システムからの無停止移行を設計し、障害ゼロで切り替えを完了。",
+      ],
+    },
+  ],
+  certs: [
+    {
+      name: "応用情報技術者試験",
+      org: "情報処理推進機構",
+      date: "Oct 2019",
+    },
+    {
+      name: "TOEIC 850点",
+      org: "国際ビジネスコミュニケーション協会",
+      date: "Jun 2018",
+    },
+  ],
+  education: {
+    name: "東京工科大学",
+    location: "東京都八王子市",
+    start: "Apr 2013",
+    end: "Mar 2017",
+    degree: "情報工学部 情報工学科",
+    gpa: "",
+    note: "卒業研究では分散システムの障害検知手法を扱い、学内発表で優秀賞を受賞。",
+  },
+}];
