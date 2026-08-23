@@ -126,7 +126,7 @@ export function Hero() {
       {/* Builder frame — rises up to cover the copy */}
       <motion.div
         style={parallax ? { y: frameY } : undefined}
-        className="relative z-20 px-6"
+        className="relative z-20 px-6 pt-6 md:pt-0"
       >
         <motion.div
           initial={
