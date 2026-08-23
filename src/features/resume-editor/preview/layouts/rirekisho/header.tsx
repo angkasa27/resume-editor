@@ -1,4 +1,4 @@
-import { differenceInYears, isValid, parseISO } from "date-fns";
+import { isValid, parseISO } from "date-fns";
 import type { ReactNode } from "react";
 
 import { parseDayMonthYear } from "@/features/resume-editor/domain/month-year";
@@ -8,13 +8,11 @@ import { cn } from "@/lib/utils";
 
 import styles from "./styles.module.css";
 
-// 令和8年8月23日 — the calendar a Japanese form dates itself in. Intl owns the
-// era table, so the next era needs no edit here.
-const JAPANESE_DATE = new Intl.DateTimeFormat("ja-JP-u-ca-japanese", {
+// The sheet spaces and pads its dates: 令和 8 年 08 月 23 日. `Intl` owns the era
+// table, so the next era needs no edit here.
+const JAPANESE_ERA_YEAR = new Intl.DateTimeFormat("ja-JP-u-ca-japanese", {
   era: "long",
   year: "numeric",
-  month: "long",
-  day: "numeric",
 });
 
 /** The date field stores what its picker writes — "12 Jun 1994" — while
@@ -30,18 +28,14 @@ function parseFormDate(value: string | undefined) {
 
 function japaneseDate(value: string | undefined) {
   const parsed = parseFormDate(value);
-  return parsed ? JAPANESE_DATE.format(parsed) : (value ?? "");
-}
+  if (!parsed) return value ?? "";
 
-/** "平成6年6月12日生（満32歳）". The age counts to the document's own as-of date,
- * never to today: a render must give the same page every time it runs. */
-function birthLine(birthDate: string | undefined, asOf: Date) {
-  const born = japaneseDate(birthDate);
-  if (!born) return "";
-  const parsed = parseFormDate(birthDate);
-  if (!parsed || !isValid(asOf)) return `${born}生`;
-  const age = differenceInYears(asOf, parsed);
-  return age >= 0 ? `${born}生（満${age}歳）` : `${born}生`;
+  const parts = JAPANESE_ERA_YEAR.formatToParts(parsed);
+  const era = parts.find((part) => part.type === "era")?.value ?? "";
+  const year = parts.find((part) => part.type === "year")?.value ?? "";
+  const month = String(parsed.getMonth() + 1).padStart(2, "0");
+  const day = String(parsed.getDate()).padStart(2, "0");
+  return `${era} ${year} 年 ${month} 月 ${day} 日`;
 }
 
 const postal = (value: string | undefined) => (value ? `〒${value}` : "");
@@ -83,36 +77,11 @@ function Stacked({
   );
 }
 
-/** 男・女 with the answer ringed, the way the printed form is filled in. Any
- * other wording (a self-description, another language) prints as typed. */
-function Gender({ value }: { value?: string }) {
-  const answer = value?.trim() ?? "";
-  if (answer !== "男" && answer !== "女") return <>{answer}</>;
-  return (
-    <>
-      {["男", "女"].map((option, index) => (
-        <span key={option}>
-          {index > 0 ? <span className="rirekisho-gender-dot">・</span> : null}
-          <span
-            className={cn(
-              "rirekisho-gender-option",
-              option === answer && "is-answer",
-            )}
-          >
-            {option}
-          </span>
-        </span>
-      ))}
-    </>
-  );
-}
-
 export function RirekishoHeader({ context }: LayoutHeaderProps) {
   const { profile, updatedAt } = context.draft;
   // Declared by `layout-section-rules.ts` and filled in the Rirekisho details
   // panel; absent on a draft that has never been on this layout.
   const extras = profile.extras ?? {};
-  const asOf = parseISO(updatedAt);
 
   return (
     <header className={`${styles.header} layout-header`} data-layout="rirekisho">
@@ -136,16 +105,14 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
                 <WrapOnSpace text={profile.fullName} />
               </h1>
             </Line>
+            {/* The sheet prints the birth date and the answered 性別 — no age,
+                and no unanswered option. */}
             <div className="rirekisho-line rirekisho-birth-line">
-              <span className="rirekisho-label">生年月日</span>
               <span className="rirekisho-value">
-                {birthLine(extras.birthDate, asOf)}
-              </span>
-              <span className="rirekisho-label rirekisho-label-inner">
-                性別
+                {extras.birthDate ? `${japaneseDate(extras.birthDate)}生` : ""}
               </span>
               <span className="rirekisho-value rirekisho-gender">
-                <Gender value={extras.gender} />
+                {extras.gender}
               </span>
             </div>
           </div>
@@ -185,22 +152,20 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
           <Line label="ふりがな" className="rirekisho-line-dashed">
             {extras.addressReading}
           </Line>
-          <Line label="郵便番号" className="rirekisho-line-dashed">
-            {postal(extras.postalCode)}
-          </Line>
           <Line
-            label="現住所"
+            label="現 住 所"
             className="rirekisho-line-dashed rirekisho-address-line"
           >
-            {profile.location}
+            {postal(extras.postalCode)}
+            <span className="rirekisho-address-body">{profile.location}</span>
           </Line>
           <Line label="E-mail">{profile.email}</Line>
         </div>
         <div className="rirekisho-contact-side">
-          <Stacked label="自宅電話" className="rirekisho-line-dashed">
+          <Stacked label="（自宅電話）" className="rirekisho-line-dashed">
             {extras.homePhone}
           </Stacked>
-          <Stacked label="携帯電話">{profile.phone}</Stacked>
+          <Stacked label="（携帯電話）">{profile.phone}</Stacked>
         </div>
       </div>
 
@@ -210,18 +175,18 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
           <Line label="ふりがな" className="rirekisho-line-dashed">
             {extras.contactAddressReading}
           </Line>
-          <Line label="郵便番号" className="rirekisho-line-dashed">
+          <Line label="連 絡 先" className="rirekisho-address-line">
             {postal(extras.contactPostalCode)}
-          </Line>
-          <Line label="連絡先" className="rirekisho-address-line">
             <span className="rirekisho-note">
               （現住所以外に連絡を希望する場合のみ記入）
             </span>
-            {extras.contactAddress}
+            <span className="rirekisho-address-body">
+              {extras.contactAddress}
+            </span>
           </Line>
         </div>
         <div className="rirekisho-contact-side">
-          <Stacked label="連絡先電話">{extras.contactPhone}</Stacked>
+          <Stacked label="（連絡先電話）">{extras.contactPhone}</Stacked>
         </div>
       </div>
     </header>

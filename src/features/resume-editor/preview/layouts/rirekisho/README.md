@@ -15,10 +15,10 @@ decoration — they are the format, so nothing here has gaps between sections.
 
 - **Page shape** — one column, 12mm margins. The boxes reach almost to the paper edge: the form, not the whitespace, frames the page.
 - **The line grid** — the whole point. `--rirekisho-row` is the height of a printed line; every cell sets `line-height` to exactly that and takes no vertical padding, and each row paints a rule at the **top** of every line it occupies. A cell that wraps to three lines is therefore three rows tall with a rule under each — row heights stay equal down the page, like a spreadsheet, and long text never makes a half-height box. Top and not bottom because two rows share that edge: one rule is drawn there, never two stacked or one clipped. The pitch is `2 × --resume-body` so it is always a whole number of pixels; at a fractional pitch the browser drops rules.
-- **Title row** — 履歴書 at `0.85 × h1` with `0.35em` tracking, and the draft's `updatedAt` at the right *of the table column*, beside the photo rather than above it: the photo hangs from the top edge of the sheet. Rendered 令和8年8月23日現在 — `Intl` with the `ja-JP-u-ca-japanese` calendar owns the era table, so the next era needs no edit.
-- **Identity box** — ふりがな over 氏名 (two rows tall), then 生年月日 and 性別 sharing a row. 生年月日 reads 平成6年6月12日生（満32歳）; the age counts to the document's own as-of date, never to `new Date()`, so a render is reproducible. 性別 prints 男・女 with the answer **ringed**, the way the paper form is filled in.
+- **Title row** — 履歴書 at `0.85 × h1` with `0.35em` tracking, and the draft's `updatedAt` at the right *of the table column*, beside the photo rather than above it: the photo hangs from the top edge of the sheet. Dates print spaced and padded the way the sheet does — 令和 8 年 08 月 23 日現在 — with `Intl`'s `ja-JP-u-ca-japanese` calendar supplying the era, so the next era needs no edit.
+- **Identity box** — ふりがな over 氏 名 (two rows tall), then the birth row: 平成 6 年 06 月 12 日生 on the left and the answered 性別 in a ruled-off cell on the right. Neither carries a caption and there is no 満 age, because the printed sheet prints neither.
 - **Photo box** — 30mm at `var(--resume-photo-aspect, 3 / 4)` = 30×40mm, hanging from the top of the sheet with the same air below it as beside it. The dashes are the **placeholder**: an empty box is dashed and carries the printed sheet's instructions (写真をはる位置 …), a filled one is just the photo, unframed.
-- **Contact boxes** — 現住所 runs ふりがな / 郵便番号 / 現住所 / E-mail down the left with 自宅電話 and 携帯電話 down the right; 連絡先 repeats the shape for the address post should go to instead, when that differs. Profile links are **not** printed: the form has no row for a URL, and inventing one is not the format.
+- **Contact boxes** — ふりがな / 現 住 所 / E-mail down the left, （自宅電話）and（携帯電話）down the right; 連絡先 repeats the shape for the address post should go to instead, when that differs. The postal code is **not** a row of its own: it heads the address cell as 〒150-0041 with the address on the line under it, which is how the sheet prints two inputs into one box. Profile links are **not** printed: the form has no row for a URL, and inventing one is not the format.
 - **学歴・職歴 table** — one table captioned 年 / 月 / 学歴・職歴（各別にまとめて書く）, with 学歴 and 職歴 as centred label rows over their runs. Work rows read `会社名 入社`, the role, the description, then `一身上の都合により退職` or a dateless `現在に至る`. Education rows read `入学` / `卒業`. Closed by a right-aligned 以上.
 - **年 / 月** — split from the stored `MMM yyyy` via `parseMonthYear`; a date the picker never produced (`current`, free text) leaves both cells blank rather than guessing. The rule between 年 and 月 is dashed, the one before the entry solid — the form's own hierarchy.
 - **免許・資格 table** — certifications and languages share it; the caption row names it, so their own headings are hidden.
@@ -37,7 +37,7 @@ only layout that uses any of them:
   郵便番号 (×2), 自宅電話, 連絡先 and 連絡先電話, 通勤時間, 扶養家族数, 配偶者,
   配偶者の扶養義務, and 本人希望記入欄. The address, e-mail and mobile number
   come from the Profile — nothing is duplicated here. 性別, 配偶者 and
-  配偶者の扶養義務 are selects (男/女, 有/無); the rest are text, one date and
+  配偶者の扶養義務 are selects (男/女, 有り/無し); the rest are text, one date and
   one multi-line box. All read from the free `profile.extras` map and are edited
   in the pinned **Rirekisho details** row, which appears only while this layout
   is selected. Values survive a switch away. The date field uses the same picker

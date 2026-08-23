@@ -132,9 +132,14 @@
   border-bottom: var(--rirekisho-line);
 }
 
-/* The address gets two lines' room; long ones simply take more. */
+/* The postal code heads the address cell and the address sits under it, as the
+   printed sheet stacks them — two rows' room, more when the address is long. */
 .header :global(.rirekisho-address-line) {
   min-height: calc(var(--rirekisho-row) * 2);
+}
+
+.header :global(.rirekisho-address-body) {
+  display: block;
 }
 
 /* The name row absorbs whatever the photo makes the block taller by, so the
@@ -146,7 +151,12 @@
 .header :global(.rirekisho-birth-line) {
   display: flex;
   align-items: stretch;
-  min-height: calc(var(--rirekisho-row) * 1.5);
+  min-height: calc(var(--rirekisho-row) * 2);
+}
+
+.header :global(.rirekisho-birth-line) span {
+  display: flex;
+  align-items: center;
 }
 
 .header :global(.rirekisho-label) {
@@ -170,24 +180,11 @@
   overflow-wrap: anywhere;
 }
 
+/* Its own cell on the right of the birth row, ruled off from it. */
 .header :global(.rirekisho-gender) {
   flex: 0 0 auto;
-  min-width: 22mm;
-}
-
-/* The answer is ringed rather than bolded: that is how the paper form is
-   filled in, and bold would compete with the name. */
-.header :global(.rirekisho-gender-option.is-answer) {
-  display: inline-block;
-  border: var(--rirekisho-line);
-  border-radius: 999px;
-  padding: 0 1.6mm;
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
-}
-
-.header :global(.rirekisho-gender-dot) {
-  padding: 0 0.6mm;
+  width: 32mm;
+  border-left: var(--rirekisho-line);
 }
 
 .header :global(.name) {
@@ -213,7 +210,7 @@
 
 .header :global(.rirekisho-note) {
   font-size: var(--resume-meta);
-  padding-right: 2mm;
+  padding-left: 3mm;
 }
 
 /* One per line: a URL beside an address is unreadable at this size. */
@@ -425,7 +422,8 @@
   flex: 1;
 }
 
-.layout :global(.rirekisho-band-pair .rirekisho-small-box + .rirekisho-small-box) {
+.layout
+  :global(.rirekisho-band-pair .rirekisho-small-box + .rirekisho-small-box) {
   border-left: var(--rirekisho-line);
 }
 
