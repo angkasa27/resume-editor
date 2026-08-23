@@ -13,4 +13,5 @@ export const auroraLayout = createSingleColumnLayout({
   styles,
   Header: AuroraHeader,
   itemViews: auroraItemViews,
+  titleLinkMarker: "arrow",
 });

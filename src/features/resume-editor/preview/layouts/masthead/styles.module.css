@@ -124,3 +124,11 @@
   --resume-link-decoration: underline;
   --resume-link-offset: 0.18em;
 }
+
+/* Linked item titles take the arrow glyph (`titleLinkMarker` in layout.tsx):
+   A graphic page of filled badges; a glyph suits it better than a hairline. */
+
+.layout {
+  /* The glyph is the cue; a rule as well would double-mark the title. */
+  --resume-link-title-decoration: none;
+}

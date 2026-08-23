@@ -22,6 +22,7 @@ type SingleColumnConfig = {
   inset?: "page" | "none";
   /** Extension point for structural uniqueness; defaults to the plain `<div>{node}</div>` wrapper. */
   renderSection?: (entry: LayoutSlots["sections"][number]) => ReactNode;
+  titleLinkMarker?: PreviewLayoutDefinition["titleLinkMarker"];
 };
 
 const defaultRenderSection = (
@@ -60,5 +61,6 @@ export function createSingleColumnLayout(
     Component: SingleColumnLayout,
     Header: config.Header,
     itemViews: config.itemViews,
+    titleLinkMarker: config.titleLinkMarker,
   };
 }

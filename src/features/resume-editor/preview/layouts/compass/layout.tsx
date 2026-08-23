@@ -56,4 +56,5 @@ export const compassLayout: PreviewLayoutDefinition = {
   },
   renderSectionHeading: renderIconSectionHeading,
   getColumn: getSideRailColumn,
+  titleLinkMarker: "link",
 };

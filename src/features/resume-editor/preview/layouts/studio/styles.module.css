@@ -137,6 +137,10 @@
   --resume-link-offset: 0.18em;
 }
 
-:global([data-link-highlight="on"]) .layout :global(.item-title .link-marker) {
-  display: inline-block;
+/* Linked item titles take the arrow glyph (`titleLinkMarker` in layout.tsx):
+   Chips and badges are this layout's language, so a glyph reads native. */
+
+.layout {
+  /* The glyph is the cue; a rule as well would double-mark the title. */
+  --resume-link-title-decoration: none;
 }

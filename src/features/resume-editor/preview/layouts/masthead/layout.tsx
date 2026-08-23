@@ -41,4 +41,5 @@ export const mastheadLayout: PreviewLayoutDefinition = {
   Component: MastheadLayout,
   Header: MastheadHeader,
   itemViews: inlineTitleItemViews,
+  titleLinkMarker: "arrow",
 };

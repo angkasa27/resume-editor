@@ -12,4 +12,5 @@ export const boldTypeLayout = createSingleColumnLayout({
   styles,
   Header: BoldTypeHeader,
   itemViews: boldTypeItemViews,
+  titleLinkMarker: "arrow",
 });

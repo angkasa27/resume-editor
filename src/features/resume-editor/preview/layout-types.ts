@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
+import type { TitleLinkMarker } from "@/features/resume-editor/preview/kit/title-link-marker";
 import type {
   PreviewRenderableSection,
   PreviewRenderContext,
@@ -59,4 +60,7 @@ export type PreviewLayoutDefinition = {
     heading: ReactNode,
   ) => ReactNode;
   getColumn?: (sectionKey: CollectionSectionKey) => LayoutColumn;
+  /** Glyph marking a linked item title. Layouts that mark titles with an
+   *  underline instead leave this unset and set `--resume-link-title-decoration`. */
+  titleLinkMarker?: TitleLinkMarker;
 };

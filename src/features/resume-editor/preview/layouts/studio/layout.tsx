@@ -14,4 +14,5 @@ export const studioLayout = createSingleColumnLayout({
   Header: createPhotoHeader({ dataLayout: "studio", styles }),
   itemViews: studioItemViews,
   renderSectionHeading: renderIconSectionHeading,
+  titleLinkMarker: "arrow",
 });

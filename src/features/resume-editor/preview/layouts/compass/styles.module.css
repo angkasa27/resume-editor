@@ -146,6 +146,10 @@
   --resume-link-offset: 0.18em;
 }
 
-:global([data-link-highlight="on"]) .layout :global(.item-title .link-marker) {
-  display: inline-block;
+/* Linked item titles take the link glyph (`titleLinkMarker` in layout.tsx):
+   Every section here is already labelled by a lucide glyph, so a chain reads as 'this is a link'. */
+
+.layout {
+  /* The glyph is the cue; a rule as well would double-mark the title. */
+  --resume-link-title-decoration: none;
 }

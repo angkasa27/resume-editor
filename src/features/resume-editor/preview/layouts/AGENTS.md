@@ -119,13 +119,26 @@ layout.
 
 ## The link cue
 
-Every layout ends its stylesheet by setting `--resume-link-decoration` and
-`--resume-link-offset`, with a comment saying why. The rule: **the cue must stay
-weaker than that layout's own section heading.** A layout whose headings are
-filled badges can afford a solid underline; one whose headings are a flat
-400-weight label needs a hairline or a dotted rule. Layouts with an iconic visual
-language (`studio`, `aurora`, `compass`) also switch on `.link-marker` — a small
-arrow after linked item titles.
+Two cues, set per layout, each with a comment saying why. The rule for both:
+**the cue must stay weaker than that layout's own section heading.** A layout
+whose headings are filled badges can afford a solid underline; one whose headings
+are a flat 400-weight label needs a hairline, a dotted rule, or a glyph.
+
+**Contact links** — every layout sets `--resume-link-decoration` and
+`--resume-link-offset` at the end of its stylesheet.
+
+**Linked item titles** (project, publication and certification names) are graded
+separately, because a bold `h3` carries the same rule more heavily than a contact
+line does. Each layout picks exactly one of:
+
+- `--resume-link-title-decoration` (+ optional `--resume-link-title-offset`) — a
+  dotted rule, a `0.5px` hairline, or a `color-mix` softened rule.
+- `titleLinkMarker: "arrow" | "link"` in `layout.tsx` — a muted lucide glyph after
+  the title, for layouts whose language is already iconic (`studio`, `aurora`,
+  `compass`, `atlas`, `masthead`, `bold-type`). The glyph reaches the shared
+  `PreviewLinkedTitle` by context, so item views need no new prop.
+
+`layout-theming.test.ts` fails a layout that sets neither.
 
 ## Registering a new layout
 

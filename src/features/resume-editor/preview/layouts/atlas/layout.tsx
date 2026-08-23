@@ -81,4 +81,5 @@ export const atlasLayout: PreviewLayoutDefinition = {
   hideSummaryHeading: true,
   Header: AtlasHeader,
   itemViews: inlineTitleItemViews,
+  titleLinkMarker: "arrow",
 };

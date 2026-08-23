@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { createPreviewRenderContext } from "@/features/resume-editor/preview/engine";
 import { PreviewDocumentRoot } from "@/features/resume-editor/preview/kit/document-root";
 import { PreviewSectionTarget } from "@/features/resume-editor/preview/kit/section-target";
+import { TitleLinkMarkerProvider } from "@/features/resume-editor/preview/kit/title-link-marker";
 import {
   getLayout,
   renderLayoutHeader,
@@ -98,7 +99,9 @@ export function ResumeDocument({
       className={className}
       pageCount={pageCount}
     >
-      <layout.Component context={context} slots={slots} />
+      <TitleLinkMarkerProvider value={layout.titleLinkMarker}>
+        <layout.Component context={context} slots={slots} />
+      </TitleLinkMarkerProvider>
     </PreviewDocumentRoot>
   );
 }

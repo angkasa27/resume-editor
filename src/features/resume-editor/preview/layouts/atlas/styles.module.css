@@ -161,3 +161,11 @@
   --resume-link-decoration: underline dotted;
   --resume-link-offset: 0.18em;
 }
+
+/* Linked item titles take the arrow glyph (`titleLinkMarker` in layout.tsx):
+   Flat 400-weight headings can't outrank a rule under a bold title, so the cue leaves the type alone. */
+
+.layout {
+  /* The glyph is the cue; a rule as well would double-mark the title. */
+  --resume-link-title-decoration: none;
+}

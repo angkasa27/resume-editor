@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 
 import { pdfLayoutIds } from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import { previewLayoutDefinitions } from "@/features/resume-editor/preview/layout-registry";
 
 const layoutCss = (layoutId: string) =>
   readFileSync(join(__dirname, "layouts", layoutId, "styles.module.css"), "utf8");
@@ -31,6 +32,32 @@ describe("layout theming contract", () => {
         layoutCss(layoutId),
         `${layoutId} never sets --resume-link-decoration, so it silently inherits the default underline`,
       ).toContain("--resume-link-decoration");
+    }
+  });
+
+  it("never underlines item titles in a different style from contacts", () => {
+    // Titles inherit --resume-link-decoration. A layout may only override it to
+    // `none`, and only because a titleLinkMarker glyph is carrying the cue there;
+    // any other value means one layout marks its two link kinds two ways.
+    for (const layout of previewLayoutDefinitions) {
+      const override = /--resume-link-title-decoration:\s*([^;]+);/.exec(
+        layoutCss(layout.id),
+      )?.[1];
+      if (override === undefined) {
+        expect(
+          layout.titleLinkMarker,
+          `${layout.id} has a titleLinkMarker glyph but still lets titles inherit the contact rule, so they carry both`,
+        ).toBeUndefined();
+        continue;
+      }
+      expect(
+        override.trim(),
+        `${layout.id} gives item titles their own decoration instead of its contact one`,
+      ).toBe("none");
+      expect(
+        layout.titleLinkMarker,
+        `${layout.id} drops the title rule without a glyph to replace it, leaving links unmarked`,
+      ).toBeDefined();
     }
   });
 

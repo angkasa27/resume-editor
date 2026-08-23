@@ -127,3 +127,11 @@
   --resume-link-decoration: underline var(--resume-accent);
   --resume-link-offset: 0.18em;
 }
+
+/* Linked item titles take the arrow glyph (`titleLinkMarker` in layout.tsx):
+   The heading is a highlighter block — an underline anywhere near it echoes the heading. */
+
+.layout {
+  /* The glyph is the cue; a rule as well would double-mark the title. */
+  --resume-link-title-decoration: none;
+}
