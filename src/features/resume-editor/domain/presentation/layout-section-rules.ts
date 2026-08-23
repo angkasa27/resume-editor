@@ -31,7 +31,9 @@ export type LayoutExtraField = {
    *  sample value in one box and a label in the next is what made the pair of
    *  有 / 無 fields indistinguishable. */
   label: string;
-  type?: "text" | "date" | "textarea";
+  type?: "text" | "date" | "select" | "textarea";
+  /** The answers, for `type: "select"`. A blank option is added for clearing. */
+  options?: ReadonlyArray<string>;
   /** A leading glyph, where one reinforces scanning; the date picker draws its
    *  own calendar. */
   icon?: LayoutExtraFieldIcon;
@@ -84,9 +86,12 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
       description:
         "The boxes the 履歴書 form prints that a resume has no field for. Every one is optional; blank prints an empty box, exactly like the paper form.",
       fields: [
+        // The 履歴書's own boxes, in the order the sheet prints them. The
+        // address, e-mail and mobile number are the Profile's — only what the
+        // form asks for beyond a résumé is here.
         {
           key: "nameReading",
-          label: "Name reading (ふりがな)",
+          label: "Name in kana (ふりがな)",
           icon: "reading",
           fullWidth: true,
         },
@@ -96,7 +101,19 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
           type: "date",
           autoComplete: "bday",
         },
-        { key: "gender", label: "Gender (性別)", icon: "gender" },
+        {
+          key: "gender",
+          label: "Gender (性別)",
+          type: "select",
+          options: ["男", "女"],
+          icon: "gender",
+        },
+        {
+          key: "addressReading",
+          label: "Address in kana (ふりがな)",
+          icon: "reading",
+          fullWidth: true,
+        },
         {
           key: "postalCode",
           label: "Postal code (郵便番号)",
@@ -104,35 +121,45 @@ const layoutSectionRules: Partial<Record<PdfLayoutId, LayoutSectionRules>> = {
           autoComplete: "postal-code",
         },
         { key: "homePhone", label: "Home phone (自宅電話)", icon: "phone" },
+        // 連絡先 — the second address the form asks for, and only when post
+        // should go somewhere other than 現住所 (a student's family home, say).
         {
-          key: "addressReading",
-          label: "Address reading (ふりがな)",
+          key: "contactAddressReading",
+          label: "Contact address in kana (ふりがな)",
           icon: "reading",
           fullWidth: true,
         },
         {
+          key: "contactPostalCode",
+          label: "Contact postal code (郵便番号)",
+          icon: "postal",
+        },
+        { key: "contactPhone", label: "Contact phone (連絡先電話)", icon: "phone" },
+        {
           key: "contactAddress",
-          label: "Second address (連絡先)",
+          label: "Contact address (連絡先)",
           icon: "address",
           fullWidth: true,
         },
-        {
-          key: "contactAddressReading",
-          label: "Second address reading (ふりがな)",
-          icon: "reading",
-        },
-        { key: "contactPhone", label: "Second phone (連絡先電話)", icon: "phone" },
-        { key: "commuteTime", label: "Commute (通勤時間)", icon: "time" },
+        { key: "commuteTime", label: "Commute time (通勤時間)", icon: "time" },
         { key: "dependents", label: "Dependents (扶養家族数)", icon: "people" },
-        { key: "spouse", label: "Spouse (配偶者)", icon: "spouse" },
+        {
+          key: "spouse",
+          label: "Spouse (配偶者)",
+          type: "select",
+          options: ["有", "無"],
+          icon: "spouse",
+        },
         {
           key: "spouseSupport",
-          label: "Supporting a spouse (配偶者の扶養義務)",
+          label: "Spousal support (配偶者の扶養義務)",
+          type: "select",
+          options: ["有", "無"],
           icon: "spouse",
         },
         {
           key: "requests",
-          label: "Requests to the employer (本人希望記入欄)",
+          label: "Requests (本人希望記入欄)",
           type: "textarea",
           fullWidth: true,
         },

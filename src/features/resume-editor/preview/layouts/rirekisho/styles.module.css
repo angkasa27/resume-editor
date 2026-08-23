@@ -127,20 +127,20 @@
   border-bottom: var(--rirekisho-dash);
 }
 
-.header :global(.rirekisho-name-line),
-.header :global(.rirekisho-address-line) {
+.header :global(.rirekisho-name-line) {
   min-height: calc(var(--rirekisho-row) * 2);
   border-bottom: var(--rirekisho-line);
+}
+
+/* The address gets two lines' room; long ones simply take more. */
+.header :global(.rirekisho-address-line) {
+  min-height: calc(var(--rirekisho-row) * 2);
 }
 
 /* The name row absorbs whatever the photo makes the block taller by, so the
    birth row sits on the bottom edge and its 性別 divider reaches it. */
 .header :global(.rirekisho-name-line) {
   flex: 1;
-}
-
-.header :global(.rirekisho-address-line) {
-  border-bottom: 0;
 }
 
 .header :global(.rirekisho-birth-line) {

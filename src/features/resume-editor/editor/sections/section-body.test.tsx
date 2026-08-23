@@ -35,7 +35,7 @@ describe("the layout-declared extras panel", () => {
     // they belong to the one layout that prints them, not to everyone's Profile.
     renderPanel(rirekishoDraft(), "profile");
 
-    expect(screen.queryByLabelText(/name reading/i)).toBeNull();
+    expect(screen.queryByLabelText(/name in kana/i)).toBeNull();
     expect(screen.queryByLabelText(/date of birth/i)).toBeNull();
   });
 
@@ -43,7 +43,7 @@ describe("the layout-declared extras panel", () => {
     const user = userEvent.setup();
     const onSave = renderPanel(rirekishoDraft(), "extras");
 
-    await user.type(screen.getByLabelText(/name reading/i), "たなか けんた");
+    await user.type(screen.getByLabelText(/name in kana/i), "たなか けんた");
     await act(() => new Promise((r) => setTimeout(r, 700)));
 
     expect(onSave.mock.calls.at(-1)?.[0].extras?.nameReading).toBe(
@@ -56,6 +56,6 @@ describe("the layout-declared extras panel", () => {
     renderPanel(createDefaultResumeDraft(), "extras");
 
     expect(screen.getByText(/needs no extra details/i)).toBeInTheDocument();
-    expect(screen.queryByLabelText(/name reading/i)).toBeNull();
+    expect(screen.queryByLabelText(/name in kana/i)).toBeNull();
   });
 });

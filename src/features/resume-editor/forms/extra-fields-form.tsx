@@ -26,7 +26,16 @@ import {
   type LayoutExtraFieldIcon,
 } from "@/features/resume-editor/domain/presentation/layout-section-rules";
 import type { PdfLayoutId } from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { FIELD_CONTROL_CLASS } from "@/features/resume-editor/forms/fields/field-control";
 import { FieldLabelText } from "@/features/resume-editor/forms/fields/field-label-text";
 import { MonthYearPicker } from "@/features/resume-editor/forms/fields/month-year-picker";
 import { ProfileTextField } from "@/features/resume-editor/forms/profile-fields";
@@ -113,6 +122,53 @@ export function ExtraFieldsForm({
                           })
                         }
                       />
+                    )}
+                  />
+                  <FieldError errors={[state.error]} />
+                </FieldContent>
+              </Field>
+            );
+          }
+
+          if (field.type === "select") {
+            return (
+              <Field
+                key={field.key}
+                data-invalid={state.invalid || undefined}
+                className={field.fullWidth ? "col-span-full" : undefined}
+              >
+                <FieldContent>
+                  <Controller
+                    control={control}
+                    name={name}
+                    render={({ field: bound }: { field: { value?: string } }) => (
+                      <Select
+                        value={bound.value ?? ""}
+                        onValueChange={(next: string | null) =>
+                          setValue(name, next ?? "", {
+                            shouldDirty: true,
+                            shouldValidate: formState.isSubmitted,
+                          })
+                        }
+                      >
+                        <SelectTrigger
+                          id={id}
+                          className={FIELD_CONTROL_CLASS}
+                          aria-label={field.label}
+                          aria-invalid={state.invalid || undefined}
+                        >
+                          <SelectValue placeholder={field.label} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectGroup>
+                            {(field.options ?? []).map((option) => (
+                              <SelectItem key={option} value={option}>
+                                {option}
+                              </SelectItem>
+                            ))}
+                          </SelectGroup>
+                        </SelectContent>
+                      </Select>
                     )}
                   />
                   <FieldError errors={[state.error]} />

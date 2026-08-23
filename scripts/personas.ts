@@ -1301,7 +1301,6 @@ export const PINNED_PERSONAS: ReadonlyArray<Persona> = [{
     birthDate: "12 Jun 1994",
     gender: "男",
     homePhone: "03-1234-5678",
-    contactAddress: "同上",
     commuteTime: "約45分",
     dependents: "0",
     spouse: "無",

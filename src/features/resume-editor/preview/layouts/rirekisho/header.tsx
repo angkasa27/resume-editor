@@ -2,7 +2,6 @@ import { differenceInYears, isValid, parseISO } from "date-fns";
 import type { ReactNode } from "react";
 
 import { parseDayMonthYear } from "@/features/resume-editor/domain/month-year";
-import { compactJoin } from "@/features/resume-editor/preview/helpers/string";
 import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 import type { LayoutHeaderProps } from "@/features/resume-editor/preview/layout-types";
 import { cn } from "@/lib/utils";
@@ -44,6 +43,8 @@ function birthLine(birthDate: string | undefined, asOf: Date) {
   const age = differenceInYears(asOf, parsed);
   return age >= 0 ? `${born}生（満${age}歳）` : `${born}生`;
 }
+
+const postal = (value: string | undefined) => (value ? `〒${value}` : "");
 
 /** One ruled line of the identity block: a label cell, then its value. */
 function Line({
@@ -112,11 +113,6 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
   // panel; absent on a draft that has never been on this layout.
   const extras = profile.extras ?? {};
   const asOf = parseISO(updatedAt);
-  const address = compactJoin([
-    extras.postalCode ? `〒${extras.postalCode}` : "",
-    profile.location,
-  ]);
-  const links = context.contactItems.filter((item) => item.kind === "link");
 
   return (
     <header className={`${styles.header} layout-header`} data-layout="rirekisho">
@@ -182,50 +178,50 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
         </div>
       </div>
 
+      {/* 現住所: kana, postal code, address and e-mail down the left; the two
+          phone numbers the form asks for down the right. */}
       <div className="rirekisho-contact">
         <div className="rirekisho-contact-main">
           <Line label="ふりがな" className="rirekisho-line-dashed">
             {extras.addressReading}
           </Line>
-          <Line label="現住所" className="rirekisho-address-line">
-            {address}
+          <Line label="郵便番号" className="rirekisho-line-dashed">
+            {postal(extras.postalCode)}
           </Line>
+          <Line
+            label="現住所"
+            className="rirekisho-line-dashed rirekisho-address-line"
+          >
+            {profile.location}
+          </Line>
+          <Line label="E-mail">{profile.email}</Line>
         </div>
         <div className="rirekisho-contact-side">
-          <Stacked label="電話" className="rirekisho-line-dashed">
-            {profile.phone}
-            {extras.homePhone ? (
-              <span className="rirekisho-link">{extras.homePhone}</span>
-            ) : null}
+          <Stacked label="自宅電話" className="rirekisho-line-dashed">
+            {extras.homePhone}
           </Stacked>
-          <Stacked label="メールアドレス">{profile.email}</Stacked>
+          <Stacked label="携帯電話">{profile.phone}</Stacked>
         </div>
       </div>
 
+      {/* 連絡先 — filled in only when post should go somewhere other than 現住所. */}
       <div className="rirekisho-contact">
         <div className="rirekisho-contact-main">
           <Line label="ふりがな" className="rirekisho-line-dashed">
             {extras.contactAddressReading}
+          </Line>
+          <Line label="郵便番号" className="rirekisho-line-dashed">
+            {postal(extras.contactPostalCode)}
           </Line>
           <Line label="連絡先" className="rirekisho-address-line">
             <span className="rirekisho-note">
               （現住所以外に連絡を希望する場合のみ記入）
             </span>
             {extras.contactAddress}
-            {/* The form has no row for a portfolio or profile URL, and this box
-                is the one place a second point of contact belongs. */}
-            {links.map((item) => (
-              <span key={item.value} className="rirekisho-link">
-                {item.value}
-              </span>
-            ))}
           </Line>
         </div>
         <div className="rirekisho-contact-side">
-          <Stacked label="電話" className="rirekisho-line-dashed">
-            {extras.contactPhone}
-          </Stacked>
-          <Stacked label="メールアドレス" />
+          <Stacked label="連絡先電話">{extras.contactPhone}</Stacked>
         </div>
       </div>
     </header>
