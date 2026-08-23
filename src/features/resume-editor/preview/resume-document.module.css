@@ -55,11 +55,12 @@
 /* Hidden everywhere; the three layouts whose language is iconic switch it on. */
 :where(.root) :global(.link-marker) {
   display: none;
-  width: 0.72em;
-  height: 0.72em;
-  margin-left: 0.18em;
+  width: 0.85em;
+  height: 0.85em;
+  margin-left: 0.22em;
+  vertical-align: -0.05em;
   color: var(--resume-muted);
-  stroke-width: 2;
+  stroke-width: 2.5;
   flex-shrink: 0;
 }
 

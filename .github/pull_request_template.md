@@ -17,7 +17,7 @@
 
 - [ ] `pnpm typecheck` passes
 - [ ] `pnpm lint` passes
-- [ ] `pnpm test` passes (all 112 tests green, or new tests added for new code)
+- [ ] `pnpm test` passes, and new code has new tests
 - [ ] Tested manually in the browser (golden path + edge cases)
 - [ ] No `console.log` left in the code
 
