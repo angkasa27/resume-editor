@@ -148,8 +148,8 @@ table entry, never a branch, so the editor and the renderer stay generic:
 
 | rule | effect |
 | --- | --- |
-| `hiddenSections` | those sections never print, however the user has them configured. Content is kept; the sidebar row is chipped "Hidden by template". |
-| `sectionTitles` | headings the format fixes. They outrank a rename, the rename control steps aside, and the editor shows `職歴 (Work Experience)` while the paper prints `職歴` alone. |
+| `hiddenSections` | those sections never print, however the user has them configured. Content is kept; the sidebar row is chipped "Not printed". |
+| `sectionTitles` | headings the format fixes. They outrank a rename, the rename control steps aside, and the editor shows `Work Experience (職歴)` while the paper prints `職歴` alone. |
 | `extraFields` | identity fields the layout prints and no other reads — kana readings, a birth date. Stored in the free `profile.extras` map, edited in their own pinned sidebar row that appears with the layout. |
 
 All three are optional, and `rirekisho` is the only layout using any today.

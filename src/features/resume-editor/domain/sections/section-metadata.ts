@@ -69,10 +69,10 @@ export function sectionTitleFor(
 }
 
 /** What the editor's section rows and drill-in header show. Where a layout fixes
- *  the heading, the fixed title leads and the section's own name follows in
- *  parentheses — "学歴 (Education)" — so the list stays scannable to someone who
- *  does not read the script the paper prints in. The paper itself gets
- *  `sectionTitleFor`: only the fixed title belongs on the page. */
+ *  the heading, the section's own name leads and the fixed title follows in
+ *  parentheses — "Education (学歴)" — the same English-first shape every other
+ *  bilingual label in the editor uses. The paper itself gets `sectionTitleFor`:
+ *  only the fixed title belongs on the page. */
 export function sectionRowLabelFor(
   sections: ResumeDraft["sections"],
   sectionKey: ResumeSectionPanelKey,
@@ -80,7 +80,7 @@ export function sectionRowLabelFor(
 ) {
   const own = sections[sectionKey].title?.trim() || sectionLabels[sectionKey];
   const pinned = layoutId ? layoutSectionTitle(layoutId, sectionKey) : undefined;
-  return pinned && pinned !== own ? `${pinned} (${own})` : own;
+  return pinned && pinned !== own ? `${own} (${pinned})` : own;
 }
 
 export const languageProficiencyOptions = [

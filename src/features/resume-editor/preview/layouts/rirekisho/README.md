@@ -45,7 +45,7 @@ only layout that uses any of them:
   header also parses ISO, for drafts written before it.
 - **Fixed titles** — 学歴, 職歴, 免許・資格, 志望動機, 特技, 語学. A recruiter
   looks for these exact words, so they outrank a rename and the rename control
-  steps aside. The sidebar reads 職歴 (Work Experience); the paper prints 職歴
+  steps aside. The sidebar reads Work Experience (職歴); the paper prints 職歴
   alone.
 - **Hidden sections** — projects, publications, awards, references and
   volunteering belong on the companion 職務経歴書. Their content is kept; the

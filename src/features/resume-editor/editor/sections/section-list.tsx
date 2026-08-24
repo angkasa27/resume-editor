@@ -145,7 +145,7 @@ export function SectionList({
                     count={draft.sections[key].items.length}
                     notice={
                       isSectionHiddenByLayout(layoutId, key)
-                        ? "Hidden by template"
+                        ? "Not printed"
                         : undefined
                     }
                     active={activeSection === key}
