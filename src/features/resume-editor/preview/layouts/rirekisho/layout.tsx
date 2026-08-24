@@ -28,6 +28,17 @@ const PLACED_KEYS = new Set<CollectionSectionKey>([
   ...PROSE_KEYS,
 ]);
 
+/** The form's fixed caption cells: a 年 column, a 月 column, then the label. */
+function CaptionCells({ children }: { children: ReactNode }) {
+  return (
+    <>
+      <span className="rirekisho-year">年</span>
+      <span className="rirekisho-month">月</span>
+      <span className="rirekisho-cell">{children}</span>
+    </>
+  );
+}
+
 /** A section's own heading only shows where the form has no printed caption for
  * it: 学歴 and 職歴 label their runs inside the history table, and a section the
  * form never anticipated gets a table of its own. The rest are captioned by the
@@ -37,13 +48,7 @@ function renderSectionHeading(
   heading: ReactNode,
 ): ReactNode {
   if (PLACED_KEYS.has(sectionKey as CollectionSectionKey)) return heading;
-  return (
-    <>
-      <span className="rirekisho-year">年</span>
-      <span className="rirekisho-month">月</span>
-      <span className="rirekisho-cell">{heading}</span>
-    </>
-  );
+  return <CaptionCells>{heading}</CaptionCells>;
 }
 
 /** A ruled table: the 年 / 月 caption row, then rows on the shared line grid. */
@@ -59,13 +64,12 @@ function Table({
   return (
     <div className="rirekisho-table">
       <div className="rirekisho-row rirekisho-caption-row">
-        <span className="rirekisho-year">年</span>
-        <span className="rirekisho-month">月</span>
-        <span className="rirekisho-cell">{caption}</span>
+        <CaptionCells>{caption}</CaptionCells>
       </div>
       <div className="rirekisho-rows">
         {children}
-        {/* The history table closes with 以上, as the form requires. */}
+        {/* The history table closes with 以上, as the form requires. Its
+            year/month cells stay empty — they only carry the column rules. */}
         {closing ? (
           <div className="rirekisho-row rirekisho-close">
             <span className="rirekisho-year" />

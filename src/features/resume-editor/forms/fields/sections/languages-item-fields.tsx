@@ -1,9 +1,10 @@
 "use client";
 
 import { FieldGroup } from "@/components/ui/field";
+import { languageProficiencyOptions } from "@/features/resume-editor/domain/sections/section-metadata";
 import {
   type ItemForm,
-  ProficiencyField,
+  SelectField,
   TextField,
 } from "@/features/resume-editor/forms/fields/item-field-atoms";
 
@@ -24,10 +25,11 @@ export function LanguagesItemFields({
         label="Language"
         placeholder="Language name"
       />
-      <ProficiencyField
+      <SelectField
         form={form}
         name={`${prefix}.proficiency`}
         label="Proficiency"
+        options={languageProficiencyOptions}
       />
     </FieldGroup>
   );

@@ -586,7 +586,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#111827",
       fontFamilyId: "arial",
-      fontScale: "sm",
+      fontScale: "md",
       spacing: "compact",
       lineHeight: "standard",
     },
@@ -598,7 +598,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#111827",
       fontFamilyId: "times-new-roman",
-      fontScale: "sm",
+      fontScale: "md",
       spacing: "compact",
       lineHeight: "standard",
     },

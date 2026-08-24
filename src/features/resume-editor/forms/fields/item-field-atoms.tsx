@@ -27,10 +27,9 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { TagInput } from "@/components/ui/tag-input";
-import { languageProficiencyOptions } from "@/features/resume-editor/domain/sections/section-metadata";
 import { RichTextEditorWithImprove } from "@/features/resume-editor/forms/rich-text/improve-with-ai-dialog";
 import { FIELD_CONTROL_CLASS } from "@/features/resume-editor/forms/fields/field-control";
-import { MonthYearPicker } from "@/features/resume-editor/forms/fields/month-year-picker";
+import { DatePicker } from "@/features/resume-editor/forms/fields/date-picker";
 import { parseMonthYear } from "@/features/resume-editor/domain/month-year";
 
 // `className` is the only layout knob (merged onto the atom's root `Field`), so a section composing
@@ -172,13 +171,16 @@ export function MonthYearField({
   name,
   label,
   className,
-}: Omit<FieldAtomProps, "placeholder">) {
+  precision,
+}: Omit<FieldAtomProps, "placeholder"> & {
+  precision?: "month" | "day";
+}) {
   const { control, setValue, formState, getFieldState } = form;
   const fieldState = getFieldState(name as never, formState);
 
   return (
     <Field className={className} data-invalid={fieldState.invalid || undefined}>
-      {/* MonthYearPicker's trigger is a plain button with no aria-label prop
+      {/* DatePicker's trigger is a plain button with no aria-label prop
           of its own, so an sr-only label carries the accessible name. */}
       <FieldLabel htmlFor={name} className="sr-only">
         {label}
@@ -188,10 +190,11 @@ export function MonthYearField({
           control={control}
           name={name as never}
           render={({ field }) => (
-            <MonthYearPicker
+            <DatePicker
               id={name}
               value={field.value}
               placeholder={label}
+              precision={precision}
               ariaInvalid={fieldState.invalid}
               onChange={(value) =>
                 setValue(name as never, value as never, {
@@ -251,12 +254,15 @@ export function TagInputField({
   );
 }
 
-export function ProficiencyField({
+export function SelectField({
   form,
   name,
   label,
+  options,
   className,
-}: Omit<FieldAtomProps, "placeholder">) {
+}: Omit<FieldAtomProps, "placeholder"> & {
+  options: readonly string[];
+}) {
   const { control, formState, getFieldState } = form;
   const fieldState = getFieldState(name as never, formState);
 
@@ -267,7 +273,10 @@ export function ProficiencyField({
           control={control}
           name={name as never}
           render={({ field }) => (
-            <Select value={field.value} onValueChange={field.onChange}>
+            <Select
+              value={field.value ?? ""}
+              onValueChange={(next) => field.onChange(next ?? "")}
+            >
               <SelectTrigger
                 className={FIELD_CONTROL_CLASS}
                 aria-label={label}
@@ -277,7 +286,7 @@ export function ProficiencyField({
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
-                  {languageProficiencyOptions.map((option) => (
+                  {options.map((option) => (
                     <SelectItem key={option} value={option}>
                       {option}
                     </SelectItem>
@@ -333,7 +342,7 @@ export function MonthYearRangeField({
             control={control}
             name={startName as never}
             render={({ field }) => (
-              <MonthYearPicker
+              <DatePicker
                 id={startName}
                 value={field.value}
                 placeholder="Start date"
@@ -375,7 +384,7 @@ export function MonthYearRangeField({
             control={control}
             name={endName as never}
             render={({ field }) => (
-              <MonthYearPicker
+              <DatePicker
                 id={endName}
                 value={isCurrent ? "" : field.value}
                 placeholder={isCurrent ? "Current" : "End date"}

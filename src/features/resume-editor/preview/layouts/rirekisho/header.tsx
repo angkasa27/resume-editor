@@ -40,38 +40,26 @@ function japaneseDate(value: string | undefined) {
 
 const postal = (value: string | undefined) => (value ? `〒${value}` : "");
 
-/** One ruled line of the identity block: a label cell, then its value. */
+/** One ruled line of the identity block: a label cell, then its value. With
+ * `stacked`, the small caption-over-value shape the contact stack prints. */
 function Line({
   label,
   children,
   className,
+  stacked = false,
 }: {
   label: string;
   children?: ReactNode;
   className?: string;
+  stacked?: boolean;
 }) {
   return (
-    <div className={cn("rirekisho-line", className)}>
-      <span className="rirekisho-label">{label}</span>
-      <span className="rirekisho-value">{children}</span>
-    </div>
-  );
-}
-
-/** The right-hand contact stack: a small caption over its value, as the form
- * prints 電話 and メールアドレス. */
-function Stacked({
-  label,
-  children,
-  className,
-}: {
-  label: string;
-  children?: ReactNode;
-  className?: string;
-}) {
-  return (
-    <div className={cn("rirekisho-stack", className)}>
-      <span className="rirekisho-caption">{label}</span>
+    <div
+      className={cn(stacked ? "rirekisho-stack" : "rirekisho-line", className)}
+    >
+      <span className={stacked ? "rirekisho-caption" : "rirekisho-label"}>
+        {label}
+      </span>
       <span className="rirekisho-value">{children}</span>
     </div>
   );
@@ -162,10 +150,12 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
           <Line label="E-mail">{profile.email}</Line>
         </div>
         <div className="rirekisho-contact-side">
-          <Stacked label="（自宅電話）" className="rirekisho-line-dashed">
+          <Line label="（自宅電話）" className="rirekisho-line-dashed" stacked>
             {extras.homePhone}
-          </Stacked>
-          <Stacked label="（携帯電話）">{profile.phone}</Stacked>
+          </Line>
+          <Line label="（携帯電話）" stacked>
+            {profile.phone}
+          </Line>
         </div>
       </div>
 
@@ -186,7 +176,9 @@ export function RirekishoHeader({ context }: LayoutHeaderProps) {
           </Line>
         </div>
         <div className="rirekisho-contact-side">
-          <Stacked label="（連絡先電話）">{extras.contactPhone}</Stacked>
+          <Line label="（連絡先電話）" stacked>
+            {extras.contactPhone}
+          </Line>
         </div>
       </div>
     </header>

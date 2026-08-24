@@ -35,7 +35,7 @@ import {
 import { FIELD_CONTROL_CLASS } from "@/features/resume-editor/forms/fields/field-control";
 import { cn } from "@/lib/utils";
 
-type MonthYearPickerProps = {
+type DatePickerProps = {
   id: string;
   value?: string;
   onChange: (value: string) => void;
@@ -75,7 +75,7 @@ const monthLabels = [
   "Dec",
 ];
 
-export function MonthYearPicker({
+export function DatePicker({
   id,
   value,
   onChange,
@@ -84,7 +84,7 @@ export function MonthYearPicker({
   ariaInvalid = false,
   minValue,
   precision = "month",
-}: MonthYearPickerProps) {
+}: DatePickerProps) {
   const withDay = precision === "day";
   const selectedDate = useMemo(
     () => (withDay ? parseDayMonthYear(value) : parseMonthYear(value)),
@@ -121,6 +121,31 @@ export function MonthYearPicker({
     setOpen(false);
   }
 
+  type NavButton = { years: number; Icon: typeof ChevronLeftIcon };
+  const renderNavButton = ({ years, Icon }: NavButton) => (
+    <Button
+      key={years}
+      type="button"
+      variant="ghost"
+      size="icon-sm"
+      disabled={years === -1 && isPreviousYearDisabled}
+      onClick={() => setDisplayMonth((currentMonth) => addYears(currentMonth, years))}
+      aria-label={`Show ${getYear(displayMonth) + years}`}
+    >
+      <Icon />
+    </Button>
+  );
+  // The day grid reaches further back and forward — a birth date predates the
+  // month-only sections by decades.
+  const previousYearButtons: NavButton[] = [
+    ...(withDay ? [{ years: -10, Icon: ChevronsLeftIcon }] : []),
+    { years: -1, Icon: ChevronLeftIcon },
+  ];
+  const nextYearButtons: NavButton[] = [
+    { years: 1, Icon: ChevronRightIcon },
+    ...(withDay ? [{ years: 10, Icon: ChevronsRightIcon }] : []),
+  ];
+
   return (
     <Popover
       open={open}
@@ -154,58 +179,11 @@ export function MonthYearPicker({
       <PopoverContent align="start" className="w-[320px] gap-4 rounded-md">
         <div className="flex items-center justify-between rounded-[10px] border bg-background px-3 py-2">
           <div className="flex items-center gap-1">
-            {withDay ? (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                onClick={() =>
-                  setDisplayMonth((currentMonth) => addYears(currentMonth, -10))
-                }
-                aria-label={`Show ${getYear(displayMonth) - 10}`}
-              >
-                <ChevronsLeftIcon />
-              </Button>
-            ) : null}
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              disabled={isPreviousYearDisabled}
-              onClick={() =>
-                setDisplayMonth((currentMonth) => addYears(currentMonth, -1))
-              }
-              aria-label={`Show ${getYear(displayMonth) - 1}`}
-            >
-              <ChevronLeftIcon />
-            </Button>
+            {previousYearButtons.map(renderNavButton)}
           </div>
           <div className="text-sm font-medium">{getYear(displayMonth)}</div>
           <div className="flex items-center gap-1">
-            <Button
-              type="button"
-              variant="ghost"
-              size="icon-sm"
-              onClick={() =>
-                setDisplayMonth((currentMonth) => addYears(currentMonth, 1))
-              }
-              aria-label={`Show ${getYear(displayMonth) + 1}`}
-            >
-              <ChevronRightIcon />
-            </Button>
-            {withDay ? (
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon-sm"
-                onClick={() =>
-                  setDisplayMonth((currentMonth) => addYears(currentMonth, 10))
-                }
-                aria-label={`Show ${getYear(displayMonth) + 10}`}
-              >
-                <ChevronsRightIcon />
-              </Button>
-            ) : null}
+            {nextYearButtons.map(renderNavButton)}
           </div>
         </div>
 

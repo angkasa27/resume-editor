@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { isMonthDisabled } from "@/features/resume-editor/forms/fields/month-year-picker";
+import { isMonthDisabled } from "@/features/resume-editor/forms/fields/date-picker";
 
 describe("isMonthDisabled", () => {
   it("allows selecting the same month as minDate (so a one-month stint is selectable)", () => {

@@ -50,7 +50,7 @@ One site carries an `eslint-disable` for this rule: the mobile bottom nav's `tex
 **Accessibility is preserved regardless** — every field still has an accessible name, just not a painted one:
 
 - `Input` / `Textarea` / `Select` get an `aria-label`, or a `<FieldLabel htmlFor>` wrapped in `sr-only`.
-- Button-triggered controls with no native `placeholder` (`MonthYearPicker`, and Profile/Summary fields built on `Field`) use the `sr-only FieldLabel` route — see `profile-fields.tsx` for the pattern.
+- Button-triggered controls with no native `placeholder` (`DatePicker`, and Profile/Summary fields built on `Field`) use the `sr-only FieldLabel` route — see `profile-fields.tsx` for the pattern.
 
 **A leading icon can reinforce scanning** where the placeholder alone is ambiguous at a glance — Profile's location (pin), phone, and email each get one via `InputGroup` / `InputGroupAddon`. It's an addition, not a requirement: most fields need no icon.
 
@@ -204,7 +204,7 @@ Container queries measure the **content** box, so the inset differs per surface.
 
 ## Control boxes
 
-Every control in an item form wears **`FIELD_CONTROL_CLASS`** (`forms/fields/field-control.ts`) — Input, Textarea, MonthYearPicker, Select.
+Every control in an item form wears **`FIELD_CONTROL_CLASS`** (`forms/fields/field-control.ts`) — Input, Textarea, DatePicker, Select.
 
 It pins `bg-background` across _every_ state (`hover:`, `aria-expanded:`, `data-popup-open:`, and `dark:`). **This is load-bearing.** The pin keeps the control box's background consistent across hover/expanded/dark states instead of drifting per-state. `Button variant="outline"` carries `aria-expanded:bg-muted`, which is exactly how the date picker broke once.
 

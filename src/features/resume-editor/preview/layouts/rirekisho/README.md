@@ -49,7 +49,7 @@ only layout that uses any of them:
   alone.
 - **Hidden sections** — projects, publications, awards, references and
   volunteering belong on the companion 職務経歴書. Their content is kept; the
-  sidebar row is chipped "Not printed".
+  sidebar row is chipped "Hidden by template".
 
 ## Regions, not order
 
