@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   closestCenter,
   DndContext,
@@ -74,6 +74,33 @@ export function CollectionSectionBody({
 
   const [activeId, setActiveId] = useState<string | null>(null);
 
+  // Type straight into a freshly added item: focus its first field once the
+  // opened card mounts it (the openId flip and Collapse mount land a beat later).
+  const rootRef = useRef<HTMLDivElement>(null);
+  const prevItemCount = useRef(items.fields.length);
+  useEffect(() => {
+    const grew = items.fields.length > prevItemCount.current;
+    prevItemCount.current = items.fields.length;
+    if (!grew) return;
+    let frames = 0;
+    let raf = 0;
+    const tick = () => {
+      const cards = rootRef.current?.querySelectorAll<HTMLElement>(
+        "[data-testid='collection-item-card']",
+      );
+      const field = cards?.[cards.length - 1]?.querySelector<HTMLElement>(
+        "input, textarea, select",
+      );
+      if (field) {
+        field.focus();
+        return;
+      }
+      if (++frames < 10) raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [items.fields]);
+
   const Fields = collectionItemFieldsByKey[sectionKey];
   const itemSummary = (index: number) =>
     getCollectionItemSummary(
@@ -83,7 +110,7 @@ export function CollectionSectionBody({
     );
 
   return (
-    <div className="flex flex-col gap-2">
+    <div ref={rootRef} className="flex flex-col gap-2">
       {items.fields.length === 0 ? (
         <Empty className="rounded-md border px-4 py-6">
           <EmptyDescription>

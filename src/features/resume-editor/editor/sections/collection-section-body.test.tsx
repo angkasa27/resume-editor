@@ -92,4 +92,26 @@ describe("CollectionSectionBody autosave", () => {
 
     await user.keyboard(" ");
   });
+
+  it("focuses the first field of the newly added item", async () => {
+    // Click plus, then type — no extra click into the field.
+    const user = userEvent.setup();
+    const draft = createDefaultResumeDraft();
+
+    render(
+      <CollectionSectionBody
+        draft={draft}
+        sectionKey="workExperience"
+        onSave={vi.fn()}
+      />,
+    );
+
+    await user.click(screen.getByRole("button", { name: /add experience/i }));
+
+    // Only the new card is open, so its company field is the one mounted.
+    await waitFor(() => {
+      const [input] = screen.getAllByLabelText(/company name/i);
+      expect(input).toHaveFocus();
+    });
+  });
 });
