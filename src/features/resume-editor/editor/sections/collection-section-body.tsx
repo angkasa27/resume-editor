@@ -51,8 +51,8 @@ export function CollectionSectionBody({
     formValues,
     currentItems,
     items,
-    collapsedIds,
-    toggleCollapsed,
+    openId,
+    toggleOpen,
     collapseAll,
     pendingDeleteIndex,
     setPendingDeleteIndex,
@@ -129,8 +129,8 @@ export function CollectionSectionBody({
                     itemId={field.id}
                     summary={itemSummary(index)}
                     itemTitle={config.itemTitle}
-                    open={!collapsedIds.has(field.id)}
-                    onToggle={() => toggleCollapsed(field.id)}
+                    open={openId === field.id}
+                    onToggle={() => toggleOpen(field.id)}
                     onRequestDelete={() => setPendingDeleteIndex(index)}
                     deleteDisabled={items.fields.length === 1}
                   >

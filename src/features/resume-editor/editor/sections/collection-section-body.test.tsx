@@ -45,9 +45,13 @@ describe("CollectionSectionBody autosave", () => {
     );
 
     await user.click(screen.getByRole("button", { name: /add experience/i }));
-    expect(screen.getAllByLabelText(/company name/i)).toHaveLength(2);
+    // Appending auto-opens the new card and closes the first — one open at a time.
+    // Bodies unmount after the close animation, not synchronously.
+    await waitFor(() =>
+      expect(screen.getAllByLabelText(/company name/i)).toHaveLength(1),
+    );
 
-    await user.type(screen.getAllByLabelText(/company name/i)[1], "Doomed");
+    await user.type(screen.getAllByLabelText(/company name/i)[0], "Doomed");
     await user.click(screen.getAllByRole("button", { name: /remove experience/i })[1]);
     await user.click(screen.getByRole("button", { name: /^delete$/i }));
 
@@ -72,7 +76,10 @@ describe("CollectionSectionBody autosave", () => {
     );
 
     await user.click(screen.getByRole("button", { name: /add experience/i }));
-    expect(screen.getAllByLabelText(/company name/i)).toHaveLength(2);
+    // Bodies unmount after the close animation, not synchronously.
+    await waitFor(() =>
+      expect(screen.getAllByLabelText(/company name/i)).toHaveLength(1),
+    );
 
     // KeyboardSensor lifts on Space from the handle.
     screen.getAllByRole("button", { name: /^drag /i })[1].focus();

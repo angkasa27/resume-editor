@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 
 import { collectionSectionConfigs } from "@/features/resume-editor/domain/sections/collection-section-config";
@@ -79,26 +79,31 @@ export function useCollectionItemsForm(
   const currentItems = useWatch({ control, name: "items" });
   const items = useFieldArray({ control, name: "items", keyName: "fieldKey" });
 
-  // Keyed by the item's id, not RHF's `fieldKey`: `move()` mints a fresh one,
-  // so tracking by it would silently re-open every card on reorder.
-  const [collapsedIds, setCollapsedIds] = useState<Set<string>>(
-    () => new Set(items.fields.slice(1).map((f) => f.id)),
+  // Single-open accordion, keyed by the item's id, not RHF's `fieldKey`:
+  // `move()` mints a fresh one, so tracking by it would silently re-open every
+  // card on reorder. Clicking the open card closes it — zero-open is allowed.
+  const [openId, setOpenId] = useState<string | null>(
+    () => items.fields[0]?.id ?? null,
   );
   const [pendingDeleteIndex, setPendingDeleteIndex] = useState<number | null>(
     null,
   );
 
-  function toggleCollapsed(id: string) {
-    setCollapsedIds((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  // A freshly appended item opens (closing the previous one) so it's ready to edit.
+  const prevItemCount = useRef(items.fields.length);
+  useEffect(() => {
+    if (items.fields.length > prevItemCount.current) {
+      setOpenId(items.fields.at(-1)?.id ?? null);
+    }
+    prevItemCount.current = items.fields.length;
+  }, [items.fields]);
+
+  function toggleOpen(id: string) {
+    setOpenId((prev) => (prev === id ? null : id));
   }
 
   function collapseAll() {
-    setCollapsedIds(new Set(items.fields.map((f) => f.id)));
+    setOpenId(null);
   }
 
   function toSectionValue(values: CollectionItemsFormValues) {
@@ -118,8 +123,8 @@ export function useCollectionItemsForm(
     formValues,
     currentItems,
     items,
-    collapsedIds,
-    toggleCollapsed,
+    openId,
+    toggleOpen,
     collapseAll,
     pendingDeleteIndex,
     setPendingDeleteIndex,
