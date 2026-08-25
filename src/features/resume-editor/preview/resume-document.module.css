@@ -64,6 +64,11 @@
   flex-shrink: 0;
 }
 
+/* The glyph is itself a link cue, so plain links lose it along with the underlines. */
+:where(.root)[data-link-highlight="off"] :global(.link-marker) {
+  display: none;
+}
+
 /* Colour arrives via an inheriting custom property: a layout override has the
    same specificity, so source order alone picked the winner and banner's name
    fell back to --resume-accent. Ancestors set --resume-name-color instead. */
