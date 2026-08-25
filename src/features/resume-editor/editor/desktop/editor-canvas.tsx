@@ -18,11 +18,18 @@ const dotGridStyle: CSSProperties = {
 type EditorCanvasProps = {
   zoom: number;
   onZoomChange: (next: number) => void;
+  /** A click on the dotted surface outside the paper — the deselect gesture. */
+  onBackgroundClick?: () => void;
   children: ReactNode;
 };
 
 /** The document workspace: a dot-grid surface holding the paper, with a floating zoom pill. */
-export function EditorCanvas({ zoom, onZoomChange, children }: EditorCanvasProps) {
+export function EditorCanvas({
+  zoom,
+  onZoomChange,
+  onBackgroundClick,
+  children,
+}: EditorCanvasProps) {
   return (
     <main className="relative min-h-0 min-w-0 flex-1 bg-muted/40 print:bg-white">
       <div
@@ -33,9 +40,17 @@ export function EditorCanvas({ zoom, onZoomChange, children }: EditorCanvasProps
 
       {/* `zoom` not `transform`, so scroll measures the scaled paper. `min-w-fit` is load-bearing:
           without it scrollWidth ignores the start-side spill and zoom clips the left edge. */}
-      <div className="absolute inset-0 overflow-auto">
+      <div
+        className="absolute inset-0 overflow-auto"
+        onClick={(event) => {
+          if (!onBackgroundClick) return;
+          if (!(event.target as HTMLElement).closest("[data-paper]")) {
+            onBackgroundClick();
+          }
+        }}
+      >
         <div className="flex min-h-full w-full min-w-fit justify-center px-8 py-10">
-          <div style={{ zoom }} className="origin-top print:zoom-[1]">
+          <div data-paper style={{ zoom }} className="origin-top print:zoom-[1]">
             {children}
           </div>
         </div>

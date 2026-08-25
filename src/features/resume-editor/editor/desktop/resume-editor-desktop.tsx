@@ -191,7 +191,11 @@ export function ResumeEditorDesktop() {
         ) : null}
       </AnimatePresence>
 
-      <EditorCanvas zoom={zoom} onZoomChange={setZoom}>
+      <EditorCanvas
+        zoom={zoom}
+        onZoomChange={setZoom}
+        onBackgroundClick={openSection ? backToList : undefined}
+      >
         <PaginatedPreview
           draft={draft}
           onSelectSection={focusSection}
