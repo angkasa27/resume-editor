@@ -35,6 +35,10 @@ pnpm dev
    ```
 4. Open a pull request against `master`. Fill in the PR template.
 
+CI runs those same three checks on every push and pull request. A red run blocks the merge — fix it on your branch, don't merge around it.
+
+Branches are short-lived: one `feat/` or `fix/` branch per change, merged and deleted. There is no long-running development branch — `master` is always the latest state.
+
 ## Code Style
 
 - TypeScript strict mode — no `any`, no type assertions unless unavoidable.
@@ -99,6 +103,22 @@ Tests live next to the code they test (`*.test.ts` / `*.test.tsx`). The test sui
 - UI component rendering
 
 Run `pnpm test:watch` during development. The suite must be green before merging.
+
+## Releasing
+
+Maintainers only. One command from `master`:
+
+```bash
+pnpm version minor   # or patch / major
+```
+
+That bumps `package.json`, regenerates `CHANGELOG.md`, commits, tags `vX.Y.Z`, and pushes. Pushing the tag triggers [`release.yml`](.github/workflows/release.yml), which publishes the GitHub Release with that version's changelog section as the notes.
+
+Which bump to pick:
+
+- **major** — a change that stops existing saved drafts from loading (a `schemaVersion` bump).
+- **minor** — a new layout, template, font, or editor feature.
+- **patch** — fixes and styling corrections only.
 
 ## Questions
 
