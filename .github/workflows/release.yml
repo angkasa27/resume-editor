@@ -23,6 +23,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           TAG: ${{ inputs.tag || github.ref_name }}
         run: |
+          gh release view "$TAG" >/dev/null 2>&1 && exit 0   # sudah terbit
           npx --yes auto-changelog@2 --starting-version "$TAG" --stdout \
             | sed -n '/^#### /,$p' > notes.md
           gh release create "$TAG" --title "$TAG" --notes-file notes.md

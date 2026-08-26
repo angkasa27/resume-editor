@@ -18,7 +18,7 @@
     "test:watch": "vitest",
     "typecheck": "next typegen && tsc --noEmit",
     "version": "auto-changelog -p && git add CHANGELOG.md",
-    "postversion": "git push --follow-tags"
+    "postversion": "git push --follow-tags && gh workflow run release.yml -f tag=v$(node -p \"require('./package.json').version\")"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",

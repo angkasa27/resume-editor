@@ -112,7 +112,9 @@ Maintainers only. One command from `master`:
 pnpm version minor   # or patch / major
 ```
 
-That bumps `package.json`, regenerates `CHANGELOG.md`, commits, tags `vX.Y.Z`, and pushes. Pushing the tag triggers [`release.yml`](.github/workflows/release.yml), which publishes the GitHub Release with that version's changelog section as the notes.
+That bumps `package.json`, regenerates `CHANGELOG.md`, commits, tags `vX.Y.Z`, pushes, and kicks off [`release.yml`](.github/workflows/release.yml), which publishes the GitHub Release with that version's changelog section as the notes.
+
+The workflow is dispatched explicitly rather than left to the tag push, because push events do not currently reach Actions in this repo — only `pull_request` and `workflow_dispatch` do. The `push: tags` trigger is still declared, and the job exits early if the release already exists, so nothing breaks if push events start working again.
 
 Which bump to pick:
 
