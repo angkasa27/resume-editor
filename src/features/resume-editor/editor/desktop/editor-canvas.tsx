@@ -1,6 +1,6 @@
 "use client";
 
-import type { CSSProperties, ReactNode } from "react";
+import { useRef, type CSSProperties, type ReactNode } from "react";
 
 import { ZoomPill } from "@/features/resume-editor/editor/desktop/zoom-pill";
 
@@ -30,6 +30,10 @@ export function EditorCanvas({
   onBackgroundClick,
   children,
 }: EditorCanvasProps) {
+  // A text selection dragged off the paper fires `click` on this container, so the
+  // gesture is judged by where it started, not where it ended.
+  const downOnPaper = useRef(false);
+
   return (
     <main className="relative min-h-0 min-w-0 flex-1 bg-muted/40 print:bg-white">
       <div
@@ -42,8 +46,13 @@ export function EditorCanvas({
           without it scrollWidth ignores the start-side spill and zoom clips the left edge. */}
       <div
         className="absolute inset-0 overflow-auto"
+        onPointerDown={(event) => {
+          downOnPaper.current = Boolean(
+            (event.target as HTMLElement).closest("[data-paper]"),
+          );
+        }}
         onClick={(event) => {
-          if (!onBackgroundClick) return;
+          if (!onBackgroundClick || downOnPaper.current) return;
           if (!(event.target as HTMLElement).closest("[data-paper]")) {
             onBackgroundClick();
           }
