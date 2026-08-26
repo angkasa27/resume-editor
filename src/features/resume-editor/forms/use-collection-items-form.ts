@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 import { useFieldArray, useForm, useWatch } from "react-hook-form";
 
 import { collectionSectionConfigs } from "@/features/resume-editor/domain/sections/collection-section-config";
@@ -89,14 +89,16 @@ export function useCollectionItemsForm(
     null,
   );
 
-  // A freshly appended item opens (closing the previous one) so it's ready to edit.
-  const prevItemCount = useRef(items.fields.length);
-  useEffect(() => {
-    if (items.fields.length > prevItemCount.current) {
-      setOpenId(items.fields.at(-1)?.id ?? null);
-    }
-    prevItemCount.current = items.fields.length;
-  }, [items.fields]);
+  // A freshly added item opens (closing the previous one) so it's ready to edit.
+  // Driven by the add itself, never by a growing `fields.length`: a re-seed
+  // (undo, redo, import) rebuilds the array too, and would yank the open card
+  // to the end of the list. Returns the new id so callers can focus it.
+  function addItem() {
+    const item = config.createItem() as { id: string };
+    items.append(item as never);
+    setOpenId(item.id);
+    return item.id;
+  }
 
   function toggleOpen(id: string) {
     setOpenId((prev) => (prev === id ? null : id));
@@ -123,6 +125,7 @@ export function useCollectionItemsForm(
     formValues,
     currentItems,
     items,
+    addItem,
     openId,
     toggleOpen,
     collapseAll,

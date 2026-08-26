@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
 
 import { CollectionSectionBody } from "@/features/resume-editor/editor/sections/collection-section-body";
+import { EditorRevisionContext } from "@/features/resume-editor/state/editor-revision";
 import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
 
 describe("CollectionSectionBody autosave", () => {
@@ -113,5 +114,56 @@ describe("CollectionSectionBody autosave", () => {
       const [input] = screen.getAllByLabelText(/company name/i);
       expect(input).toHaveFocus();
     });
+
+
+  });
+  it("leaves the open card alone when the draft is replaced under it", async () => {
+    // Undo of a delete re-seeds the form with one more item. Keying "was added"
+    // off fields.length made that open — and focus — the last card instead.
+    const draftWith = (count: number) => {
+      const draft = createDefaultResumeDraft();
+      const [first] = draft.sections.workExperience.items;
+      return {
+        ...draft,
+        sections: {
+          ...draft.sections,
+          workExperience: {
+            ...draft.sections.workExperience,
+            items: Array.from({ length: count }, (_, i) => ({
+              ...first,
+              id: `we-${i}`,
+              companyName: `Company ${i}`,
+            })),
+          },
+        },
+      } as typeof draft;
+    };
+
+    function App({ revision, count }: { revision: number; count: number }) {
+      return (
+        <EditorRevisionContext.Provider value={revision}>
+          <CollectionSectionBody
+            draft={draftWith(count)}
+            sectionKey="workExperience"
+            onSave={vi.fn()}
+          />
+        </EditorRevisionContext.Provider>
+      );
+    }
+
+    const { rerender } = render(<App revision={0} count={2} />);
+    expect(screen.getAllByTestId("collection-item-card")[0]).toHaveAttribute(
+      "data-open",
+    );
+
+    rerender(<App revision={1} count={3} />);
+    await waitFor(() =>
+      expect(screen.getAllByTestId("collection-item-card")).toHaveLength(3),
+    );
+
+    const cards = screen.getAllByTestId("collection-item-card");
+    expect(cards[0]).toHaveAttribute("data-open");
+    expect(cards[2]).not.toHaveAttribute("data-open");
+    expect(document.body).toHaveFocus();
   });
 });

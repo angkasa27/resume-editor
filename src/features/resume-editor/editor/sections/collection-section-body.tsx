@@ -51,6 +51,7 @@ export function CollectionSectionBody({
     formValues,
     currentItems,
     items,
+    addItem,
     openId,
     toggleOpen,
     collapseAll,
@@ -76,20 +77,18 @@ export function CollectionSectionBody({
 
   // Type straight into a freshly added item: focus its first field once the
   // opened card mounts it (the openId flip and Collapse mount land a beat later).
+  // Keyed on the add, not on `fields.length` — a re-seed grows the array too and
+  // would steal focus into whatever card ended up last.
   const rootRef = useRef<HTMLDivElement>(null);
-  const prevItemCount = useRef(items.fields.length);
+  const [addCount, setAddCount] = useState(0);
   useEffect(() => {
-    const grew = items.fields.length > prevItemCount.current;
-    prevItemCount.current = items.fields.length;
-    if (!grew) return;
+    if (addCount === 0) return;
     let frames = 0;
     let raf = 0;
     const tick = () => {
-      const cards = rootRef.current?.querySelectorAll<HTMLElement>(
-        "[data-testid='collection-item-card']",
-      );
-      const field = cards?.[cards.length - 1]?.querySelector<HTMLElement>(
-        "input, textarea, select",
+      // The added card is the only open one — single-open accordion.
+      const field = rootRef.current?.querySelector<HTMLElement>(
+        "[data-testid='collection-item-card'][data-open] :is(input, textarea, select)",
       );
       if (field) {
         field.focus();
@@ -99,7 +98,7 @@ export function CollectionSectionBody({
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [items.fields]);
+  }, [addCount]);
 
   const Fields = collectionItemFieldsByKey[sectionKey];
   const itemSummary = (index: number) =>
@@ -204,7 +203,10 @@ export function CollectionSectionBody({
       <Button
         type="button"
         className="w-full"
-        onClick={() => items.append(config.createItem() as never)}
+        onClick={() => {
+          addItem();
+          setAddCount((n) => n + 1);
+        }}
       >
         <PlusIcon data-icon="inline-start" />
         {config.addLabel}
