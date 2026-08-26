@@ -3,6 +3,11 @@ name: Release
 on:
   push:
     tags: ["v*"]
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag to publish
+        required: true
 
 permissions:
   contents: write
@@ -16,7 +21,8 @@ jobs:
           fetch-depth: 0
       - env:
           GITHUB_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag || github.ref_name }}
         run: |
-          npx --yes auto-changelog@2 --starting-version "$GITHUB_REF_NAME" --stdout \
+          npx --yes auto-changelog@2 --starting-version "$TAG" --stdout \
             | sed -n '/^#### /,$p' > notes.md
-          gh release create "$GITHUB_REF_NAME" --title "$GITHUB_REF_NAME" --notes-file notes.md
+          gh release create "$TAG" --title "$TAG" --notes-file notes.md
