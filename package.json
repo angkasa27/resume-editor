@@ -1,7 +1,8 @@
 {
   "name": "resummme",
-  "version": "v1.7.0",
+  "version": "1.7.0",
   "private": true,
+  "packageManager": "pnpm@11.22.0",
   "scripts": {
     "dev": "next dev --port 4000",
     "build": "next build",
@@ -15,7 +16,9 @@
     "verify:pdf": "tsx scripts/verify-pdf-export.ts",
     "test": "vitest run",
     "test:watch": "vitest",
-    "typecheck": "next typegen && tsc --noEmit"
+    "typecheck": "next typegen && tsc --noEmit",
+    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "postversion": "git push --follow-tags"
   },
   "dependencies": {
     "@base-ui/react": "^1.6.0",
@@ -54,6 +57,7 @@
     "@types/react": "19.2.17",
     "@types/react-dom": "19.2.3",
     "@vitejs/plugin-react": "^6.0.3",
+    "auto-changelog": "^2.6.0",
     "eslint": "^9.39.5",
     "eslint-config-next": "16.2.10",
     "fallow": "3.7.1",

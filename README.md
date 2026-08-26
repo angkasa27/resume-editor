@@ -14,7 +14,8 @@
   </p>
 
   <p>
-    <img src="https://img.shields.io/github/package-json/v/angkasa27/resummme?style=flat-square" alt="Version">
+    <a href="https://github.com/angkasa27/resummme/actions/workflows/ci.yml"><img src="https://img.shields.io/github/actions/workflow/status/angkasa27/resummme/ci.yml?branch=master&style=flat-square" alt="CI"></a>
+    <a href="https://github.com/angkasa27/resummme/releases"><img src="https://img.shields.io/github/package-json/v/angkasa27/resummme?style=flat-square" alt="Version"></a>
     <img src="https://img.shields.io/github/stars/angkasa27/resummme?style=flat-square" alt="GitHub Stars">
     <img src="https://img.shields.io/github/license/angkasa27/resummme?style=flat-square" alt="License" />
   </p>
