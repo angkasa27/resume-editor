@@ -86,3 +86,15 @@ export const DEFAULT_FONT_ID: ResumeFontId = "inter";
 export function getFont(id: ResumeFontId) {
   return RESUME_FONTS.find((f) => f.id === id) ?? RESUME_FONTS[0];
 }
+
+/**
+ * The opposite-category partner for a layout that sets two voices against each
+ * other. Derived from the user's pick rather than pinned, so the Style tab's
+ * font control still moves both halves — pinning one would make it a half-dead
+ * control, which is what `layout-theming.test.ts` forbids for `--resume-font`.
+ */
+export function getCounterFont(id: ResumeFontId) {
+  const chosen = getFont(id);
+  const opposite = chosen.category === "serif" ? "sans" : "serif";
+  return RESUME_FONTS.find((font) => font.category === opposite) ?? chosen;
+}

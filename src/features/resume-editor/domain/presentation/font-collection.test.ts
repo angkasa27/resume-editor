@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 
 import {
   RESUME_FONTS,
+  getCounterFont,
   getFont,
   type ResumeFontId,
 } from "@/features/resume-editor/domain/presentation/font-collection";
@@ -38,5 +39,38 @@ describe("RESUME_FONTS", () => {
     const ids = RESUME_FONTS.map((font) => font.id);
     expect(new Set(ids).size).toBe(ids.length);
     for (const id of ids) expect(getFont(id).id).toBe(id);
+  });
+});
+
+/**
+ * `monolith` sets the user's font against this one. The pairing is the layout's
+ * whole hierarchy, so a counter that lands in the same category would collapse
+ * it into one voice — silently, since the page would still render.
+ */
+describe("getCounterFont", () => {
+  it("answers the opposite category for every font on offer", () => {
+    for (const font of RESUME_FONTS) {
+      expect(
+        getCounterFont(font.id).category,
+        `${font.id} pairs with its own category`,
+      ).not.toBe(font.category);
+    }
+  });
+
+  it("never pairs a font with itself", () => {
+    for (const font of RESUME_FONTS) {
+      expect(getCounterFont(font.id).id).not.toBe(font.id);
+    }
+  });
+
+  // It feeds a `font-family` declaration, so an empty stack renders nothing.
+  it("answers a usable stack", () => {
+    for (const font of RESUME_FONTS) {
+      expect(getCounterFont(font.id).stack.trim()).not.toBe("");
+    }
+  });
+
+  it("falls back rather than throwing on an unknown id", () => {
+    expect(getCounterFont("comic-sans" as ResumeFontId).category).toBe("serif");
   });
 });

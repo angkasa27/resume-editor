@@ -49,15 +49,17 @@ describe("preview layout registry", () => {
   });
 
   // A few layouts render the summary themselves (classic, split, atlas,
-  // editorial) or caption the box it sits in (rirekisho's 志望動機); suppressing
-  // the shared <h2> anywhere else loses the title. Asserted through the accessor
-  // every caller uses, and over every layout, so a new one can't slip past.
+  // editorial), caption the box it sits in (rirekisho's 志望動機), or label it
+  // from the rail with the headline (monolith); suppressing the shared <h2>
+  // anywhere else loses the title. Asserted through the accessor every caller
+  // uses, and over every layout, so a new one can't slip past.
   it("hides the summary heading only where the layout re-titles it", () => {
     const hiding = pdfLayoutIds.filter((id) => shouldHideSummaryHeading(id));
     expect([...hiding].sort()).toEqual([
       "atlas",
       "classic",
       "editorial",
+      "monolith",
       "rirekisho",
       "split",
     ]);
