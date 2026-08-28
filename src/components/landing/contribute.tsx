@@ -1,10 +1,10 @@
 import Link from "next/link";
 
+import { brand } from "@/lib/brand";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { RevealItem, RevealStagger } from "./reveal";
 
-const GITHUB_URL = "https://github.com/angkasa27/resummme";
 
 export function Contribute() {
   return (
@@ -22,14 +22,14 @@ export function Contribute() {
         </RevealItem>
         <RevealItem>
           <p className="mx-auto mt-5 max-w-xl text-balance text-muted-foreground">
-            Open the editor and have a polished PDF ready in minutes. Resummme
-            is open source, so if you build something useful or spot a bug, the
+            Open the editor and have a polished PDF ready in minutes. {brand.name} is
+            open source, so if you build something useful or spot a bug, the
             repo is open to your pull requests.
           </p>
         </RevealItem>
         <RevealItem className="mt-9 flex flex-wrap items-center justify-center gap-3">
           <a
-            href={GITHUB_URL}
+            href={brand.github}
             target="_blank"
             rel="noopener noreferrer"
             className={cn(

@@ -5,7 +5,7 @@
 
   <h1>Resummme</h1>
 
-  <p>Build a recruiter-ready resume in minutes. Write once, preview as you type, and export a clean PDF.</p>
+  <p>A free, open-source resume editor. Write once, preview instantly, export to PDF — no account required.</p>
 
   <p>
     <a href="https://resummme.asaa.dev"><strong>Live Demo</strong></a>
@@ -23,7 +23,7 @@
 
 ---
 
-Resummme is a focused, fast resume editor designed to give you everything you need to craft your resume, with nothing that gets in your way. 
+Resummme is a free, open-source resume editor. Write once, preview instantly, export to PDF — no account required.
 
 Built with privacy as a core principle, Resummme gives you complete ownership of your data. The codebase is fully open-source under the GNU Affero General Public License v3, with no tracking, no ads, and no paywalls. All your data stays in your browser and never leaves your machine unless you choose to use the AI or PDF export features.
 

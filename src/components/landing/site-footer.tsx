@@ -1,6 +1,7 @@
 import Link from "next/link";
 
-const GITHUB_URL = "https://github.com/angkasa27/resummme";
+import { brand } from "@/lib/brand";
+
 
 export function SiteFooter() {
   return (
@@ -16,7 +17,7 @@ export function SiteFooter() {
             Editor
           </Link>
           <a
-            href={GITHUB_URL}
+            href={brand.github}
             target="_blank"
             rel="noopener noreferrer"
             className="hover:text-foreground"
@@ -24,7 +25,7 @@ export function SiteFooter() {
             GitHub
           </a>
         </nav>
-        <span>© {new Date().getFullYear()} Resummme</span>
+        <span>© {new Date().getFullYear()} {brand.name}</span>
       </div>
     </footer>
   );

@@ -3,6 +3,7 @@
 import { useEffect } from "react";
 
 import "./globals.css";
+import { brand } from "@/lib/brand";
 
 // Root-layout error fallback (segment `error.tsx` can't catch it); it replaces
 // the root layout, so it renders its own <html>/<body> and uses <title>.
@@ -20,7 +21,7 @@ export default function GlobalError({
   return (
     <html lang="en" className="h-full antialiased font-sans">
       <body className="min-h-full">
-        <title>Something went wrong | Resummme</title>
+        <title>{`Something went wrong | ${brand.name}`}</title>
         <div className="flex min-h-dvh flex-col items-center justify-center gap-6 bg-background px-6 text-center text-foreground">
           <div className="flex flex-col items-center gap-3">
             <h1 className="text-2xl font-bold tracking-tight">

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Inter } from "next/font/google";
 import "./globals.css";
+import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -26,10 +27,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://resummme.asaa.dev"),
-  title: "Resummme | Resume Editor",
-  description:
-    "A free, open-source resume editor. Write once, preview instantly, export to PDF — no account required",
+  metadataBase: new URL(brand.url),
+  title: brand.title,
+  description: brand.description,
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
   },
@@ -37,26 +37,24 @@ export const metadata: Metadata = {
     canonical: "/",
   },
   openGraph: {
-    title: "Resummme | Resume Editor",
-    description:
-      "A free, open-source resume editor. Write once, preview instantly, export to PDF — no account required",
+    title: brand.title,
+    description: brand.description,
     url: "/",
-    siteName: "Resummme | Resume Editor",
+    siteName: brand.name,
     type: "website",
     images: [
       {
         url: "/og-image.png",
         width: 1200,
         height: 630,
-        alt: "Resummme | Resume Editor",
+        alt: brand.title,
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Resummme | Resume Editor",
-    description:
-      "A free, open-source resume editor. Write once, preview instantly, export to PDF — no account required",
+    title: brand.title,
+    description: brand.description,
     images: ["/og-image.png"],
   },
 };

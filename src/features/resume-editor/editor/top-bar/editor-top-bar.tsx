@@ -21,6 +21,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Spinner } from "@/components/ui/spinner";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 import type { SaveStatus } from "@/features/resume-editor/domain/draft/local-draft-storage";
 
@@ -51,7 +52,7 @@ export function EditorTopBar({
     <header className="sticky top-0 z-40 flex h-12 shrink-0 items-center gap-2 border-b bg-background px-3 sm:gap-3 sm:px-4 print:hidden">
       <Link href="/">
         <h1 className="font-bold italic pr-1 bg-clip-text text-transparent bg-linear-to-r from-violet-500 to-indigo-600">
-          Resummme
+          {brand.name}
         </h1>
       </Link>
 

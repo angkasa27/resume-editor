@@ -13,6 +13,7 @@ import {
 
 import { buttonVariants } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { brand } from "@/lib/brand";
 import { cn } from "@/lib/utils";
 import { motionTokens } from "@/lib/motion-tokens";
 import { BuilderFrame } from "./builder-showcase";
@@ -20,7 +21,6 @@ import { KineticText } from "./kinetic-text";
 // Shared landing entrance vocabulary — single source of timing/easing.
 import { blurUp as item, staggerContainer as container } from "./reveal";
 
-const GITHUB_URL = "https://github.com/angkasa27/resummme";
 
 export function Hero() {
   const reduce = useReducedMotion();
@@ -58,7 +58,7 @@ export function Hero() {
           style={parallax ? { y: contentFrameY } : undefined}
         >
           <motion.a
-            href={GITHUB_URL}
+            href={brand.github}
             target="_blank"
             rel="noopener noreferrer"
             variants={itemVariants}
@@ -74,7 +74,7 @@ export function Hero() {
 
           <motion.div variants={itemVariants}>
             <KineticText
-              text="Resummme"
+              text={brand.name}
               className="px-4 text-5xl tracking-tight md:text-7xl"
             />
           </motion.div>
@@ -83,8 +83,7 @@ export function Hero() {
             variants={itemVariants}
             className="max-w-md text-balance text-muted-foreground"
           >
-            Build a recruiter-ready resume in minutes. Write once, preview as
-            you type, and export a clean PDF.
+            {brand.description}
           </motion.p>
 
           <motion.div
@@ -92,7 +91,7 @@ export function Hero() {
             className="flex flex-wrap items-center justify-center gap-3"
           >
             <a
-              href={GITHUB_URL}
+              href={brand.github}
               target="_blank"
               rel="noopener noreferrer"
               className={cn(
