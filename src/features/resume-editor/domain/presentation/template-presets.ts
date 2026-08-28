@@ -603,6 +603,50 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // monolith — the accent is the entire page, not a detail on it, so these are
+  // the only presets whose accent has to be a colour you would paint a wall.
+  // It must also stay dark enough that `readableTextOn` answers white: the
+  // layout has one foreground and it is that answer. No secondary — the design
+  // is two colours, and a curated third would be data the page cannot show.
+  // The font pick chooses which voice leads: a sans here puts serif in the rail
+  // and the prose, a serif flips both.
+  {
+    id: "monolith-cobalt",
+    label: "Cobalt",
+    layoutId: "monolith",
+    style: {
+      accent: "#2f4fbf",
+      fontFamilyId: "inter",
+      fontScale: "sm",
+      spacing: "airy",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "monolith-ink",
+    label: "Ink",
+    layoutId: "monolith",
+    style: {
+      accent: "#18181b",
+      fontFamilyId: "lora",
+      fontScale: "sm",
+      spacing: "airy",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "monolith-clay",
+    label: "Clay",
+    layoutId: "monolith",
+    style: {
+      accent: "#7c3a2a",
+      fontFamilyId: "open-sans",
+      fontScale: "sm",
+      spacing: "airy",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
@@ -637,6 +681,7 @@ const layoutCategories: Record<
   "bold-type": ["creative"],
   studio: ["creative"],
   aurora: ["creative"],
+  monolith: ["creative"],
 };
 
 export function templateCategories(
