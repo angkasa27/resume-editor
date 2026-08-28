@@ -1,97 +1,16 @@
 /**
  * Verifies the multi-page export — asserts no block lands in a page's margin band.
- * Usage: pnpm tsx scripts/check-pagebreak.ts (PDF=1 also writes /tmp/pagebreak/<layout>.pdf)
+ * Needs a dev server; see docs/testing.md.
+ * Usage: pnpm e2e:pagebreak (PDF=1 also writes /tmp/pagebreak/<layout>.pdf)
  */
-import { pathToFileURL } from "node:url";
-
 import puppeteer from "puppeteer";
 
-import { createDefaultResumeDraft } from "@/features/resume-editor/domain/draft/create-default-resume-draft";
 import { exportResumeDraft } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import { RESUME_PDF_SESSION_STORAGE_KEY } from "@/features/resume-editor/server/resume-pdf-session";
-import type { ResumeDraft } from "@/features/resume-editor/domain/schema";
-import {
-  pdfLayoutIds,
-  type PdfLayoutId,
-} from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import { pdfLayoutIds } from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import { longDraft } from "@/test/drafts";
 
 const ORIGIN = process.env.BASE_URL ?? "http://localhost:4000";
-
-export function longDraft(layoutId: PdfLayoutId, workCount: number): ResumeDraft {
-  const draft = createDefaultResumeDraft();
-  const s = draft.sections;
-
-  // workCount 0: the short-resume case — must export as exactly one page, no
-  // blank trailing sheet. Sections are hidden, not emptied (schema needs ≥1 item).
-  if (workCount === 0) {
-    s.projects = { ...s.projects, visible: false };
-    s.certifications = { ...s.certifications, visible: false };
-    s.languages = { ...s.languages, visible: false };
-    s.references = { ...s.references, visible: false };
-    s.organizationVolunteering = {
-      ...s.organizationVolunteering,
-      visible: false,
-    };
-    s.awards = { ...s.awards, visible: false };
-    s.workExperience = {
-      ...s.workExperience,
-      items: [s.workExperience.items[0]],
-    };
-    return { ...draft, pdfPresentation: { ...draft.pdfPresentation, layoutId } };
-  }
-
-  // workCount -1: one item taller than the usable page — allowed to fragment,
-  // else break-inside: avoid moves it at print time (44 bullets is load-bearing).
-  if (workCount === -1) {
-    const bullets = Array.from(
-      { length: 44 },
-      (_, i) =>
-        `<li>Bullet ${i + 1}: led a migration, cut load time, mentored engineers, and shipped a design system used across six squads.</li>`,
-    ).join("");
-    const one = s.workExperience.items[0];
-    s.workExperience = {
-      ...s.workExperience,
-      items: [{ ...one, description: `<ul>${bullets}</ul>` }],
-    };
-    return {
-      ...draft,
-      pdfPresentation: { ...draft.pdfPresentation, layoutId },
-    };
-  }
-
-  // workCount -2: a prose section (no .item) crossing a page — only the heading
-  // and first lines must stay together, so the largest gap stays under a page.
-  if (workCount === -2) {
-    const sentence =
-      "Software engineer with a decade of experience building resilient, accessible interfaces for enterprise teams. ";
-    s.summary = { ...s.summary, content: `<p>${sentence.repeat(60)}</p>` };
-    s.workExperience = {
-      ...s.workExperience,
-      items: [s.workExperience.items[0]],
-    };
-    return { ...draft, pdfPresentation: { ...draft.pdfPresentation, layoutId } };
-  }
-
-  const work = s.workExperience.items[0];
-  s.workExperience = {
-    ...s.workExperience,
-    items: Array.from({ length: workCount }, (_, i) => ({
-      ...work,
-      id: `work-${i}`,
-      companyName: `${work.companyName} ${i + 1}`,
-    })),
-  };
-  const project = s.projects.items[0];
-  s.projects = {
-    ...s.projects,
-    items: Array.from({ length: 4 }, (_, i) => ({
-      ...project,
-      id: `project-${i}`,
-      projectName: `${project.projectName} ${i + 1}`,
-    })),
-  };
-  return { ...draft, pdfPresentation: { ...draft.pdfPresentation, layoutId } };
-}
 
 /** Chrome writes the page tree uncompressed; `[^s]` excludes `/Type /Pages`. */
 function countPdfPages(pdf: Buffer): number {
@@ -235,10 +154,4 @@ async function main() {
   process.exit(failures ? 1 : 0);
 }
 
-// Guarded so check-preview-pagination.ts imports longDraft without running this sweep.
-if (
-  process.argv[1] &&
-  import.meta.url === pathToFileURL(process.argv[1]).href
-) {
-  void main();
-}
+void main();

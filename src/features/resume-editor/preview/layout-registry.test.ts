@@ -1,61 +1,26 @@
 import { describe, expect, it } from "vitest";
 
+import { pdfLayoutIds } from "@/features/resume-editor/domain/presentation/pdf-presentation";
 import {
   getLayout,
   previewLayoutDefinitions,
   shouldHideSummaryHeading,
 } from "@/features/resume-editor/preview/layout-registry";
 
+/** The layouts that print a sidebar; every other layout is single-column. */
+const twoColumnLayouts = ["split", "duet", "ledger", "dossier", "compass"] as const;
+
 describe("preview layout registry", () => {
-  it("exposes all twenty built-in layouts", () => {
-    const ids = previewLayoutDefinitions.map((layout) => layout.id);
-    expect(ids).toEqual([
-      "classic",
-      "modern-centered",
-      "timeline",
-      "academic",
-      "inset",
-      "split",
-      "duet",
-      "bold-type",
-      "studio",
-      "aurora",
-      "ledger",
-      "dossier",
-      "crest",
-      "masthead",
-      "compass",
-      "numeral",
-      "atlas",
-      "editorial",
-      "harvard",
-      "rirekisho",
+  // The registry and the domain's id list are separate declarations. A layout
+  // added to one and not the other type-checks, then silently renders classic.
+  it("covers exactly the domain's layout ids, in gallery order", () => {
+    expect(previewLayoutDefinitions.map((layout) => layout.id)).toEqual([
+      ...pdfLayoutIds,
     ]);
   });
 
-  it("resolves layouts by id", () => {
-    for (const id of [
-      "classic",
-      "modern-centered",
-      "timeline",
-      "academic",
-      "inset",
-      "split",
-      "duet",
-      "bold-type",
-      "studio",
-      "aurora",
-      "ledger",
-      "dossier",
-      "crest",
-      "masthead",
-      "compass",
-      "numeral",
-      "atlas",
-      "editorial",
-      "harvard",
-      "rirekisho",
-    ] as const) {
+  it("resolves every layout by its own id", () => {
+    for (const id of pdfLayoutIds) {
       expect(getLayout(id).id).toBe(id);
     }
   });
@@ -65,7 +30,7 @@ describe("preview layout registry", () => {
   });
 
   it("partitions sections into side and main columns in the sidebar and split layouts", () => {
-    for (const id of ["split", "duet", "ledger", "dossier", "compass"] as const) {
+    for (const id of twoColumnLayouts) {
       const layout = getLayout(id);
       expect(layout.getColumn?.("skills")).toBe("side");
       expect(layout.getColumn?.("languages")).toBe("side");
@@ -76,46 +41,25 @@ describe("preview layout registry", () => {
     }
   });
 
-  it("marks only the layouts that re-title the summary as hiding its heading", () => {
-    // A few layouts render the summary themselves (classic, split, atlas,
-    // editorial) or caption the box it sits in (rirekisho's 志望動機);
-    // suppressing the shared <h2> anywhere else loses the title.
-    const hiding = previewLayoutDefinitions
-      .filter((layout) => layout.hideSummaryHeading === true)
-      .map((layout) => layout.id);
-    expect(hiding.sort()).toEqual([
+  it("gives no column partitioning to every other layout", () => {
+    for (const id of pdfLayoutIds) {
+      if (twoColumnLayouts.includes(id as (typeof twoColumnLayouts)[number])) continue;
+      expect(getLayout(id).getColumn, `${id} should be single-column`).toBeUndefined();
+    }
+  });
+
+  // A few layouts render the summary themselves (classic, split, atlas,
+  // editorial) or caption the box it sits in (rirekisho's 志望動機); suppressing
+  // the shared <h2> anywhere else loses the title. Asserted through the accessor
+  // every caller uses, and over every layout, so a new one can't slip past.
+  it("hides the summary heading only where the layout re-titles it", () => {
+    const hiding = pdfLayoutIds.filter((id) => shouldHideSummaryHeading(id));
+    expect([...hiding].sort()).toEqual([
       "atlas",
       "classic",
       "editorial",
       "rirekisho",
       "split",
     ]);
-  });
-
-  it("shouldHideSummaryHeading derives from the layout definition", () => {
-    expect(shouldHideSummaryHeading("classic")).toBe(true);
-    expect(shouldHideSummaryHeading("split")).toBe(true);
-    expect(shouldHideSummaryHeading("bold-type")).toBe(false);
-    expect(shouldHideSummaryHeading("timeline")).toBe(false);
-    expect(shouldHideSummaryHeading("ledger")).toBe(false);
-    expect(shouldHideSummaryHeading("masthead")).toBe(false);
-  });
-
-  it("single-column layouts have no column partitioning", () => {
-    expect(getLayout("classic").getColumn).toBeUndefined();
-    expect(getLayout("modern-centered").getColumn).toBeUndefined();
-    expect(getLayout("timeline").getColumn).toBeUndefined();
-    expect(getLayout("academic").getColumn).toBeUndefined();
-    expect(getLayout("inset").getColumn).toBeUndefined();
-    expect(getLayout("bold-type").getColumn).toBeUndefined();
-    expect(getLayout("studio").getColumn).toBeUndefined();
-    expect(getLayout("aurora").getColumn).toBeUndefined();
-    expect(getLayout("crest").getColumn).toBeUndefined();
-    expect(getLayout("masthead").getColumn).toBeUndefined();
-    expect(getLayout("numeral").getColumn).toBeUndefined();
-    expect(getLayout("atlas").getColumn).toBeUndefined();
-    expect(getLayout("editorial").getColumn).toBeUndefined();
-    expect(getLayout("harvard").getColumn).toBeUndefined();
-    expect(getLayout("rirekisho").getColumn).toBeUndefined();
   });
 });

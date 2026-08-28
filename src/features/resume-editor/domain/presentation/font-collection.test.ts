@@ -20,16 +20,23 @@ describe("getFont", () => {
 });
 
 describe("RESUME_FONTS", () => {
-  it("exposes at least 10 fonts", () => {
-    expect(RESUME_FONTS.length).toBeGreaterThanOrEqual(10);
-  });
-
-  it("each font has required fields", () => {
+  // Every entry reaches the font picker and a `font-family` declaration, so a
+  // blank name renders an unpickable row and a blank stack renders no font at
+  // all. `toBeDefined` would pass for both.
+  it("gives every font the fields the picker and the stylesheet need", () => {
     for (const font of RESUME_FONTS) {
-      expect(font.id).toBeDefined();
-      expect(font.name).toBeDefined();
+      expect(font.id.trim()).not.toBe("");
+      expect(font.name.trim()).not.toBe("");
+      expect(font.stack.trim()).not.toBe("");
       expect(font.category).toMatch(/^(sans|serif)$/);
       expect(font.source).toMatch(/^(google|system)$/);
     }
+  });
+
+  // getFont resolves by id, so a duplicate makes the later font unreachable.
+  it("keeps ids unique", () => {
+    const ids = RESUME_FONTS.map((font) => font.id);
+    expect(new Set(ids).size).toBe(ids.length);
+    for (const id of ids) expect(getFont(id).id).toBe(id);
   });
 });

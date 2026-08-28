@@ -105,7 +105,7 @@ function insertSpacerBefore(
   scale: number,
 ): void {
   const spacer = document.createElement("div");
-  // Read by scripts/check-pagebreak.ts to assert no gap approaches a full page.
+  // Read by scripts/e2e-pagebreak.ts to assert no gap approaches a full page.
   spacer.dataset.pageSpacer = "";
   spacer.style.height = `${shift}px`;
   block.before(spacer);
