@@ -250,10 +250,10 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   "bold-type": { status: "pass" },
   studio: { status: "pass" },
   aurora: { status: "pass" },
-  "modern-centered": {
+  folio: {
     status: "warn",
     message:
-      "Centered headers usually parse fine. Classic is safer if you expect a strict parser.",
+      "The centered header and the two-up closing sections usually parse fine. Classic is safer if you expect a strict parser.",
   },
   academic: {
     status: "warn",

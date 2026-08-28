@@ -57,7 +57,6 @@ describe("resumeTemplatePresets", () => {
     // Only the six layouts that render it read --resume-secondary; anywhere else it's data the
     // page can't show, yet the active-template match still compares it.
     const RENDERS_SECONDARY = new Set([
-      "modern-centered",
       "split",
       "duet",
       "aurora",

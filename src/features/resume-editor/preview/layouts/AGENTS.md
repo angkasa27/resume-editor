@@ -207,7 +207,7 @@ the round-robin `pnpm screenshots` uses.
 | Layout | id | The one-line read |
 | --- | --- | --- |
 | [Classic](classic/README.md) | `classic` | Single column, photo-left header, ruled uppercase headings. The plain baseline. |
-| [Modern](modern-centered/README.md) | `modern-centered` | Everything in the header centred under a round photo; short secondary rules under name and headings. |
+| [Folio](folio/README.md) | `folio` | A ruled border framing every sheet; centred round-photo header, underlined headings, short closing sections set two-up. |
 | [Timeline](timeline/README.md) | `timeline` | Date column left, a continuous vertical rail with an accent dot at every item. |
 | [Academic](academic/README.md) | `academic` | Small-caps headings, italic dates, indented bodies. CV conventions. |
 | [Inset](inset/README.md) | `inset` | Headings live in a 110px label rail; skills collapse to one inline line. |

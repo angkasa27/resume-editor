@@ -70,28 +70,40 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
-  // modern-centered — secondary is the short rule under the name and headings,
-  // so it is set a step brighter than the accent to actually register.
+  // folio — the accent draws the frame around every sheet as well as the rule
+  // under each heading, so it carries more of the page than most: it wants a
+  // colour with enough body to hold a 2px line, and no secondary, which the
+  // layout never renders.
   {
-    id: "centered-ocean",
-    label: "Ocean",
-    layoutId: "modern-centered",
+    id: "folio-slate",
+    label: "Slate",
+    layoutId: "folio",
     style: {
-      accent: "#0369a1",
-      secondary: "#38bdf8",
-      fontFamilyId: "nunito-sans",
+      accent: "#5b7c99",
+      fontFamilyId: "open-sans",
       fontScale: "md",
       spacing: "standard",
       lineHeight: "standard",
     },
   },
   {
-    id: "centered-editorial",
-    label: "Editorial",
-    layoutId: "modern-centered",
+    id: "folio-ink",
+    label: "Ink",
+    layoutId: "folio",
+    style: {
+      accent: "#1f2937",
+      fontFamilyId: "lora",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "folio-claret",
+    label: "Claret",
+    layoutId: "folio",
     style: {
       accent: "#9f1239",
-      secondary: "#e11d48",
       fontFamilyId: "playfair-display",
       fontScale: "md",
       spacing: "airy",
@@ -675,7 +687,7 @@ const layoutCategories: Record<
   harvard: ["ats", "professional"],
   // A Japanese form: it is read by a person, never fed to a Western parser.
   rirekisho: ["professional"],
-  "modern-centered": ["ats", "professional"],
+  folio: ["ats", "professional"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
   split: ["professional"],

@@ -1,0 +1,217 @@
+/* The frame. It has to repeat on *every* sheet, and the only thing that spans
+   sheets is this element — the page-break markers are editor-only chrome. So
+   the rule is four background layers, each tiled to exactly one paper height:
+   the tile lands at the same offset on every page, which draws the same frame
+   on every page. Painted, so both print-color-adjust properties are required
+   or the frame is missing from the exported PDF. */
+.layout {
+  --folio-frame-inset: 6mm;
+  --folio-frame-width: 2px;
+  --folio-frame: var(--resume-accent);
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+
+  background-image:
+    /* top rule */
+    linear-gradient(
+      to bottom,
+      var(--folio-frame) 0 var(--folio-frame-width),
+      transparent var(--folio-frame-width)
+    ),
+    /* bottom rule */
+    linear-gradient(
+      to top,
+      var(--folio-frame) 0 var(--folio-frame-width),
+      transparent var(--folio-frame-width)
+    ),
+    /* left rule — the gradient carries the vertical extent, so the stiles stop
+       at the same inset the rails do and the corners meet cleanly */
+    linear-gradient(
+      to bottom,
+      transparent 0 var(--folio-frame-inset),
+      var(--folio-frame) var(--folio-frame-inset)
+        calc(var(--resume-paper-height) - var(--folio-frame-inset)),
+      transparent calc(var(--resume-paper-height) - var(--folio-frame-inset))
+    ),
+    /* right rule */
+    linear-gradient(
+      to bottom,
+      transparent 0 var(--folio-frame-inset),
+      var(--folio-frame) var(--folio-frame-inset)
+        calc(var(--resume-paper-height) - var(--folio-frame-inset)),
+      transparent calc(var(--resume-paper-height) - var(--folio-frame-inset))
+    );
+  background-size:
+    calc(100% - 2 * var(--folio-frame-inset)) var(--resume-paper-height),
+    calc(100% - 2 * var(--folio-frame-inset)) var(--resume-paper-height),
+    var(--folio-frame-width) var(--resume-paper-height),
+    var(--folio-frame-width) var(--resume-paper-height);
+  background-position:
+    var(--folio-frame-inset) var(--folio-frame-inset),
+    /* pulled up by the inset so the tile's bottom edge lands one inset above
+       the page's bottom edge */ var(--folio-frame-inset)
+      calc(-1 * var(--folio-frame-inset)),
+    var(--folio-frame-inset) 0,
+    calc(100% - var(--folio-frame-inset) - var(--folio-frame-width)) 0;
+  background-repeat: repeat-y;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  flex: 1;
+}
+
+/* Section headings. The rule is the heading's own bottom border, not a
+   separate element — a rule with its own margin drifts away from the words it
+   belongs to, and this one has to read as underlining the title. */
+.layout :global(.section-heading) {
+  font-size: calc(var(--resume-h2) * 1.05);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+  padding-bottom: 3px;
+  margin-bottom: var(--resume-gap-inner);
+  border-bottom: 1.5px solid var(--resume-accent);
+}
+
+/* The compact tail. Skills, languages, certificates and the like are a few
+   short lines each and read as a footer band when they sit side by side; the
+   long sections above them stay full width. */
+.folioPair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--resume-gap-section) calc(var(--resume-gutter) * 2);
+  align-items: start;
+}
+
+/* Items — title left, date and place right on one line, employer italic under
+   the title. */
+.layout :global(.item-header) {
+  gap: var(--resume-gap-inner);
+}
+
+.layout :global(.item-title) {
+  font-size: var(--resume-h3);
+  font-weight: 700;
+}
+
+.layout :global(.item-header-main .meta) {
+  font-style: italic;
+}
+
+.layout :global(.item-header-side) {
+  flex-direction: row;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+/* A pipe between the date and the place. Drawn trailing the earlier field, not
+   leading the later one: the pair wraps on a narrow item header, and a leading
+   separator would start the second line with an orphaned bar. `:not(:last-child)`
+   means an item with only a date shows no separator at all. */
+.layout :global(.item-header-side > *:not(:last-child)::after) {
+  content: " |";
+  margin-left: 6px;
+  color: var(--resume-border);
+}
+
+/* Dashes, not discs: the reference sets its bullets as en-dashes, and at this
+   size a disc reads heavier than the type it introduces. */
+.layout :global(.rich-text ul) {
+  padding-left: var(--resume-indent);
+}
+
+.layout :global(.rich-text ul > li::marker) {
+  content: "– ";
+  color: var(--resume-text);
+}
+
+/* Header — photo left, identity beside it, contacts in a two-column grid under
+   both. */
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-header);
+  align-items: center;
+  text-align: center;
+}
+
+.header :global(.folio-identity) {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--resume-gutter) * 1.5);
+  min-width: 0;
+}
+
+.header :global(.header-photo) {
+  width: 84px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 50%);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.name-block) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.72);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.15;
+}
+
+/* The role sits on the name's line, italic and lighter — a subtitle, not a
+   second heading. */
+.header :global(.headline) {
+  font-size: calc(var(--resume-h2) * 1.05);
+  font-style: italic;
+  font-weight: 400;
+  --resume-headline-color: var(--resume-muted);
+}
+
+/* Two columns of contacts. The kit emits details and links as separate lists,
+   so both are dissolved into the block's own grid to keep one alignment. */
+.header :global(.contact-block) {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  justify-content: center;
+  gap: 4px calc(var(--resume-gutter) * 2);
+  width: 100%;
+}
+
+.header :global(.contact-block .contact-line) {
+  display: contents;
+}
+
+.header :global(.contact-item) {
+  justify-content: flex-start;
+}
+
+/* Link cue: the section headings already own a solid rule, so the links take a
+   dotted one — present, and plainly the quieter of the two. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.18em;
+}
