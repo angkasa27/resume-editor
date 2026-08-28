@@ -32,6 +32,7 @@ export const pdfLayoutIds = [
   "editorial",
   "harvard",
   "rirekisho",
+  "monolith",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -183,6 +184,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   editorial: 20, // whitespace is the layout — the band and the spreads both need it
   harvard: 18, // the format is a Word document with wide margins; keep them
   rirekisho: 12, // the ruled boxes are the page; margin only frames them
+  monolith: 16, // the colour reaches every edge, so the margin is the only thing keeping the type off it
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */

@@ -156,6 +156,15 @@
   min-width: 0;
 }
 
+/* The block holds two lists — details, then links. Inline, each is a single
+   line and the 3px above is the gap between those two lines. Stacked, they read
+   as one column, so the seam has to space like the items inside them do, or the
+   first link sits tighter to the last detail than the links sit to each other.
+   split and duet each patched this locally before it was fixed here. */
+:where(.root) :global(.contact-block:has(.contact-line-stacked)) {
+  gap: var(--resume-gap-inner);
+}
+
 :where(.root) :global(.contact-line) {
   margin: 0;
   padding: 0;

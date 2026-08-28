@@ -226,3 +226,4 @@ the round-robin `pnpm screenshots` uses.
 | [Editorial](editorial/README.md) | `editorial` | Magazine opening: tinted band with the summary as a display pull quote. |
 | [Harvard](harvard/README.md) | `harvard` | The MCS format. One type size, bold as the only emphasis, no colour. |
 | [Rirekisho](rirekisho/README.md) | `rirekisho` | The Japanese 履歴書 form: ruled identity block, 30×40mm photo box, history in 年 / 月 columns. |
+| [Monolith](monolith/README.md) | `monolith` | The whole page in one saturated colour; a 150px label rail, and two paired typefaces doing the work colour and rules usually do. |

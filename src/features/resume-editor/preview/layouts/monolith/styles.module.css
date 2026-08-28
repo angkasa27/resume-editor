@@ -1,0 +1,169 @@
+/* The colour field. The layout root is the document root's first child and is
+   stretched to the full paper, so painting it here fills every page edge to
+   edge — the point of the design. Both print-color-adjust properties or the
+   whole page exports white. */
+.layout {
+  --monolith-rail: 150px;
+
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 1.5);
+  background: var(--resume-accent);
+  color: var(--resume-on-accent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+
+  /* Two colours, nothing else. The shared rules reach for a neutral ramp built
+     for a white page — grey text on a saturated field is unreadable and a grey
+     hairline is invisible — so every neutral is folded back onto the one
+     foreground. The layout spends its hierarchy on size and family instead. */
+  --resume-text: var(--resume-on-accent);
+  --resume-muted: var(--resume-on-accent);
+  --resume-border: transparent;
+  --resume-name-color: var(--resume-on-accent);
+  --resume-headline-color: var(--resume-on-accent);
+  --resume-heading-color: var(--resume-on-accent);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-section) * 1.5);
+  flex: 1;
+}
+
+/* The rail. Every row on the page rides these two tracks: a label left, the
+   content right. Declared explicitly so a row with an empty rail keeps its
+   column. */
+.layout :global(.section),
+.layout :global(.monolith-row) {
+  display: grid;
+  grid-template-columns: var(--monolith-rail) minmax(0, 1fr);
+  gap: var(--resume-gap-item);
+  align-items: start;
+}
+
+/* The summary arrives as a `.section` too, but the layout has already given it a
+   rail of its own carrying the headline. Without this it opens a second rail
+   inside the first and the lede wraps in a 150px-narrower column. */
+.layout :global(.section[data-section="summary"]) {
+  display: block;
+}
+
+/* Rail type: the reading voice, set large enough to hold its own against the
+   body but at 400 — weight is not one of this layout's tools. */
+.layout :global(.section-heading),
+.layout :global(.monolith-label) {
+  font-family: var(--monolith-counter);
+  font-size: calc(var(--resume-h2) * 1.15);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+/* The lede, in the display voice. The one paragraph set above body size —
+   it carries the top of the page on its own once the rules are gone. */
+.layout :global(.monolith-lede .rich-text) {
+  font-size: calc(var(--resume-h2) * 1.1);
+  line-height: 1.35;
+  text-align: left;
+}
+
+/* Item titles stay in the display voice; the date and the prose under them drop
+   to the reading voice. That alternation is what separates one entry from the
+   next now that no rule or colour can. */
+.layout :global(.item-title) {
+  font-weight: 400;
+  font-size: var(--resume-h3);
+}
+
+.layout :global(.item-date),
+.layout :global(.item .rich-text),
+.layout :global(.item .meta),
+.layout :global(.monolith-place) {
+  font-family: var(--monolith-counter);
+}
+
+.layout :global(.item-date) {
+  text-align: left;
+}
+
+.layout :global(.item-list) {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--resume-gap-item) * 1.5);
+}
+
+/* Prose sits a step below its title, which is the only size step left inside an
+   item. */
+.layout :global(.item .rich-text) {
+  font-size: calc(var(--resume-body) * 0.95);
+  padding-top: 4px;
+}
+
+/* Location closes the page in the body column, aligned under the content rather
+   than under the rail labels. */
+.layout :global(.monolith-place) {
+  margin: 0;
+  padding-left: calc(var(--monolith-rail) + var(--resume-gap-item));
+  padding-top: var(--resume-gap-section);
+}
+
+/* Header — photo in the rail, identity in the body column, on the same tracks
+   as everything below. */
+.header {
+  display: grid;
+  grid-template-columns: var(--monolith-rail) minmax(0, 1fr);
+  gap: var(--resume-gap-item);
+  align-items: start;
+  padding-bottom: var(--resume-gap-section);
+}
+
+.header :global(.header-photo) {
+  grid-column: 1;
+  justify-self: start;
+  width: 108px;
+  aspect-ratio: var(--resume-photo-aspect, 3 / 4);
+  height: auto;
+  /* Square by default: a rounded frame would be the only curve on a page made
+     of straight edges. */
+  border-radius: var(--resume-photo-radius, 0);
+  overflow: hidden;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.header :global(.name-block) {
+  grid-column: 2;
+  min-width: 0;
+}
+
+/* The name is the largest thing on the page, but only just — at 400 it reads as
+   a title rather than a shout, which the colour is already doing. */
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.95);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.1;
+}
+
+.header :global(.monolith-reach) {
+  font-family: var(--monolith-counter);
+  font-size: calc(var(--resume-h2) * 1.05);
+  line-height: 1.3;
+  color: var(--resume-on-accent);
+}
+
+/* Link cue: an underline is the only cue left — there is no second colour to
+   tint with and no rule weight to borrow. Offset so it clears the descenders
+   at this size, and quieter than the headings, which dominate on size. */
+.layout {
+  --resume-link-decoration: underline;
+  --resume-link-offset: 0.18em;
+}

@@ -72,9 +72,6 @@
   object-fit: cover;
 }
 
-.layout :global(.layout-side .contact-block) {
-  gap: var(--resume-gap-inner);
-}
 
 /* The rail is too narrow for a title and a date on one line. */
 .layout :global(.layout-side .item-header),
