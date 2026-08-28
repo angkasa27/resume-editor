@@ -67,12 +67,6 @@
   object-fit: cover;
 }
 
-/* The shared stacked contact variant handles the rail's one-per-line layout;
-   the icons replace what disc bullets used to do here. */
-.layout :global(.layout-side .contact-block) {
-  gap: var(--resume-gap-inner);
-}
-
 /* Stack item-header vertically inside the narrow rail. */
 .layout :global(.layout-side .item-header) {
   display: flex;
