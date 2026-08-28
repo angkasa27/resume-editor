@@ -6,12 +6,22 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/toast";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import {
+  fontDmSans,
+  fontIbmPlexSans,
   fontLato,
   fontLora,
+  fontManrope,
   fontMerriweather,
+  fontMontserrat,
+  fontNunitoSans,
   fontOpenSans,
   fontPlayfairDisplay,
+  fontPlusJakartaSans,
+  fontPoppins,
+  fontRaleway,
   fontRoboto,
+  fontSourceSans3,
+  fontWorkSans,
 } from "@/app/fonts";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -79,6 +89,16 @@ export default function RootLayout({
         fontMerriweather.variable,
         fontPlayfairDisplay.variable,
         fontLora.variable,
+        fontPlusJakartaSans.variable,
+        fontPoppins.variable,
+        fontMontserrat.variable,
+        fontDmSans.variable,
+        fontWorkSans.variable,
+        fontNunitoSans.variable,
+        fontSourceSans3.variable,
+        fontRaleway.variable,
+        fontManrope.variable,
+        fontIbmPlexSans.variable,
       )}
     >
       <body className="min-h-full flex flex-col">

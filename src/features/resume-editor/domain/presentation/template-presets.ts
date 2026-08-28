@@ -28,6 +28,8 @@ export type ResumeTemplatePreset = {
 export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
   // Curation rules: `secondary` only for layouts that render it (else it's dead data the
   // active-template match still compares); density follows layout structure, not taste.
+  // A display sans (Poppins, Montserrat) only goes on a layout whose type is large;
+  // narrow-column layouts get a text sans that stays readable at 11px.
 
   // classic — traditional single column. Plain, ATS-safest pick; matches the stock default.
   {
@@ -77,7 +79,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#0369a1",
       secondary: "#38bdf8",
-      fontFamilyId: "open-sans",
+      fontFamilyId: "nunito-sans",
       fontScale: "md",
       spacing: "standard",
       lineHeight: "standard",
@@ -171,7 +173,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     layoutId: "inset",
     style: {
       accent: "#0f766e",
-      fontFamilyId: "open-sans",
+      fontFamilyId: "work-sans",
       fontScale: "sm",
       spacing: "compact",
       lineHeight: "standard",
@@ -255,7 +257,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     layoutId: "bold-type",
     style: {
       accent: "#ea580c",
-      fontFamilyId: "inter",
+      fontFamilyId: "poppins",
       fontScale: "md",
       spacing: "compact",
       lineHeight: "tight",
@@ -282,7 +284,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     layoutId: "studio",
     style: {
       accent: "#7c3aed",
-      fontFamilyId: "inter",
+      fontFamilyId: "plus-jakarta-sans",
       fontScale: "md",
       spacing: "standard",
       lineHeight: "standard",
@@ -323,7 +325,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#fda4af",
       secondary: "#fdba74",
-      fontFamilyId: "lato",
+      fontFamilyId: "dm-sans",
       fontScale: "sm",
       spacing: "standard",
       lineHeight: "standard",
@@ -378,7 +380,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#14261d",
       secondary: "#1f3d2b",
-      fontFamilyId: "inter",
+      fontFamilyId: "manrope",
       fontScale: "sm",
       spacing: "compact",
       lineHeight: "standard",
@@ -421,7 +423,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     style: {
       accent: "#f7d949",
       secondary: "#111827",
-      fontFamilyId: "lato",
+      fontFamilyId: "montserrat",
       fontScale: "sm",
       spacing: "standard",
       lineHeight: "standard",
@@ -448,7 +450,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     layoutId: "compass",
     style: {
       accent: "#475569",
-      fontFamilyId: "inter",
+      fontFamilyId: "ibm-plex-sans",
       fontScale: "sm",
       spacing: "standard",
       lineHeight: "standard",
@@ -502,7 +504,7 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     layoutId: "atlas",
     style: {
       accent: "#171717",
-      fontFamilyId: "inter",
+      fontFamilyId: "source-sans-3",
       fontScale: "sm",
       spacing: "compact",
       lineHeight: "standard",
