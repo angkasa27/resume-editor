@@ -193,13 +193,12 @@ pnpm screenshots  # Regenerate template preview images in public/templates
 pnpm og:image     # Regenerate public/og-image.png
 ```
 
-Diagnostics for the preview/PDF pipeline. These drive headless Puppeteer against a running app, so start `pnpm dev` first:
+End-to-end checks for the preview/PDF pipeline. These drive headless Puppeteer against a running app, so start `pnpm dev` first. They are pass/fail gates, not part of `pnpm test` — see [docs/testing.md](docs/testing.md):
 
 ```bash
-pnpm check:pagebreak    # Report where each layout breaks across pages
-pnpm check:pagination   # Compare preview pagination against the rendered document
-pnpm inspect:layout     # Dump computed geometry for one layout
-pnpm verify:pdf         # Round-trip the /api/export-pdf route
+pnpm e2e:pagebreak      # Assert no block lands in a page's margin band
+pnpm e2e:pagination     # Assert the zoomed preview paginates like the export
+pnpm inspect:layout     # Dump computed geometry for one layout (a tool, not a check)
 ```
 
 ## Environment Variables

@@ -44,18 +44,16 @@ const zeroDomRect = {
   },
 };
 
-// Server-route tests opt into `@vitest-environment node`, where Range is absent.
-if (typeof Range !== "undefined") {
-  if (!Range.prototype.getBoundingClientRect) {
-    Range.prototype.getBoundingClientRect = () => zeroDomRect as DOMRect;
-  }
+// Tiptap measures selections; JSDOM's Range has no layout.
+if (!Range.prototype.getBoundingClientRect) {
+  Range.prototype.getBoundingClientRect = () => zeroDomRect as DOMRect;
+}
 
-  if (!Range.prototype.getClientRects) {
-    Range.prototype.getClientRects = () =>
-      ({
-        length: 0,
-        item: () => null,
-        [Symbol.iterator]: function* () {},
-      }) as DOMRectList;
-  }
+if (!Range.prototype.getClientRects) {
+  Range.prototype.getClientRects = () =>
+    ({
+      length: 0,
+      item: () => null,
+      [Symbol.iterator]: function* () {},
+    }) as DOMRectList;
 }

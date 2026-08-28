@@ -3,11 +3,12 @@
  * the one place the two can silently disagree (the pass only re-runs while
  * zoomed after an edit, so the script makes one).
  *
- * Usage: pnpm dev && pnpm tsx scripts/check-preview-pagination.ts
+ * Needs a dev server; see docs/testing.md.
+ * Usage: pnpm e2e:pagination
  */
 import puppeteer from "puppeteer";
 
-import { longDraft } from "./check-pagebreak";
+import { longDraft } from "@/test/drafts";
 import {
   exportResumeDraft,
   RESUME_STORAGE_KEY,

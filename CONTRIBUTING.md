@@ -96,13 +96,18 @@ It captures against `http://localhost:4000` and overwrites the template and buil
 
 ## Tests
 
-Tests live next to the code they test (`*.test.ts` / `*.test.tsx`). The test suite covers:
+Tests live next to the code they test (`*.test.ts` / `*.test.tsx`). Run
+`pnpm test:watch` during development. The suite must be green before merging.
 
-- Domain logic (schema parsing, ATS scoring, keyword matching, presentation resolver)
-- Server route smoke tests
-- UI component rendering
+`.ts` tests run in Node, `.tsx` in jsdom. A `.ts` test that needs a DOM has to
+be listed in `domUnits` in `vitest.config.ts`.
 
-Run `pnpm test:watch` during development. The suite must be green before merging.
+There is a second tier CI does not run: `pnpm e2e:pagebreak` and
+`pnpm e2e:pagination` drive Puppeteer against a running app to check page-break
+geometry. Run them by hand before merging anything that touches pagination,
+layout CSS, or the print pipeline.
+
+[docs/testing.md](docs/testing.md) has the details for both tiers.
 
 ## Releasing
 
