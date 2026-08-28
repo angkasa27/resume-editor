@@ -12,8 +12,8 @@ left, the name and role sharing the line beside it, contacts as a two-column
 grid of chipped fields, and section headings each underscored by a short thick
 rule the width of their own words.
 
-Runs of short sections — skills, languages, certificates — are set two-up, which
-turns that part of the page into a band rather than a column of stubs.
+**Every section runs the full width.** The contact grid in the header is the only
+two-column thing on the page.
 
 The accent is spent in exactly three places: the band, the heading rules, and
 the contact chips. Everything else, the name included, is the neutral text
@@ -31,14 +31,13 @@ so saved drafts land here instead of falling back to `classic`.
 - **Items** — title bold at `h3`, employer italic beneath, date and place ranged right on **one line** separated by a pipe. The side block is `nowrap` and does not shrink; the title column gives way instead.
 - **Bullets** — en-dashes via `::marker`.
 - **Skills** — one running line of pipe-separated terms from every group. The separator is a CSS `::after`, so it never lands on the last term or gets copied into a paste.
-- **The two-up runs** — any run of two or more consecutive compact sections (skills, languages, certifications, references, awards) becomes a two-column block.
 - **Link cue** — `underline dotted`. The headings own a solid 3px rule; the links take the plainly quieter one.
 
 ## Wiring
 
-Own `Component` (the two-up runs need to group adjacent slots, and skills is
-re-rendered as one line) · own `Header` · shared `defaultItemViews` · no
-`hideSummaryHeading` — Summary keeps its heading like every other ruled section.
+`createSingleColumnLayout` with a `renderSection` override for the skills line ·
+own `Header` · shared `defaultItemViews` · no `hideSummaryHeading` — Summary
+keeps its heading like every other ruled section.
 
 ## Watch out
 
@@ -53,11 +52,10 @@ re-rendered as one line) · own `Header` · shared `defaultItemViews` · no
   chips. Drop either and the exported PDF loses the frame, which is the design.
 - **The band follows `--resume-paper-height`**, so it is already correct for A4,
   Letter and JIS B5. Hard-coding 297mm would silently break two of the three.
-- **The two-up wrapper carries `data-page-unit`.** Without it the paginator
-  descends into the columns and a spacer reflows the balance across both.
-- **Runs, not a trailing block.** The compact sections are not always last — the
-  stock section order ends with Organizations — so keying the two-up off "the
-  tail" finds nothing on a default draft.
+- **Single column, deliberately.** An earlier pass set runs of short sections
+  two-up. It was dropped: every section runs the full width now, and anything
+  that reintroduces columns here has to answer to the paginator, which inserts
+  spacers into the flow and reflows a balanced column pair.
 - **`.name-block` is a column by default.** The shared rule stacks the name and
   role; this layout sets `flex-direction: row` explicitly to put them on one
   line.

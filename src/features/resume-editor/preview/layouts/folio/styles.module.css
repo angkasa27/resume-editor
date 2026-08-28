@@ -127,19 +127,6 @@
   color: var(--resume-border);
 }
 
-/* The closing band. Short sections read as a footer when they sit two-up.
-   `data-page-unit` on the wrapper (layout.tsx) keeps the paginator from
-   descending into the columns — a spacer inside would reflow the balance. */
-.folioTail {
-  columns: 2;
-  column-gap: calc(var(--resume-gutter) * 2);
-}
-
-.folioTail > * {
-  break-inside: avoid;
-  margin-bottom: var(--resume-gap-section);
-}
-
 /* Header — photo left, identity beside it, everything ranged left against the
    band. */
 .header {

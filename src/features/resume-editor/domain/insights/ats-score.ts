@@ -253,7 +253,7 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   folio: {
     status: "warn",
     message:
-      "The centered header and the two-up closing sections usually parse fine. Classic is safer if you expect a strict parser.",
+      "A single column with a photo header usually parses fine. Classic is safer if you expect a strict parser.",
   },
   academic: {
     status: "warn",
