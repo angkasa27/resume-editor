@@ -19,11 +19,12 @@
 }
 
 /* The pull quote, running the full width of the band. It was held to a 34ch
-   measure, which on A4 left most of the band empty to the right of it. */
+   measure, which on A4 left most of the band empty to the right of it. Takes
+   the shared .rich-text justification: at display size a ragged right edge
+   fought the band's own straight edges. */
 .layout :global(.editorial-opening .rich-text) {
   font-size: calc(var(--resume-h1) * 0.66);
   line-height: 1.4;
-  text-align: left;
 }
 
 .layout :global(.layout-body) {
