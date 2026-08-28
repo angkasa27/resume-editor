@@ -16,7 +16,6 @@ import {
 } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ConfirmDeleteDialog } from "@/components/ui/confirm-delete-dialog";
 import {
@@ -62,7 +61,7 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
 
   return (
     <div className="@container/fields">
-      <FieldGroup layout="grid">
+      <FieldGroup layout="grid" className="border-b pb-4">
         <PhotoField
           photo={photo}
           id={`${idPrefix}-photo`}
@@ -139,16 +138,11 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
         />
       </FieldGroup>
 
-      {/* Divider rule between groups: 16px above and below, the between-groups
-          step. A flex gap can't space a visible rule, so it's margin+padding. */}
-      <FieldSet className="mt-4 border-t pt-4">
-        <FieldLegend>
-          Links
-          <Badge variant="secondary">
-            {extraLinks.fields.length} item
-            {extraLinks.fields.length === 1 ? "" : "s"}
-          </Badge>
-        </FieldLegend>
+      {/* The rule lives on the group above, not as `border-t` here: a <legend>
+          notches a hole in its own <fieldset>'s border, cutting the line
+          through the heading. 16px above and below, the between-groups step. */}
+      <FieldSet className="mt-4">
+        <FieldLegend>Links</FieldLegend>
 
         {extraLinks.fields.length === 0 ? (
           <div className="text-sm text-muted-foreground">No links added.</div>
@@ -217,7 +211,7 @@ export function ProfileFields({ ctx, idPrefix }: ProfileFieldsProps) {
 
         <Button type="button" className="w-full" onClick={links.add}>
           <PlusIcon data-icon="inline-start" />
-          Add Link
+          Add link
         </Button>
       </FieldSet>
 
