@@ -104,6 +104,11 @@ describe("normalizePdfPresentation", () => {
     expect(normalizePdfPresentation({ layoutId: "spotlight" }).layoutId).toBe(
       "split",
     );
+    // Replaced Aug 2026, and the one with the largest install base of the lot:
+    // modern-centered shipped as a gallery template, so drafts hold this id.
+    expect(
+      normalizePdfPresentation({ layoutId: "modern-centered" }).layoutId,
+    ).toBe("folio");
   });
 
   it("falls back to defaults for invalid values", () => {

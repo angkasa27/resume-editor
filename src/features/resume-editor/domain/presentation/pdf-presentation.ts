@@ -13,7 +13,7 @@ export { resumeFontIds, type ResumeFontId };
 
 export const pdfLayoutIds = [
   "classic",
-  "modern-centered",
+  "folio",
   "timeline",
   "academic",
   "inset",
@@ -45,6 +45,9 @@ const retiredLayoutIds: Record<string, PdfLayoutId> = {
   sidebar: "ledger",
   spotlight: "split",
   banner: "crest",
+  // Replaced Aug 2026 by folio, which keeps the centred photo header and the
+  // ruled section headings and puts a frame around them.
+  "modern-centered": "folio",
 };
 
 export const pdfFontScaleIds = ["sm", "md", "lg"] as const;
@@ -67,7 +70,7 @@ export type PdfPhotoShapeId = (typeof pdfPhotoShapeIds)[number];
 const roundPhotoLayoutFlatRadius: Partial<Record<PdfLayoutId, string>> = {
   split: "12px",
   duet: "12px",
-  "modern-centered": "12px",
+  folio: "12px",
   dossier: "12px",
   crest: "12px",
 };
@@ -172,7 +175,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   classic: 14, // traditional letter feel
   timeline: 14, // date gutter already eats width
   inset: 14, // boxed items supply their own inner air
-  "modern-centered": 16, // centered header needs side air or the name crowds the edge
+  folio: 16, // the frame sits 6mm in; the content needs clear air inside it again
   academic: 18, // the margin is the formality
   dossier: 10, // 0.34fr solid rail on the right, same economics as split
   masthead: 12, // badge headings already indent the body optically

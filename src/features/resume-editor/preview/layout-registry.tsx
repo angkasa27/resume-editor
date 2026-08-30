@@ -17,7 +17,7 @@ import { rirekishoLayout } from "./layouts/rirekisho/layout";
 import { insetLayout } from "./layouts/inset/layout";
 import { ledgerLayout } from "./layouts/ledger/layout";
 import { mastheadLayout } from "./layouts/masthead/layout";
-import { modernCenteredLayout } from "./layouts/modern-centered/layout";
+import { folioLayout } from "./layouts/folio/layout";
 import { monolithLayout } from "./layouts/monolith/layout";
 import { numeralLayout } from "./layouts/numeral/layout";
 import { splitLayout } from "./layouts/split/layout";
@@ -28,7 +28,7 @@ import type { PreviewRenderContext } from "./types";
 
 export const previewLayoutDefinitions = [
   classicLayout,
-  modernCenteredLayout,
+  folioLayout,
   timelineLayout,
   academicLayout,
   insetLayout,
