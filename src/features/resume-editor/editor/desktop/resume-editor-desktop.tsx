@@ -16,7 +16,6 @@ import {
   type RailKey,
 } from "@/features/resume-editor/editor/desktop/editor-rail";
 import { EditorSidebar } from "@/features/resume-editor/editor/desktop/editor-sidebar";
-import { ZOOM_DEFAULT } from "@/features/resume-editor/editor/desktop/zoom";
 import { useDirection } from "@/features/resume-editor/editor/sections/use-direction";
 import { PaginatedPreview } from "@/features/resume-editor/preview/components/paginated-preview";
 import { normalizePdfPresentation } from "@/features/resume-editor/domain/presentation/pdf-presentation";
@@ -70,7 +69,6 @@ export function ResumeEditorDesktop() {
     null,
   );
   const [isExtractCvOpen, setIsExtractCvOpen] = useState(false);
-  const [zoom, setZoom] = useState<number>(ZOOM_DEFAULT);
   // +1 = drilling into a form, -1 = back to the list.
   const nav = useDirection();
 
@@ -191,11 +189,7 @@ export function ResumeEditorDesktop() {
         ) : null}
       </AnimatePresence>
 
-      <EditorCanvas
-        zoom={zoom}
-        onZoomChange={setZoom}
-        onBackgroundClick={openSection ? backToList : undefined}
-      >
+      <EditorCanvas onBackgroundClick={openSection ? backToList : undefined}>
         <PaginatedPreview
           draft={draft}
           onSelectSection={focusSection}

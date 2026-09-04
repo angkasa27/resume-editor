@@ -15,10 +15,12 @@ import {
 type ZoomPillProps = {
   zoom: number;
   onZoomChange: (next: number) => void;
+  /** Back to 100% *and* back to the paper — a lost view is why you press this. */
+  onResetView: () => void;
 };
 
 /** Floating zoom control over the canvas, echoing the mobile bottom nav's pill. */
-export function ZoomPill({ zoom, onZoomChange }: ZoomPillProps) {
+export function ZoomPill({ zoom, onZoomChange, onResetView }: ZoomPillProps) {
   return (
     <div className="pointer-events-none absolute inset-x-0 bottom-0 z-20 flex justify-center pb-4 print:hidden">
       <ButtonGroup className="pointer-events-auto rounded-md shadow-lg bg-muted">
@@ -37,8 +39,8 @@ export function ZoomPill({ zoom, onZoomChange }: ZoomPillProps) {
           variant="outline"
           size="sm"
           className="w-14 tabular-nums"
-          aria-label={`Reset zoom to ${ZOOM_DEFAULT * 100}%`}
-          onClick={() => onZoomChange(ZOOM_DEFAULT)}
+          aria-label={`Reset view to ${ZOOM_DEFAULT * 100}%`}
+          onClick={onResetView}
         >
           {Math.round(zoom * 100)}%
         </Button>
