@@ -69,7 +69,9 @@
   width: auto;
   border-radius: var(--resume-photo-radius, 50%);
   overflow: hidden;
-  margin: 0 auto;
+  /* Ranged left with the name and the contact rows. The rail is a stretch flex
+     column, so without align-self the auto width would fill it. */
+  align-self: flex-start;
 }
 
 .layout :global(.side-photo img) {
