@@ -1,0 +1,153 @@
+/* Two washes of one hue. Full-bleed: the columns own their insets, so the pale
+   rail and the saturated main column both paint to the paper edges. Both
+   print-color-adjust properties on each, or the page exports white. */
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  gap: 0;
+}
+
+/* The pale wash: the accent (or the second hue, where one is set) at 90% white,
+   so the rail stays a tint of the same colour the main column is saturated in. */
+.layout :global(.layout-side) {
+  background: var(--resume-secondary-tint);
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  min-width: 0;
+  /* Bleeding edges take the page margin; the inner edge takes half of it, so the
+     rail and the main column contribute the same gap between them. */
+  padding: var(--resume-page-margin) var(--resume-gutter)
+    var(--resume-page-margin) var(--resume-page-margin);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* The saturated wash. The shared neutral ramp is built for a white page — grey
+   body text on a filled column is unreadable and a grey hairline is invisible —
+   so every neutral folds back onto the one foreground, as monolith does. */
+.layout :global(.layout-main) {
+  background: var(--resume-accent);
+  color: var(--resume-on-accent);
+  --resume-text: var(--resume-on-accent);
+  --resume-muted: color-mix(in srgb, var(--resume-on-accent) 82%, transparent);
+  --resume-border: color-mix(in srgb, var(--resume-on-accent) 30%, transparent);
+  --resume-heading-color: var(--resume-on-accent);
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  min-width: 0;
+  padding: var(--resume-page-margin) var(--resume-page-margin)
+    var(--resume-page-margin) var(--resume-gutter);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Identity block. Explicit column so a missing headline or photo can't let the
+   name slide out of the rail's flow. */
+.header {
+  --resume-name-color: var(--resume-accent);
+  --resume-headline-color: var(--resume-text);
+  display: block;
+  min-width: 0;
+}
+
+.header :global(.name) {
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+}
+
+.header :global(.headline) {
+  font-weight: 400;
+  margin-top: 0.35em;
+}
+
+.layout :global(.side-photo) {
+  height: 150px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  width: auto;
+  border-radius: var(--resume-photo-radius, 50%);
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.layout :global(.side-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Headings are icon-led on both sides: the badge is the only shape either column
+   carries, so it has to read on the tint and on the fill alike. */
+.layout :global(.section-heading) {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: var(--resume-h2);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.layout :global(.section-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 1.15em;
+  height: 1.15em;
+}
+
+.layout :global(.section-icon svg) {
+  width: 100%;
+  height: 100%;
+  stroke-width: 2.25;
+}
+
+/* On the tint the icon takes the accent; on the fill it takes the foreground,
+   since a mid-tone glyph disappears against a saturated ground. */
+.layout :global(.layout-side .section-heading) {
+  color: var(--resume-accent);
+}
+
+.layout :global(.layout-main .section-heading) {
+  color: var(--resume-on-accent);
+}
+
+/* The summary opens the coloured column as a lede — no heading, slightly larger
+   than body, and justified the way the reference sets it. */
+.layout :global(.layout-main .section[data-section="summary"] .rich-text) {
+  text-align: justify;
+}
+
+/* Rail items stack: in a 0.42fr column an item header laid out in a row has
+   nowhere to put its date. */
+.layout :global(.layout-side .item-header),
+.layout :global(.layout-side .item-row) {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+}
+
+.layout :global(.layout-side .item-header-side) {
+  text-align: left;
+  align-items: flex-start;
+}
+
+.layout :global(.layout-side .item-date) {
+  text-align: left;
+  white-space: normal;
+}
+
+/* Link cue: a hairline softened into the ground. The section headings are bold
+   and icon-badged, so a full-strength rule would read as the louder mark — and
+   on the saturated column an opaque underline buzzes against the fill. */
+.layout {
+  --resume-link-decoration: underline color-mix(in srgb, currentColor 40%, transparent);
+  --resume-link-offset: 0.16em;
+  /* Item titles carry the arrow marker instead; two cues on one title is one too many. */
+  --resume-link-title-decoration: none;
+}
