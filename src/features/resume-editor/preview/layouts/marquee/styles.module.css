@@ -31,10 +31,12 @@
 
 .layout :global(.section-heading)::after {
   content: "";
-  grid-column: 1;
-  width: 30px;
+  /* Spans both columns so a fixed width can run past the glyph and underlap the
+     first word of the label — sitting in column 1 alone capped it at the glyph. */
+  grid-column: 1 / -1;
+  width: 68px;
   height: 3px;
-  margin-top: 5px;
+  margin-top: 1px;
   background: var(--resume-accent);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
