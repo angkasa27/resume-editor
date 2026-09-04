@@ -665,16 +665,19 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
   },
 
   // meridian — both colours land in one place, the rail, and they are read as a
-  // ramp rather than as two swatches: the pair has to share a family and differ
-  // mostly in depth, or the gradient shows a band where they meet. Everything
-  // else on the page is black on white, so neither colour needs to hold text.
+  // journey rather than as a tint: two *different* hues, roughly a quarter to a
+  // third of the wheel apart, so the ramp has somewhere to travel. Same hue at
+  // two depths reads as a shadow, not a gradient. Further apart than this and
+  // even oklab runs the middle through mud. Nothing on the page sits on either
+  // colour, so neither has to hold text — only the pairing has to be good.
   {
-    id: "meridian-fern",
-    label: "Fern",
+    // Amber into plum, by way of a warm rose.
+    id: "meridian-sunset",
+    label: "Sunset",
     layoutId: "meridian",
     style: {
-      accent: "#4f9a72",
-      secondary: "#14342a",
+      accent: "#f2a25c",
+      secondary: "#6d3b8f",
       fontFamilyId: "nunito-sans",
       fontScale: "md",
       spacing: "standard",
@@ -682,12 +685,13 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
   {
-    id: "meridian-dusk",
-    label: "Dusk",
+    // Teal into indigo, through the cyans. The coolest of the three.
+    id: "meridian-lagoon",
+    label: "Lagoon",
     layoutId: "meridian",
     style: {
-      accent: "#8b7bd8",
-      secondary: "#221f4a",
+      accent: "#2ec4b6",
+      secondary: "#22357f",
       fontFamilyId: "raleway",
       fontScale: "md",
       spacing: "airy",
@@ -695,12 +699,13 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
   {
-    id: "meridian-ember",
-    label: "Ember",
+    // Warm yellow into forest, the whole ramp passing through green.
+    id: "meridian-meadow",
+    label: "Meadow",
     layoutId: "meridian",
     style: {
-      accent: "#e0913f",
-      secondary: "#5c2018",
+      accent: "#eec84a",
+      secondary: "#1a6b52",
       fontFamilyId: "source-sans-3",
       fontScale: "sm",
       spacing: "standard",

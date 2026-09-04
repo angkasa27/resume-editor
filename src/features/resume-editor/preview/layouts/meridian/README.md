@@ -2,9 +2,9 @@
 
 ## Preview
 
-| Meridian Fern | Meridian Dusk | Meridian Ember |
+| Meridian Sunset | Meridian Lagoon | Meridian Meadow |
 | --- | --- | --- |
-| ![Meridian Fern template](../../../../../../public/templates/meridian-fern.webp) | ![Meridian Dusk template](../../../../../../public/templates/meridian-dusk.webp) | ![Meridian Ember template](../../../../../../public/templates/meridian-ember.webp) |
+| ![Meridian Sunset template](../../../../../../public/templates/meridian-sunset.webp) | ![Meridian Lagoon template](../../../../../../public/templates/meridian-lagoon.webp) | ![Meridian Meadow template](../../../../../../public/templates/meridian-meadow.webp) |
 
 A gradient rail down the left edge of **every** sheet — accent at the head,
 secondary at the foot — and beside it a plain black-on-white column: the name
@@ -15,6 +15,12 @@ right, and section headings each closed by a rule the full width of the column.
 bullets are all the neutral text ramp. That is what lets the rail read as a
 gradient rather than as decoration, and it is why both curated colours land in
 one place instead of being spread over the body.
+
+The two are **different hues**, roughly a quarter to a third of the wheel apart,
+so the ramp has somewhere to travel — one hue at two depths reads as a shadow,
+not a gradient. The gradient interpolates `in oklab` for that reason: sRGB takes
+the short cut straight through the desaturated middle between two hues and lays
+a grey band across the rail.
 
 ## What you would see
 

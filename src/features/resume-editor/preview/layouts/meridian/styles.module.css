@@ -13,8 +13,11 @@
   flex-direction: column;
   gap: var(--resume-gap-section);
 
+  /* Interpolated in oklab, not sRGB: the two colours are different hues, and
+     sRGB takes the short cut straight through the desaturated middle between
+     them — a grey band across the rail. oklab travels around the hue instead. */
   background-image: linear-gradient(
-    to bottom,
+    to bottom in oklab,
     var(--resume-accent),
     var(--resume-secondary)
   );
