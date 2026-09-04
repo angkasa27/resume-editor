@@ -1,7 +1,7 @@
 # Duotone
 
-Two washes of one hue meeting at a hard vertical seam. A narrow pale rail on the
-left carries the identity — name, headline, photo, contacts — and the rail
+Two washes of one hue meeting at a hard vertical seam. A pale rail across the left two
+fifths carries the identity — name, headline, photo, contacts — and the rail
 sections (skills, languages, certifications, references). The wider right column
 is filled with the accent at full saturation and holds the summary as an
 unheaded lede, then experience, education, projects and the rest in light type.
@@ -32,7 +32,7 @@ the glyph is the only shape either column carries. On the tint it takes the
 accent, on the fill the foreground, because a mid-tone glyph vanishes against a
 saturated ground.
 
-**The rail stacks.** At `0.42fr` an item header laid out as a row has nowhere to
+**The rail stacks.** Even at two fifths an item header laid out as a row has nowhere to
 put its date, so the rail uses `RailSkillsItem` / `RailLanguagesItem` and stacks
 `.item-header` and `.item-row` vertically — shared with `split` and `dossier`.
 

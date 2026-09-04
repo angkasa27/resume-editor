@@ -3,7 +3,7 @@
    print-color-adjust properties on each, or the page exports white. */
 .layout {
   display: grid;
-  grid-template-columns: minmax(0, 0.42fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
   gap: 0;
 }
 
@@ -121,7 +121,7 @@
   text-align: justify;
 }
 
-/* Rail items stack: in a 0.42fr column an item header laid out in a row has
+/* Rail items stack: even at two fifths an item header laid out in a row has
    nowhere to put its date. */
 .layout :global(.layout-side .item-header),
 .layout :global(.layout-side .item-row) {
