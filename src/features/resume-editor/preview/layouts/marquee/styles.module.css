@@ -1,0 +1,220 @@
+/* Full-bleed: the band paints to the top/left/right paper edges, so the layout
+   takes no page inset and the body below re-adds the margin itself. */
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  flex: 1;
+  padding: 0 var(--resume-page-margin) var(--resume-page-margin);
+}
+
+/* Headings: an icon in the band's own colour, the words near-black beside it,
+   and a short accent bar under the icon. Grid, not flex — the bar has to land
+   on a second row under the first column, and only a grid can place it there
+   without a wrapper element the shared heading markup does not emit. */
+.layout :global(.section-heading) {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  column-gap: var(--resume-gap-inner);
+  font-size: calc(var(--resume-h2) * 0.95);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  --resume-heading-color: var(--resume-text);
+}
+
+.layout :global(.section-heading)::after {
+  content: "";
+  grid-column: 1;
+  width: 30px;
+  height: 3px;
+  margin-top: 5px;
+  background: var(--resume-accent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* The glyph carries the band's colour, not the accent: the accent is the bar
+   under it, and colouring both would leave the heading with no hierarchy. */
+.layout :global(.section-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--resume-secondary);
+  flex-shrink: 0;
+}
+
+.layout :global(.section-icon svg) {
+  width: 1.05em;
+  height: 1.05em;
+  stroke-width: 2;
+}
+
+/* Items — role and employer on one line, date and place ranged right. */
+.layout :global(.item-title) {
+  font-weight: 700;
+  font-size: var(--resume-body);
+}
+
+.layout :global(.item-subject) {
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* The one place the accent lands in the body text: every date, right margin. */
+.layout :global(.item-date) {
+  color: var(--resume-accent);
+}
+
+.layout :global(.item-header) {
+  gap: var(--resume-gap-inner) var(--resume-gap-item);
+}
+
+/* Ragged right, not justified: the shared rule justifies, which opens rivers in
+   a bulleted line and fights the flush-left bar under every heading. */
+.layout :global(.rich-text) {
+  text-align: left;
+}
+
+/* The bullets carry their own leading; the header above them does not need a
+   full item gap as well. */
+.layout :global(.item) {
+  gap: 2px;
+}
+
+.layout :global(.rich-text ul) {
+  padding-left: 1em;
+}
+
+/* Three tracks for the flat lists — skills and certificates. A bullet per cell,
+   drawn as a ::before so the grid item stays a plain block and the disc lines up
+   with the first line of a name that wraps to two. */
+.layout :global(.section[data-section="skills"] .item-list),
+.layout :global(.section[data-section="certifications"] .item-list) {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--resume-gap-inner) var(--resume-gap-item);
+}
+
+.layout :global(.item-bullet) {
+  position: relative;
+  padding-left: 0.85em;
+  gap: 0;
+}
+
+.layout :global(.item-bullet)::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  line-height: var(--resume-leading);
+}
+
+.layout :global(.item-bullet .item-title) {
+  font-weight: 400;
+  font-size: var(--resume-body);
+}
+
+/* Languages as one running line: `Filipino — Native | English — Fluent`. The
+   separator trails each entry but the last, so it is never orphaned at a wrap. */
+.layout :global(.section[data-section="languages"] .item-list) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px var(--resume-gap-inner);
+}
+
+.layout :global(.item-inline) {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+.layout :global(.item-inline:not(:last-child))::after {
+  content: "|";
+  margin-left: 0.55em;
+  color: var(--resume-border);
+}
+
+/* The band. Solid secondary to three paper edges, with the accent name on it and
+   everything else in the readable on-secondary colour. */
+.header :global(.marquee-band) {
+  display: flex;
+  align-items: center;
+  gap: var(--resume-gap-section);
+  padding: var(--resume-page-margin);
+  background: var(--resume-secondary);
+  color: var(--resume-on-secondary);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.header :global(.marquee-identity) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-item);
+}
+
+/* Name and role share a line — the role continues the name rather than heading a
+   second course. Set explicitly: the shared .name-block rule stacks them. */
+.header :global(.name-block) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 4px 12px;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.92);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.62);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  --resume-headline-color: currentColor;
+}
+
+/* Accent glyphs against the band: the second of the two colours, so the strip
+   does not read as one undifferentiated grey line. */
+.header :global(.contact-icon) {
+  color: var(--resume-accent);
+}
+
+.header :global(.header-photo) {
+  width: 92px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 6px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Link cue: contacts sit on the dark band, where a solid rule cuts into the
+   band's own edge; a softened underline stays under the 3px heading bar. */
+.layout {
+  --resume-link-decoration: underline color-mix(in srgb, currentColor 45%, transparent);
+  --resume-link-offset: 0.2em;
+}
+
+/* Linked item titles take the glyph (`titleLinkMarker` in layout.tsx): the page
+   is already icon-led, so a marker reads native where a second rule would not. */
+.layout {
+  /* The glyph is the cue; a rule as well would double-mark the title. */
+  --resume-link-title-decoration: none;
+}
