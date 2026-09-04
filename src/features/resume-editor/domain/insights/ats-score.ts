@@ -285,6 +285,7 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   marquee: { status: "pass" },
   meridian: { status: "pass" },
   numeral: { status: "pass" },
+  lintel: { status: "pass" },
   editorial: { status: "pass" },
   harvard: { status: "pass" },
   rirekisho: {

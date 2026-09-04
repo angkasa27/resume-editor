@@ -1,0 +1,200 @@
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  flex: 1;
+}
+
+/* The lintel: a centred heading on a full-width band of accent at 5%. Painted,
+   so it needs the print pair, and the tint is `color-mix` rather than a second
+   variable so it tracks whatever accent the user picks. It stops at the page
+   margin on purpose — a band bleeding to the paper edge would read as a rail,
+   and every section would then be carrying one. */
+.layout :global(.section-heading) {
+  display: block;
+  text-align: center;
+  padding: 0.4em 0.6em;
+  font-size: var(--resume-h2);
+  font-weight: 700;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  background: color-mix(in srgb, var(--resume-accent) 5%, transparent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Two tracks for every item, so the dates line up down the page whatever the
+   section. Fixed, not content-sized: a `01/2022 – Present` next to a bare year
+   would otherwise leave the two bodies on different left edges. */
+.layout :global(.item) {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  gap: var(--resume-gap-item);
+  align-items: start;
+}
+
+/* Each cell names its column: auto-placement drops the first child into the
+   gutter, sliding a dateless entry's title one track left. */
+.layout :global(.item-date) {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--resume-body);
+  color: var(--resume-text);
+  text-align: left;
+  white-space: normal;
+}
+
+.layout :global(.lintel-place) {
+  color: var(--resume-muted);
+}
+
+.layout :global(.item-main) {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-inner);
+  min-width: 0;
+}
+
+/* Organisation bold, role italic, both on one line: the role is a continuation
+   of the name, not a second heading under it. The comma is drawn by the role's
+   ::before so it never appears on an item that has no role. */
+.layout :global(.item-title) {
+  font-size: var(--resume-body);
+  font-weight: 700;
+}
+
+.layout :global(.lintel-role) {
+  font-weight: 400;
+  font-style: italic;
+}
+
+.layout :global(.lintel-role)::before {
+  content: ", ";
+}
+
+.layout :global(.rich-text) {
+  color: var(--resume-text);
+}
+
+.layout :global(.rich-text ul) {
+  padding-left: var(--resume-indent);
+}
+
+/* Skills as a flat three-column bullet grid, the way the reference sets them.
+   Three fixed tracks, not `auto-fit`: the count is the look, and letting it
+   flex gave five thin columns on A4 and two on B5. */
+.skillsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--resume-gap-inner) var(--resume-gutter);
+  margin: 0;
+  padding-left: var(--resume-indent);
+  line-height: var(--resume-leading);
+}
+
+/* Header — identity left, round photo holding the right edge. */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--resume-gutter);
+}
+
+.header :global(.lintel-identity) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-item);
+  min-width: 0;
+  flex: 1;
+}
+
+/* Name and role share a line. `flex-direction` is set explicitly — the shared
+   .name-block rule stacks them in a column, which is what this overrides. */
+.header :global(.name-block) {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.4em;
+  min-width: 0;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.8);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.1;
+  /* Near-black: the accent is spent on the heading bands and the words on them,
+     and a coloured name over eight coloured bands is one colour too many. */
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-h2) * 1.1);
+  font-style: italic;
+  font-weight: 400;
+  --resume-headline-color: var(--resume-text);
+}
+
+/* Contacts as a two-column grid. The kit emits details and links as separate
+   lists, so both are dissolved into the block's own grid to keep one alignment. */
+.header :global(.contact-block) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, auto));
+  justify-content: start;
+  gap: var(--resume-gap-inner) calc(var(--resume-gutter) * 2);
+}
+
+.header :global(.contact-block .contact-line) {
+  display: contents;
+}
+
+.header :global(.contact-item) {
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+/* Bare glyphs in the text colour: no chip, no box. The accent stays on the
+   heading bands, and a framed icon beside a banded heading is a second shape
+   competing with it. */
+.header :global(.contact-icon) {
+  /* Sized off the type, not in pixels, so the glyph stays the height of the
+     lowercase beside it at every font scale. */
+  width: 1em;
+  height: 1em;
+  flex-shrink: 0;
+  color: var(--resume-text);
+}
+
+/* Round by default and sized off the type, so it holds its proportion to the
+   name at every font scale; a chosen photo shape still wins. */
+.header :global(.header-photo) {
+  width: calc(var(--resume-h1) * 3.4);
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 50%);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Link cue: the headings own a painted band, so the links take a dotted
+   hairline — present, and plainly the quieter of the two. Item titles take the
+   same rule, since nothing else marks them here. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.18em;
+}
