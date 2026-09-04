@@ -2,7 +2,27 @@
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.
 
+#### [v1.9.0](https://github.com/angkasa27/resummme/compare/v1.8.0...v1.9.0)
+
+- Reconcile the docs with the 25 layouts actually in the repo [`#18`](https://github.com/angkasa27/resummme/pull/18)
+- Add lintel, a layout headed by tinted bands [`#16`](https://github.com/angkasa27/resummme/pull/16)
+- Add the meridian layout: a gradient rail beside a ruled column [`#17`](https://github.com/angkasa27/resummme/pull/17)
+- Add the duotone layout: two washes of one hue [`#13`](https://github.com/angkasa27/resummme/pull/13)
+- Add the marquee layout: a dark band over icon-led headings [`#14`](https://github.com/angkasa27/resummme/pull/14)
+- Pan and zoom the preview like a design canvas [`#12`](https://github.com/angkasa27/resummme/pull/12)
+- Replace modern-centered with folio, a framed page [`#11`](https://github.com/angkasa27/resummme/pull/11)
+- Widen the sans shelf, and re-font nine templates onto it [`#10`](https://github.com/angkasa27/resummme/pull/10)
+- Add the monolith layout: one colour, two typefaces [`#9`](https://github.com/angkasa27/resummme/pull/9)
+- Stop the Links divider from cutting through its own heading [`#8`](https://github.com/angkasa27/resummme/pull/8)
+- Let editorial's pull quote take the shared justification [`#7`](https://github.com/angkasa27/resummme/pull/7)
+- Read the brand name and tagline from one place [`#5`](https://github.com/angkasa27/resummme/pull/5)
+- Split the test suite by environment, and name the tier CI doesn't run [`#6`](https://github.com/angkasa27/resummme/pull/6)
+- Dispatch the release workflow instead of relying on the tag push [`8d85012`](https://github.com/angkasa27/resummme/commit/8d8501203a8aa4d835a2b7fae155cc6196c37171)
+- Let a release be published by hand as well as by tag [`85a5052`](https://github.com/angkasa27/resummme/commit/85a5052ae282f465fedc4ca912313e390f1aa5f4)
+
 #### [v1.8.0](https://github.com/angkasa27/resummme/compare/v1.7.0...v1.8.0)
+
+> 26 August 2026
 
 - Run checks in CI and publish releases from tags [`#4`](https://github.com/angkasa27/resummme/pull/4)
 - Ignore a drag-selection released on the canvas background [`692b7f0`](https://github.com/angkasa27/resummme/commit/692b7f06b20dde7a480ecacbb4df7dabe2b3b6c4)
