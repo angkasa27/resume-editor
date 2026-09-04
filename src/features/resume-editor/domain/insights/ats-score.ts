@@ -272,6 +272,11 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
   },
   crest: { status: "pass" },
   masthead: { status: "pass" },
+  duotone: {
+    status: "fail",
+    message:
+      "Parsers read two columns straight across, so the rail ends up jumbled into your experience — and the main column is a saturated fill behind light type, which prints badly. Switch to a single-column layout.",
+  },
   monolith: {
     status: "warn",
     message:

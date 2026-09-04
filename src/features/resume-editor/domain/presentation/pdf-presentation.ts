@@ -34,6 +34,7 @@ export const pdfLayoutIds = [
   "rirekisho",
   "monolith",
   "marquee",
+  "duotone",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -74,6 +75,7 @@ const roundPhotoLayoutFlatRadius: Partial<Record<PdfLayoutId, string>> = {
   folio: "12px",
   dossier: "12px",
   crest: "12px",
+  duotone: "12px",
 };
 
 export type PdfPresentation = {
@@ -189,6 +191,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   harvard: 18, // the format is a Word document with wide margins; keep them
   rirekisho: 12, // the ruled boxes are the page; margin only frames them
   marquee: 13, // the band bleeds and owns its own padding; the body wants the type close to a wide measure
+  duotone: 10, // two painted columns meeting at the middle — same economics as split
   monolith: 16, // the colour reaches every edge, so the margin is the only thing keeping the type off it
 };
 
