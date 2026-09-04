@@ -37,7 +37,7 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **52 templates on 23 layouts**: Switch between fifty-two polished templates without retyping a thing — each pairs a layout (Classic, Folio, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard, Rirekisho, Monolith, Marquee, Duotone) with a curated presentation, and several templates can share one layout. Filter the gallery by ATS, Professional or Creative.
+- **58 templates on 25 layouts**: Switch between fifty-eight polished templates without retyping a thing — each pairs a layout (Classic, Folio, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard, Rirekisho, Monolith, Marquee, Duotone, Meridian, Lintel) with a curated presentation, and several templates can share one layout. Filter the gallery by ATS, Professional or Creative.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter / JIS B5), and page margins.
 
@@ -159,6 +159,16 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
     <td align="center">
       <img src="public/templates/duotone-iris.webp" alt="Duotone" width="180" />
       <br /><sub><b>Duotone</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/meridian-sunset.webp" alt="Meridian" width="180" />
+      <br /><sub><b>Meridian</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/lintel-harbour.webp" alt="Lintel" width="180" />
+      <br /><sub><b>Lintel</b></sub>
     </td>
   </tr>
 </table>

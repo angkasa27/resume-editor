@@ -100,7 +100,7 @@ The document root has **zero padding**. Content gets its margin from the
 `page-inset` utilities (`page-inset`, `-x`, `-t`, `-b`), so a decorative surface
 can bleed past them to the paper edge. `createSingleColumnLayout` applies
 `page-inset` for you; pass `inset: "none"` when the layout paints to an edge
-(`aurora`, `crest`, `marquee` do), then re-add the margin on the inner blocks. A
+(`aurora`, `crest`, `marquee`, `meridian` do), then re-add the margin on the inner blocks. A
 layout with its own `Component` never gets the inset in the first place, so it
 pays its own margin — the two painted columns in `duotone` each pay half.
 
