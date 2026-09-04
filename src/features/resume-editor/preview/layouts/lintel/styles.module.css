@@ -166,8 +166,10 @@
    heading bands, and a framed icon beside a banded heading is a second shape
    competing with it. */
 .header :global(.contact-icon) {
-  width: 15px;
-  height: 15px;
+  /* Sized off the type, not in pixels, so the glyph stays the height of the
+     lowercase beside it at every font scale. */
+  width: 1em;
+  height: 1em;
   flex-shrink: 0;
   color: var(--resume-text);
 }

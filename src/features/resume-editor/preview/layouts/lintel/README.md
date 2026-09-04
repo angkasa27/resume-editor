@@ -20,7 +20,7 @@ the words on it. Everything else, the name included, is the neutral text colour.
 
 - **Headings** — centred, `h2`, bold, on a band of `color-mix(in srgb, var(--resume-accent) 5%, transparent)` running the full measure. It stops at the page margin, not the paper edge: a band bleeding out would read as a rail, and every section carries one.
 - **Header** — name (`0.8 × h1`, bold, `--resume-text`) and role (italic, `1.1 × h2`) sharing a baseline; round photo (`3.4 × h1` wide, `1 / 1`, radius 50%) at the right.
-- **Contacts** — a two-column grid, each field led by a **bare glyph** (15px) in the text colour — no chip, no box.
+- **Contacts** — a two-column grid, each field led by a **bare glyph** (`1em`, so it tracks the type) in the text colour — no chip, no box.
 - **Items** — a two-track grid: a fixed `150px` gutter holding the date with the place (muted) stacked under it, and the right track opening `**Organisation**, *role*` on one line before the bullets. The comma is drawn by the role's `::before`, so an item with no role never shows one.
 - **Skills** — a flat three-column bullet grid: every term from every group, group names dropped.
 - **Link cue** — `underline dotted` for contacts and item titles alike; the headings own a painted band, so the links take the plainly quieter mark.
