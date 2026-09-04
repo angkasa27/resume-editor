@@ -36,6 +36,7 @@ export const pdfLayoutIds = [
   "marquee",
   "duotone",
   "meridian",
+  "lintel",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -195,6 +196,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   marquee: 13, // the band bleeds and owns its own padding; the body wants the type close to a wide measure
   duotone: 10, // two painted columns meeting at the middle — same economics as split
   monolith: 16, // the colour reaches every edge, so the margin is the only thing keeping the type off it
+  lintel: 14, // the heading bands stop at the margin, so it doubles as the air around them
 };
 
 /** Page margin scales with `spacing` so density stays a single coherent choice. */

@@ -796,6 +796,46 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // lintel — the accent is spent twice: the band behind every heading (at 5%)
+  // and the heading text on it, so it has to stay dark enough to read against
+  // its own tint. No secondary, which the layout never renders.
+  {
+    id: "lintel-harbour",
+    label: "Harbour",
+    layoutId: "lintel",
+    style: {
+      accent: "#1e4b6b",
+      fontFamilyId: "lato",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "lintel-forest",
+    label: "Forest",
+    layoutId: "lintel",
+    style: {
+      accent: "#14532d",
+      fontFamilyId: "source-sans-3",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "lintel-plum",
+    label: "Plum",
+    layoutId: "lintel",
+    style: {
+      accent: "#6b21a8",
+      fontFamilyId: "work-sans",
+      fontScale: "md",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
@@ -825,6 +865,7 @@ const layoutCategories: Record<
   folio: ["ats", "professional"],
   marquee: ["professional", "creative"],
   meridian: ["professional", "creative"],
+  lintel: ["ats", "professional"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
   split: ["professional"],

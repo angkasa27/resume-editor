@@ -21,6 +21,7 @@ import { mastheadLayout } from "./layouts/masthead/layout";
 import { folioLayout } from "./layouts/folio/layout";
 import { marqueeLayout } from "./layouts/marquee/layout";
 import { meridianLayout } from "./layouts/meridian/layout";
+import { lintelLayout } from "./layouts/lintel/layout";
 import { monolithLayout } from "./layouts/monolith/layout";
 import { numeralLayout } from "./layouts/numeral/layout";
 import { splitLayout } from "./layouts/split/layout";
@@ -54,6 +55,7 @@ export const previewLayoutDefinitions = [
   marqueeLayout,
   duotoneLayout,
   meridianLayout,
+  lintelLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain SSOT)
