@@ -30,14 +30,14 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
 ## Features
 
 **Resume Building**
-- **Sidebar editor + live canvas preview**: Form fields on the left, an instant zoomable preview of the actual paper on the right, always in sync — no save button, autosave is a side effect of typing.
+- **Sidebar editor + live canvas preview**: Form fields on the left, an instant pan-and-zoom preview of the actual paper on the right, always in sync — no save button, autosave is a side effect of typing.
 - **Drag-to-reorder sections and items**: Reorder sections and repeatable items (jobs, projects, education) directly in the sidebar.
 - **Undo/redo**: Full history for every edit, not just the last one.
 - **Rich text editor**: Edit with formatting support powered by TipTap.
 - **Import and export**: Bring in an existing resume to get started, or download/upload your resume data as portable JSON.
 
 **Templates & Style Control**
-- **20 templates on 20 layouts**: Switch between twenty polished templates (Classic, Modern Centered, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard, Rirekisho) without retyping a thing — each pairs a layout with a curated presentation.
+- **52 templates on 23 layouts**: Switch between fifty-two polished templates without retyping a thing — each pairs a layout (Classic, Folio, Timeline, Academic, Inset, Split, Duet, Bold Type, Studio, Aurora, Ledger, Dossier, Crest, Masthead, Compass, Numeral, Atlas, Editorial, Harvard, Rirekisho, Monolith, Marquee, Duotone) with a curated presentation, and several templates can share one layout. Filter the gallery by ATS, Professional or Creative.
 - **Typography**: Choose from Google Fonts and web-safe system fonts, with each option rendered in its own typeface in the font picker.
 - **Design control**: Full control over accent color, font scale, line height, section spacing, paper size (A4 / Letter / JIS B5), and page margins.
 
@@ -59,8 +59,8 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <br /><sub><b>Classic</b></sub>
     </td>
     <td align="center">
-      <img src="public/templates/centered-ocean.webp" alt="Modern Centered" width="180" />
-      <br /><sub><b>Modern Centered</b></sub>
+      <img src="public/templates/folio-slate.webp" alt="Folio" width="180" />
+      <br /><sub><b>Folio</b></sub>
     </td>
     <td align="center">
       <img src="public/templates/timeline-indigo.webp" alt="Timeline" width="180" />
@@ -83,6 +83,10 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
   </tr>
   <tr>
     <td align="center">
+      <img src="public/templates/duet-stone.webp" alt="Duet" width="180" />
+      <br /><sub><b>Duet</b></sub>
+    </td>
+    <td align="center">
       <img src="public/templates/bold-citrus.webp" alt="Bold Type" width="180" />
       <br /><sub><b>Bold Type</b></sub>
     </td>
@@ -90,12 +94,12 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <img src="public/templates/studio-violet.webp" alt="Studio" width="180" />
       <br /><sub><b>Studio</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="public/templates/aurora-haze.webp" alt="Aurora" width="180" />
       <br /><sub><b>Aurora</b></sub>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="public/templates/ledger-graphite.webp" alt="Ledger" width="180" />
       <br /><sub><b>Ledger</b></sub>
@@ -104,12 +108,12 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <img src="public/templates/dossier-navy.webp" alt="Dossier" width="180" />
       <br /><sub><b>Dossier</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="public/templates/crest-charcoal.webp" alt="Crest" width="180" />
       <br /><sub><b>Crest</b></sub>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="public/templates/masthead-citrus.webp" alt="Masthead" width="180" />
       <br /><sub><b>Masthead</b></sub>
@@ -118,12 +122,12 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <img src="public/templates/compass-slate.webp" alt="Compass" width="180" />
       <br /><sub><b>Compass</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
       <img src="public/templates/numeral-mono.webp" alt="Numeral" width="180" />
       <br /><sub><b>Numeral</b></sub>
     </td>
-  </tr>
-  <tr>
     <td align="center">
       <img src="public/templates/atlas-onyx.webp" alt="Atlas" width="180" />
       <br /><sub><b>Atlas</b></sub>
@@ -132,9 +136,29 @@ Built with privacy as a core principle, Resummme gives you complete ownership of
       <img src="public/templates/editorial-sand.webp" alt="Editorial" width="180" />
       <br /><sub><b>Editorial</b></sub>
     </td>
+  </tr>
+  <tr>
     <td align="center">
-      <img src="public/templates/duet-stone.webp" alt="Duet" width="180" />
-      <br /><sub><b>Duet</b></sub>
+      <img src="public/templates/harvard-serif.webp" alt="Harvard" width="180" />
+      <br /><sub><b>Harvard</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/rirekisho-gothic.webp" alt="Rirekisho" width="180" />
+      <br /><sub><b>Rirekisho</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/monolith-cobalt.webp" alt="Monolith" width="180" />
+      <br /><sub><b>Monolith</b></sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="public/templates/marquee-amber.webp" alt="Marquee" width="180" />
+      <br /><sub><b>Marquee</b></sub>
+    </td>
+    <td align="center">
+      <img src="public/templates/duotone-iris.webp" alt="Duotone" width="180" />
+      <br /><sub><b>Duotone</b></sub>
     </td>
   </tr>
 </table>
@@ -165,7 +189,7 @@ Open [http://localhost:4000](http://localhost:4000) to see the application.
 | Category | Technology |
 | --- | --- |
 | Framework | Next.js 16 (App Router) |
-| Runtime | Node.js 20+ |
+| Runtime | Node.js 20.9+ (CI runs 24) |
 | Language | TypeScript |
 | Styling | Tailwind CSS 4 |
 | UI Primitives | React 19, Base UI |
@@ -295,7 +319,7 @@ src/
 
 ## How It Works
 
-The homepage at / is just marketing; the editor itself lives at /editor. On desktop it's a split layout: sidebar form editor on the left, a live zoomable preview of the actual paper on the right, plus a Style/Insights panel. On mobile it's full-screen guided forms. There's no save button, since every keystroke autosaves.
+The homepage at / is just marketing; the editor itself lives at /editor. On desktop it's a split layout: sidebar form editor on the left, a live pan-and-zoom preview of the actual paper on the right, plus a Style/Insights panel. On mobile it's full-screen guided forms. There's no save button, since every keystroke autosaves.
 
 Downloading a PDF opens /resume-pdf, a plain page that Puppeteer (or Cloudflare Browser Run in production) loads and captures. Before the page loads, the export API drops the draft into `sessionStorage` under `resume-editor:pdf-draft`, so the rendering page picks it up from there — no draft data ever touches a query string.
 

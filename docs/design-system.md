@@ -251,7 +251,7 @@ rtk tsc && rtk lint && rtk vitest run
 ```
 
 - **`preview/__snapshots__` must not move.** Nothing in this system touches `preview/`; if that snapshot changes, something is wrong.
-- The suite is green (415 tests as of this writing). A failure is yours — don't reach for "pre-existing".
+- The suite is green (459 tests as of this writing). A failure is yours — don't reach for "pre-existing".
 - Grep gates. Run each and compare against the count in the right-hand column — anything above it is drift you introduced:
 
 ```bash

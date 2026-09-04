@@ -55,7 +55,8 @@ and `renderSection` (per-section override — `inset/` uses it to merge skills i
 one line).
 
 **Your own `Component`** — needed the moment the structure is not
-`header → body`: two columns (`split`, `duet`, `ledger`, `dossier`, `compass`), a
+`header → body`: two columns (`split`, `duet`, `ledger`, `dossier`, `compass`,
+`duotone`), a
 tiling grid (`atlas`), or slots placed out of order (`editorial` puts the summary
 inside the opening band). Write a plain `PreviewLayoutDefinition`.
 
@@ -99,7 +100,9 @@ The document root has **zero padding**. Content gets its margin from the
 `page-inset` utilities (`page-inset`, `-x`, `-t`, `-b`), so a decorative surface
 can bleed past them to the paper edge. `createSingleColumnLayout` applies
 `page-inset` for you; pass `inset: "none"` when the layout paints to an edge
-(`aurora`, `crest`, `masthead` do), then re-add the margin on the inner blocks.
+(`aurora`, `crest`, `marquee` do), then re-add the margin on the inner blocks. A
+layout with its own `Component` never gets the inset in the first place, so it
+pays its own margin — the two painted columns in `duotone` each pay half.
 
 ## Pagination
 
@@ -139,7 +142,8 @@ line does. Each layout picks exactly one of:
   two link kinds two ways.
 - `titleLinkMarker: "arrow" | "link"` in `layout.tsx` — a muted lucide glyph after
   the title, for layouts whose language is already iconic (`studio`, `aurora`,
-  `compass`, `atlas`, `masthead`, `bold-type`). The glyph reaches the shared
+  `compass`, `atlas`, `masthead`, `bold-type`, `marquee`, `duotone`). The glyph
+  reaches the shared
   `PreviewLinkedTitle` by context, so item views need no new prop.
 
 `layout-theming.test.ts` fails a layout that sets neither.
@@ -180,10 +184,12 @@ Three edits, all load-bearing:
    with no preset is unreachable from the gallery and fails
    `template-presets.test.ts`.
 
-Two more tables are keyed by `PdfLayoutId` and fail to compile without an entry:
-the page margin in `pdf-presentation.ts`, and the parse verdict in
-`domain/insights/ats-score.ts` — answer both honestly, a form built for a human
-reader is a `warn`.
+Three more tables are keyed by `PdfLayoutId` and fail to compile without an
+entry: the page margin in `pdf-presentation.ts`, the parse verdict in
+`domain/insights/ats-score.ts`, and `layoutCategories` in `template-presets.ts`
+(which gallery chips the layout answers to). Answer all three honestly — a form
+built for a human reader is a `warn`, and a two-column layout is never `ats`,
+however plain it looks.
 
 Then update `layout-registry.test.ts` (it asserts the exact id list) and add a
 `README.md` here. A layout whose content only reads in one language pins its own

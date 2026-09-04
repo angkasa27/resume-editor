@@ -54,7 +54,7 @@ pnpm e2e:pagebreak  # terminal 2 — PDF=1 also writes /tmp/pagebreak/<layout>.p
 pnpm e2e:pagination
 ```
 
-- **`e2e:pagebreak`** sweeps all 20 layouts × 9 content shapes and asserts no
+- **`e2e:pagebreak`** sweeps all 23 layouts × 9 content shapes and asserts no
   block lands in a page's margin band. With `PDF=1` it also prints each case and
   compares the sheet count against the laid-out page count — the only way to
   catch a sub-pixel spill that prints a blank trailing sheet.
