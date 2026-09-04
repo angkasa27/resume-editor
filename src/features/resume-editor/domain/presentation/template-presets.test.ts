@@ -63,6 +63,7 @@ describe("resumeTemplatePresets", () => {
       "dossier",
       "masthead",
       "editorial",
+      "portico",
     ]);
     for (const preset of resumeTemplatePresets) {
       if (preset.style.secondary) {

@@ -661,6 +661,50 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // portico — both colours are load-bearing: accent draws the left and bottom
+  // of the frame, secondary the top and right, so every preset sets a secondary
+  // and the pair has to read as deliberate rather than as two leftovers. Inside
+  // the frame the page is black on white, so the two can be as loud as they like.
+  {
+    id: "portico-ember",
+    label: "Ember",
+    layoutId: "portico",
+    style: {
+      accent: "#f97316",
+      secondary: "#0f4c5c",
+      fontFamilyId: "nunito-sans",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "portico-harbour",
+    label: "Harbour",
+    layoutId: "portico",
+    style: {
+      accent: "#0e7490",
+      secondary: "#1e3a5f",
+      fontFamilyId: "work-sans",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "portico-olive",
+    label: "Olive",
+    layoutId: "portico",
+    style: {
+      accent: "#4d7c0f",
+      secondary: "#3f3f46",
+      fontFamilyId: "source-sans-3",
+      fontScale: "md",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
@@ -696,6 +740,7 @@ const layoutCategories: Record<
   studio: ["creative"],
   aurora: ["creative"],
   monolith: ["creative"],
+  portico: ["ats", "creative"],
 };
 
 export function templateCategories(

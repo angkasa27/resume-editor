@@ -1,0 +1,222 @@
+/* The frame. Two colours, one band, on *every* sheet — accent down the left and
+   along the bottom, secondary across the top and down the right. It cannot be a
+   border: that frames the whole stack once, not each sheet, and the page-break
+   markers are editor-only chrome, so there is nothing per-page to hang one on.
+   Instead four background layers, each tiled to exactly one
+   --resume-paper-height and repeated down the page, so the tile lands at the
+   same offset on every sheet. The top and bottom layers are listed first, which
+   is what puts them over the side layers and gives the frame its butt joints
+   rather than four fighting corners. */
+.layout {
+  --portico-band: 7mm;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+
+  background-image:
+    linear-gradient(
+      to bottom,
+      var(--resume-secondary) 0 var(--portico-band),
+      transparent var(--portico-band)
+    ),
+    linear-gradient(
+      to top,
+      var(--resume-accent) 0 var(--portico-band),
+      transparent var(--portico-band)
+    ),
+    linear-gradient(
+      to right,
+      var(--resume-accent) 0 var(--portico-band),
+      transparent var(--portico-band)
+    ),
+    linear-gradient(
+      to left,
+      var(--resume-secondary) 0 var(--portico-band),
+      transparent var(--portico-band)
+    );
+  background-size: 100% var(--resume-paper-height);
+  background-position: 0 0;
+  background-repeat: repeat-y;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  flex: 1;
+}
+
+/* Headings: an outline glyph, then the words in caps. No rule and no fill —
+   the two frame colours are the page's colour budget, and a third painted
+   surface inside the frame would read as a competing edge. */
+.layout :global(.section-heading) {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  font-size: calc(var(--resume-h2) * 1.15);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  --resume-heading-color: var(--resume-text);
+}
+
+.layout :global(.section-icon) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--resume-text);
+}
+
+.layout :global(.section-icon svg) {
+  width: 1em;
+  height: 1em;
+  stroke-width: 2;
+}
+
+/* Two tracks for every item, so the dates line up down the page whatever the
+   section. The gutter is fixed, not content-sized: a `2016 September – 2018
+   April` next to a bare `2019` would otherwise put the two bodies on different
+   left edges. */
+.layout :global(.item) {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  gap: var(--resume-gap-item);
+  align-items: start;
+}
+
+/* Each cell names its column: auto-placement drops the first child into the
+   gutter, which slides a dateless entry's title one track left. */
+.layout :global(.item-date) {
+  grid-column: 1;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--resume-meta);
+  color: var(--resume-muted);
+  text-align: left;
+  white-space: normal;
+}
+
+.layout :global(.item-main) {
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-inner);
+  min-width: 0;
+}
+
+.layout :global(.item-title) {
+  font-size: var(--resume-body);
+  font-weight: 700;
+}
+
+.layout :global(.item .meta) {
+  font-style: italic;
+}
+
+/* Body copy sits tight under its title, the way the reference sets it — the
+   title reads as the first line of the entry rather than a heading over it. */
+.layout :global(.rich-text) {
+  color: var(--resume-text);
+}
+
+.layout :global(.rich-text ul) {
+  padding-left: var(--resume-indent);
+}
+
+/* Skills as one running line of bullet-separated terms; the group names are
+   scaffolding this page does not show. */
+.skillsLine {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  line-height: var(--resume-leading);
+}
+
+.skillsLine > span:not(:last-child)::after {
+  content: "  •";
+  margin-left: 10px;
+  color: var(--resume-muted);
+}
+
+/* Header — identity left, photo square at the far right, opposite the name. */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--resume-gutter);
+}
+
+.header :global(.portico-identity) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-item);
+  min-width: 0;
+  flex: 1;
+}
+
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 1.15);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  line-height: 1.05;
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-h2) * 1.15);
+  font-style: italic;
+  font-weight: 400;
+  --resume-headline-color: var(--resume-text);
+}
+
+.header :global(.contact-block) {
+  gap: var(--resume-gap-inner);
+}
+
+.header :global(.contact-item) {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+/* The one place the accent is spent inside the frame: outline glyphs, not
+   chips, so the contact lines stay text. */
+.header :global(.contact-icon) {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  color: var(--resume-accent);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Square by default and sized off the type, so it holds its proportion to the
+   name at every font scale; a chosen photo shape still wins. */
+.header :global(.header-photo) {
+  width: calc(var(--resume-h1) * 3.2);
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 0);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Link cue: contact links take a dotted hairline, and item titles take the
+   `link` glyph (set in layout.tsx) — the headings are already iconic, so a rule
+   under a bold title would out-shout them. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.18em;
+  /* Titles drop the rule entirely: the `link` glyph carries the cue there, and a
+     bold h3 wearing the contact rule as well would read as two marks. */
+  --resume-link-title-decoration: none;
+}

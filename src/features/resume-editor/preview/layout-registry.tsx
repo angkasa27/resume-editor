@@ -19,6 +19,7 @@ import { ledgerLayout } from "./layouts/ledger/layout";
 import { mastheadLayout } from "./layouts/masthead/layout";
 import { folioLayout } from "./layouts/folio/layout";
 import { monolithLayout } from "./layouts/monolith/layout";
+import { porticoLayout } from "./layouts/portico/layout";
 import { numeralLayout } from "./layouts/numeral/layout";
 import { splitLayout } from "./layouts/split/layout";
 import { studioLayout } from "./layouts/studio/layout";
@@ -48,6 +49,7 @@ export const previewLayoutDefinitions = [
   harvardLayout,
   rirekishoLayout,
   monolithLayout,
+  porticoLayout,
 ] as const satisfies ReadonlyArray<PreviewLayoutDefinition>;
 
 // Compile-time guard: the registry must cover `pdfLayoutIds` (the domain SSOT)

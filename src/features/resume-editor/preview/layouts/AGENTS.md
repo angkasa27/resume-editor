@@ -1,7 +1,7 @@
 # Layouts — how a resume page gets drawn
 
 A **layout** is one rendering of the document: columns, header shape, where each
-section lands, what the headings look like. Twenty live in this folder, one per
+section lands, what the headings look like. Twenty-two live in this folder, one per
 subdirectory, each with a `README.md` describing what it looks like on paper,
 with its gallery screenshots (`public/templates/<preset-id>.webp`) embedded at
 the top — read that before editing a layout, especially if you cannot see the
@@ -37,7 +37,7 @@ band reach the bottom paper edge.
 ## Two ways to build one
 
 **`createSingleColumnLayout(config)`** — header, then a `.layout-body` holding the
-summary and every section. Reach for this first; eleven of the twenty use it.
+summary and every section. Reach for this first; twelve of the twenty-two use it.
 
 ```tsx
 export const classicLayout = createSingleColumnLayout({
@@ -227,3 +227,4 @@ the round-robin `pnpm screenshots` uses.
 | [Harvard](harvard/README.md) | `harvard` | The MCS format. One type size, bold as the only emphasis, no colour. |
 | [Rirekisho](rirekisho/README.md) | `rirekisho` | The Japanese 履歴書 form: ruled identity block, 30×40mm photo box, history in 年 / 月 columns. |
 | [Monolith](monolith/README.md) | `monolith` | The whole page in one saturated colour; a 150px label rail, and two paired typefaces doing the work colour and rules usually do. |
+| [Portico](portico/README.md) | `portico` | A two-tone frame around every sheet; icon-led capital headings over a 140px date gutter. |
