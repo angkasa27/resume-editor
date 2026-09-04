@@ -618,6 +618,52 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
+  // marquee — two colours doing two jobs: the secondary paints the band and the
+  // heading glyphs, the accent lights the name, the heading bars and the dates.
+  // Both are curated, and the secondary must stay dark enough that
+  // `readableTextOn` answers white — the band is the only surface on the page.
+  // The accent has to read against that dark band *and* against white paper, so
+  // these lean warm and mid-toned rather than pastel.
+  {
+    id: "marquee-amber",
+    label: "Amber",
+    layoutId: "marquee",
+    style: {
+      accent: "#e8a33d",
+      secondary: "#2f2f2f",
+      fontFamilyId: "work-sans",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "marquee-teal",
+    label: "Teal",
+    layoutId: "marquee",
+    style: {
+      accent: "#2bb6a3",
+      secondary: "#14343a",
+      fontFamilyId: "dm-sans",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "marquee-oxblood",
+    label: "Oxblood",
+    layoutId: "marquee",
+    style: {
+      accent: "#c2544a",
+      secondary: "#2b1c1c",
+      fontFamilyId: "source-sans-3",
+      fontScale: "md",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
+
   // monolith — the accent is the entire page, not a detail on it, so these are
   // the only presets whose accent has to be a colour you would paint a wall.
   // It must also stay dark enough that `readableTextOn` answers white: the
@@ -688,6 +734,7 @@ const layoutCategories: Record<
   // A Japanese form: it is read by a person, never fed to a Western parser.
   rirekisho: ["professional"],
   folio: ["ats", "professional"],
+  marquee: ["professional", "creative"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
   split: ["professional"],
