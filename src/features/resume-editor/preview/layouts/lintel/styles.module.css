@@ -11,7 +11,7 @@
   flex: 1;
 }
 
-/* The lintel: a centred heading on a full-width band of accent at 8%. Painted,
+/* The lintel: a centred heading on a full-width band of accent at 5%. Painted,
    so it needs the print pair, and the tint is `color-mix` rather than a second
    variable so it tracks whatever accent the user picks. It stops at the page
    margin on purpose — a band bleeding to the paper edge would read as a rail,
@@ -24,7 +24,7 @@
   font-weight: 700;
   text-transform: none;
   letter-spacing: 0.02em;
-  background: color-mix(in srgb, var(--resume-accent) 8%, transparent);
+  background: color-mix(in srgb, var(--resume-accent) 5%, transparent);
   print-color-adjust: exact;
   -webkit-print-color-adjust: exact;
 }
@@ -162,18 +162,14 @@
   gap: 10px;
 }
 
-/* Boxed glyphs, not filled chips: an outline square in the text colour, the way
-   the reference sets them. Bordered, so it needs the print pair. */
+/* Bare glyphs in the text colour: no chip, no box. The accent stays on the
+   heading bands, and a framed icon beside a banded heading is a second shape
+   competing with it. */
 .header :global(.contact-icon) {
-  width: 18px;
-  height: 18px;
-  padding: 2px;
+  width: 15px;
+  height: 15px;
   flex-shrink: 0;
-  border: 1.5px solid var(--resume-text);
-  border-radius: 2px;
   color: var(--resume-text);
-  print-color-adjust: exact;
-  -webkit-print-color-adjust: exact;
 }
 
 /* Round by default and sized off the type, so it holds its proportion to the
