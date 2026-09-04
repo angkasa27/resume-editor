@@ -98,35 +98,38 @@
   padding-left: 1em;
 }
 
-/* Skills: two groups across, each a bold heading over its own dashed list. The
-   grid flows down each column, so a third group lands under the first. */
-.layout :global(.section[data-section="skills"] .item-list) {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: var(--resume-gap-item) var(--resume-gap-section);
+/* The layout sets `.item` gap to 0 for dated entries, where the title and its
+   description are one block; a group heading needs air before its terms. */
+.layout :global(.section[data-section="skills"] .item) {
+  gap: 3px;
 }
 
-/* One group is the common case (the stock draft ships a single one), and it
-   would otherwise fill column 1 and leave column 2 empty. Its own terms run
-   two-up instead, so the section reads the same width either way. */
-.layout :global(.item-list:has(> .item:only-child) .skill-list) {
-  columns: 2;
+/* Skills: every group takes the full row, and its own terms flow across the
+   width beneath it. `12ch 4` reads as "at most four columns, each at least
+   12ch": a fixed count would hand a long certification-style term an
+   eight-character column and hyphenate it to shreds, so the count drops to
+   three or two on its own when the terms are wide. */
+.layout :global(.skill-list) {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  columns: 12ch 4;
   column-gap: var(--resume-gap-section);
 }
 
-.layout :global(.skill-list) {
-  margin: 0;
+/* Dashes, not discs: the reference sets them that way, and a disc would repeat
+   the separator the inline sections already use. The hang is on the item, not
+   the list — list padding applies to the whole multi-column box, so it would
+   only indent the first column and let every later dash hang into a gutter. */
+.layout :global(.skill-list > li) {
   padding-left: 1em;
-  list-style: none;
+  text-indent: -1em;
+  /* A term wrapping to two lines must not straddle a column break. */
+  break-inside: avoid;
 }
 
-/* Dashes, not discs: the reference sets them that way, and a disc would repeat
-   the separator the inline sections already use. */
 .layout :global(.skill-list > li)::before {
-  content: "–";
-  display: inline-block;
-  width: 1em;
-  margin-left: -1em;
+  content: "– ";
 }
 
 /* Certificates and languages as one running line each, bullet-separated. The
