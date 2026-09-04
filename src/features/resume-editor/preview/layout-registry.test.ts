@@ -8,7 +8,14 @@ import {
 } from "@/features/resume-editor/preview/layout-registry";
 
 /** The layouts that print a sidebar; every other layout is single-column. */
-const twoColumnLayouts = ["split", "duet", "ledger", "dossier", "compass"] as const;
+const twoColumnLayouts = [
+  "split",
+  "duet",
+  "ledger",
+  "dossier",
+  "compass",
+  "duotone",
+] as const;
 
 describe("preview layout registry", () => {
   // The registry and the domain's id list are separate declarations. A layout
@@ -58,6 +65,7 @@ describe("preview layout registry", () => {
     expect([...hiding].sort()).toEqual([
       "atlas",
       "classic",
+      "duotone",
       "editorial",
       "monolith",
       "rirekisho",

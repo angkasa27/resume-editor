@@ -1,7 +1,7 @@
 # Layouts — how a resume page gets drawn
 
 A **layout** is one rendering of the document: columns, header shape, where each
-section lands, what the headings look like. Twenty-two live in this folder, one per
+section lands, what the headings look like. Twenty-four live in this folder, one per
 subdirectory, each with a `README.md` describing what it looks like on paper,
 with its gallery screenshots (`public/templates/<preset-id>.webp`) embedded at
 the top — read that before editing a layout, especially if you cannot see the
@@ -232,4 +232,5 @@ the round-robin `pnpm screenshots` uses.
 | [Rirekisho](rirekisho/README.md) | `rirekisho` | The Japanese 履歴書 form: ruled identity block, 30×40mm photo box, history in 年 / 月 columns. |
 | [Monolith](monolith/README.md) | `monolith` | The whole page in one saturated colour; a 150px label rail, and two paired typefaces doing the work colour and rules usually do. |
 | [Marquee](marquee/README.md) | `marquee` | A dark band across the top carrying the name and contacts; headings are a glyph over a short accent bar. |
+| [Duotone](duotone/README.md) | `duotone` | Two washes of one hue: a pale identity rail beside a saturated main column, icon headings on both. |
 | [Meridian](meridian/README.md) | `meridian` | An accent→secondary gradient rail down the left edge of every sheet, beside a plain black-on-white ruled column. |

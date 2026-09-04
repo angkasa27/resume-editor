@@ -756,6 +756,46 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
       lineHeight: "standard",
     },
   },
+
+  // duotone — a 0.42fr tint rail beside a saturated main column. The accent is
+  // spent as a full-page fill, so it has to stay dark enough for light type;
+  // narrow rail means a text sans, never a display one.
+  {
+    id: "duotone-iris",
+    label: "Iris",
+    layoutId: "duotone",
+    style: {
+      accent: "#5348a8",
+      fontFamilyId: "source-sans-3",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "duotone-pine",
+    label: "Pine",
+    layoutId: "duotone",
+    style: {
+      accent: "#255c4b",
+      fontFamilyId: "lato",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "duotone-slate",
+    label: "Slate",
+    layoutId: "duotone",
+    style: {
+      accent: "#3b4a5a",
+      fontFamilyId: "ibm-plex-sans",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
 ];
 
 export const templateCategoryIds = ["ats", "professional", "creative"] as const;
@@ -793,6 +833,7 @@ const layoutCategories: Record<
   studio: ["creative"],
   aurora: ["creative"],
   monolith: ["creative"],
+  duotone: ["creative"],
 };
 
 export function templateCategories(
