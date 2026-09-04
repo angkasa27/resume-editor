@@ -145,17 +145,9 @@
    everything else in the readable on-secondary colour. */
 .header :global(.marquee-band) {
   display: flex;
-  /* Ranged to the foot, not centred: it is what makes `padding-bottom` the real
-     gap under the contacts. Centred, a photo taller than the name and contacts
-     splits its surplus above and below them, and the foot grows with the photo.
-     Any surplus goes above the name instead, against the paper edge. */
-  align-items: flex-end;
+  align-items: center;
   gap: var(--resume-gap-section);
-  /* The foot of the band carries the same gap the body puts above the first
-     heading, so the band's bottom edge sits equidistant from the contacts and
-     from Summary. Top and sides stay the page margin. */
-  padding: var(--resume-page-margin) var(--resume-page-margin)
-    var(--resume-gap-section);
+  padding: var(--resume-page-margin);
   background: var(--resume-secondary);
   color: var(--resume-on-secondary);
   print-color-adjust: exact;
