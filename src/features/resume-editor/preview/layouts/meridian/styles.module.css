@@ -79,9 +79,14 @@
   gap: 0 var(--resume-gap-item);
 }
 
+/* The right column never wraps — the title column is the flexible one and gives
+   way instead. It holds only the date, except in Education, where the GPA sits
+   under it against the place on the left. */
+.layout :global(.item-header > .item-date),
 .layout :global(.item-header-side) {
   gap: 0;
   white-space: nowrap;
+  text-align: right;
 }
 
 .layout :global(.item) {

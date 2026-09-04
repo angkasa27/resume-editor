@@ -8,17 +8,41 @@ import type { SectionItem } from "@/features/resume-editor/preview/descriptors/t
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
 
 /** Employer leads, role follows in italic — the reverse of marquee, and the way
- * the reference sets it. Date over place, both ranged right. */
+ * the reference sets it.
+ *
+ * The place sits on the left, under the title, not stacked under the date on the
+ * right: the title is one line, so a second right-hand line had nothing beside
+ * it and read as a stray in the margin. Only the date is ranged right, and it
+ * always has the title line to sit against. */
 function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
   return (
     <div className="item">
       <div className="item-header">
         <div className="item-header-main">
           <TitleWithSubject title={item.companyName} subject={item.position} />
+          {item.location ? <div className="meta">{item.location}</div> : null}
+        </div>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
+      </div>
+      <PreviewRichTextBlock content={item.description} />
+    </div>
+  );
+}
+
+/** Same split, and the GPA crosses the other way. The right column now reads
+ * date over GPA against title over place: every right-hand line has a left-hand
+ * line to sit against, which is the whole rule this layout follows. */
+function EducationItem({ item }: { item: SectionItem<"education"> }) {
+  return (
+    <div className="item">
+      <div className="item-header">
+        <div className="item-header-main">
+          <TitleWithSubject title={item.name} subject={item.degree} />
+          {item.location ? <div className="meta">{item.location}</div> : null}
         </div>
         <div className="item-header-side">
           <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
-          {item.location ? <div className="meta">{item.location}</div> : null}
+          {item.gpa ? <div className="meta">GPA: {item.gpa}</div> : null}
         </div>
       </div>
       <PreviewRichTextBlock content={item.description} />
@@ -26,18 +50,22 @@ function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
   );
 }
 
-function EducationItem({ item }: { item: SectionItem<"education"> }) {
+/** The third and last section carrying a place. The canonical view ranges it
+ * right under the date; here every place reads down the left edge. */
+function OrganizationVolunteeringItem({
+  item,
+}: {
+  item: SectionItem<"organizationVolunteering">;
+}) {
   return (
     <div className="item">
       <div className="item-header">
         <div className="item-header-main">
-          <TitleWithSubject title={item.name} subject={item.degree} />
-          {item.gpa ? <div className="meta">GPA: {item.gpa}</div> : null}
-        </div>
-        <div className="item-header-side">
-          <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
+          <h3 className="item-title">{item.position}</h3>
+          <div className="meta">{item.organizationName}</div>
           {item.location ? <div className="meta">{item.location}</div> : null}
         </div>
+        <ItemDate>{renderDateRange(item.startDate, item.endDate)}</ItemDate>
       </div>
       <PreviewRichTextBlock content={item.description} />
     </div>
@@ -91,4 +119,5 @@ export const meridianItemViews: LayoutSectionItemMap = {
   skills: SkillsItem,
   certifications: CertificationsItem,
   languages: LanguagesItem,
+  organizationVolunteering: OrganizationVolunteeringItem,
 };
