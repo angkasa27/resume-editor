@@ -1,0 +1,227 @@
+/* The rail. A vertical accent→secondary gradient down the left edge, bleeding to
+   the top, left and bottom paper edges of *every* sheet. It cannot be a child
+   element: that paints one strip down the whole stack, and the page-break
+   markers are editor-only chrome, so there is nothing per-page to hang one on.
+   Instead one background layer tiled to exactly one --resume-paper-height and
+   repeated down the page, so each sheet gets the whole ramp at the same offset.
+   Reading the paper height rather than a fixed mm keeps it right at A4, Letter
+   and JIS B5 alike. */
+.layout {
+  --meridian-rail: 7%;
+
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+
+  background-image: linear-gradient(
+    to bottom,
+    var(--resume-accent),
+    var(--resume-secondary)
+  );
+  background-size: var(--meridian-rail) var(--resume-paper-height);
+  background-position: 0 0;
+  background-repeat: repeat-y;
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Content clears the rail, then takes the page margin on top of it. */
+.layout :global(.layout-body),
+.header {
+  padding-left: calc(var(--meridian-rail) + var(--resume-page-margin));
+  padding-right: var(--resume-page-margin);
+}
+
+.header {
+  padding-top: var(--resume-page-margin);
+}
+
+.layout :global(.layout-body) {
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-section);
+  flex: 1;
+  padding-bottom: var(--resume-page-margin);
+}
+
+/* Headings: title case at display size, closed by a rule the full width of the
+   column. The rule is the layout's only structure, so it is a real border on the
+   heading rather than a separate element — nothing can drift out of alignment
+   with the text it belongs to. */
+.layout :global(.section-heading) {
+  font-size: calc(var(--resume-h2) * 1.3);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  --resume-heading-color: var(--resume-text);
+  padding-bottom: 2px;
+  border-bottom: 1.5px solid var(--resume-text);
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Items — employer bold, role italic, both on the title line; date over place
+   ranged right; the description indented under the title it belongs to. */
+.layout :global(.item-title) {
+  font-weight: 700;
+  font-size: var(--resume-body);
+}
+
+.layout :global(.item-subject) {
+  font-style: italic;
+  font-weight: 400;
+}
+
+.layout :global(.item-header) {
+  gap: 0 var(--resume-gap-item);
+}
+
+.layout :global(.item-header-side) {
+  gap: 0;
+  white-space: nowrap;
+}
+
+.layout :global(.item) {
+  gap: 0;
+}
+
+/* The hang is what ties the description to its own entry once several stack up. */
+.layout :global(.item .rich-text) {
+  text-align: left;
+  padding-left: var(--resume-indent);
+}
+
+.layout :global(.rich-text ul) {
+  padding-left: 1em;
+}
+
+/* Skills: two groups across, each a bold heading over its own dashed list. The
+   grid flows down each column, so a third group lands under the first. */
+.layout :global(.section[data-section="skills"] .item-list) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--resume-gap-item) var(--resume-gap-section);
+}
+
+/* One group is the common case (the stock draft ships a single one), and it
+   would otherwise fill column 1 and leave column 2 empty. Its own terms run
+   two-up instead, so the section reads the same width either way. */
+.layout :global(.item-list:has(> .item:only-child) .skill-list) {
+  columns: 2;
+  column-gap: var(--resume-gap-section);
+}
+
+.layout :global(.skill-list) {
+  margin: 0;
+  padding-left: 1em;
+  list-style: none;
+}
+
+/* Dashes, not discs: the reference sets them that way, and a disc would repeat
+   the separator the inline sections already use. */
+.layout :global(.skill-list > li)::before {
+  content: "–";
+  display: inline-block;
+  width: 1em;
+  margin-left: -1em;
+}
+
+/* Certificates and languages as one running line each, bullet-separated. The
+   separator trails every entry but the last, so it never leads a wrapped line
+   and never lands in a paste. */
+.layout :global(.section[data-section="certifications"] .item-list),
+.layout :global(.section[data-section="languages"] .item-list) {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px var(--resume-gap-inner);
+}
+
+.layout :global(.item-inline) {
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.3em;
+}
+
+.layout :global(.item-inline:not(:last-child))::after {
+  content: "•";
+  margin-left: 0.5em;
+  color: var(--resume-text);
+}
+
+/* Certificates read as prose in that line; only languages keep the bold name. */
+.layout :global(.section[data-section="certifications"] .item-title) {
+  font-weight: 400;
+}
+
+/* Header — identity ranged left against the rail, photo held top right. */
+.header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--resume-gap-section);
+  min-width: 0;
+}
+
+.header :global(.meridian-identity) {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--resume-gap-item);
+}
+
+/* Near-black, like everything else in the column: the rail is the only colour,
+   and a coloured name would halve it. */
+.header :global(.name) {
+  font-size: calc(var(--resume-h1) * 0.95);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  --resume-name-color: var(--resume-text);
+}
+
+.header :global(.headline) {
+  font-size: calc(var(--resume-h1) * 0.6);
+  font-style: italic;
+  font-weight: 400;
+  --resume-headline-color: var(--resume-text);
+}
+
+/* Two rows rather than one long line, the way the reference sets the reach. */
+.header :global(.contact-line-iconic) {
+  gap: 2px var(--resume-gap-section);
+}
+
+.header :global(.contact-icon) {
+  color: var(--resume-text);
+}
+
+/* Squared and ranged right, with the page's only rounded corner — a circle here
+   would fight the rail's hard edge. */
+.header :global(.header-photo) {
+  /* Sized to land level with the foot of the identity block beside it: taller,
+     and it would open a gap under the contacts that reads as a broken margin. */
+  width: 112px;
+  aspect-ratio: var(--resume-photo-aspect, 1 / 1);
+  height: auto;
+  border-radius: var(--resume-photo-radius, 2px);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.header :global(.header-photo img) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Link cue: every heading already carries a solid full-width rule, so a solid
+   underline on a contact would read as the same device at body size. Dotted. */
+.layout {
+  --resume-link-decoration: underline dotted;
+  --resume-link-offset: 0.18em;
+}
+
+/* Linked item titles inherit that dotted rule rather than grading themselves
+   down further: a title here is bold body text, not the display type it is in a
+   badge layout, so the same cue reads at the same strength on both.
+   (`layout-theming.test.ts` allows an override only to `none`, and only with a
+   titleLinkMarker glyph carrying the cue instead.) */

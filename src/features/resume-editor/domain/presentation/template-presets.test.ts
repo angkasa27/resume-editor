@@ -59,6 +59,7 @@ describe("resumeTemplatePresets", () => {
     const RENDERS_SECONDARY = new Set([
       "split",
       "marquee",
+      "meridian",
       "duet",
       "aurora",
       "dossier",

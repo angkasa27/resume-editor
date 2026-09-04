@@ -664,6 +664,50 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
+  // meridian — both colours land in one place, the rail, and they are read as a
+  // ramp rather than as two swatches: the pair has to share a family and differ
+  // mostly in depth, or the gradient shows a band where they meet. Everything
+  // else on the page is black on white, so neither colour needs to hold text.
+  {
+    id: "meridian-fern",
+    label: "Fern",
+    layoutId: "meridian",
+    style: {
+      accent: "#4f9a72",
+      secondary: "#14342a",
+      fontFamilyId: "nunito-sans",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    id: "meridian-dusk",
+    label: "Dusk",
+    layoutId: "meridian",
+    style: {
+      accent: "#8b7bd8",
+      secondary: "#221f4a",
+      fontFamilyId: "raleway",
+      fontScale: "md",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
+  {
+    id: "meridian-ember",
+    label: "Ember",
+    layoutId: "meridian",
+    style: {
+      accent: "#e0913f",
+      secondary: "#5c2018",
+      fontFamilyId: "source-sans-3",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
   // monolith — the accent is the entire page, not a detail on it, so these are
   // the only presets whose accent has to be a colour you would paint a wall.
   // It must also stay dark enough that `readableTextOn` answers white: the
@@ -735,6 +779,7 @@ const layoutCategories: Record<
   rirekisho: ["professional"],
   folio: ["ats", "professional"],
   marquee: ["professional", "creative"],
+  meridian: ["professional", "creative"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
   split: ["professional"],
