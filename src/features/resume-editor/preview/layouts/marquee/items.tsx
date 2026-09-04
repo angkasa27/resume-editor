@@ -1,36 +1,11 @@
 import { PreviewLinkedTitle } from "@/features/resume-editor/preview/kit/linked-title";
 import { PreviewRichTextBlock } from "@/features/resume-editor/preview/kit/rich-text-block";
-import { WrapOnSpace } from "@/features/resume-editor/preview/kit/wrap-on-space";
 import { renderDateRange } from "@/features/resume-editor/preview/helpers/date";
 import { defaultItemViews } from "@/features/resume-editor/preview/layouts/_shared/default-item-views";
 import { ItemDate } from "@/features/resume-editor/preview/layouts/_shared/items/item-date";
+import { TitleWithSubject } from "@/features/resume-editor/preview/layouts/_shared/items/title-with-subject";
 import type { SectionItem } from "@/features/resume-editor/preview/descriptors/types";
 import type { LayoutSectionItemMap } from "@/features/resume-editor/preview/layout-types";
-
-/** Role and employer read as one sentence — bold role, comma, italic employer —
- * with the date and place ranged right. The canonical item view stacks the
- * employer under the role, which costs a line on every entry. */
-function TitleWithSubject({
-  title,
-  subject,
-}: {
-  title: string;
-  subject?: string;
-}) {
-  return (
-    <h3 className="item-title">
-      <WrapOnSpace text={subject ? `${title},` : title} />
-      {subject ? (
-        <>
-          {" "}
-          <span className="item-subject">
-            <WrapOnSpace text={subject} />
-          </span>
-        </>
-      ) : null}
-    </h3>
-  );
-}
 
 function WorkExperienceItem({ item }: { item: SectionItem<"workExperience"> }) {
   return (

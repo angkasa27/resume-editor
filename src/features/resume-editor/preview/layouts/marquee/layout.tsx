@@ -6,6 +6,17 @@ import { MarqueeHeader } from "./header";
 import { marqueeItemViews } from "./items";
 import styles from "./styles.module.css";
 
+/** Both three-track sections move whole. The pagination pass inserts a spacer
+ * *before* a block that lands in a page's edge band, and a spacer inserted
+ * before a grid child becomes another grid item, reflowing the whole grid —
+ * `pnpm e2e:pagebreak` caught a skill sitting 151px into the bottom band.
+ * `data-page-unit` is how a layout says "move this, don't descend into it".
+ *
+ * Ceiling: a grid taller than a page is then moved rather than split. Neither of
+ * these sections is anywhere near that; if one ever is, the fix is per-row units
+ * the way atlas does it, not dropping the attribute. */
+const PAGE_UNIT_SECTIONS = new Set(["skills", "certifications"]);
+
 /**
  * Skills flatten to one bullet per term across the same three tracks the
  * certificates use. The group names are scaffolding this page does not show —
@@ -13,17 +24,31 @@ import styles from "./styles.module.css";
  */
 function renderMarqueeSection(slot: LayoutSectionSlot) {
   const { key, node } = slot;
-  if (slot.key !== "skills" || !slot.section) return <div key={key}>{node}</div>;
+  const pageUnit = PAGE_UNIT_SECTIONS.has(key) ? "" : undefined;
+
+  if (slot.key !== "skills" || !slot.section) {
+    return (
+      <div key={key} data-page-unit={pageUnit}>
+        {node}
+      </div>
+    );
+  }
 
   const terms = slot.section.items.flatMap((item) => item.skills).filter(Boolean);
-  if (terms.length === 0) return <div key={key}>{node}</div>;
+  if (terms.length === 0) {
+    return (
+      <div key={key} data-page-unit={pageUnit}>
+        {node}
+      </div>
+    );
+  }
 
   return (
     <section className="section" data-section="skills" key={key}>
       <h2 className="section-heading">
         {renderIconSectionHeading("skills", slot.section.heading)}
       </h2>
-      <div className="item-list">
+      <div className="item-list" data-page-unit="">
         {terms.map((term, index) => (
           <div className="item item-bullet" key={`${term}-${index}`}>
             <span className="item-title">{term}</span>

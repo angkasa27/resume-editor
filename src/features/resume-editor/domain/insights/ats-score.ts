@@ -283,6 +283,7 @@ const LAYOUT_VERDICTS: Record<PdfLayoutId, LayoutVerdict> = {
       "The text order parses fine, but the page is one saturated colour behind light type. Some pipelines flatten a PDF to greyscale first, and it prints badly on a mono printer. Use a light layout if the file may be printed or converted.",
   },
   marquee: { status: "pass" },
+  meridian: { status: "pass" },
   numeral: { status: "pass" },
   editorial: { status: "pass" },
   harvard: { status: "pass" },

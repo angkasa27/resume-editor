@@ -664,6 +664,55 @@ export const resumeTemplatePresets: ReadonlyArray<ResumeTemplatePreset> = [
     },
   },
 
+  // meridian — both colours land in one place, the rail, and they are read as a
+  // journey rather than as a tint: two *different* hues, roughly a quarter to a
+  // third of the wheel apart, so the ramp has somewhere to travel. Same hue at
+  // two depths reads as a shadow, not a gradient. Further apart than this and
+  // even oklab runs the middle through mud. Nothing on the page sits on either
+  // colour, so neither has to hold text — only the pairing has to be good.
+  {
+    // Amber into plum, by way of a warm rose.
+    id: "meridian-sunset",
+    label: "Sunset",
+    layoutId: "meridian",
+    style: {
+      accent: "#f2a25c",
+      secondary: "#6d3b8f",
+      fontFamilyId: "nunito-sans",
+      fontScale: "md",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+  {
+    // Teal into indigo, through the cyans. The coolest of the three.
+    id: "meridian-lagoon",
+    label: "Lagoon",
+    layoutId: "meridian",
+    style: {
+      accent: "#2ec4b6",
+      secondary: "#22357f",
+      fontFamilyId: "raleway",
+      fontScale: "md",
+      spacing: "airy",
+      lineHeight: "relaxed",
+    },
+  },
+  {
+    // Warm yellow into forest, the whole ramp passing through green.
+    id: "meridian-meadow",
+    label: "Meadow",
+    layoutId: "meridian",
+    style: {
+      accent: "#eec84a",
+      secondary: "#1a6b52",
+      fontFamilyId: "source-sans-3",
+      fontScale: "sm",
+      spacing: "standard",
+      lineHeight: "standard",
+    },
+  },
+
   // monolith — the accent is the entire page, not a detail on it, so these are
   // the only presets whose accent has to be a colour you would paint a wall.
   // It must also stay dark enough that `readableTextOn` answers white: the
@@ -775,6 +824,7 @@ const layoutCategories: Record<
   rirekisho: ["professional"],
   folio: ["ats", "professional"],
   marquee: ["professional", "creative"],
+  meridian: ["professional", "creative"],
   inset: ["ats", "professional"],
   timeline: ["ats", "creative"],
   split: ["professional"],

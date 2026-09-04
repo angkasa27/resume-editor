@@ -1,7 +1,7 @@
 # Layouts — how a resume page gets drawn
 
 A **layout** is one rendering of the document: columns, header shape, where each
-section lands, what the headings look like. Twenty-two live in this folder, one per
+section lands, what the headings look like. Twenty-four live in this folder, one per
 subdirectory, each with a `README.md` describing what it looks like on paper,
 with its gallery screenshots (`public/templates/<preset-id>.webp`) embedded at
 the top — read that before editing a layout, especially if you cannot see the
@@ -131,8 +131,12 @@ are a flat 400-weight label needs a hairline, a dotted rule, or a glyph.
 separately, because a bold `h3` carries the same rule more heavily than a contact
 line does. Each layout picks exactly one of:
 
-- `--resume-link-title-decoration` (+ optional `--resume-link-title-offset`) — a
-  dotted rule, a `0.5px` hairline, or a `color-mix` softened rule.
+- Inherit the contact cue — set nothing. Right wherever an item title is bold
+  body text rather than display type.
+- `--resume-link-title-decoration: none` — the *only* value the test accepts, and
+  only alongside a `titleLinkMarker` glyph carrying the cue instead. A hairline
+  or a softened rule fails `layout-theming.test.ts`: one layout may not mark its
+  two link kinds two ways.
 - `titleLinkMarker: "arrow" | "link"` in `layout.tsx` — a muted lucide glyph after
   the title, for layouts whose language is already iconic (`studio`, `aurora`,
   `compass`, `atlas`, `masthead`, `bold-type`). The glyph reaches the shared
@@ -229,3 +233,4 @@ the round-robin `pnpm screenshots` uses.
 | [Monolith](monolith/README.md) | `monolith` | The whole page in one saturated colour; a 150px label rail, and two paired typefaces doing the work colour and rules usually do. |
 | [Marquee](marquee/README.md) | `marquee` | A dark band across the top carrying the name and contacts; headings are a glyph over a short accent bar. |
 | [Duotone](duotone/README.md) | `duotone` | Two washes of one hue: a pale identity rail beside a saturated main column, icon headings on both. |
+| [Meridian](meridian/README.md) | `meridian` | An accent→secondary gradient rail down the left edge of every sheet, beside a plain black-on-white ruled column. |

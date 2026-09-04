@@ -35,6 +35,7 @@ export const pdfLayoutIds = [
   "monolith",
   "marquee",
   "duotone",
+  "meridian",
 ] as const;
 export type PdfLayoutId = (typeof pdfLayoutIds)[number];
 
@@ -190,6 +191,7 @@ const layoutPageMarginMm: Record<PdfLayoutId, number> = {
   editorial: 20, // whitespace is the layout — the band and the spreads both need it
   harvard: 18, // the format is a Word document with wide margins; keep them
   rirekisho: 12, // the ruled boxes are the page; margin only frames them
+  meridian: 14, // the rail already eats 7% of the width; the column needs a normal margin back
   marquee: 13, // the band bleeds and owns its own padding; the body wants the type close to a wide measure
   duotone: 10, // two painted columns meeting at the middle — same economics as split
   monolith: 16, // the colour reaches every edge, so the margin is the only thing keeping the type off it
