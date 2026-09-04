@@ -14,6 +14,8 @@ import { GalleryThumbnailsIcon } from "@/components/ui/gallery-thumbnails";
 import { MonitorCheckIcon } from "@/components/ui/monitor-check";
 import { PenToolIcon } from "@/components/ui/pen-tool";
 import { SparklesIcon } from "@/components/ui/sparkles";
+import { pdfLayoutIds } from "@/features/resume-editor/domain/presentation/pdf-presentation";
+import { resumeTemplatePresets } from "@/features/resume-editor/domain/presentation/template-presets";
 
 import { Reveal, RevealItem, RevealStagger } from "./reveal";
 
@@ -51,7 +53,7 @@ const FEATURES: Feature[] = [
     Icon: GalleryThumbnailsIcon,
     title: "Multiple templates",
     description:
-      "Switch between twenty polished layouts like classic, timeline, and atlas without retyping a thing.",
+      `Switch between ${resumeTemplatePresets.length} polished templates across ${pdfLayoutIds.length} layouts without retyping a thing.`,
   },
   {
     Icon: FileCheckIcon,
