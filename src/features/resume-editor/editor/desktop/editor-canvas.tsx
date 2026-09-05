@@ -35,6 +35,8 @@ const KEEP_VISIBLE = 120;
 const TOP_INSET = 40;
 /** Fallback px for a wheel reporting lines (Firefox mice) rather than pixels. */
 const LINE_HEIGHT = 16;
+/** Quiet time after a gesture before the paper is re-rasterised sharp. */
+const SETTLE_MS = 120;
 
 /** Elements that own the space bar themselves. */
 const INTERACTIVE =
@@ -101,6 +103,7 @@ export function EditorCanvas({
   const paperSize = useRef({ width: 0, height: 0 });
   const syncFrame = useRef(0);
   const wheelFrame = useRef(0);
+  const settleTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const wheel = useRef<PendingWheel>({ ...NO_WHEEL });
   // A text selection dragged off the paper fires `click` on the viewport, so the
   // gesture is judged by where it started, not where it ended.
@@ -118,6 +121,14 @@ export function EditorCanvas({
     if (!paper) return;
     const { x, y, zoom } = view.current;
     paper.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${zoom})`;
+    // Promoted only while the gesture runs. A composited layer is scaled as a
+    // bitmap, so text blurs at any scale it was not rasterised at; dropping the
+    // hint once the fingers stop makes the browser redraw it sharp.
+    paper.style.willChange = "transform";
+    clearTimeout(settleTimer.current);
+    settleTimer.current = setTimeout(() => {
+      paper.style.willChange = "";
+    }, SETTLE_MS);
     if (syncFrame.current) return;
     syncFrame.current = requestAnimationFrame(() => {
       syncFrame.current = 0;
@@ -129,6 +140,7 @@ export function EditorCanvas({
     () => () => {
       cancelAnimationFrame(syncFrame.current);
       cancelAnimationFrame(wheelFrame.current);
+      clearTimeout(settleTimer.current);
     },
     [],
   );
@@ -368,7 +380,6 @@ export function EditorCanvas({
           className="absolute top-0 left-0 w-fit print:relative print:[transform:none]!"
           style={{
             transformOrigin: "0 0",
-            willChange: "transform",
             cursor: spaceHeld || panning ? "inherit" : "auto",
             // Nothing under the pointer should start a selection mid-pan.
             userSelect: spaceHeld || panning ? "none" : undefined,
