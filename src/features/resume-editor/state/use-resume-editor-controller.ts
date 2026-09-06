@@ -1,6 +1,12 @@
 "use client";
 
-import { useCallback, useRef, useState, useSyncExternalStore } from "react";
+import {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+} from "react";
 import type { ChangeEvent, RefObject } from "react";
 import { toast } from "@/components/ui/toast";
 import { useStore } from "zustand";
@@ -18,6 +24,11 @@ import {
 import { importResumeDraft } from "@/features/resume-editor/domain/draft/resume-draft-storage";
 import type { CollectionSectionKey } from "@/features/resume-editor/domain/sections/section-metadata";
 import type { Insights } from "@/features/resume-editor/domain/schema/insights-schemas";
+import {
+  applyTemplatePreset,
+  getActiveTemplatePresetId,
+  resumeTemplatePresets,
+} from "@/features/resume-editor/domain/presentation/template-presets";
 import { flushOpenForms } from "@/features/resume-editor/forms/use-auto-save";
 import {
   createResumeEditorStore,
@@ -287,6 +298,34 @@ function useUndoRedo(store: ResumeEditorStore) {
   return { canUndo, canRedo, undo, redo };
 }
 
+/**
+ * Applies `/editor?template=<presetId>`, the deep link the /templates page
+ * points at. Reads the query directly rather than via `useSearchParams` so
+ * /editor needs no Suspense boundary and stays statically rendered.
+ */
+function useTemplateFromUrl(store: ResumeEditorStore) {
+  const applied = useRef(false);
+  useEffect(() => {
+    if (applied.current) return;
+    applied.current = true;
+
+    const presetId = new URLSearchParams(window.location.search).get(
+      "template",
+    );
+    if (!presetId) return;
+    // The param is consumed once: a reload must not re-apply it over whatever
+    // the user has changed since.
+    window.history.replaceState(null, "", window.location.pathname);
+
+    const preset = resumeTemplatePresets.find((p) => p.id === presetId);
+    if (!preset) return;
+
+    const current = store.getState().draft.pdfPresentation;
+    if (getActiveTemplatePresetId(current) === presetId) return;
+    store.getState().savePdfPresentation(applyTemplatePreset(preset, current));
+  }, [store]);
+}
+
 export function useResumeEditorController({
   initialDraft,
 }: UseResumeEditorControllerOptions = {}): ResumeEditorController {
@@ -314,6 +353,8 @@ export function useResumeEditorController({
   const draft = useStore(store, (state) => state.draft);
   const activeSection = useStore(store, (state) => state.activeSection);
   const revision = useStore(store, (state) => state.revision);
+
+  useTemplateFromUrl(store);
 
   const jsonImport = useJsonImport(store);
   const pdfImport = usePdfImport(store);

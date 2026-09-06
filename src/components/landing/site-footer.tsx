@@ -13,6 +13,9 @@ export function SiteFooter() {
           </span>
         </div>
         <nav className="flex items-center gap-5">
+          <Link href="/templates" className="hover:text-foreground">
+            Templates
+          </Link>
           <Link href="/editor" className="hover:text-foreground">
             Editor
           </Link>
