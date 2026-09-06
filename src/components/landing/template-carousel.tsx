@@ -1,4 +1,8 @@
 import Image from "next/image";
+import Link from "next/link";
+
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 import { CAROUSEL_SCREENSHOTS } from "./carousel-screenshots";
 import { Marquee } from "./marquee";
@@ -94,6 +98,15 @@ export function TemplateCarousel() {
 
         <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-24 bg-linear-to-r from-background to-transparent sm:w-64" />
         <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-24 bg-linear-to-l from-background to-transparent sm:w-64" />
+      </Reveal>
+
+      <Reveal className="relative mt-12 text-center">
+        <Link
+          href="/templates"
+          className={cn(buttonVariants({ variant: "outline", size: "lg" }), "px-5")}
+        >
+          Browse all {CAROUSEL_SCREENSHOTS.length} templates
+        </Link>
       </Reveal>
     </section>
   );
